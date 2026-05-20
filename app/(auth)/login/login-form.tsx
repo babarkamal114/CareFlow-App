@@ -3,8 +3,7 @@
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState, type ReactElement } from "react";
-
-import { Button } from "ui-components";
+import { Button } from 'ui-components'
 
 export function LoginForm(): ReactElement {
   const router = useRouter();

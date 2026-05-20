@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
+import { DownloadIcon, FilterIcon, PlusIcon, Trash2Icon, ArrowRightIcon } from "lucide-react"
 
 import { Button } from "ui-components"
 
@@ -55,6 +56,64 @@ export const Sizes: Story = {
       <Button {...args} size="default">Default</Button>
       <Button {...args} size="lg">LG</Button>
       <Button {...args} size="xl">XL</Button>
+    </div>
+  ),
+}
+
+export const States: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-2">
+      {/* Default — no extra props */}
+      <Button {...args}>Default</Button>
+
+      {/* Hover — force the hover pseudo-class via Storybook's data attribute trick */}
+      <Button {...args} data-hover>Hover</Button>
+
+      {/* Active */}
+      <Button {...args} data-active>Active</Button>
+
+      {/* Focused — autoFocus renders the button with a visible focus ring on mount */}
+      <Button {...args} autoFocus>Focused</Button>
+
+      {/* Disabled */}
+      <Button {...args} disabled>Disabled</Button>
+
+      {/* Loading */}
+      <Button {...args} loading>Loading</Button>
+    </div>
+  ),
+}
+
+export const WithIcons: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button {...args} variant="default">
+        <PlusIcon />
+        New Visit
+      </Button>
+
+      <Button {...args} variant="secondary">
+        <DownloadIcon />
+        Download
+      </Button>
+
+      <Button {...args} variant="outline">
+        <FilterIcon />
+        Filter
+        <span className="ml-1 inline-flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
+          3
+        </span>
+      </Button>
+
+      <Button {...args} variant="ghost">
+        Next
+        <ArrowRightIcon />
+      </Button>
+
+      <Button {...args} variant="destructive">
+        <Trash2Icon />
+        Delete
+      </Button>
     </div>
   ),
 }

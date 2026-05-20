@@ -1,12 +1,46 @@
+// app/(dashboard)/page.tsx
+// Main Dashboard Page — assembles all dashboard section components
+
+import DashboardHeader from "./_components/DashboardHeader";
+import DashboardStats from "./_components/DashboardStats";
+import TodaysVisits from "./_components/TodaysVisits";
+import NeedsAttention from "./_components/NeedsAttention";
+import WeeklyActivity from "./_components/WeeklyActivity";
+import CQCBreakdown from "./_components/CQCBreakdown";
+import ComplianceDue from "./_components/ComplianceDue";
+import RevenuePanel from "./_components/RevenuePanel";
+import VisitTrend from "./_components/VisitTrend";
+
 export default function DashboardHomePage() {
   return (
-    <div className="rounded-xl border border-[#E4E5EA] bg-white p-8 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-      <h1 className="font-heading text-2xl font-extrabold tracking-[-0.02em] text-[#111318]">
-        Dashboard Body
-      </h1>
-      <p className="mt-2 text-sm text-[#5C5F6A]">
-        Main content area is ready.
-      </p>
+    // Outer scroll container with light grey background matching design
+    <div className="min-h-screen bg-[#F5F6FA] p-6 space-y-5">
+
+      {/* ── Top Header: title, date, search, actions ── */}
+      <DashboardHeader />
+
+      {/* ── Row 1: 4 KPI stat cards ── */}
+      <DashboardStats />
+
+      {/* ── Row 2: Today's Visits table + Needs Attention panel ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-5">
+        <TodaysVisits />
+        <NeedsAttention />
+      </div>
+
+      {/* ── Row 3: Weekly Activity | CQC Breakdown | Compliance Due ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <WeeklyActivity />
+        <CQCBreakdown />
+        <ComplianceDue />
+      </div>
+
+      {/* ── Row 4: Revenue April | Visit Trend 30 Days ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_1fr] gap-5">
+        <RevenuePanel />
+        <VisitTrend />
+      </div>
+
     </div>
   );
 }

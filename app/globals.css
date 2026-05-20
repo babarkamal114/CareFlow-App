@@ -362,3 +362,32 @@
 @utility cf-prose {
   @apply max-w-[75ch] text-sm leading-normal md:text-base md:leading-relaxed;
 }
+
+
+/* ── Live Monitoring custom animations ───────────────────────────────────────
+   Add these to your globals.css (or extend tailwind.config.ts keyframes/animation)
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes highlight {
+  0%   { background-color: #EFF6FF; }
+  100% { background-color: transparent; }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-3px); }
+}
+
+.animate-fade-in     { animation: fade-in     0.3s ease both; }
+.animate-highlight   { animation: highlight   2s ease forwards; }
+.animate-bounce-subtle { animation: bounce-subtle 1.5s ease infinite; }
+
+/* Thin scrollbar for feed lists */
+.scrollbar-thin::-webkit-scrollbar       { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #E4E5EA; border-radius: 9999px; }

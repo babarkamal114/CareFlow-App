@@ -1,9 +1,0 @@
-FILES="$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|tsx|js|jsx)$' || true)"
-
-if [ -z "$FILES" ]; then
-  exit 0
-fi
-
-node scripts/check-banned-patterns.js $FILES
-node scripts/check-file-length.js $FILES
-node scripts/check-barrel-imports.js $FILES

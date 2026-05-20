@@ -62,6 +62,7 @@ function Card({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled ? true : undefined}
       className={cn(
+        "transition-all duration-200",
         cardVariants({ variant, density: size }),
         disabled && "pointer-events-none opacity-60",
         className
