@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "ui-components"
 
 const meta = {
@@ -8,15 +7,15 @@ const meta = {
   parameters: {
     controls: { expanded: true },
   },
-  args: {
-    defaultValue: "item-1",
-  },
 } satisfies Meta<typeof Accordion>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {
+  args: {
+    defaultValue: ["item-1"],
+  },
   render: (args) => (
     <Accordion {...args}>
       <AccordionItem value="item-1">
