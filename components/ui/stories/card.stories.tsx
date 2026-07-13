@@ -8,20 +8,19 @@ const meta = {
   parameters: {
     controls: { expanded: true },
   },
-  args: {
-    variant: "default",
-    density: "default",
+ args: {
+  variant: "default",
+  size: "default",   // <-- was "density"
+},
+argTypes: {
+  variant: {
+    // ...
   },
-  argTypes: {
-    variant: {
-      control: "select",
-      options: ["default", "elevated", "interactive", "outlined"],
-    },
-    density: {
-      control: "select",
-      options: ["default", "sm"],
-    },
+  size: {
+    control: "select",
+    options: ["default", "sm"],
   },
+},
 } satisfies Meta<typeof Card>
 
 export default meta
