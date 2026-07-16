@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui";
 import { LoginFormWrapper } from "./login-form-wrapper";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -11,7 +13,12 @@ export default function LoginPage() {
           Sign in to your CareFlow account
         </p>
       </div>
-      <LoginFormWrapper />
+      <Button>
+        <Link href={'/auth/login'}>
+        Sign in 
+        </Link>
+      </Button>
+      {/* <LoginFormWrapper /> */}
     </div>
   );
 }
