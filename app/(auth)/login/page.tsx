@@ -1,23 +1,24 @@
+import { Button } from "@/components/ui";
+import { LoginFormWrapper } from "./login-form-wrapper";
 import Link from "next/link";
-
-import { LoginForm } from "./login-form";
 
 export default function LoginPage() {
   return (
-    <div className="space-y-4 rounded-lg border border-border bg-card p-6 shadow-sm">
+    <div className="space-y-7">
       <div>
-        <h1 className="text-lg font-semibold text-card-foreground">Sign in</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Demo credentials provider — replace with real auth.
+        <h1 className="text-[1.75rem] font-bold tracking-tight text-zinc-900">
+          Welcome back
+        </h1>
+        <p className="mt-1 text-sm text-zinc-500">
+          Sign in to your CareFlow account
         </p>
       </div>
-      <LoginForm />
-      <Link
-        href="/"
-        className="block text-center text-sm font-medium text-primary underline"
-      >
-        Back to home
-      </Link>
+      <Button>
+        <Link href={'/auth/login'}>
+        Sign in 
+        </Link>
+      </Button>
+      {/* <LoginFormWrapper /> */}
     </div>
   );
 }

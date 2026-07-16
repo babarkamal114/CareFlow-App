@@ -1,12 +1,12 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import type { Session } from "next-auth";
+import { auth0 } from "@/lib/auth0";
 
-import { auth } from "@/auth";
 
-export async function requireSession(): Promise<Session> {
-  const session = await auth();
+
+export async function requireSession() {
+  const session = await auth0.getSession();
   if (!session?.user) {
     redirect("/login");
   }
