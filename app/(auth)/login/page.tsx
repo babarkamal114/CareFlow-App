@@ -1,4 +1,4 @@
-import { LoginFormWrapper } from "./login-form-wrapper";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -11,7 +11,12 @@ export default function LoginPage() {
           Sign in to your CareFlow account
         </p>
       </div>
-      <LoginFormWrapper />
+      <Link
+        href="/auth/login"
+        className="flex h-10 w-full items-center justify-center rounded-md bg-[#1a6b3c] text-sm font-medium text-white transition-all hover:bg-[#155c32]"
+      >
+        Sign in
+      </Link>
     </div>
   );
 }
