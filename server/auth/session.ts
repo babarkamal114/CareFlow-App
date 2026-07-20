@@ -7,7 +7,7 @@ import { auth0 } from "@/lib/auth0";
 export async function requireSession() {
   const session = await auth0.getSession();
   if (!session?.user) {
-    redirect("/auth/login");
+    redirect("/login");  // <-- go to YOUR page first
   }
   return session;
 }
