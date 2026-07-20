@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-
+import { Auth0Provider } from "@auth0/nextjs-auth0/client";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="flex min-h-full flex-col">
-        <Providers>{children}</Providers>
+        <Auth0Provider>
+          <Providers>{children}</Providers>
+        </Auth0Provider>
       </body>
     </html>
   );
