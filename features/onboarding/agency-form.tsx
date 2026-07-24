@@ -45,11 +45,11 @@ export function AgencyForm({ onSubmit }: AgencyFormProps) {
     locations: "1",
   });
 
-  function update(field: keyof AgencyFormPayload, value: string) {
+  function update(field: keyof AgencyFormPayload, value: string): void {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) : Promise<void> {
     e.preventDefault();
     if (!onSubmit) return;
     setError(null);
