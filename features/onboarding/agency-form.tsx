@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Building2, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
 import { useState } from "react";
-
+import { type ReactElement } from "react";
 import { Button, Input, Label } from "ui-components";
 
 const AGENCY_TYPES = ["Domiciliary care", "Live-in care", "Both"];
@@ -31,7 +31,7 @@ export interface AgencyFormProps {
   onSubmit?: (data: AgencyFormPayload) => Promise<{ error?: string | null }>;
 }
 
-export function AgencyForm({ onSubmit }: AgencyFormProps) {
+export function AgencyForm({ onSubmit }: AgencyFormProps): ReactElement {
   const [pending, setPending] = useState(false);
   const [created, setCreated] = useState(false);
   const [error, setError] = useState<string | null>(null);
