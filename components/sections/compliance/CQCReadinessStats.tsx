@@ -1,15 +1,12 @@
-
 'use client';
 
 
 import { StatCard } from '@/components/shared';
-import { 
-  Shield, 
-  FileText, 
-  GraduationCap, 
+import {
+  Shield,
+  FileText,
+  GraduationCap,
   AlertCircle,
-  Clock,
-  AlertTriangle 
 } from 'lucide-react';
 
 interface CQCReadinessStatsProps {
@@ -50,6 +47,9 @@ export function CQCReadinessStats({
   const totalIssues = documentationGaps.unsignedPlans + documentationGaps.missingMAR + documentationGaps.lateNotes;
   const trainingIssues = trainingCompliance.expired + trainingCompliance.expiringSoon;
 
+  // Same compact shape as Dashboard/Staff/Patients stat cards — no
+  // breakdown lists or progress bars inside the card itself, so the row
+  // matches the height/size used everywhere else in the app.
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
@@ -57,26 +57,12 @@ export function CQCReadinessStats({
         value={score.toLocaleString()}
         Icon={Shield}
         description="Overall compliance score"
-        
-        
         showTrend={true}
         trend="up"
         hasCqcScore={true}
-        
         valueBadgeValue={`+${score - 83} pts`}
-      >
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-cf-ink-60">
-            {score >= 85 ? 'On track' : 'Needs attention'}
-          </span>
-          <div className="h-1.5 flex-1 bg-cf-surface-muted rounded-full overflow-hidden">
-            <div 
-              className={`h-full rounded-full ${score >= 85 ? 'bg-green-500' : 'bg-amber-500'}`}
-              style={{ width: `${score}%` }}
-            />
-          </div>
-        </div>
-      </StatCard>
+        badgeVariant="softSuccess"
+      />
 
       <StatCard
         label="Documentation Gaps"
@@ -88,22 +74,8 @@ export function CQCReadinessStats({
         hasCqcScore={false}
         hasValueBadge={true}
         valueBadgeValue={`${totalIssues} issues`}
-      >
-        <div className="space-y-1 mt-1">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-cf-ink-60">Unsigned plans</span>
-            <span className="font-medium text-cf-ink">{documentationGaps.unsignedPlans}</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-cf-ink-60">Missing MAR</span>
-            <span className="font-medium text-cf-ink">{documentationGaps.missingMAR}</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-cf-ink-60">Late notes</span>
-            <span className="font-medium text-cf-ink">{documentationGaps.lateNotes}</span>
-          </div>
-        </div>
-      </StatCard>
+        badgeVariant="softInfo"
+      />
 
       <StatCard
         label="Training Compliance"
@@ -115,18 +87,8 @@ export function CQCReadinessStats({
         hasCqcScore={false}
         hasValueBadge={true}
         valueBadgeValue={`${trainingIssues} issues`}
-      >
-        <div className="space-y-1 mt-1">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-cf-ink-60">Expired</span>
-            <span className="font-medium text-red-600">{trainingCompliance.expired}</span>
-          </div>
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-cf-ink-60">Expiring in 14 days</span>
-            <span className="font-medium text-amber-600">{trainingCompliance.expiringSoon}</span>
-          </div>
-        </div>
-      </StatCard>
+        badgeVariant="softWarning"
+      />
 
       <StatCard
         label="Incident Response"
@@ -138,18 +100,8 @@ export function CQCReadinessStats({
         hasCqcScore={false}
         hasValueBadge={true}
         valueBadgeValue={`${incidentResponse.openInvestigations} open`}
-      >
-        <div className="space-y-1 mt-1">
-          <div className="flex items-center gap-1 text-xs">
-            <Clock className="h-3 w-3 text-cf-ink-40" />
-            <span className="text-cf-ink-60">Target: {incidentResponse.target}</span>
-          </div>
-          <div className="flex items-center gap-1 text-xs">
-            <AlertTriangle className="h-3 w-3 text-amber-500" />
-            <span className="text-cf-ink-60">{incidentResponse.openInvestigations} open investigations</span>
-          </div>
-        </div>
-      </StatCard>
+        badgeVariant="softDanger"
+      />
     </div>
   );
 }

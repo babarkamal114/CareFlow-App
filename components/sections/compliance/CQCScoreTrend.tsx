@@ -21,17 +21,17 @@ export function CQCScoreTrendCard() {
   const focusAreaScore = 78;
 
   return (
-    <Card className='w-full'>
+    <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full h-full">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="font-bold">CQC Score Trend</CardTitle>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-600" />
+              <div className="w-3 h-3 rounded-full bg-[var(--cf-success)]" />
               <span className="text-xs text-cf-ink-60">Overall</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
+              <div className="w-3 h-3 rounded-full bg-[var(--cf-warning)]" />
               <span className="text-xs text-cf-ink-60">Responsive</span>
             </div>
           </div>
@@ -83,7 +83,7 @@ export function CQCScoreTrendCard() {
         <div className="border-t border-cf-border pt-6 grid grid-cols-3 gap-6">
           <div className="space-y-1">
             <p className="text-xs font-semibold text-cf-ink-60 uppercase">6-Month Change</p>
-            <p className="text-2xl font-bold text-green-600">+{overallChange} pts</p>
+            <p className="text-2xl font-bold text-[var(--cf-success)]">+{overallChange} pts</p>
           </div>
           <div className="space-y-1">
             <p className="text-xs font-semibold text-cf-ink-60 uppercase">Best Area</p>
@@ -91,8 +91,8 @@ export function CQCScoreTrendCard() {
             <p className="text-sm text-cf-ink-60">{bestAreaScore}/100</p>
           </div>
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-amber-600 uppercase">Focus Area</p>
-            <p className="text-2xl font-bold text-amber-600">{focusArea}</p>
+            <p className="text-xs font-semibold text-[var(--cf-warning)] uppercase">Focus Area</p>
+            <p className="text-2xl font-bold text-[var(--cf-warning)]">{focusArea}</p>
             <p className="text-sm text-cf-ink-60">{focusAreaScore}/100</p>
           </div>
         </div>

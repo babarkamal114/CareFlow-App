@@ -93,24 +93,24 @@ const typeIcons = {
 const statusConfig = {
   urgent: {
     icon: XCircle,
-    color: 'text-red-600 dark:text-red-400',
-    bg: 'bg-red-50 dark:bg-red-950/30',
+    color: 'text-[var(--cf-error)]',
+    bg: 'bg-[var(--cf-error-muted)]',
     border: 'border-red-200 dark:border-red-800',
     badge: 'pastel-danger',
     label: 'Urgent',
   },
   warning: {
     icon: AlertTriangle,
-    color: 'text-amber-600 dark:text-amber-400',
-    bg: 'bg-amber-50 dark:bg-amber-950/30',
+    color: 'text-[var(--cf-warning)]',
+    bg: 'bg-[var(--cf-warning-muted)]',
     border: 'border-amber-200 dark:border-amber-800',
     badge: 'pastel-warning',
     label: 'Warning',
   },
   info: {
     icon: Bell,
-    color: 'text-blue-600 dark:text-blue-400',
-    bg: 'bg-blue-50 dark:bg-blue-950/30',
+    color: 'text-[var(--cf-info)]',
+    bg: 'bg-[var(--cf-info-muted)]',
     border: 'border-blue-200 dark:border-blue-800',
     badge: 'pastel-info',
     label: 'Info',
@@ -124,7 +124,7 @@ export function ComplianceAlerts({
   const urgentCount = alerts.filter(a => a.status === 'urgent').length;
 
   return (
-    <Card className="border-cf-border shadow-sm h-full">
+    <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full h-full">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ export function ComplianceAlerts({
       </CardHeader>
 
       <CardContent className="p-0">
-        <ScrollArea className="h-[400px] px-4 pb-4">
+        <ScrollArea className=" px-4 pb-4">
           <div className="space-y-3">
             {alerts.map((alert) => {
               const status = statusConfig[alert.status];

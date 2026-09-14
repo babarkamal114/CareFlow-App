@@ -61,7 +61,7 @@ const getBorderColor = (status: string) => {
 
 export function KeyRegulationsCard() {
   return (
-    <Card className='w-full'>
+    <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full h-full">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="font-bold">Key Regulations</CardTitle>
