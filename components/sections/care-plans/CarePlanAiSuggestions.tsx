@@ -1,4 +1,3 @@
-// components/sections/care-plans/CarePlanAiSuggestions.tsx
 'use client';
 
 import { useState } from 'react';
@@ -14,8 +13,6 @@ import {
 interface CarePlanAiSuggestionsProps {
   patientNames: Record<string, string>;
   onViewPlan?: (patientId: string) => void;
-  /** 'vertical' (default): narrow sidebar stack, capped height, internal scroll.
-   *  'horizontal': full-width strip, suggestions wrap left-to-right. */
   orientation?: 'vertical' | 'horizontal';
 }
 
@@ -79,23 +76,27 @@ export function CarePlanAiSuggestions({
               {s.suggestion}
             </p>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => handleDismiss(s.id)}
-            className="shrink-0 rounded-md p-1 text-cf-ink-40 hover:bg-cf-surface-muted hover:text-cf-ink transition-colors"
+            className="size-6 shrink-0 rounded-md text-cf-ink-40 hover:bg-cf-surface-muted hover:text-cf-ink"
             aria-label="Dismiss suggestion"
           >
             <X className="size-3.5" />
-          </button>
+          </Button>
         </div>
 
         {onViewPlan && (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => onViewPlan(s.patientId)}
-            className="mt-2 flex items-center gap-1 text-xs font-medium text-cf-ink-60 hover:text-cf-ink"
+            className="mt-2 h-auto p-0 justify-start gap-1 text-xs font-medium text-cf-ink-60 hover:bg-transparent hover:text-cf-ink"
           >
             Review care plan
             <ArrowRight className="size-3" />
-          </button>
+          </Button>
         )}
       </motion.div>
     );
@@ -128,8 +129,6 @@ export function CarePlanAiSuggestions({
   }
 
   return (
-    // Fixed height card, header pinned, list scrolls internally.
-    // This is what stops the card growing past the Review Queue below it.
     <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full max-h-80 flex flex-col overflow-hidden">
       <CardHeader className="flex flex-row items-center gap-2 pb-3 pt-4 px-4 shrink-0">
         <span className="inline-flex size-7 items-center justify-center rounded-lg bg-[var(--cf-info-muted)]">
