@@ -2,13 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@/components/ui';
 import {
-  FileText,
   Download,
   Eye,
-  Calendar,
-  File,
   Shield,
-  CheckCircle,
   Clock,
 } from 'lucide-react';
 

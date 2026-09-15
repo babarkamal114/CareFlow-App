@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '@/components/ui';
-import { PenLine, CheckCircle2, Clock, AlertTriangle, ChevronRight } from 'lucide-react';
+import { PenLine, CheckCircle2, Clock, AlertTriangle } from 'lucide-react';
 
 type SigStatus = 'signed' | 'pending' | 'overdue';
 
@@ -33,9 +33,9 @@ const STATUS_CONFIG: Record<SigStatus, { icon: React.ElementType; label: string;
 };
 
 const TYPE_COLORS: Record<SignatureItem['type'], string> = {
-  'Care Plan':       'bg-blue-50 text-blue-700',
-  'Consent Form':    'bg-purple-50 text-purple-700',
-  'Medication Auth': 'bg-amber-50 text-amber-700',
+  'Care Plan':       'bg-[var(--cf-info-muted)] text-[var(--cf-info)]',
+  'Consent Form':    'bg-cf-surface-muted text-cf-ink-60',
+  'Medication Auth': 'bg-[var(--cf-warning-muted)] text-[var(--cf-warning)]',
 };
 
 export function DigitalSignaturesPanel() {

@@ -1,6 +1,5 @@
 'use client';
 
-
 import { StatCard } from '@/components/shared';
 import {
   Shield,
@@ -47,9 +46,6 @@ export function CQCReadinessStats({
   const totalIssues = documentationGaps.unsignedPlans + documentationGaps.missingMAR + documentationGaps.lateNotes;
   const trainingIssues = trainingCompliance.expired + trainingCompliance.expiringSoon;
 
-  // Same compact shape as Dashboard/Staff/Patients stat cards — no
-  // breakdown lists or progress bars inside the card itself, so the row
-  // matches the height/size used everywhere else in the app.
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard

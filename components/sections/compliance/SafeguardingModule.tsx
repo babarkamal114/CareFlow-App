@@ -87,7 +87,7 @@ function NewConcernForm({ onClose }: { onClose: () => void }) {
     <div className="border border-cf-border rounded-xl p-4 bg-cf-surface-muted space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-sm font-bold text-cf-ink">New Safeguarding Concern</p>
-        <button onClick={onClose}><X className="h-4 w-4 text-cf-ink-40" /></button>
+        <Button variant="ghost" size="icon-sm" onClick={onClose} aria-label="Close"><X className="h-4 w-4 text-cf-ink-40" /></Button>
       </div>
       <div className="space-y-2">
         <input placeholder="Patient name" className="w-full px-3 py-2 text-sm border border-cf-border rounded-lg bg-white text-cf-ink placeholder:text-cf-ink-40 focus:outline-none focus:ring-2 focus:ring-cf-brand-300" />
@@ -125,8 +125,8 @@ export function SafeguardingModule() {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-red-50">
-              <Shield className="h-4 w-4 text-red-600" />
+            <div className="p-2 rounded-lg bg-[var(--cf-error-muted)]">
+              <Shield className="h-4 w-4 text-[var(--cf-error)]" />
             </div>
             <div>
               <CardTitle className="font-bold text-cf-ink">Safeguarding</CardTitle>
@@ -156,28 +156,29 @@ export function SafeguardingModule() {
           return (
             <div key={concern.id} className="border border-cf-border rounded-xl overflow-hidden">
               {/* Row */}
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setExpanded(isOpen ? null : concern.id)}
-                className="w-full flex items-center gap-3 p-3 hover:bg-cf-surface-muted transition-colors text-left"
+                className="w-full h-auto flex items-center justify-start gap-3 p-3 hover:bg-cf-surface-muted transition-colors text-left rounded-none"
               >
                 <Icon className={`h-4 w-4 flex-shrink-0 ${cfg.iconClass}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-cf-ink">{concern.patient}</p>
-                    <span className="text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-700 font-medium flex-shrink-0">{concern.category}</span>
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--cf-error-muted)] text-[var(--cf-error)] font-medium flex-shrink-0">{concern.category}</span>
                   </div>
                   <p className="text-xs text-cf-ink-60 mt-0.5">Reported by {concern.reportedBy} · {concern.reportedAt}</p>
                 </div>
                 <Badge variant={cfg.badge as any} badgeSize="sm" shape="pill">{cfg.label}</Badge>
                 <ChevronRight className={`h-4 w-4 text-cf-ink-40 transition-transform ${isOpen ? 'rotate-90' : ''}`} />
-              </button>
+              </Button>
 
               {/* Expanded detail */}
               {isOpen && (
                 <div className="px-4 pb-4 border-t border-cf-border bg-cf-surface-muted">
                   <NotificationChain chain={concern.chain} />
                   {concern.outcome && (
-                    <div className="mt-3 p-2.5 rounded-lg bg-[var(--cf-success-muted)] border border-green-200">
+                    <div className="mt-3 p-2.5 rounded-lg bg-[var(--cf-success-muted)] border border-[var(--cf-success)]/20">
                       <p className="text-xs font-semibold text-[var(--cf-success)] mb-1">Outcome</p>
                       <p className="text-xs text-cf-ink-60">{concern.outcome}</p>
                     </div>
