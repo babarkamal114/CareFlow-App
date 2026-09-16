@@ -5,8 +5,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from @/components/ui;
-import { Skeleton } from @/components/ui;
+} from "@/components/ui";
+import { Skeleton } from "@/components/ui";
 
 export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
   return (

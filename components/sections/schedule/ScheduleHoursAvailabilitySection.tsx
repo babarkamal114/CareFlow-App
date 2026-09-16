@@ -1,4 +1,3 @@
-// components/sections/schedule/CapacityPlanningSection.tsx
 "use client";
 
 import { TrendingUp, TrendingDown, AlertCircle, CheckCircle } from "lucide-react";
@@ -10,8 +9,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from @/components/ui;
-import { Badge } from @/components/ui;
+} from "@/components/ui";
+import { Badge } from "@/components/ui";
 import {
   ChartConfig,
   ChartContainer,
@@ -19,7 +18,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from @/components/ui;
+} from "@/components/ui";
 
 const chartData = [
   { day: "Monday", needed: 28, available: 40 },

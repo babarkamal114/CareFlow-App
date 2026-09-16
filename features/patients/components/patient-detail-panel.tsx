@@ -3,7 +3,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useActionState, useEffect, type ReactNode } from "react";
 
-import { Button } from @/components/ui;
+import { Button } from "@/components/ui";
 
 import {
   type UpdatePatientActionState,

@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronRight } from 'lucide-react';
-import { Badge } from @/components/ui;
+import { Badge } from "@/components/ui";
 import { cn } from "lib";
 import { PermissionActions } from './permission-actionts';
 

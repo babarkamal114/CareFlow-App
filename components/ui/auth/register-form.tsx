@@ -5,7 +5,7 @@ import { ArrowRightIcon, Loader2, LockKeyholeIcon, MailIcon, PhoneIcon, UserRoun
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-import { Button, Input, Label, toast } from @/components/ui;
+import { Button, Input, Label, toast } from "@/components/ui";
 import { cn } from "lib";
 
 const fadeUp = {

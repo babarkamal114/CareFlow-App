@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "next-themes";
 import { useState, type ReactElement, type ReactNode } from "react";
 
-import { Toaster, TooltipProvider } from @/components/ui;
+import { Toaster, TooltipProvider } from "@/components/ui";
 import { getQueryClient } from "lib";
 import { SessionProvider } from "next-auth/react";
 

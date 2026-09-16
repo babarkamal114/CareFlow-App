@@ -24,10 +24,6 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import '@/components/styles/calendar.css';
 
 const localizer = dayjsLocalizer(dayjs);
-// react-big-calendar's DnD addon types `start`/`end` as `stringOrDate` and infers a bare
-// `object` event type, which then conflicts with our `Date`-based callback signatures below.
-// The addon works fine at runtime with Date objects (via dayjsLocalizer) — this cast just
-// relaxes the compile-time contract instead of fighting the library's generics.
 const DragAndDropCalendar = withDragAndDrop(Calendar) as React.ComponentType<any>;
 
 export interface ScheduleFilters {
@@ -66,21 +62,17 @@ interface CalendarWrapperProps {
   filters?: ScheduleFilters;
   onFiltersChange?: (filters: ScheduleFilters) => void;
 
-  /** Drag-and-drop rescheduling (3.2.1: "drag visits between carers to reassign"). */
+
   onEventDrop?: (args: { event: any; start: Date; end: Date; resourceId?: any }) => void;
   onEventResize?: (args: { event: any; start: Date; end: Date }) => void;
-
-  /** Dropping an unassigned visit card (from the sidebar) onto a slot. */
+  
   draggedVisitId?: string | null;
   onDropFromOutside?: (visitId: string, slotInfo: { start: Date; end: Date }) => void;
 
-  /** 3.2.2 AI-powered smart scheduling + 5.2 bulk actions. */
   onAiSchedule?: () => void;
   onBulkAssignRecurring?: () => void;
   onBulkCancelWeek?: () => void;
   onBulkReassignCarer?: () => void;
-
-  /** True while the AI optimiser is running, to show a loading state on the button. */
   isAiScheduling?: boolean;
 }
 
@@ -127,11 +119,13 @@ function CustomToolbar({
 
       <div className="relative flex items-center gap-0.5 rounded-lg bg-cf-surface-muted p-1">
         {views.map((v) => (
-          <button
+          <Button
             key={v.key}
+            variant="ghost"
+            size="sm"
             onClick={() => onView(v.key)}
-            className={`relative z-10 px-3 py-1.5 text-sm rounded-md transition-colors ${
-              view === v.key ? 'text-white' : 'text-cf-ink-60 hover:text-cf-ink'
+            className={`relative z-10 h-auto rounded-md px-3 py-1.5 text-sm font-normal hover:bg-transparent ${
+              view === v.key ? 'text-#e5e5e8 hover:text-#e5e5e8' : 'text-cf-ink-60 hover:text-cf-ink'
             }`}
           >
             {view === v.key && (
@@ -142,7 +136,7 @@ function CustomToolbar({
               />
             )}
             {v.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>
@@ -204,7 +198,6 @@ function CalendarWrapper({
 
   return (
     <div className="flex flex-col gap-3 w-full max-w-7xl">
-      {/* Filters + AI / bulk actions row (5.2 Scheduling Module) */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {carers.length > 0 && (
@@ -304,10 +297,11 @@ function CalendarWrapper({
 
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             <Button
+              variant="default"
               size="sm"
               onClick={onAiSchedule}
               disabled={isAiScheduling}
-             
+              className="gap-1.5"
             >
               <Sparkles className="h-3.5 w-3.5" />
               {isAiScheduling ? 'Optimising…' : 'AI Scheduler'}
@@ -362,7 +356,6 @@ function CalendarWrapper({
           dayPropGetter={(date: Date) => dayStyleGetter(date)}
           className="rbc-calendar rbc-calendar-custom h-full min-h-0"
           components={{ toolbar: CustomToolbar }}
-          // Enables dropping an UnassignedScheduleBlock card straight onto a slot to assign it.
           onDropFromOutside={({ start, end }: { start: Date; end: Date }) => {
             if (draggedVisitId) {
               onDropFromOutside?.(draggedVisitId, { start, end });

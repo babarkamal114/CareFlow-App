@@ -1,7 +1,7 @@
 'use client';
 
-import { Card, CardContent } from @/components/ui;
-import { Button } from @/components/ui;
+import { Card, CardContent } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { Calendar, Clock, Users, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { CarePlanViewerModal } from './view-plan/CarePlanViewerModal';

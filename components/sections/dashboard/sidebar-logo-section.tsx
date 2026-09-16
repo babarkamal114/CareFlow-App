@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from @/components/ui;
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 
 export function SidebarLogoSection(): ReactElement {
   return (

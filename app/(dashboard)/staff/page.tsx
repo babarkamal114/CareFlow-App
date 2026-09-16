@@ -2,7 +2,7 @@
 
 import { StaffHeader, StaffTable, StaffToolbar, TrainingMatrixTab, AvailabilityTab, PerformanceTab } from "sections";
 import { StatCard } from "shared";
-import { StaffTableSkeleton, Tabs, TabsList, TabsTrigger, TabsContent } from @/components/ui;
+import { StaffTableSkeleton, Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui";
 import { mockStaffMembers } from "lib";
 import type { StaffMember } from "types";
 import { staffStatsData } from "utils";

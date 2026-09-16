@@ -1,7 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 
-import type { BadgeProps } from @/components/ui;
+import type { BadgeProps } from "@/components/ui";
 
 export interface StatCardProps {
     label : string;

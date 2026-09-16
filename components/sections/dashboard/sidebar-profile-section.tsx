@@ -10,7 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   toast,
-} from @/components/ui;
+} from "@/components/ui";
 import { useAuthTokens } from "hooks";
 import { useLogoutMutation } from "lib";
 import { ChevronsUpDown, LogOut, Settings, User } from "lucide-react";

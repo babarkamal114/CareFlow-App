@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Button } from @/components/ui;
+import { Button } from "@/components/ui";
 import { CheckCircle2, ArrowRight, Sparkles, Loader, LayoutDashboard, UsersRound, UserCog } from "lucide-react";
 
 interface SuccessStepProps {

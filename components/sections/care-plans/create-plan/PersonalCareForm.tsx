@@ -1,25 +1,25 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Input } from @/components/ui;
-import { Label } from @/components/ui;
-import { Textarea } from @/components/ui;
+import { Input } from "@/components/ui";
+import { Label } from "@/components/ui";
+import { Textarea } from "@/components/ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from @/components/ui;
+} from "@/components/ui";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from @/components/ui;
-import { Badge } from @/components/ui;
+} from "@/components/ui";
+import { Badge } from "@/components/ui";
 import { X, Plus } from 'lucide-react';
-import { Button } from @/components/ui;
+import { Button } from "@/components/ui";
 import { PersonalCareCreationData } from "types";
 
 interface PersonalCareFormProps {

@@ -6,9 +6,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from @/components/ui;
-import { Badge } from @/components/ui;
-import { Button } from @/components/ui;
+} from "@/components/ui";
+import { Badge } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { Download, Edit2, Calendar, AlertCircle, Maximize2, Minimize2, X } from 'lucide-react';
 import { CarePlan, CarePlanModule } from "types";
 import { cn } from "lib";

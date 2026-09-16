@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Bell, Moon, Sun } from "lucide-react";
-import { Button, Popover, PopoverContent, PopoverTrigger } from @/components/ui;
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@/components/ui";
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();

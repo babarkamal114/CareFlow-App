@@ -1,4 +1,4 @@
-import { TrendDownIcon, TrendNeutralIcon, TrendUpIcon } from @/components/ui;
+import { TrendDownIcon, TrendNeutralIcon, TrendUpIcon } from "@/components/ui";
 import type { StatCardTrend } from "types";
 
 export const showStatTrend = (trend: StatCardTrend) => {

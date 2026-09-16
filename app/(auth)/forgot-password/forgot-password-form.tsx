@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, CheckCircle2, Loader2, Mail } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from @/components/ui;
-import { Input } from @/components/ui;
-import { Label } from @/components/ui;
+import { Button } from "@/components/ui";
+import { Input } from "@/components/ui";
+import { Label } from "@/components/ui";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },

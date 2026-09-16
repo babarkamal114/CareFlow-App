@@ -10,7 +10,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from @/components/ui;
+} from "@/components/ui";
 
 export function SidebarNavigationSection({
   groups,

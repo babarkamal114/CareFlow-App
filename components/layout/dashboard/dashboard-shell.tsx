@@ -26,7 +26,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from @/components/ui;
+} from "@/components/ui";
 
 export function DashboardShell({
   children,
