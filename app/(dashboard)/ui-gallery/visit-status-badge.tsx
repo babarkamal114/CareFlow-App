@@ -1,6 +1,6 @@
 import type { ReactElement } from "react"
 
-import { Badge } from "ui-components"
+import { Badge } from @/components/ui
 
 import type { VisitStatus } from "./gallery-data"
 

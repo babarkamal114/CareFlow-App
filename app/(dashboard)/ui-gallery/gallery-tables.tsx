@@ -16,7 +16,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "ui-components"
+} from @/components/ui
 import { MoreHorizontal } from "lucide-react"
 
 import { galleryMedicationRows, galleryVisitRows } from "./gallery-data"

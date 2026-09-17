@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { MoreHorizontalIcon } from "lucide-react"
 
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "ui-components"
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from @/components/ui
 
 const meta = {
   title: "UI/Tooltip",

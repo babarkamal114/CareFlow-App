@@ -8,21 +8,25 @@ export const env = createEnv({
       .default("development"),
     DATABASE_URL: z.url().optional(),
     API_URL: z.url().optional(),
-    AUTH_SECRET: z.string().min(1),
+    NEXTAUTH_SECRET: z.string().min(1),
     AUTH_URL: z.url().optional(),
     CRON_SECRET: z.string().optional(),
+    
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.url().optional(),
+    NEXT_PUBLIC_API_URL: z.url().optional()
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     API_URL: process.env.API_URL,
-    AUTH_SECRET: process.env.AUTH_SECRET,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     AUTH_URL: process.env.AUTH_URL,
     CRON_SECRET: process.env.CRON_SECRET,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL
+
   },
   skipValidation:
     Boolean(process.env.SKIP_ENV_VALIDATION) ||

@@ -21,12 +21,13 @@ export const buttonVariants = tv({
         "text-muted-foreground hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
       /** Solid red — `.btn-destructive` in HTML */
       destructive:
-        "bg-destructive text-destructive-foreground hover:bg-[#B83838] focus-visible:border-destructive focus-visible:ring-destructive/25",
+        "bg-destructive text-white hover:bg-[#B83838] focus-visible:border-destructive focus-visible:ring-destructive/25",
       /** Soft destructive for dense UI (previous shadcn-style) */
       destructiveMuted:
         "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
       link:
         "h-auto rounded-none border-0 bg-transparent px-0 py-0 text-primary underline-offset-[3px] hover:text-brand-700 hover:underline focus-visible:rounded-sm focus-visible:ring-[3px] focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        'outline-muted': 'border border-gray-200 dark:border-gray-700 bg-transparent text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
     },
     size: {
       xs: "h-7 gap-1 rounded-md px-2.5 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",

@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
   toast,
-} from "ui-components"
+} from @/components/ui
 
 export function GalleryCards(): ReactElement {
   return (

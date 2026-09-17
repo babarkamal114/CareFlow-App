@@ -10,6 +10,7 @@ export const badgeVariants = tv({
       info: "bg-cf-blue-50 text-[#2258A6]",
       warning: "bg-cf-amber-50 text-[#916408]",
       danger: "bg-cf-red-50 text-[#A82B2B]",
+      'pastel-success': "bg-success/20"
     },
   },
   defaultVariants: {

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import { auth0 } from "@/lib/auth0";
+import { auth0 } from "lib";
 
 export async function requireSession() {
   const session = await auth0.getSession();
