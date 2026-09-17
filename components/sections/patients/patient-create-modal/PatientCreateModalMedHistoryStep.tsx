@@ -1,19 +1,19 @@
-// components/sections/patients/CreatePatientModal/steps/MedicalHistoryStep.tsx
 'use client';
 
 import { useState } from 'react';
-import { Input } from 'ui-components';
-import { Label } from 'ui-components';
-import { Button } from 'ui-components';
-import { Card, CardContent } from 'ui-components';
+
 import {
+  Input,
+  Label,
+  Button, 
+  Card, 
+  CardContent,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from 'ui-components';
-import { Textarea } from 'ui-components';
 import { X, Plus } from 'lucide-react';
 import { PatientFormData } from './PatientCreateModal';
 
@@ -212,7 +212,6 @@ export function MedicalHistoryStep({ formData, setFormData }: MedicalHistoryStep
         )}
       </div>
 
-      {/* Allergies */}
       <div className="space-y-3">
         <h4 className="text-sm font-medium text-cf-ink">Allergies</h4>
         <Card className="border-cf-border p-4 space-y-3">
@@ -276,12 +275,12 @@ export function MedicalHistoryStep({ formData, setFormData }: MedicalHistoryStep
                       <span>Reaction: {allergy.reaction}</span>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleRemoveAllergy(allergy.id)}
                     className="text-cf-ink-40 hover:text-cf-error transition-colors"
                   >
                     <X className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -289,7 +288,6 @@ export function MedicalHistoryStep({ formData, setFormData }: MedicalHistoryStep
         )}
       </div>
 
-      {/* Hospitalisations */}
       <div className="space-y-3">
         <h4 className="text-sm font-medium text-cf-ink">Hospitalisations</h4>
         <Card className="border-cf-border p-4 space-y-3">
@@ -357,12 +355,12 @@ export function MedicalHistoryStep({ formData, setFormData }: MedicalHistoryStep
                       <span>{hospitalisation.outcome}</span>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleRemoveHospitalisation(hospitalisation.id)}
                     className="text-cf-ink-40 hover:text-cf-error transition-colors"
                   >
                     <X className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </CardContent>
               </Card>
             ))}

@@ -1,9 +1,6 @@
-// components/sections/patients/CreatePatientModal/steps/AssignCarersStep.tsx
 'use client';
 
-import { Card, CardContent } from 'ui-components';
-import { Badge } from 'ui-components';
-import { Checkbox } from 'ui-components';
+import { Card, CardContent, Badge, Checkbox } from 'ui-components';
 import { AlertCircle } from 'lucide-react';
 import { PatientFormData } from './PatientCreateModal';
 

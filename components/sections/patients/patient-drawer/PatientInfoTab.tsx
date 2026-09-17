@@ -1,7 +1,6 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
-import { Badge } from 'ui-components';
+import { Card, CardContent, CardHeader, CardTitle, Badge } from 'ui-components';
 import { ShieldCheck, ShieldQuestion } from 'lucide-react';
 import type { Patient } from "types";
 
@@ -35,10 +34,6 @@ interface PatientInfoTabProps {
   };
 }
 
-// Compact per-domain risk strip. Mirrors the domains covered in the full
-// Risk Assessments tab (falls, pressure ulcer, nutrition, medication,
-// safeguarding) so the profile gives an at-a-glance summary without
-// duplicating the full assessment detail.
 const RISK_DOMAIN_LABELS: Record<string, string> = {
   falls: 'Falls',
   'pressure-ulcer': 'Skin Integrity',

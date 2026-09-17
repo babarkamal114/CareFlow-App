@@ -1,4 +1,3 @@
-// components/sections/patients/patient-drawer/PatientDischargeModal.tsx
 'use client';
 
 import { useState } from 'react';
@@ -9,19 +8,17 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from 'ui-components';
-import { Button } from 'ui-components';
-import { Label } from 'ui-components';
-import { Textarea } from 'ui-components';
-import { Checkbox } from 'ui-components';
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Button,
+  Label,
+  Textarea,
+  Checkbox,
+  Input
 } from 'ui-components';
-import { Input } from 'ui-components';
 import { AlertTriangle } from 'lucide-react';
 
 export type DischargeReason =
@@ -161,7 +158,6 @@ export function PatientDischargeModal({
         </DialogHeader>
 
         <div className="space-y-5 py-2">
-          {/* Reason */}
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Reason for discharge *</Label>
             <Select value={reason} onValueChange={(val) => setReason(val as DischargeReason)}>
@@ -206,7 +202,6 @@ export function PatientDischargeModal({
             )}
           </div>
 
-          {/* Final visit */}
           <div className="space-y-2 rounded-lg border border-cf-border-light p-3">
             <div className="flex items-center gap-2">
               <Checkbox
@@ -239,7 +234,6 @@ export function PatientDischargeModal({
             )}
           </div>
 
-          {/* Notifications */}
           <div className="space-y-2 rounded-lg border border-cf-border-light p-3">
             <p className="text-xs font-medium text-cf-ink-60">Notify on discharge</p>
 

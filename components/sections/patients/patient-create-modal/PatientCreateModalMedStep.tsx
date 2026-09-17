@@ -1,13 +1,13 @@
-// components/sections/patients/CreatePatientModal/steps/MedicationsStep.tsx
 'use client';
 
 import { useState } from 'react';
-import { Input } from 'ui-components';
-import { Label } from 'ui-components';
-import { Button } from 'ui-components';
-import { Card, CardContent } from 'ui-components';
-import { Badge } from 'ui-components';
 import {
+  Input,
+  Label,
+  Button,
+  Badge,
+  Card, 
+  CardContent,
   Select,
   SelectContent,
   SelectItem,
@@ -354,12 +354,12 @@ export function MedicationsStep({
                     </div>
                   )}
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveMedication(med.id)}
                   className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

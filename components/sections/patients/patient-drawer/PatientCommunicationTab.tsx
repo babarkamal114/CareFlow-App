@@ -1,8 +1,7 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
-import { Badge } from 'ui-components';
-import { Languages, Ear, Eye, Brain, Users } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, Badge } from 'ui-components';
+import { Languages, Brain, Users } from 'lucide-react';
 
 interface PatientCommunicationTabProps {
   preferredLanguage?: string;

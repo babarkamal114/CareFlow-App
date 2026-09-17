@@ -1,14 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent } from 'ui-components';
-import { Label } from 'ui-components';
 import {
+  Card,
+  CardContent, 
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Button,
+  Input
 } from 'ui-components';
 import { Upload, X, FileText, ShieldAlert, Scale, FileHeart } from 'lucide-react';
 import { PatientFormData } from './PatientCreateModal';
@@ -90,7 +93,10 @@ export function AttachmentsStep({
         <Label htmlFor="docType" className="text-sm font-medium">
           Document Type
         </Label>
-        <Select value={docType} onValueChange={setDocType}>
+       <Select
+        value={docType}
+        onValueChange={(value) => setDocType(value ?? 'other')}
+      >
           <SelectTrigger id="docType" className="border-cf-border">
             <SelectValue placeholder="Select document type" />
           </SelectTrigger>
@@ -108,7 +114,7 @@ export function AttachmentsStep({
       </div>
 
       <Card className="border-2 border-dashed border-cf-border p-6 hover:border-cf-primary/50 transition-colors">
-        <label className="flex flex-col items-center gap-2 cursor-pointer">
+        <Label className="flex flex-col items-center gap-2 cursor-pointer">
           <Upload className="w-8 h-8 text-cf-ink-60" />
           <div className="text-center">
             <p className="text-sm font-medium text-cf-ink">
@@ -118,14 +124,14 @@ export function AttachmentsStep({
               PDF, DOC, DOCX, JPG, PNG (max 10MB)
             </p>
           </div>
-          <input
+          <Input
             type="file"
             multiple
             onChange={handleFileUpload}
             className="hidden"
             accept=".pdf,.doc,.docx,.jpg,.png"
           />
-        </label>
+        </Label>
       </Card>
 
       {formData.attachments.length > 0 && (
@@ -150,12 +156,12 @@ export function AttachmentsStep({
                     )}
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveAttachment(attachment.id)}
                   className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

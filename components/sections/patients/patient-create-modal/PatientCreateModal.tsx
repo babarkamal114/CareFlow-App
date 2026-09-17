@@ -29,7 +29,6 @@ interface CreatePatientModalProps {
 }
 
 export interface PatientFormData {
-  // Personal Details
   name: string;
   preferredName: string;
   dateOfBirth: string;
@@ -47,16 +46,13 @@ export interface PatientFormData {
   emergencyPhone: string;
   emergencyRelationship: string;
   
-  // Risk & Status
   risk: 'low' | 'medium' | 'high';
   status: 'active' | 'on-hold' | 'new';
   
-  // Medical History
   conditions: Array<{ id: string; name: string; diagnosedDate: string; status: 'active' | 'managed' | 'resolved' }>;
   allergies: Array<{ id: string; name: string; severity: 'mild' | 'moderate' | 'severe'; reaction: string }>;
   hospitalisations: Array<{ id: string; date: string; reason: string; duration: string; outcome: string }>;
   
-  // Communication
   preferredLanguage: string;
   hearingImpairment: string;
   visionImpairment: string;
@@ -70,13 +66,11 @@ export interface PatientFormData {
   poaRelationship: string;
   poaPhone: string;
 
-  // Consent Records
   consentDataSharing: boolean;
   consentFamilySharing: boolean;
   consentPhotoEvidence: boolean;
   consentNotes: string;
 
-  // Preferences
   wakeTime: string;
   bedTime: string;
   breakfastTime: string;
@@ -91,7 +85,6 @@ export interface PatientFormData {
   hobbies: string;
   dailyRoutine: string;
   
-  // Life Story
   personalHistory: string;
   familyBackground: string;
   whatMakesMeSmile: string;
@@ -100,7 +93,6 @@ export interface PatientFormData {
   lifeHistory: string;
   importantPeople: string;
   
-  // Key Contacts
   contacts: Array<{
     id: string;
     type: 'gp' | 'district-nurse' | 'social-worker' | 'pharmacist' | 'family' | 'other';
@@ -113,7 +105,6 @@ export interface PatientFormData {
     isEmergency: boolean;
   }>;
   
-  // Other
   selectedCarers: string[];
   medications: Array<{
     id: string;

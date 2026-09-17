@@ -1,16 +1,14 @@
-// components/sections/patients/CreatePatientModal/steps/PatientInfoStep.tsx
 'use client';
 
-import { Input } from 'ui-components';
-import { Label } from 'ui-components';
 import {
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from 'ui-components';
-import { Textarea } from 'ui-components';
 import { PatientFormData } from './PatientCreateModal';
 
 

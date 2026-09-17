@@ -1,9 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
-import { Button } from 'ui-components';
-import { Badge } from 'ui-components';
+import { Card, CardContent, CardHeader, Button, Badge } from 'ui-components';
 import {
   Smile,
   Apple,

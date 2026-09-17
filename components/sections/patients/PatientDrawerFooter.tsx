@@ -1,4 +1,3 @@
-// components/patients/PatientDrawerFooter.tsx
 'use client';
 
 import { Button } from 'ui-components';

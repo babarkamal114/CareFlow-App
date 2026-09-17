@@ -1,4 +1,3 @@
-// components/sections/patients/patient-drawer/PatientDrawer.tsx
 'use client';
 
 import { useState } from 'react';
@@ -8,18 +7,16 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from 'ui-components';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'ui-components';
-import { Badge } from 'ui-components';
-import { Avatar, AvatarFallback, AvatarImage } from 'ui-components';
-import { ScrollArea } from 'ui-components';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Avatar, AvatarFallback, AvatarImage,
+  Tabs, TabsContent, TabsList, TabsTrigger,
+  Badge,
+  ScrollArea,
+  Button
 } from 'ui-components';
-import { Button } from 'ui-components';
 import { ChevronDown } from 'lucide-react';
 import { PatientDrawerFooter } from '../PatientDrawerFooter';
 import { PatientDischargeModal, type DischargePayload } from './PatientDischargeModal';

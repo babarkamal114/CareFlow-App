@@ -1,8 +1,6 @@
-// components/sections/patients/tabs/PatientRiskAssessmentsTab.tsx
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
-import { Badge, BadgeProps } from 'ui-components';
+import { Card, CardContent, CardHeader, CardTitle, Badge, BadgeProps } from 'ui-components';
 import { Clock, User, Shield, Heart, Bone, Apple, Pill, Home, Flame, Gavel } from 'lucide-react';
 import { getRiskBadgeVariant } from 'utils';
 

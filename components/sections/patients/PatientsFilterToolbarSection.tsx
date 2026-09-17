@@ -1,10 +1,7 @@
-// components/sections/patients/PatientsFilterToolbarSection.tsx
 'use client';
 
-import { Button } from 'ui-components';
+import { Button, Input, Tabs, TabsList, TabsTrigger } from 'ui-components';
 import { Download, Search } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger } from 'ui-components';
-import { Input } from 'ui-components';
 
 type PatientTab = 'active' | 'on-hold' | 'high-risk' | 'review-date' | 'new' | 'all';
 
@@ -28,7 +25,6 @@ const tabs: Array<{ id: PatientTab; label: string; count?: number }> = [
 
 export function PatientsFilterToolbarSection({
   onTabChange,
-  onFilterClick,
   onExportClick,
   activeTab,
   searchQuery,

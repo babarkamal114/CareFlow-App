@@ -1,19 +1,19 @@
-// components/sections/patients/CreatePatientModal/steps/KeyContactsStep.tsx
 'use client';
 
 import { useState } from 'react';
-import { Input } from 'ui-components';
-import { Label } from 'ui-components';
-import { Button } from 'ui-components';
-import { Card, CardContent } from 'ui-components';
 import {
+  Input,
+  Label,
+  Button,
+  Card,
+  CardContent,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Checkbox,
 } from 'ui-components';
-import { Checkbox } from 'ui-components';
 import { X, Plus, User, Phone, Mail, AlertCircle } from 'lucide-react';
 import { PatientFormData } from './PatientCreateModal';
 
@@ -255,12 +255,12 @@ export function KeyContactsStep({ formData, setFormData, errors, setErrors }: Ke
                     )}
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveContact(contact.id)}
                   className="text-cf-ink-40 hover:text-cf-error transition-colors"
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

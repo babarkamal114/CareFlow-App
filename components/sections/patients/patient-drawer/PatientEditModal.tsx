@@ -8,17 +8,16 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from 'ui-components';
-import { Button } from 'ui-components';
-import { Input } from 'ui-components';
-import { Label } from 'ui-components';
-import {
+  Button,
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from 'ui-components';
+
 import type { Patient } from "types";
 import { Loader2 } from 'lucide-react';
 

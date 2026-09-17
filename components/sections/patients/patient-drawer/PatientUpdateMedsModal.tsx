@@ -8,13 +8,12 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-} from 'ui-components';
-import { Button } from 'ui-components';
-import { Input } from 'ui-components';
-import { Label } from 'ui-components';
-import { Card, CardContent } from 'ui-components';
-import { Badge } from 'ui-components';
-import {
+  Button,
+  Input,
+  Label,
+  Card,
+  CardContent,
+  Badge,
   Select,
   SelectContent,
   SelectItem,
@@ -445,12 +444,12 @@ export function EditMedicationModal({
                           placeholder="Special instructions (optional)"
                         />
                       </div>
-                      <button
+                      <Button
                         onClick={() => handleRemoveMedication(med.id)}
                         className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 mt-1"
                       >
                         <X className="w-4 h-4" />
-                      </button>
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

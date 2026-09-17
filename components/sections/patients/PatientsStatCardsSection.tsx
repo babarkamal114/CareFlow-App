@@ -1,4 +1,3 @@
-import React from "react";
 import { StatCard } from "shared";
 import { Users, UserPlus, FileText, Calendar } from "lucide-react";
 
