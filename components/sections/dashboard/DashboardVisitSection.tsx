@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableBody,
@@ -6,10 +5,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Avatar, 
+  AvatarFallback,
+  AvatarImage, 
+  Badge, 
+  BadgeProps, 
+  Button
 } from "ui-components";
-import { Button } from "ui-components";
-import { Badge, BadgeProps } from "ui-components";
-import { Avatar, AvatarFallback, AvatarImage } from "ui-components";
 import { Filter, Eye } from "lucide-react";
 import Link from "next/link";
 
@@ -135,7 +137,6 @@ export function formatNameWithInitial(fullName: string): string {
 function DashboardVisitSection() {
   return (
     <div className="cf-glass-panel w-full rounded-xl overflow-hidden">
-      {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-cf-border">
         <h3 className="text-lg font-semibold text-cf-ink">Today's Visits</h3>
         <div className="flex items-center gap-3">
@@ -152,7 +153,6 @@ function DashboardVisitSection() {
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>

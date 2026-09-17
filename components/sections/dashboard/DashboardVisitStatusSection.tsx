@@ -1,4 +1,3 @@
-// components/sections/dashboard/DashboardVisitStatusSection.tsx
 'use client';
 
 import { motion } from 'framer-motion';
@@ -12,7 +11,6 @@ interface VisitStatusItem {
   tone: 'success' | 'info' | 'warning' | 'error' | 'muted';
 }
 
-// Mock data - replace with real API
 const visitStatusItems: VisitStatusItem[] = [
   { label: 'Scheduled', value: 48, Icon: Clock, tone: 'muted' },
   { label: 'Completed', value: 31, Icon: CheckCircle2, tone: 'success' },

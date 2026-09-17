@@ -1,8 +1,6 @@
-// components/sections/dashboard/DashboardComplianceDue.tsx
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
-import { Badge } from 'ui-components';
+import { Card, CardContent, CardHeader, CardTitle, Badge } from 'ui-components';
 import { Calendar, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -22,8 +20,6 @@ const complianceDueItems: ComplianceItem[] = [
   { id: '4', title: 'CQC Documentation Review', dueDate: 'April 1, 2024', daysRemaining: 15, priority: 'low', count: 1 },
 ];
 
-// Soft, token-based tones — priority maps onto the semantic state
-// tokens already defined in globals.css (muted bg + solid accent)
 const priorityColors: Record<'high' | 'medium' | 'low', string> = {
   high: 'bg-[var(--cf-error-muted)] border-[var(--cf-error)]/20 hover:bg-[var(--cf-error-muted)]/70',
   medium: 'bg-[var(--cf-warning-muted)] border-[var(--cf-warning)]/20 hover:bg-[var(--cf-warning-muted)]/70',

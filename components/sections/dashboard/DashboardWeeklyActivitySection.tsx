@@ -8,8 +8,6 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from 'ui-components';
-import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -106,7 +104,6 @@ export function DashboardWeeklyActivity() {
                 cursor={{ stroke: 'var(--cf-ink-20)', strokeDasharray: '4 4' }}
                 content={<ChartTooltipContent indicator="dot" />}
               />
-              {/* Primary series — bold solid line with visible dots, the visual anchor */}
               <Line
                 type="monotone"
                 dataKey="done"
@@ -116,7 +113,6 @@ export function DashboardWeeklyActivity() {
                 activeDot={{ r: 6, strokeWidth: 0 }}
                 isAnimationActive={true}
               />
-              {/* Secondary series — thinner, dashed, no dots: recedes behind the primary line */}
               <Line
                 type="monotone"
                 dataKey="active"

@@ -1,11 +1,9 @@
-// components/sections/dashboard/DashboardStaffSnapshotSection.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
 import { Users } from 'lucide-react';
 
-// Mock data - replace with real API
 const staffSnapshot = [
   { label: 'On Shift', value: 12, tone: 'success' as const },
   { label: 'Available', value: 15, tone: 'info' as const },
@@ -37,7 +35,6 @@ export function DashboardStaffSnapshot() {
         </CardHeader>
 
         <CardContent className="px-4 pb-4 space-y-4">
-          {/* Stacked proportion bar */}
           <div className="flex h-2 w-full overflow-hidden rounded-full bg-cf-surface-muted">
             {staffSnapshot.map((item, i) => (
               <motion.div

@@ -1,11 +1,9 @@
-// components/sections/dashboard/DashboardRevenueSnapshotSection.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
 import { ArrowUp, ArrowDown, Wallet } from 'lucide-react';
 
-// Mock data - replace with real API
 const thisMonth = 42500;
 const lastMonth = 38900;
 const outstanding = 8000;

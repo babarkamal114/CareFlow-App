@@ -1,18 +1,13 @@
-// components/sections/dashboard/DashboardAttentionBoard.tsx
 import React from "react";
-import { Badge, BadgeProps } from "ui-components";
-import { Button } from "ui-components";
-import { Card, CardContent, CardHeader, CardTitle } from "ui-components";
+import { Card, CardContent, CardHeader, CardTitle, Badge, BadgeProps } from "ui-components";
 import {
   AlertCircle,
-  ChevronRight,
   Clock,
   User,
   Shield,
   FileText,
   Calendar,
 } from "lucide-react";
-import Link from "next/link";
 import { getBadgeVariant } from "utils";
 
 type AttentionType =
@@ -122,14 +117,10 @@ function DashboardAttentionBoard() {
               key={item.id}
               className="flex items-start gap-2.5 px-4 py-2.5 hover:bg-cf-surface-muted/50 transition-colors"
             >
-              
-
-             
               <div className="flex-shrink-0 text-cf-ink-60 mt-0.5">
                 {typeIcons[item.type]}
               </div>
 
-              
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
                   <p className="text-xs font-medium text-cf-ink">{item.title}</p>

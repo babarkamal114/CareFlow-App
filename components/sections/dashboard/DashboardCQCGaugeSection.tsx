@@ -1,11 +1,9 @@
-// components/sections/dashboard/DashboardCQCGaugeSection.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
 import { ArrowUp, ArrowDown, ShieldCheck } from 'lucide-react';
 
-// Mock data - replace with real API
 const overallScore = 87;
 const previousScore = 83;
 const trend = overallScore - previousScore;

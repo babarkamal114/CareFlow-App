@@ -1,4 +1,3 @@
-// components/sections/dashboard/DashboardCQCBreakdown.tsx
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from 'ui-components';
@@ -10,7 +9,6 @@ interface CQCAttribute {
   score: number;
 }
 
-// Mock data - replace with real API
 const cqcAttributes: CQCAttribute[] = [
   { name: 'Safe', score: 92 },
   { name: 'Effective', score: 85 },
@@ -19,8 +17,6 @@ const cqcAttributes: CQCAttribute[] = [
   { name: 'Well-led', score: 91 },
 ];
 
-// Soft, token-based color per score band — pulls from the semantic
-// state tokens already defined in globals.css (--cf-success / --cf-warning / --cf-error)
 const getProgressColor = (score: number): string => {
   if (score >= 80) return 'bg-[var(--cf-success)]'; // Good & Outstanding
   if (score >= 70) return 'bg-[var(--cf-warning)]'; // Acceptable
@@ -76,8 +72,6 @@ export function DashboardCQCBreakdown() {
               </motion.div>
             ))}
           </div>
-
-          {/* Last Updated Info */}
           <div className="pt-2 border-t border-cf-border-light">
             <p className="text-[10px] text-cf-ink-40">
               Last updated: March 15, 2024
