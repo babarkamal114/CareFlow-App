@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import {
+  CarePlanAiSuggestions,
   CarePlanBlocksSection,
   CarePlanCreationModal,
   CarePlanFilterToolbar,
@@ -12,7 +14,6 @@ import {
 } from "sections";
 import type { CarePlan, ModuleCreationData } from "types";
 import { mockCarePlan, mockModules } from "utils";
-import { Separator } from "@/components/ui";
 
 const mockCarePlansList: CarePlan[] = [
     mockCarePlan,
@@ -57,11 +58,26 @@ const mockCarePlansList: CarePlan[] = [
     }
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
+
 function Page() {
     const [activeFilterTab, setActiveFilterTab] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [isCreationModalOpen, setIsCreationModalOpen] = useState(false);
     const [carePlans, setCarePlans] = useState<CarePlan[]>(mockCarePlansList);
+
+    const patientNames = carePlans.reduce<Record<string, string>>((acc, plan) => {
+        acc[plan.patientId] = plan.patientName;
+        return acc;
+    }, {});
 
     const handleAddNewPlan = () => {
         setIsCreationModalOpen(true);
@@ -102,38 +118,65 @@ function Page() {
         toast.success(`Care Plan created successfully!`, {
             description: `Added "${data.name}" to vault`,
         });
-        
+
         setIsCreationModalOpen(false);
     };
 
-
     return (
-        <div className="h-screen w-full  space-y-8 overflow-y-scroll no-scrollbar">
-            <CarePlanHeader 
-                onCreateNew={handleAddNewPlan}
-            />
-            <Separator />
-            <CarePlanStatSection />
-            <CarePlanFilterToolbar 
-                activeTab={activeFilterTab}
-                onTabChange={setActiveFilterTab}
-                onSearchChange={setSearchQuery}
-                searchQuery={searchQuery}
-            />
-            <div className='flex w-full gap-x-4'> 
-                <CarePlanBlocksSection 
-                    carePlans={carePlans}
-                    filterTab={activeFilterTab}
-                    searchQuery={searchQuery}
-                />
-                <CarePlanReviewQueue />
-            </div>
+        <div className="w-full p-6 bg-transparent">
+            {/* One white rounded panel holding the heading and everything
+                below it — same structure as Dashboard/Staff/Patients/
+                Scheduling. No overflow here: the shell's <main> is the
+                only scroll container, avoiding a second scrollbar. */}
+            <motion.div
+                initial="hidden"
+                animate="show"
+                variants={container}
+                className="rounded-2xl bg-cf-surface shadow-cf-md p-6 space-y-4"
+            >
+                <motion.div variants={item}>
+                    <CarePlanHeader onCreateNew={handleAddNewPlan} />
+                </motion.div>
 
-            <CarePlanCreationModal
-                open={isCreationModalOpen}
-                onOpenChange={setIsCreationModalOpen}
-                onComplete={handleCreationComplete}
-            />
+                <motion.div variants={item}>
+                    <CarePlanStatSection />
+                </motion.div>
+
+                <motion.div variants={item}>
+                    <CarePlanFilterToolbar
+                        activeTab={activeFilterTab}
+                        onTabChange={setActiveFilterTab}
+                        onSearchChange={setSearchQuery}
+                        searchQuery={searchQuery}
+                    />
+                </motion.div>
+
+                {/* items-start: without this, flex's default align-items:stretch
+                    forces the left column to match the Review Queue's height.
+                    One consistent two-column layout: left column stacks the
+                    card grid + suggestions, right column is the Review Queue —
+                    rather than switching to a full-width row that ignores the
+                    column split established above it. */}
+                <motion.div variants={item} className='flex w-full gap-x-4 items-start'>
+                    <div className="flex flex-col gap-y-4 flex-1 min-w-0">
+                        <CarePlanBlocksSection
+                            carePlans={carePlans}
+                            filterTab={activeFilterTab}
+                            searchQuery={searchQuery}
+                        />
+                        <CarePlanAiSuggestions patientNames={patientNames} orientation="horizontal" />
+                    </div>
+                    <div className="w-full max-w-sm shrink-0">
+                        <CarePlanReviewQueue />
+                    </div>
+                </motion.div>
+
+                <CarePlanCreationModal
+                    open={isCreationModalOpen}
+                    onOpenChange={setIsCreationModalOpen}
+                    onComplete={handleCreationComplete}
+                />
+            </motion.div>
         </div>
     );
 }
