@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Enforces barrel/alias imports. Scans files for banned deep or @/ paths
- * that should use short aliases (lib, hooks, utils, types, ui-components, etc.).
+ * that should use short aliases (lib, hooks, utils, types, @/components/ui, etc.).
  * Server-only lib paths (lib/db, lib/auth, etc.) are allowed — see ALLOWED_LIB_PATHS.
  * Usage: node scripts/check-barrel-imports.js [file1 file2 ...]
  * If no files given, lint-staged passes staged files as args; otherwise run with no args to check all.
@@ -34,7 +34,7 @@ const BANNED_PATTERNS = [
   { pattern: /from\s+["']@\/hooks\/[^"']*["']/, alias: "hooks", example: "import { x } from 'hooks'" },
   { pattern: /from\s+["']@\/utils\/[^"']*["']/, alias: "utils", example: "import { x } from 'utils'" },
   { pattern: /from\s+["']@\/types\/[^"']*["']/, alias: "types", example: "import type { x } from 'types'" },
-  { pattern: /from\s+["']@\/components\/ui\/[^"']*["']/, alias: "ui-components", example: "import { Button } from 'ui-components'" },
+  { pattern: /from\s+["']@\/components\/ui\/[^"']*["']/, alias: "@/components/ui", example: "import { Button } from '@/components/ui'" },
   { pattern: /from\s+["']@\/components\/shared\/[^"']*["']/, alias: "shared", example: "import { x } from 'shared'" },
   { pattern: /from\s+["']@\/components\/layouts\/[^"']*["']/, alias: "layouts", example: "import { x } from 'layouts'" },
   { pattern: /from\s+["']@\/components\/sections\/[^"']*["']/, alias: "sections", example: "import { x } from 'sections'" },
@@ -43,7 +43,6 @@ const BANNED_PATTERNS = [
   { pattern: /from\s+["']hooks\/[^"']+["']/, alias: "hooks", example: "import { x } from 'hooks'" },
   { pattern: /from\s+["']utils\/[^"']+["']/, alias: "utils", example: "import { x } from 'utils'" },
   { pattern: /from\s+["']types\/[^"']+["']/, alias: "types", example: "import type { x } from 'types'" },
-  { pattern: /from\s+["']ui-components\/[^"']+["']/, alias: "ui-components", example: "import { x } from 'ui-components'" },
   { pattern: /from\s+["']shared\/[^"']+["']/, alias: "shared", example: "import { x } from 'shared'" },
   { pattern: /from\s+["']layouts\/[^"']+["']/, alias: "layouts", example: "import { x } from 'layouts'" },
   { pattern: /from\s+["']sections\/[^"']+["']/, alias: "sections", example: "import { x } from 'sections'" },

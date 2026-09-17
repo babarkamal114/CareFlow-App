@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "ui-components"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from @/components/ui
 
 const meta = {
   title: "UI/Table",

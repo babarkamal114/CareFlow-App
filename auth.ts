@@ -1,3 +1,4 @@
+// auth.ts
 import NextAuth, { CredentialsSignin, NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { env } from "./config/env";
@@ -40,7 +41,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             throw new Error("invalid response from the server");
           }
 
-          console.log("This is the raw data from backend : ", data);
+          console.log("🔑 This is the raw data from backend : ", data);
 
           if (!response.ok) {
             const error = new customAuthError();
@@ -49,10 +50,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
 
           if (!data || !data.id || !data.email) {
-            throw new Error("Invalid user data recieved from the server");
+            throw new Error("Invalid user data received from the server");
           }
 
-          console.log("This is the data from backend:", data);
+  
 
           return {
             id: data.id,
@@ -60,87 +61,98 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             name: data.fullName,
             accessToken: data.accessToken,
             refreshToken: data.refreshToken,
-            emailVerified: data.emailVerified,
+            isEmailVerified: data.emailVerified,
             hasActiveSubscription: data.hasActiveSubscription,
             hasAgency: data.hasAgency,
             isAgencyOwner: data.isAgencyOwner,
             role: data.role,
             userType: data.userType,
+            agencyId: data.agencyId
           };
         } catch (error) {
+          console.error('Authorize error:', error);
           return null;
         }
       },
     }),
   ],
 
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.accessToken = user.accessToken;
-        token.refreshToken = user.refreshToken;
-        token.emailVerified = user.emailVerified;
-        token.hasActiveSubscription = user.hasActiveSubscription;
-        token.role = user.role;
-        token.userType = user.userType;
-        token.isAgencyOwner = user.isAgencyOwner;
-        token.hasAgency = user.hasAgency;
-        return token;
-      }
+callbacks: {
+  async jwt({ token, user }) {
 
-      if (token.id && token.accessToken) {
-        try {
-          const response = await fetch(`${BACKEND_URL}/auth/me`, {
-            headers: {
-              Authorization: `Bearer ${token.accessToken}`,
-            },
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            const actualUser = userData.user || userData;
-
-            token.emailVerified = actualUser.emailVerified;
-            token.status = actualUser.status;
-            token.email = actualUser.email;
-            token.fullName = actualUser.fullName;
-            token.hasActiveSubscription = actualUser.hasActiveSubscription;
-            token.role = actualUser.role;
-            token.userType = actualUser.userType;
-            token.isAgencyOwner = actualUser.isAgencyOwner;
-            token.hasAgency = actualUser.hasAgency;
-          }
-        } catch {
-          return null;
-        }
-      }
+    
+    if (user) {
+ 
+      token.id = user.id;
+      token.accessToken = user.accessToken;
+      token.refreshToken = user.refreshToken;
+      token.isEmailVerified = user.isEmailVerified;
+      token.hasActiveSubscription = user.hasActiveSubscription;
+      token.role = user.role;
+      token.userType = user.userType;
+      token.isAgencyOwner = user.isAgencyOwner;
+      token.hasAgency = user.hasAgency;
+      token.agencyId = user.agencyId;
 
       return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.emailVerified = token.emailVerified as Date & boolean;
-        session.accessToken = token.accessToken as string;
-        session.refreshToken = token.refreshToken as string;
-        session.emailVerified = token.emailVerified as boolean;
-        session.user.hasActiveSubscription =
-          token.hasActiveSubscription as boolean;
-        session.user.hasAgency = token.hasAgency as boolean;
-        session.user.role = token.role as string;
-        session.user.isAgencyOwner = token.isAgencyOwner as boolean;
-        session.user.userType = token.userType as
-          | "ADMIN_OWNER"
-          | "ADMIN_MEMBER"
-          | "STAFF";
-      }
-      return session;
-    },
-  },
+    }
 
-  session: {
-    strategy: "jwt",
-    maxAge: 15 * 60, // 15 minutes
+    if (token.id && token.accessToken) {
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token.accessToken}`,
+          },
+        });
+
+
+
+        if (response.ok) {
+          const responseData = await response.json();
+
+
+          const actualUser = responseData?.user?.user || responseData?.user || responseData;
+
+          token.isEmailVerified = actualUser.isEmailVerified ?? actualUser.emailVerified ?? token.isEmailVerified;
+          token.status = actualUser.status ?? token.status;
+          token.email = actualUser.email ?? token.email;
+          token.fullName = actualUser.fullName ?? token.fullName;
+          token.hasActiveSubscription = actualUser.hasActiveSubscription ?? token.hasActiveSubscription;
+          token.role = actualUser.role ?? token.role;
+          token.userType = actualUser.userType ?? token.userType;
+          token.isAgencyOwner = actualUser.isAgencyOwner ?? token.isAgencyOwner;
+          token.hasAgency = actualUser.hasAgency ?? token.hasAgency;
+          token.agencyId = actualUser.agencyId ?? token.agencyId;
+
+
+        } 
+      } catch (error) {
+        console.error('Error refreshing user data from /users/me:', error);
+
+      }
+    }
+    
+  
+    return token;
   },
+  async session({ session, token }) {
+    
+    if (session.user) {
+      session.user.id = token.id as string;
+      session.user.isEmailVerified = token.isEmailVerified as boolean;
+      session.accessToken = token.accessToken as string;
+      session.refreshToken = token.refreshToken as string;
+      session.isEmailVerified = token.isEmailVerified as boolean;
+      session.user.hasActiveSubscription = token.hasActiveSubscription as boolean;
+      session.user.hasAgency = token.hasAgency as boolean;
+      session.user.role = token.role as string;
+      session.user.isAgencyOwner = token.isAgencyOwner as boolean;
+      session.user.userType = token.userType as string;
+      session.user.agencyId = token.agencyId as string;
+    }
+
+    return session;
+  },
+},
 } satisfies NextAuthConfig);

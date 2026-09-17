@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "ui-components"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from @/components/ui
 
 const meta = {
   title: "UI/Tabs",

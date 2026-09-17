@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { LoginForm } from "ui-components";
+import { LoginForm } from "@/components/ui";
 
 const FormSection = () => {
   return (

@@ -1,12 +1,11 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "lib"
 
 export type EmptyStateProps = React.ComponentProps<"div"> & {
   icon?: React.ReactNode
   title: string
   description?: string
-  /** Primary / secondary actions */
   children?: React.ReactNode
 }
 

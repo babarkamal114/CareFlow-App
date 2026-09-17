@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { BillingCycle } from "@/lib/utils/components";
+import type { BillingCycle } from "lib";
 
 
 interface BillingToggleProps {

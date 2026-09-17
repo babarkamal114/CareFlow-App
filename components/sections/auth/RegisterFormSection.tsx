@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { RegisterForm } from "ui-components";
+import { RegisterForm } from "@/components/ui";
 
 const RegisterFormSection = () => {
   return (

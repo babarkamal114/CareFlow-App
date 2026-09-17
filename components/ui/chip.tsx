@@ -4,7 +4,7 @@ import { XIcon } from "lucide-react"
 import * as React from "react"
 import { tv, type VariantProps } from "tailwind-variants"
 
-import { cn } from "@/lib/utils"
+import { cn } from "lib"
 
 const chipVariants = tv({
   base: "inline-flex max-w-full items-center gap-1.5 rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-[13px] font-medium leading-tight motion-safe:transition-[background-color,border-color,color,box-shadow] motion-safe:duration-150",

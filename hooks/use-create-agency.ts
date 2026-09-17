@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useCreateAgencyApi } from "@/lib/hooks/use-agency-api";
+import { useCreateAgencyApi } from "lib";
 
 
 interface AgencyFormData {

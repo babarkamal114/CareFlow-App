@@ -2,15 +2,14 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import type { PricingCardsProps, BillingCycle } from "@/lib/utils/components";
+import type { PricingCardsProps, BillingCycle } from "lib";
 import {
   PRICING_PLANS,
   INCLUDED_IN_ALL,
   SINGLE_AGENCY_NOTE,
-} from "@/lib/utils/data";
-import { BillingToggle } from "@/components/ui/subscription/billing-toggle";
-import { PricingCard } from "@/components/ui/subscription/pricing-card";
-import { mapSubscriptionPlansToPricingPlans, useGetAllSubscriptionPlansApi } from "@/lib";
+} from "lib";
+import { BillingToggle, PricingCard } from "@/components/ui";
+import { mapSubscriptionPlansToPricingPlans, useGetAllSubscriptionPlansApi } from "lib";
 import { Loader } from "lucide-react";
 
 export function PricingCards({ onSelectPlan }: PricingCardsProps) {

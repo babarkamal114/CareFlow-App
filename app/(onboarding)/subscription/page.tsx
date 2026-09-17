@@ -1,4 +1,4 @@
-import { PricingCards } from "@/components/sections/subscription/pricing-cards-section";
+import { PricingCards } from "sections";
 export default function SubscriptionOnboardingPage() {
   return (
     <div className="min-h-screen bg-[#F6F7F9] px-6 py-16">

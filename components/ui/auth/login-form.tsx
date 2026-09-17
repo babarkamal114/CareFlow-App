@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-import { Button, Checkbox, Input, Label, toast } from "ui-components";
+import { Button, Checkbox, Input, Label, toast } from "@/components/ui";
 import { cn } from "lib";
 
 const fadeUp = {
@@ -50,6 +50,7 @@ const LoginForm = ({ className }: LoginFormProps) => {
       }
       toast.success("Logged In Successfully");
       router.push("/");
+      
     } catch {
       setError("Something went wrong");
       setLoading(false);

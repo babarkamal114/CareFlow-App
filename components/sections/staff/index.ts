@@ -1,0 +1,16 @@
+export { default as StaffHeader } from "./StaffHeader";
+export { StaffTable } from "./StaffTable";
+export { StaffToolbar } from "./StaffToolbar";
+export { default as StaffPermissionTab } from "./StaffPermissionTab";
+export { StaffDetailsTab, StaffDetailsTab as StaffDetailedTab } from "./StaffDetailedTab";
+export { StaffActivityTab } from "./StaffActivityTab";
+export { PermissionsModal } from "./PermissionsModal";
+export { default as PermissionHeader } from "./PermissionHeader";
+export { default as PermissionFooter } from "./PermissionFooter";
+export { EditStaffModal } from "./EditStaffModal";
+export { AddStaffModal } from "./AddStaffModal";
+export { TrainingMatrixTab } from "./TrainingMatrixTab";
+export { AvailabilityTab } from "./AvailabilityTab";
+export { PerformanceTab } from "./PerformanceTab";
+export { ComplianceIndicator } from "./ComplianceIndicator";
+export { StaffDocumentsTab } from "./StaffDocumentsTab";

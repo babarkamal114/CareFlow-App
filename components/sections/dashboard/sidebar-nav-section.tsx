@@ -2,61 +2,71 @@ import Link from "next/link";
 import type { ReactElement } from "react";
 
 import type { NavGroup, NavItem } from "utils";
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui";
 
 export function SidebarNavigationSection({
   groups,
 }: Readonly<{ groups: NavGroup[] }>): ReactElement {
   return (
-    <nav className="flex-1 overflow-y-auto px-0 pb-2 pt-1.5">
+    <>
       {groups.map((group) => (
-        <SidebarGroup key={group.label} group={group} />
+        <NavGroupSection key={group.label} group={group} />
       ))}
-    </nav>
+    </>
   );
 }
 
-function SidebarGroup({ group }: { group: NavGroup }): ReactElement {
+function NavGroupSection({ group }: { group: NavGroup }): ReactElement {
   return (
-    <div>
-      <div className="px-5 pb-1.5 pt-5 text-[10px] font-bold uppercase tracking-[0.1em] text-[rgba(255,255,255,0.25)]">
-        {group.label}
-      </div>
-      {group.items.map((item) => (
-        <SidebarNavItem key={item.label} item={item} />
-      ))}
-    </div>
+    <SidebarGroup>
+      <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {group.items.map((item) => (
+            <SidebarNavItem key={item.label} item={item} />
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 }
 
 function SidebarNavItem({ item }: { item: NavItem }): ReactElement {
   return (
-    <Link
-      href={item.href}
-      className={[
-        "group/item mx-2.5 my-px flex items-center gap-[11px] rounded-lg px-4 py-[9px] text-[13.5px] font-medium transition-all duration-100",
-        item.isActive
-          ? "bg-[rgba(99,182,140,0.12)] font-semibold text-[#63B68C]"
-          : "text-[rgba(255,255,255,0.55)] hover:bg-[rgba(255,255,255,0.06)] hover:text-[rgba(255,255,255,0.85)]",
-      ].join(" ")}
-    >
-      {renderIcon(item.icon)}
-      <span>{item.label}</span>
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        render={<Link href={item.href} />}
+        isActive={item.isActive}
+        tooltip={item.label}
+        className="text-cf-ink-60 hover:bg-brand-50 hover:text-cf-ink-80 data-active:bg-brand-100 data-active:font-semibold data-active:text-brand-700 data-active:hover:bg-brand-100 data-active:hover:text-brand-700"
+      >
+        {renderIcon(item.icon)}
+        <span>{item.label}</span>
+      </SidebarMenuButton>
       {item.badge ? (
-        <span className="ml-auto min-w-[18px] rounded-md bg-[#D44040] px-1.5 text-center text-[10px] font-bold leading-4 text-white">
+        <SidebarMenuBadge className="bg-[#D44040] text-white">
           {item.badge}
-        </span>
+        </SidebarMenuBadge>
       ) : null}
       {item.count ? (
-        <span className="ml-auto text-[11px] text-[rgba(255,255,255,0.55)] opacity-50">
+        <SidebarMenuBadge className="text-cf-ink-40 opacity-50 peer-data-active/menu-button:text-cf-ink-80">
           {item.count}
-        </span>
+        </SidebarMenuBadge>
       ) : null}
-    </Link>
+    </SidebarMenuItem>
   );
 }
 
 function renderIcon(iconName: string): ReactElement {
-  const commonClassName = "h-[18px] w-[18px] shrink-0 opacity-50 group-hover/item:opacity-90";
+  const commonClassName = "size-[18px] shrink-0";
 
   const icons: Record<string, ReactElement> = {
     dashboard: (

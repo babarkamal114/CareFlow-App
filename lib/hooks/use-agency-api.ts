@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useApiMutation } from "./use-api";
+import { useApiMutation, useApiQuery } from "./use-api";
 import { apiClient } from "../api";
 import { env } from "@/config/env";
 
@@ -20,7 +20,23 @@ export interface CreateAgencyResponse {
   agencyId: string;
 }
 
-const createAgencyKeys = ['agency', 'all']
+export interface GetAgencyByUserIdResponse {
+  agency : {id: string;
+  name: string;
+  slug: string;
+  logo: string | null;
+  phone: string | null;
+  address: string | null;
+  city: string | null;
+  postcode: string | null;
+  status: "ACTIVE" | "SUSPENDED";
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;}
+}
+
+const allAgencyKeys = ['agency', 'all']
 
 
 export function useCreateAgencyApi(
@@ -28,7 +44,7 @@ export function useCreateAgencyApi(
 ){
     const queryClient = useQueryClient()
     return useApiMutation<CreateAgencyResponse, CreateAgencyVariables>({
-        mutationKey: [...createAgencyKeys],
+        mutationKey: [...allAgencyKeys],
         mutationFn: ({name , slug, address,city,logo,phone,postcode, accessToken}) => {
                   return apiClient.post(
         `${env.NEXT_PUBLIC_API_URL}/agency/create`,
@@ -48,10 +64,21 @@ export function useCreateAgencyApi(
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [...createAgencyKeys]
+                queryKey: [...allAgencyKeys]
             })
         },
         showErrorToast: true,
         ...options
     })
+}
+
+export function useGetAgencyByUserIdApi(accessToken : string){
+  return useApiQuery<GetAgencyByUserIdResponse>(
+    [...allAgencyKeys],
+    () => {
+      return apiClient.get(`${env.NEXT_PUBLIC_API_URL}/agency/get-by-userId`, {
+        Authorization: `Bearer ${accessToken}`
+      })
+    }
+  )
 }
