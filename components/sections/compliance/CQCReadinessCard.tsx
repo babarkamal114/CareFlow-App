@@ -65,7 +65,7 @@ function CQCReadinessCard() {
   })
 
   return (
-    <Card className="border-cf-border w-full h-full">
+    <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full h-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className='font-bold text-cf-ink'>
@@ -117,7 +117,7 @@ function CQCReadinessCard() {
       {needsImprovement.length > 0 && (
         <CardFooter className="flex-col items-start gap-3 border-t border-cf-border pt-4">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
+            <AlertTriangle className="h-4 w-4 text-[var(--cf-warning)]" />
             <span className="text-sm font-semibold text-cf-ink">Areas Needing Improvement</span>
           </div>
           <div className="space-y-3 w-full">

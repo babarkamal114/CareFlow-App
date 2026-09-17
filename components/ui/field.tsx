@@ -1,8 +1,6 @@
 import * as React from "react"
-
 import { cn } from "lib"
 
-/** Vertical field stack — HTML `.input-group` (gap 6px, min-width 240px). */
 function Field({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
