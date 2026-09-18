@@ -5,9 +5,7 @@ import * as React from "react"
 import { cn } from "lib"
 
 type LabelProps = React.ComponentProps<"label"> & {
-  /** Shows trailing asterisk — HTML `.label-required` */
   required?: boolean
-  /** Shows “(optional)” suffix — HTML `.label-optional` */
   optional?: boolean
 }
 

@@ -14,3 +14,10 @@ export * from './style-getters';
 export * from './type-color-map';
 export * from './file-format-size'
 export * from './progress-colors'
+export {
+  generateCarePlanSuggestions,
+  mockVisitNotes,
+  type CarePlanSuggestion,
+  type VisitNote,
+  type VisitNoteTag,
+} from "./care-plan-ai-suggestions";
