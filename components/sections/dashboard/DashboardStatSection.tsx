@@ -1,10 +1,8 @@
-// components/sections/dashboard/DashboardStatSection.tsx
 'use client'
 
-import React, { use } from "react";
 import { motion } from "framer-motion";
 import { StatCard } from "shared";
-import { Users, Calendar, ClipboardList, DollarSign } from "lucide-react";
+import { Users, Calendar, DollarSign } from "lucide-react";
 
 const cards = [
   {

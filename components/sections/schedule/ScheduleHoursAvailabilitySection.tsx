@@ -1,4 +1,3 @@
-// components/sections/schedule/CapacityPlanningSection.tsx
 "use client";
 
 import { TrendingUp, TrendingDown, AlertCircle, CheckCircle } from "lucide-react";

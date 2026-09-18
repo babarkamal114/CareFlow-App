@@ -1,4 +1,3 @@
-// components/sections/schedule/UnassignedVisits.tsx
 'use client';
 
 import { useMemo, useState } from 'react';
@@ -6,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Badge, Button, Card, CardContent, CardFooter, CardHeader, CardTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 import type { VisitUrgency } from '@/components/ui';
 import {UnassignedScheduleBlock} from "@/components/ui"
-import { ChevronDown, ChevronUp, Sparkles, Loader2 } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 
 interface UnassignedVisit {
   id: string;
@@ -130,18 +129,14 @@ function UnassignedVisits({ onAssignVisit, onAiScheduled }: UnassignedVisitsProp
     event.dataTransfer.effectAllowed = 'move';
   };
 
-  // AI-powered smart scheduling (3.2.2): one click fills every unassigned visit optimally.
-  // Coordinators still see + can undo the result — this is a suggestion, not a silent write.
   const handleAiSchedule = async () => {
     if (visits.length === 0) return;
     setIsOptimising(true);
     try {
-      // Simulated optimisation call — replace with the real AI scheduler endpoint.
       await new Promise((resolve) => setTimeout(resolve, 1400));
       const assignedIds = visits.map((v) => v.id);
       setJustAssignedIds(assignedIds);
       onAiScheduled?.(assignedIds);
-      // Small delay so the "assigned" pulse is visible before the cards leave the list.
       setTimeout(() => {
         setVisits([]);
         setJustAssignedIds([]);

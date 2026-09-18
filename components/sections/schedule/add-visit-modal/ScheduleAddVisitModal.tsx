@@ -56,8 +56,6 @@ interface ConflictIssue {
   message: string;
 }
 
-// 3.2.1 Conflict detection — warns on double-booking, unavailability, missing
-// qualifications, insufficient travel time and patient-preference mismatches.
 function detectConflicts(formData: {
   patientId: string;
   carerId: string;
@@ -238,8 +236,6 @@ export function AddVisitModal({
             Create a new visit or appointment for a patient
           </DialogDescription>
         </DialogHeader>
-
-        {/* 3.2.1 Visit templates — one click prefills title, type and duration */}
         <div className="space-y-2">
           <Label className="text-sm font-medium">Quick templates</Label>
           <div className="flex flex-wrap gap-2">
@@ -277,7 +273,6 @@ export function AddVisitModal({
           onDateSelect={handleDateSelect}
         />
 
-        {/* 3.2.1 Recurring patterns */}
         <div className="space-y-2">
           <Label className="text-sm font-medium flex items-center gap-1.5">
             <Repeat className="h-3.5 w-3.5" />
@@ -308,7 +303,7 @@ export function AddVisitModal({
                 className="flex flex-wrap gap-1.5 pt-1 overflow-hidden"
               >
                 {weekdayOptions.map((day) => (
-                  <button
+                  <Button
                     key={day.value}
                     type="button"
                     onClick={() => toggleRecurrenceDay(day.value)}
@@ -319,14 +314,12 @@ export function AddVisitModal({
                     }`}
                   >
                     {day.label}
-                  </button>
+                  </Button>
                 ))}
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-
-        {/* 3.2.1 Conflict detection — real-time, non-blocking for warnings, blocking for hard conflicts */}
         <AnimatePresence>
           {conflicts.length > 0 && (
             <motion.div
@@ -338,15 +331,15 @@ export function AddVisitModal({
               <div
                 className={`space-y-1.5 rounded-lg border p-3 ${
                   hasBlockingConflict
-                    ? 'border-red-200 bg-red-50'
-                    : 'border-amber-200 bg-amber-50'
+                    ? 'border-[var(--cf-error)]/20 bg-[var(--cf-error-muted)]'
+                    : 'border-[var(--cf-warning)]/20 bg-[var(--cf-warning-muted)]'
                 }`}
               >
                 {conflicts.map((issue, i) => (
                   <div
                     key={i}
                     className={`flex items-start gap-2 text-xs font-medium ${
-                      issue.level === 'error' ? 'text-red-700' : 'text-amber-700'
+                      issue.level === 'error' ? 'text-[var(--cf-error)]' : 'text-[var(--cf-warning)]'
                     }`}
                   >
                     <AlertTriangle className="h-3.5 w-3.5 mt-0.5 shrink-0" />
