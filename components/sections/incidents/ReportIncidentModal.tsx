@@ -16,6 +16,7 @@ import {
   SelectValue,
   Card,
   Badge,
+  Label
 } from '@/components/ui';
 import { Incident, IncidentSeverity, IncidentType } from '@/types';
 
@@ -127,12 +128,12 @@ export function ReportIncidentModal({
             </div>
 
             <div>
-              <label className="text-sm font-medium text-cf-ink mb-2 block">
+              <Label className="text-sm font-medium text-cf-ink mb-2 block">
                 Severity *
-              </label>
+              </Label>
               <div className="grid grid-cols-4 gap-2">
                 {severityLevels.map((level) => (
-                  <button
+                  <Button
                     key={level.value}
                     onClick={() => handleChange('severity', level.value)}
                     className={`p-3 rounded-lg border-2 transition-all ${
@@ -144,7 +145,7 @@ export function ReportIncidentModal({
                     <Badge variant={level.color as any} className="w-full justify-center">
                       {level.label}
                     </Badge>
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -182,9 +183,9 @@ export function ReportIncidentModal({
             </div>
 
             <div>
-              <label className="text-sm font-medium text-cf-ink mb-2 block">
+              <Label className="text-sm font-medium text-cf-ink mb-2 block">
                 Incident Title *
-              </label>
+              </Label>
               <Input
                 placeholder="e.g., Fall in bathroom"
                 value={formData.title}
@@ -193,9 +194,9 @@ export function ReportIncidentModal({
             </div>
 
             <div>
-              <label className="text-sm font-medium text-cf-ink mb-2 block">
+              <Label className="text-sm font-medium text-cf-ink mb-2 block">
                 Description *
-              </label>
+              </Label>
               <Textarea
                 placeholder="What happened? Any injuries? Any witnesses?"
                 value={formData.description}
@@ -206,9 +207,9 @@ export function ReportIncidentModal({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-cf-ink mb-2 block">
+                <Label className="text-sm font-medium text-cf-ink mb-2 block">
                   Date & Time *
-                </label>
+                </Label>
                 <Input
                   type="datetime-local"
                   value={formData.dateTime}
@@ -216,9 +217,9 @@ export function ReportIncidentModal({
                 />
               </div>
               <div>
-                <label className="text-sm font-medium text-cf-ink mb-2 block">
+                <Label className="text-sm font-medium text-cf-ink mb-2 block">
                   Location
-                </label>
+                </Label>
                 <Input
                   placeholder="e.g., Bathroom, Kitchen"
                   value={formData.location}

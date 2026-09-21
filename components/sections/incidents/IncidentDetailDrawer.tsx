@@ -10,6 +10,8 @@ import {
   Badge,
   BadgeProps,
   Button,
+  Avatar,
+  AvatarFallback,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -110,27 +112,44 @@ export function IncidentDetailDrawer({
     }
   };
 
+  const getInitials = (name: string) =>
+    name
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join('');
+
   return (
     <>
       <Drawer open={open} onOpenChange={onOpenChange} swipeDirection="right">
-        <DrawerContent className="max-w-2xl">
-          <DrawerHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <DrawerTitle className="text-xl">{incident.title}</DrawerTitle>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant={getSeverityColor(incident.severity)} badgeSize={'lg'} shape={'rounded'}>
-                  {incident.severity.toUpperCase()}
-                </Badge>
-                <Badge variant={getStatusColor(incident.status)} badgeSize={'md'} shape={'pill'}>
-                  {incident.status}
-                </Badge>
+        <DrawerContent className="max-w-2xl h-full max-h-screen flex flex-col">
+          <DrawerHeader className="border-b border-cf-border pb-4">
+            <div className="flex items-start gap-4">
+              <Avatar className="h-12 w-12 border border-cf-border">
+                <AvatarFallback className="bg-brand-50 text-brand-600 font-semibold">
+                  {getInitials(incident.patientName)}
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="flex-1">
+                <DrawerTitle className="text-xl font-semibold text-cf-ink">
+                  {incident.title}
+                </DrawerTitle>
+                <p className="text-xs text-cf-ink-60 mt-1">Patient: {incident.patientName}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <Badge variant={getSeverityColor(incident.severity)} className="text-xs" shape="pill">
+                    {incident.severity.toUpperCase()}
+                  </Badge>
+                  <Badge variant={getStatusColor(incident.status)} className="text-xs" shape="pill">
+                    {incident.status}
+                  </Badge>
+                </div>
               </div>
             </div>
           </DrawerHeader>
 
-          <div className="px-6 mt-12">
+          <div className="flex-1 overflow-y-auto">
             <IncidentTabs
               selectedTab={selectedTab}
               onTabChange={setSelectedTab}

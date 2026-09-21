@@ -1,7 +1,6 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
-import { FileText, Paperclip, Info } from 'lucide-react';
 import { Incident } from '@/types';
 import { IncidentInfoTab } from './incident-info-tab';
 import { IncidentLogsTab } from './incident-logs-tab';
@@ -14,6 +13,12 @@ interface IncidentTabsProps {
   incident: Incident;
 }
 
+const TABS = [
+  { value: 'info', label: 'Info' },
+  { value: 'logs', label: 'Logs' },
+  { value: 'evidence', label: 'Evidence' },
+];
+
 export function IncidentTabs({
   selectedTab,
   onTabChange,
@@ -23,29 +28,29 @@ export function IncidentTabs({
   const evidenceCount = 0;
 
   return (
-    <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="info" className="flex items-center gap-2">
-          <Info className="h-4 w-4" />
-          Info
-        </TabsTrigger>
-        <TabsTrigger value="logs" className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
-          Logs
-        </TabsTrigger>
-        <TabsTrigger value="evidence" className="flex items-center gap-2">
-          <Paperclip className="h-4 w-4" />
-          Evidence ({evidenceCount})
-        </TabsTrigger>
-      </TabsList>
+    <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full h-full">
+      <div className="border-b border-cf-border px-6">
+        <TabsList className="w-auto justify-start rounded-none bg-transparent">
+          {TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className="data-[state=active]:border-b-2 data-[state=active]:border-brand-500 rounded-none"
+            >
+              {tab.label}
+              {tab.value === 'evidence' ? ` (${evidenceCount})` : ''}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </div>
 
-      <TabsContent value="info" className="mt-4">
+      <TabsContent value="info" className="p-6">
         <IncidentInfoTab incident={incident} />
       </TabsContent>
-      <TabsContent value="logs" className="mt-4">
+      <TabsContent value="logs" className="p-6">
         <IncidentLogsTab incident={incident} />
       </TabsContent>
-      <TabsContent value="evidence" className="mt-4">
+      <TabsContent value="evidence" className="p-6">
         <IncidentEvidenceTab />
       </TabsContent>
     </Tabs>
