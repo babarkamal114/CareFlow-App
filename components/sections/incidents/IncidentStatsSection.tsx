@@ -1,9 +1,9 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { StatCard } from 'shared';
 import { FileText, AlertCircle, Clock, CheckCircle } from 'lucide-react';
 import { Incident } from '@/types';
-import { StatCard } from '@/components/shared';
-
 
 interface IncidentStatsSectionProps {
   incidents: Incident[];
@@ -29,82 +29,82 @@ export function IncidentStatsSection({ incidents }: IncidentStatsSectionProps) {
   const thisMonth = incidents.filter((i) => {
     const now = new Date();
     const incidentDate = new Date(i.dateTime);
-    return incidentDate.getMonth() === now.getMonth() &&
-      incidentDate.getFullYear() === now.getFullYear();
+    return (
+      incidentDate.getMonth() === now.getMonth() &&
+      incidentDate.getFullYear() === now.getFullYear()
+    );
   }).length;
 
-  const resolutionRate = totalIncidents > 0
-    ? Math.round((resolvedIncidents / totalIncidents) * 100)
-    : 0;
+  const thisMonthPct = totalIncidents > 0 ? Math.round((thisMonth / totalIncidents) * 100) : 0;
+
+  const resolutionRate =
+    totalIncidents > 0 ? Math.round((resolvedIncidents / totalIncidents) * 100) : 0;
+
+  const cards = [
+    {
+      label: 'Total Incidents',
+      value: totalIncidents.toLocaleString(),
+      Icon: FileText,
+      description: `${thisMonth} this month`,
+      showScore: false,
+      showTrend: true,
+      trend: 'up' as const,
+      hasCqcScore: false,
+      hasValueBadge: true,
+      valueBadgeValue: `${thisMonthPct}%`,
+      badgeVariant: 'softSuccess' as const,
+    },
+    {
+      label: 'Open Incidents',
+      value: openIncidents.toLocaleString(),
+      Icon: AlertCircle,
+      description: 'Active cases',
+      showScore: false,
+      showTrend: false,
+      hasCqcScore: false,
+      hasValueBadge: true,
+      valueBadgeValue: openIncidents > 0 ? `${openIncidents} open` : 'Clear',
+      badgeVariant: openIncidents > 0 ? ('softDanger' as const) : ('softSuccess' as const),
+    },
+    {
+      label: 'Overdue',
+      value: overdueIncidents.toLocaleString(),
+      Icon: Clock,
+      description: 'Past review date',
+      showScore: false,
+      showTrend: false,
+      hasCqcScore: false,
+      hasValueBadge: true,
+      valueBadgeValue: overdueIncidents > 0 ? `${overdueIncidents} overdue` : 'On track',
+      badgeVariant: overdueIncidents > 0 ? ('softWarning' as const) : ('softSuccess' as const),
+    },
+    {
+      label: 'Resolved',
+      value: resolvedIncidents.toLocaleString(),
+      Icon: CheckCircle,
+      description: 'Successfully closed',
+      showScore: true,
+      score: resolutionRate,
+      showTrend: false,
+      hasCqcScore: false,
+      hasValueBadge: false,
+      badgeVariant: 'softSuccess' as const,
+    },
+  ];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard
-        label="Total Incidents"
-        value={totalIncidents.toLocaleString()}
-        Icon={FileText}
-        description={`${thisMonth} this month`}
-        showScore={false}
-        showTrend={false}
-        hasCqcScore={false}
-        hasValueBadge={false}
-      >
-        <p className="text-xs text-cf-ink-60 mt-1">
-          {totalIncidents > 0 ? `${Math.round((thisMonth / totalIncidents) * 100)}% this month` : 'No incidents'}
-        </p>
-      </StatCard>
-
-      <StatCard
-        label="Open Incidents"
-        value={openIncidents.toLocaleString()}
-        Icon={AlertCircle}
-        description="Active cases"
-        showScore={false}
-        showTrend={false}
-        hasCqcScore={false}
-        hasValueBadge={false}
-      >
-        <div className="flex items-center gap-2 mt-1">
-          <span className={`text-xs font-medium ${openIncidents > 0 ? 'text-red-600' : 'text-green-600'}`}>
-            {openIncidents > 0 ? `${openIncidents} need attention` : 'All clear'}
-          </span>
-        </div>
-      </StatCard>
-
-      <StatCard
-        label="Overdue"
-        value={overdueIncidents.toLocaleString()}
-        Icon={Clock}
-        description="Past review date"
-        showScore={false}
-        showTrend={false}
-        hasCqcScore={false}
-        hasValueBadge={false}
-      >
-        <div className="flex items-center gap-2 mt-1">
-          <span className={`text-xs font-medium ${overdueIncidents > 0 ? 'text-amber-600' : 'text-green-600'}`}>
-            {overdueIncidents > 0 ? `${overdueIncidents} overdue` : 'On track'}
-          </span>
-        </div>
-      </StatCard>
-
-      <StatCard
-        label="Resolved"
-        value={resolvedIncidents.toLocaleString()}
-        Icon={CheckCircle}
-        description="Successfully closed"
-        showScore={true}
-        score={resolutionRate}
-        showTrend={false}
-        hasCqcScore={false}
-        hasValueBadge={false}
-      >
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-cf-ink-60">
-            {resolutionRate}% resolution rate
-          </span>
-        </div>
-      </StatCard>
+      {cards.map((card, i) => (
+        <motion.div
+          key={card.label}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ y: -3 }}
+        >
+          <StatCard {...card} />
+        </motion.div>
+      ))}
     </div>
   );
 }
