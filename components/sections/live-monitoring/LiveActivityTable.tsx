@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,7 +13,9 @@ import {
   Badge,
   BadgeProps,
   EmptyState,
-  Button
+  Tabs,
+  TabsList,
+  TabsTrigger,
 } from "@/components/ui";
 import { Radio } from "lucide-react";
 import { mockLiveVisits, liveVisitStatusLabelMap, liveVisitStatusBadgeVariantMap } from "utils";
@@ -65,21 +67,19 @@ function LiveActivityTable({ now, mountedAt }: LiveActivityTableProps) {
     <div className="cf-glass-panel w-full rounded-xl overflow-hidden">
       <div className="flex flex-col gap-3 border-b border-cf-border p-4 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold text-cf-ink">Current Activity</h3>
-        <div className="flex flex-wrap items-center gap-1.5">
-          {filters.map((f) => (
-            <Button
-              key={f.key}
-              onClick={() => setActiveFilter(f.key)}
-              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                activeFilter === f.key
-                  ? "bg-cf-ink text-white"
-                  : "bg-cf-surface-muted text-cf-ink-60 hover:bg-cf-surface-inset"
-              }`}
-            >
-              {f.label}
-            </Button>
-          ))}
-        </div>
+
+        <Tabs
+          value={activeFilter}
+          onValueChange={(value) => setActiveFilter(value as FilterKey)}
+        >
+          <TabsList>
+            {filters.map((f) => (
+              <TabsTrigger key={f.key} value={f.key}>
+                {f.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
 
       {filteredVisits.length === 0 ? (
