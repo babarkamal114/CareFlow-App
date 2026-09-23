@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,6 +13,7 @@ import {
   Badge,
   BadgeProps,
   EmptyState,
+  Button
 } from "@/components/ui";
 import { Radio } from "lucide-react";
 import { mockLiveVisits, liveVisitStatusLabelMap, liveVisitStatusBadgeVariantMap } from "utils";
@@ -62,12 +63,11 @@ function LiveActivityTable({ now, mountedAt }: LiveActivityTableProps) {
 
   return (
     <div className="cf-glass-panel w-full rounded-xl overflow-hidden">
-      {/* Header + filters */}
       <div className="flex flex-col gap-3 border-b border-cf-border p-4 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold text-cf-ink">Current Activity</h3>
         <div className="flex flex-wrap items-center gap-1.5">
           {filters.map((f) => (
-            <button
+            <Button
               key={f.key}
               onClick={() => setActiveFilter(f.key)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
@@ -77,7 +77,7 @@ function LiveActivityTable({ now, mountedAt }: LiveActivityTableProps) {
               }`}
             >
               {f.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
