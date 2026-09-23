@@ -1,5 +1,9 @@
-import { SectionPlaceholder } from "shared";
+import { LiveMonitoringBoard } from "sections";
 
 export default function LiveMonitoringPage() {
-  return <SectionPlaceholder title="Live monitoring" />;
+  return (
+    <div className="w-full p-6 bg-transparent">
+      <LiveMonitoringBoard />
+    </div>
+  );
 }

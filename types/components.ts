@@ -1,6 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { ReactNode } from "react";
-
+import type { AttentionType } from "utils";
 import type { BadgeProps } from "@/components/ui";
 
 export interface StatCardProps {
@@ -29,23 +28,23 @@ export interface PageBreadcrumbProps {
 }
 
 export type StaffMember = {
-  id: string;                    // agency_memberships.id
-  userId: string;                // agency_memberships.userId
-  name: string;                  // users.fullName
-  email: string;                 // users.email
-  phone?: string | null;         // users.phone
-  profilePicture?: string | null; // users.picture
+  id: string;                    
+  userId: string;                
+  name: string;                  
+  email: string;                 
+  phone?: string | null;         
+  profilePicture?: string | null; 
   role: string;
-  status: EmployeeStatus;        // agency_memberships.status
-  joinDate: Date | string;       // agency_memberships.acceptedAt or createdAt
-  invitedBy: string | null;      // agency_memberships.invitedBy
-  invitedAt: Date | null;        // agency_memberships.invitedAt
-  acceptedAt: Date | null;       // agency_memberships.acceptedAt
-  createdAt: Date;               // agency_memberships.createdAt
-  updatedAt: Date;               // agency_memberships.updatedAt
-  deletedAt: Date | null;        // agency_memberships.deletedAt
-  userStatus: string;            // users.status
-  emailVerified: boolean;        // users.emailVerified
+  status: EmployeeStatus;        
+  joinDate: Date | string;       
+  invitedBy: string | null;     
+  invitedAt: Date | null;        
+  acceptedAt: Date | null;       
+  createdAt: Date;               
+  updatedAt: Date;               
+  deletedAt: Date | null;       
+  userStatus: string;           
+  emailVerified: boolean;        
 };
 
 export interface StaffTableProps {
@@ -199,7 +198,7 @@ export interface DementiaContent {
 
 export interface NutritionContent {
   type: 'nutrition';
-  MUSTScore: number; // Malnutrition Universal Screening Tool
+  MUSTScore: number; 
   nutritionStatus: 'adequate' | 'at-risk' | 'malnourished';
   dietaryType: 'normal' | 'modified-texture' | 'pureed' | 'soft' | 'therapeutic';
   foodPreferences: string[];
@@ -288,9 +287,6 @@ export interface CarePlan {
   createdBy: string;
 }
 
-
-
-
 export interface CarePlanBlock {
   id: string;
   patientName: string;
@@ -313,14 +309,13 @@ export interface ModuleCreationData {
   patientId : string;
   type: CarePlanType;
   name: string;
-  content: CarePlanModuleContent; // Will be typed based on module type
+  content: CarePlanModuleContent; 
   status: 'draft' | 'in-review' | 'approved';
   reviewStatus: 'current' | 'overdue' | 'reviewed' | 'needs-change';
   createdBy: string;
   version?: string;
 }
 
-// Module-specific creation data types
 export interface PersonalCareCreationData {
   mobilityLevel: 'independent' | 'supervision' | 'assistance' | 'total-dependence';
   personalHygiene: {
@@ -414,3 +409,44 @@ export type CarePlanType = 'personal-care' | 'medication' | 'dementia' | 'nutrit
 export type SortField = keyof StaffMember;
 export type SortDirection = "asc" | "desc";
 export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED' 
+
+export type VisitStatus =
+  | "starting"
+  | "in-progress"
+  | "delayed"
+  | "scheduled"
+  | "completed"
+  | "missed";
+ 
+export interface LiveVisit {
+  id: string;
+  patientName: string;
+  patientInitials: string;
+  careType: string;
+  carerName: string;
+  carerInitials: string;
+  status: VisitStatus;
+  scheduledWindow: string;
+  referenceOffsetMinutes: number;
+  durationMinutes: number;
+}
+ 
+export interface LiveAttentionItem {
+  id: string;
+  type: AttentionType;
+  title: string;
+  description: string;
+  detail: string;
+  time: string;
+}
+ 
+export type CarerLiveStatus = "active" | "travelling" | "break";
+ 
+export interface LiveCarer {
+  id: string;
+  name: string;
+  initials: string;
+  status: CarerLiveStatus;
+  detail: string;
+}
+ 

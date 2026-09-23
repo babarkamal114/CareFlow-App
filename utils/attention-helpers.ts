@@ -1,9 +1,11 @@
-type AttentionType =
+export type AttentionType =
   | "missed-visit"
   | "no-checkin"
   | "safeguarding"
   | "overdue"
-  | "expiring";
+  | "expiring"
+  | "delayed"
+  | "gps";
 
 type Priority = "high" | "medium" | "low";
 
@@ -43,6 +45,18 @@ export const attentionTypeConfig: Record<
   expiring: {
     label: "Expiring",
     icon: "Calendar",
+    priority: "medium",
+    badgeVariant: "pastel-info",
+  },
+  delayed: {
+    label: "Visit Running Late",
+    icon: "Clock",
+    priority: "medium",
+    badgeVariant: "pastel-warning",
+  },
+  gps: {
+    label: "GPS Signal Lost",
+    icon: "Wifi",
     priority: "medium",
     badgeVariant: "pastel-info",
   },
