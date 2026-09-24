@@ -106,7 +106,6 @@ export function DashboardWeeklyActivity() {
                 cursor={{ stroke: 'var(--cf-ink-20)', strokeDasharray: '4 4' }}
                 content={<ChartTooltipContent indicator="dot" />}
               />
-              {/* Primary series — bold solid line with visible dots, the visual anchor */}
               <Line
                 type="monotone"
                 dataKey="done"

@@ -1,4 +1,3 @@
-// components/sections/dashboard/DashboardOnShiftSection.tsx
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Badge, BadgeProps } from '@/components/ui';

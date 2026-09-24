@@ -1,4 +1,3 @@
-// components/sections/dashboard/DashboardAttentionBoard.tsx
 import React from "react";
 import { Badge, BadgeProps, Button, Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import {

@@ -11,9 +11,6 @@ import {
 export default function DashboardHomePage() {
   return (
     <div className="w-full p-6 bg-transparent">
-      {/* One white rounded panel holding the heading AND everything
-          below it — no overflow/scroll here, the shell's <main> is
-          the only scroll container. */}
       <div className="rounded-2xl bg-cf-surface shadow-cf-md p-6 space-y-4">
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-cf-border-light">
           <div>
@@ -26,7 +23,7 @@ export default function DashboardHomePage() {
           </div>
         </div>
 
-        <DashboardStatSection />
+        <DashboardStatSection role="agency_admin" />
         <div className="flex justify-between gap-x-4">
           <DashboardVisitSection />
           <div className="flex flex-col w-full max-w-sm gap-y-4">

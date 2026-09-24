@@ -1,76 +1,85 @@
-// components/sections/dashboard/DashboardStatSection.tsx
-'use client'
+"use client";
 
-import React, { use } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { StatCard } from "shared";
-import { Users, Calendar, ClipboardList, DollarSign } from "lucide-react";
+import { useDashboardStats } from "lib";
+import { buildStatCards, getVisibleStatDefinitions } from "utils";
 
-const cards = [
-  {
-    label: "Total Patients",
-    value: "142",
-    Icon: Users,
-    description: "Active patients under care",
-    showScore: false,
-    showTrend: true,
-    trend: "up" as const,
-    hasCqcScore: false,
-    hasValueBadge: true,
-    valueBadgeValue: "12%",
-    badgeVariant: "softSuccess" as const,
-  },
-  {
-    label: "Active Staff",
-    value: "31",
-    Icon: Users,
-    description: "Staff currently active",
-    showScore: false,
-    showTrend: true,
-    trend: "up" as const,
-    hasCqcScore: false,
-    hasValueBadge: true,
-    valueBadgeValue: "8%",
-    badgeVariant: "softInfo" as const,
-  },
-  {
-    label: "Today's Visits",
-    value: "48",
-    Icon: Calendar,
-    description: "Visits scheduled today",
-    showScore: true,
-    score: 92,
-    showTrend: false,
-    hasCqcScore: false,
-    hasValueBadge: false,
-    badgeVariant: "softWarning" as const,
-  },
-  {
-    label: "Revenue",
-    value: "$42,500",
-    Icon: DollarSign,
-    description: "This month's revenue",
-    showScore: true,
-    score: 78,
-    showTrend: false,
-    hasCqcScore: false,
-    hasValueBadge: false,
-    badgeVariant: "softDanger" as const,
-  },
-];
+interface DashboardStatSectionProps {
+  role: string;
+}
 
-function DashboardStatSection() {
+const GRID_COLS: Record<number, string> = {
+  1: "lg:grid-cols-1",
+  2: "lg:grid-cols-2",
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+};
+
+function StatCardSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card, i) => (
+    <div className="w-full rounded-xl cf-glass-panel animate-pulse">
+      <div className="flex flex-col gap-4 py-4 px-4">
+        <div className="size-8 rounded-lg bg-cf-ink-40/20" />
+        <div className="h-3 w-24 rounded bg-cf-ink-40/20" />
+        <div className="h-9 w-20 rounded bg-cf-ink-40/20" />
+      </div>
+    </div>
+  );
+}
+
+function DashboardStatSection({ role }: DashboardStatSectionProps) {
+  const { data, isLoading, error, refetch } = useDashboardStats();
+
+  const visibleCount = useMemo(
+    () => getVisibleStatDefinitions(role).length,
+    [role]
+  );
+
+  const cards = useMemo(
+    () => (data ? buildStatCards(data, role) : []),
+    [data, role]
+  );
+
+  if (visibleCount === 0) return null;
+
+  const gridClass = `grid grid-cols-1 sm:grid-cols-2 ${
+    GRID_COLS[Math.min(visibleCount, 4)]
+  } gap-4`;
+
+  if (isLoading) {
+    return (
+      <div className={gridClass}>
+        {Array.from({ length: visibleCount }).map((_, i) => (
+          <StatCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-xl cf-glass-panel p-4 flex items-center justify-between text-sm">
+        <span className="text-cf-ink-40">Couldn&apos;t load dashboard stats.</span>
+        <button onClick={refetch} className="font-semibold text-cf-ink underline">
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={gridClass}>
+      {cards.map(({ id, props }, i) => (
         <motion.div
-          key={card.label}
+          key={id}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
           whileHover={{ y: -3 }}
         >
-          <StatCard {...card} />
+          <StatCard {...props} />
         </motion.div>
       ))}
     </div>

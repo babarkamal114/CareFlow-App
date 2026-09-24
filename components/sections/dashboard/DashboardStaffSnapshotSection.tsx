@@ -1,11 +1,10 @@
-// components/sections/dashboard/DashboardStaffSnapshotSection.tsx
 'use client';
 
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Users } from 'lucide-react';
 
-// Mock data - replace with real API
+
 const staffSnapshot = [
   { label: 'On Shift', value: 12, tone: 'success' as const },
   { label: 'Available', value: 15, tone: 'info' as const },
