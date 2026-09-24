@@ -1,4 +1,4 @@
-import { canAccess, daysFromToday, formatDate } from "./dashboard-helpers";
+import { canAccess, daysFromToday, formatLongDate } from "./dashboard-helpers";
 
 export const COMPLIANCE_WINDOW_DAYS = 14;
 export interface ComplianceItemDTO {
@@ -55,7 +55,7 @@ export function buildComplianceRows(items: ComplianceItemDTO[]): ComplianceRow[]
       return {
         id: item.id,
         title: item.title,
-        dueDate: formatDate(item.dueDate),
+        dueDate: formatLongDate(item.dueDate),
         days,
         daysLabel: getDaysLabel(days),
         priority,

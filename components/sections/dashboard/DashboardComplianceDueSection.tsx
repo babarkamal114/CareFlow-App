@@ -1,58 +1,42 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Badge } from '@/components/ui';
 import { Calendar, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-interface ComplianceItem {
-  id: string;
-  title: string;
-  dueDate: string;
-  daysRemaining: number;
-  priority: 'high' | 'medium' | 'low';
-  count?: number;
-}
+import { useComplianceDue } from 'hooks';
+import {
+  COMPLIANCE_WINDOW_DAYS,
+  buildComplianceRows,
+  canSeeCompliance,
+  type CompliancePriority,
+} from 'utils';
 
-const complianceDueItems: ComplianceItem[] = [
-  { id: '1', title: 'DBS Checks', dueDate: 'March 20, 2024', daysRemaining: 3, priority: 'high', count: 5 },
-  { id: '2', title: 'Fire Safety Training', dueDate: 'March 22, 2024', daysRemaining: 5, priority: 'high', count: 8 },
-  { id: '3', title: 'Manual Handling Certification', dueDate: 'March 28, 2024', daysRemaining: 11, priority: 'medium', count: 3 },
-  { id: '4', title: 'CQC Documentation Review', dueDate: 'April 1, 2024', daysRemaining: 15, priority: 'low', count: 1 },
-];
-
-
-const priorityColors: Record<'high' | 'medium' | 'low', string> = {
+const priorityColors: Record<CompliancePriority, string> = {
   high: 'bg-[var(--cf-error-muted)] border-[var(--cf-error)]/20 hover:bg-[var(--cf-error-muted)]/70',
   medium: 'bg-[var(--cf-warning-muted)] border-[var(--cf-warning)]/20 hover:bg-[var(--cf-warning-muted)]/70',
   low: 'bg-[var(--cf-info-muted)] border-[var(--cf-info)]/20 hover:bg-[var(--cf-info-muted)]/70',
 };
 
-const priorityTextColors: Record<'high' | 'medium' | 'low', string> = {
+const priorityTextColors: Record<CompliancePriority, string> = {
   high: 'text-[var(--cf-error)]',
   medium: 'text-[var(--cf-warning)]',
   low: 'text-[var(--cf-info)]',
 };
 
-const priorityDotColors: Record<'high' | 'medium' | 'low', string> = {
+const priorityDotColors: Record<CompliancePriority, string> = {
   high: 'bg-[var(--cf-error)]',
   medium: 'bg-[var(--cf-warning)]',
   low: 'bg-[var(--cf-info)]',
 };
 
-const getPriorityLabel = (priority: 'high' | 'medium' | 'low'): string => {
-  const labels = { high: 'Urgent', medium: 'Due Soon', low: 'Upcoming' };
-  return labels[priority];
-};
+function ComplianceDueCard() {
+  const { data, isLoading, error, refetch } = useComplianceDue();
 
-export function DashboardComplianceDue() {
-  const sortedItems = [...complianceDueItems].sort(
-    (a, b) => a.daysRemaining - b.daysRemaining
-  );
-
-  const urgentCount = complianceDueItems.filter(
-    (item) => item.priority === 'high'
-  ).length;
+  const rows = useMemo(() => (data ? buildComplianceRows(data.items) : []), [data]);
+  const urgentCount = rows.filter((r) => r.priority === 'high').length;
 
   return (
     <motion.div
@@ -68,12 +52,29 @@ export function DashboardComplianceDue() {
           </CardTitle>
           <div className="flex items-center gap-2">
             <Calendar className="h-3.5 w-3.5 text-cf-ink-60" />
-            <span className="text-xs text-cf-ink-60">Next 14 days</span>
+            <span className="text-xs text-cf-ink-60">Next {COMPLIANCE_WINDOW_DAYS} days</span>
           </div>
         </CardHeader>
 
         <CardContent className="px-4 pb-4 flex-1 flex flex-col min-h-0">
-          {urgentCount > 0 && (
+          {isLoading && (
+            <div className="space-y-2 animate-pulse">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-16 rounded-lg bg-cf-ink-40/20" />
+              ))}
+            </div>
+          )}
+
+          {!isLoading && error && (
+            <div className="py-8 text-center text-sm text-cf-ink-60">
+              Couldn&apos;t load compliance items.{' '}
+              <button onClick={refetch} className="font-semibold text-cf-ink underline">
+                Retry
+              </button>
+            </div>
+          )}
+
+          {!isLoading && !error && urgentCount > 0 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -82,61 +83,62 @@ export function DashboardComplianceDue() {
             >
               <AlertCircle className="h-4 w-4 text-[var(--cf-error)] flex-shrink-0 mt-0.5" />
               <p className="text-xs text-[var(--cf-error)]">
-                <span className="font-medium">{urgentCount}</span> urgent compliance items due
+                <span className="font-medium">{urgentCount}</span> urgent compliance{' '}
+                {urgentCount === 1 ? 'item' : 'items'} due
               </p>
             </motion.div>
           )}
 
-          <div className="space-y-2 overflow-y-auto flex-1">
-            {sortedItems.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.15 + i * 0.05 }}
-                className={`p-3 rounded-lg border transition-colors ${priorityColors[item.priority]}`}
-              >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <div className="flex items-start gap-2 flex-1 min-w-0">
-                    <div
-                      className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${priorityDotColors[item.priority]}`}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-cf-ink">
-                        {item.title}
-                      </p>
+          {!isLoading && !error && rows.length > 0 && (
+            <div className="space-y-2 overflow-y-auto flex-1">
+              {rows.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.15 + i * 0.05 }}
+                  className={`p-3 rounded-lg border transition-colors ${priorityColors[item.priority]}`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-start gap-2 flex-1 min-w-0">
+                      <div
+                        className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${priorityDotColors[item.priority]}`}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-cf-ink">{item.title}</p>
+                      </div>
+                    </div>
+
+                    {item.count !== undefined && (
+                      <Badge
+                        variant="outline"
+                        className={`text-xs flex-shrink-0 ${priorityTextColors[item.priority]}`}
+                      >
+                        {item.count}
+                      </Badge>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-cf-ink-60">{item.dueDate}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-xs font-medium ${priorityTextColors[item.priority]}`}>
+                        {item.daysLabel}
+                      </span>
+                      <Badge
+                        variant="outline"
+                        className={`text-[10px] ${priorityTextColors[item.priority]}`}
+                      >
+                        {item.priorityLabel}
+                      </Badge>
                     </div>
                   </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
 
-                  {item.count && (
-                    <Badge
-                      variant="outline"
-                      className={`text-xs flex-shrink-0 ${priorityTextColors[item.priority]}`}
-                    >
-                      {item.count}
-                    </Badge>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-cf-ink-60">{item.dueDate}</span>
-                  <div className="flex items-center gap-1.5">
-                    <span className={`text-xs font-medium ${priorityTextColors[item.priority]}`}>
-                      {item.daysRemaining} days
-                    </span>
-                    <Badge
-                      variant="outline"
-                      className={`text-[10px] ${priorityTextColors[item.priority]}`}
-                    >
-                      {getPriorityLabel(item.priority)}
-                    </Badge>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {sortedItems.length === 0 && (
+          {!isLoading && !error && rows.length === 0 && (
             <div className="py-8 text-center">
               <p className="text-sm text-cf-ink-60">No compliance items due</p>
             </div>
@@ -145,4 +147,9 @@ export function DashboardComplianceDue() {
       </Card>
     </motion.div>
   );
+}
+
+export function DashboardComplianceDue({ role }: { role: string }) {
+  if (!canSeeCompliance(role)) return null;
+  return <ComplianceDueCard />;
 }

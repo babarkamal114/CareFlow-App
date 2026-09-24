@@ -35,7 +35,7 @@ export function parseLocalDay(iso: string): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-export function formatDate(iso: string): string {
+export function formatLongDate(iso: string): string {
   const day = parseLocalDay(iso);
   if (Number.isNaN(day.getTime())) return "";
   return new Intl.DateTimeFormat("en-GB", {

@@ -7,6 +7,7 @@ import {
   DashboardVisitSection,
   DashboardWeeklyActivity,
 } from "sections";
+const role = "agency_admin";
 
 export default function DashboardHomePage() {
   return (
@@ -23,18 +24,18 @@ export default function DashboardHomePage() {
           </div>
         </div>
 
-        <DashboardStatSection role="agency_admin" />
+        <DashboardStatSection role={role}/>
         <div className="flex justify-between gap-x-4">
-          <DashboardVisitSection role="agency_admin" />
+          <DashboardVisitSection role={role}/>
           <div className="flex flex-col w-full max-w-sm gap-y-4">
-            <DashboardAttentionBoard />
-            <DashboardOnShiftSection />
+            <DashboardAttentionBoard role={role}/>
+            <DashboardOnShiftSection role={role}/>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 h-[440px]">
-          <DashboardWeeklyActivity />
-          <DashboardCQCBreakdown />
-          <DashboardComplianceDue />
+          <DashboardWeeklyActivity role={role}/>
+          <DashboardCQCBreakdown role={role}/>
+          <DashboardComplianceDue role={role}/>
         </div>
       </div>
     </div>

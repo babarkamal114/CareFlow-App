@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { StatCard } from "shared";
 import { useDashboardStats } from "lib";
 import { buildStatCards, getVisibleStatDefinitions } from "utils";
+import { Button } from '@/components/ui';
 
 interface DashboardStatSectionProps {
   role: string;
@@ -62,9 +63,9 @@ function DashboardStatSection({ role }: DashboardStatSectionProps) {
     return (
       <div className="rounded-xl cf-glass-panel p-4 flex items-center justify-between text-sm">
         <span className="text-cf-ink-40">Couldn&apos;t load dashboard stats.</span>
-        <button onClick={refetch} className="font-semibold text-cf-ink underline">
+        <Button onClick={refetch} className="font-semibold text-cf-ink underline">
           Retry
-        </button>
+        </Button>
       </div>
     );
   }

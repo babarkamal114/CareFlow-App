@@ -23,6 +23,7 @@ export * from './dashboard-compliance'
 export * from './dashboard-cqc'
 export * from './dashboard-revenue'
 export * from './dashboard-activity'
+export * from './dashboard-helpers'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,
