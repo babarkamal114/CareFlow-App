@@ -25,16 +25,12 @@ export default function DashboardHomePage() {
 
         <DashboardStatSection role="agency_admin" />
         <div className="flex justify-between gap-x-4">
-          <DashboardVisitSection />
+          <DashboardVisitSection role="agency_admin" />
           <div className="flex flex-col w-full max-w-sm gap-y-4">
             <DashboardAttentionBoard />
             <DashboardOnShiftSection />
           </div>
         </div>
-
-        {/* Fixed row height so all three cards get a real, equal height
-            to fill — and the chart's container has an actual number to
-            compute against instead of leaving blank space below it. */}
         <div className="grid grid-cols-3 gap-4 h-[440px]">
           <DashboardWeeklyActivity />
           <DashboardCQCBreakdown />

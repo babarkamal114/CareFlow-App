@@ -15,6 +15,7 @@ export * from './type-color-map';
 export * from './file-format-size'
 export * from './progress-colors'
 export * from './dashboard-stats'
+export * from './dashboard-visits'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,
