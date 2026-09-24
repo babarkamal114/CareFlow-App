@@ -6,3 +6,4 @@ export * from "./use-agency-api";
 export * from "./use-staff-api";
 export * from "./use-roles-api";
 export * from "./use-permissions-api";
+export * from '../../hooks/use-dashboard-stats';

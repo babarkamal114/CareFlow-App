@@ -1,57 +1,17 @@
-// components/sections/dashboard/DashboardOnShiftSection.tsx
+'use client';
+
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Badge, BadgeProps } from '@/components/ui';
+import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@/components/ui';
 import { Users } from 'lucide-react';
 
-interface Carer {
-  id: string;
-  name: string;
-  avatar?: string;
-  status?: 'active' | 'break' | 'en-route';
-}
+import { useOnShiftCarers } from 'hooks';
+import { canSeeStaff, getCarerBadgeVariant } from 'utils';
 
+function OnShiftCard() {
+  const { data, isLoading, error, refetch } = useOnShiftCarers();
 
-const mockCarersOnShift: Carer[] = [
-  { id: '1', name: 'Sarah Johnson', status: 'active' },
-  { id: '2', name: 'Michael Chen', status: 'en-route' },
-  { id: '3', name: 'Emma Williams', status: 'active' },
-  { id: '4', name: 'David Smith', status: 'break' },
-  { id: '5', name: 'Lisa Garcia', status: 'active' },
-  { id: '6', name: 'James Wilson', status: 'active' },
-  { id: '7', name: 'Anna Martinez', status: 'active' },
-  { id: '8', name: 'Robert Brown', status: 'en-route' },
-  { id: '9', name: 'Sophie Taylor', status: 'active' },
-  { id: '10', name: 'John Anderson', status: 'active' },
-  { id: '11', name: 'Rachel White', status: 'active' },
-  { id: '12', name: 'Tom Harris', status: 'break' },
-];
-
-const badgeVariants: BadgeProps['variant'][] = [
-  'pastel-success',
-  'pastel-warning',
-  'pastel-info',
-  'pastel-danger',
-  'pastel-purple',
-  'pastel-pink',
-  'pastel-indigo',
-  'pastel-teal',
-  'pastel-orange',
-  'pastel-cyan',
-  'pastel-lime',
-  'pastel-amber',
-  'pastel-emerald',
-  'pastel-rose',
-];
-
-const getRandomVariant = (index: number): BadgeProps['variant'] => {
-  return badgeVariants[index % badgeVariants.length];
-};
-
-function DashboardOnShiftSection() {
-  const MAX_DISPLAY = 5;
-  const displayedCarers = mockCarersOnShift.slice(0, MAX_DISPLAY);
-  const remainingCount = mockCarersOnShift.length - MAX_DISPLAY;
+  const carers = data?.carers ?? [];
+  const remainingCount = Math.max(0, (data?.total ?? 0) - carers.length);
 
   return (
     <Card className="border-cf-border w-full">
@@ -62,38 +22,69 @@ function DashboardOnShiftSection() {
             On Shift Now
           </CardTitle>
         </div>
-        <Badge 
-        variant="pastel-zinc"
-        shape={'pill'}
-        >
-          {mockCarersOnShift.length} active
-        </Badge>
+        {data && (
+          <Badge variant="pastel-zinc" shape={'pill'}>
+            {data.total} active
+          </Badge>
+        )}
       </CardHeader>
 
       <CardContent className="px-4 pb-4">
-        <div className="flex flex-wrap gap-2">
-          {displayedCarers.map((carer, index) => (
-            <Badge
-              key={carer.id}
-              variant={getRandomVariant(index)}
-              className="text-xs font-medium py-1.5 px-2.5 rounded-full"
-            >
-              {carer.name}
-            </Badge>
-          ))}
+        {isLoading && (
+          <div className="flex flex-wrap gap-2 animate-pulse">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-7 w-24 rounded-full bg-cf-ink-40/20" />
+            ))}
+          </div>
+        )}
 
-          {remainingCount > 0 && (
-            <Badge
-              variant="pastel-neutral"
-              className="text-xs font-medium py-1.5 px-2.5 rounded-full"
-            >
-              +{remainingCount} more
-            </Badge>
-          )}
-        </div>
+        {!isLoading && error && (
+          <p className="text-xs text-cf-ink-60">
+            Couldn&apos;t load staff.{' '}
+            <Button onClick={refetch} className="font-semibold text-cf-ink underline">
+              Retry
+            </Button>
+          </p>
+        )}
+
+        {!isLoading && !error && carers.length === 0 && (
+          <p className="text-xs text-cf-ink-40">Nobody is on shift right now.</p>
+        )}
+
+        {!isLoading && !error && carers.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {carers.map((carer) => (
+              <Badge
+                key={carer.id}
+                variant={getCarerBadgeVariant(carer.id)}
+                className="text-xs font-medium py-1.5 px-2.5 rounded-full"
+              >
+                {carer.name}
+              </Badge>
+            ))}
+
+            {remainingCount > 0 && (
+              <Badge
+                variant="pastel-neutral"
+                className="text-xs font-medium py-1.5 px-2.5 rounded-full"
+              >
+                +{remainingCount} more
+              </Badge>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
+}
+
+interface DashboardOnShiftSectionProps {
+  role: string;
+}
+
+function DashboardOnShiftSection({ role }: DashboardOnShiftSectionProps) {
+  if (!canSeeStaff(role)) return null;
+  return <OnShiftCard />;
 }
 
 export default DashboardOnShiftSection;

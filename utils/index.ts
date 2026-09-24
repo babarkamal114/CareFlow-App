@@ -14,6 +14,16 @@ export * from './style-getters';
 export * from './type-color-map';
 export * from './file-format-size'
 export * from './progress-colors'
+export * from './dashboard-stats'
+export * from './dashboard-visits'
+export * from './dashboard-notifications'
+export * from './dashboard-staff'
+export * from './dashboard-attention'
+export * from './dashboard-compliance'
+export * from './dashboard-cqc'
+export * from './dashboard-revenue'
+export * from './dashboard-activity'
+export * from './dashboard-helpers'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,

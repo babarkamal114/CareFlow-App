@@ -7,13 +7,11 @@ import {
   DashboardVisitSection,
   DashboardWeeklyActivity,
 } from "sections";
+const role = "agency_admin";
 
 export default function DashboardHomePage() {
   return (
     <div className="w-full p-6 bg-transparent">
-      {/* One white rounded panel holding the heading AND everything
-          below it — no overflow/scroll here, the shell's <main> is
-          the only scroll container. */}
       <div className="rounded-2xl bg-cf-surface shadow-cf-md p-6 space-y-4">
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-cf-border-light">
           <div>
@@ -26,22 +24,18 @@ export default function DashboardHomePage() {
           </div>
         </div>
 
-        <DashboardStatSection />
+        <DashboardStatSection role={role}/>
         <div className="flex justify-between gap-x-4">
-          <DashboardVisitSection />
+          <DashboardVisitSection role={role}/>
           <div className="flex flex-col w-full max-w-sm gap-y-4">
-            <DashboardAttentionBoard />
-            <DashboardOnShiftSection />
+            <DashboardAttentionBoard role={role}/>
+            <DashboardOnShiftSection role={role}/>
           </div>
         </div>
-
-        {/* Fixed row height so all three cards get a real, equal height
-            to fill — and the chart's container has an actual number to
-            compute against instead of leaving blank space below it. */}
         <div className="grid grid-cols-3 gap-4 h-[440px]">
-          <DashboardWeeklyActivity />
-          <DashboardCQCBreakdown />
-          <DashboardComplianceDue />
+          <DashboardWeeklyActivity role={role}/>
+          <DashboardCQCBreakdown role={role}/>
+          <DashboardComplianceDue role={role}/>
         </div>
       </div>
     </div>
