@@ -1,60 +1,77 @@
-import React from "react";
+"use client";
+
+import React, { useMemo } from "react";
+import { motion } from "framer-motion";
 import { StatCard } from "shared";
-import { Users, UserPlus, FileText, Calendar } from "lucide-react";
+import { usePatientStats } from "hooks";
+import { buildPatientStatCards, getVisiblePatientStatDefinitions } from "utils";
+
+const GRID_COLS: Record<number, string> = {
+  1: "lg:grid-cols-1",
+  2: "lg:grid-cols-2",
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+};
+
+function StatCardSkeleton() {
+  return (
+    <div className="w-full rounded-xl cf-glass-panel animate-pulse">
+      <div className="flex flex-col gap-4 py-4 px-4">
+        <div className="size-8 rounded-lg bg-cf-ink-40/20" />
+        <div className="h-3 w-24 rounded bg-cf-ink-40/20" />
+        <div className="h-9 w-20 rounded bg-cf-ink-40/20" />
+      </div>
+    </div>
+  );
+}
 
 function PatientStatSection() {
+  const { data, isLoading, error, refetch } = usePatientStats();
+
+  const visibleCount = useMemo(() => getVisiblePatientStatDefinitions().length, []);
+
+  const cards = useMemo(() => (data ? buildPatientStatCards(data) : []), [data]);
+
+  if (visibleCount === 0) return null;
+
+  const gridClass = `grid grid-cols-1 sm:grid-cols-2 ${
+    GRID_COLS[Math.min(visibleCount, 4)]
+  } gap-4`;
+
+  if (isLoading) {
+    return (
+      <div className={gridClass}>
+        {Array.from({ length: visibleCount }).map((_, i) => (
+          <StatCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-xl cf-glass-panel p-4 flex items-center justify-between text-sm">
+        <span className="text-cf-ink-40">Couldn&apos;t load patient stats.</span>
+        <button onClick={refetch} className="font-semibold text-cf-ink underline">
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard
-        label="Total Patients"
-        value="142"
-        Icon={Users}
-        description="Active patients under care"
-        showScore={false}
-        showTrend={true}
-        trend="up"
-        hasCqcScore={false}
-        hasValueBadge={true}
-        valueBadgeValue="12%"
-      />
-
-      <StatCard
-        label="New Patients"
-        value="18"
-        Icon={UserPlus}
-        description="Added this month"
-        showScore={false}
-        showTrend={true}
-        trend="up"
-        hasCqcScore={false}
-        hasValueBadge={true}
-        valueBadgeValue="8"
-      />
-
-      <StatCard
-        label="Active Care Plans"
-        value="98"
-        Icon={FileText}
-        description="Care plans currently active"
-        showScore={true}
-        score={85}
-        showTrend={false}
-        hasCqcScore={false}
-        hasValueBadge={false}
-      />
-
-      <StatCard
-        label="Visits Today"
-        value="48"
-        Icon={Calendar}
-        description="Scheduled patient visits"
-        showScore={false}
-        showTrend={true}
-        trend="up"
-        hasCqcScore={false}
-        hasValueBadge={true}
-        valueBadgeValue="5%"
-      />
+    <div className={gridClass}>
+      {cards.map(({ id, props }, i) => (
+        <motion.div
+          key={id}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ y: -3 }}
+        >
+          <StatCard {...props} />
+        </motion.div>
+      ))}
     </div>
   );
 }
