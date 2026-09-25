@@ -27,7 +27,9 @@ const item = {
 };
 
 export default function PatientsPage() {
-  const [activeTab, setActiveTab] = useState<
+  const role = "agency_admin"; 
+
+  const [activeTab, setActiveTab] = useState <
     "active" | "on-hold" | "high-risk" | "review-date" | "new" | "all"
   >("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -112,6 +114,22 @@ export default function PatientsPage() {
     return result;
   }, [patientsData, activeTab, searchQuery]);
 
+  const tabCounts = useMemo(() => {
+    return {
+      all: patientsData.length,
+      active: patientsData.filter((p) => p.status === "active").length,
+      "on-hold": patientsData.filter((p) => p.status === "on-hold").length,
+      "high-risk": patientsData.filter((p) => p.risk === "high").length,
+      "review-date": patientsData.filter((p) => {
+        const today = new Date();
+        const nextVisitDate = new Date(p.nextVisit);
+        const diffDays = (nextVisitDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
+        return diffDays >= 0 && diffDays <= 7;
+      }).length,
+      new: patientsData.filter((p) => p.status === "new").length,
+    };
+  }, [patientsData]);
+
   const handleExportClick = () => {
     console.log("Export patients");
   };
@@ -131,10 +149,6 @@ export default function PatientsPage() {
 
   return (
     <div className="w-full p-6 bg-transparent">
-      {/* One white rounded panel holding the heading and everything below
-          it — same structure as Dashboard/Staff. No overflow here: the
-          shell's <main> is the only scroll container, avoiding a second
-          scrollbar. */}
       <motion.div
         initial="hidden"
         animate="show"
@@ -177,6 +191,7 @@ export default function PatientsPage() {
             onExportClick={handleExportClick}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
+            tabCounts={tabCounts}
           />
 
           <PatientsTable patients={filteredPatients} onView={handleViewPatient} />

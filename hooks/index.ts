@@ -6,3 +6,5 @@ export * from "./use-page-info";
 export * from "./use-create-agency";
 export * from "./use-get-agency";
 export * from './use-patient-stats';
+export * from './use-patients';
+export * from './use-patients-page';
