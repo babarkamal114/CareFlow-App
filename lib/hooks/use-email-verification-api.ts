@@ -44,7 +44,7 @@ export function useSendVerificationCodeApi(
                 queryKey: [...sendVerificationCodeKeys]
             })
         },
-        showErrorToast: true,
+        showErrorToast: false,
         ...options
     })
 }
