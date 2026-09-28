@@ -24,6 +24,8 @@ export * from './patient-info'
 export * from './patient-medications'
 export * from './patient-medical-history'
 export * from './patient-preferences'
+export * from './patient-create'
+export * from './carers'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,
