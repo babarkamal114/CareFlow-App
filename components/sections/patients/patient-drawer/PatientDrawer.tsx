@@ -1,7 +1,5 @@
-// components/sections/patients/patient-drawer/PatientDrawer.tsx
 'use client';
 
-import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
 import { Badge } from "@/components/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
@@ -19,6 +17,7 @@ import {
 } from "@/components/ui";
 import { Button } from "@/components/ui";
 import { ChevronDown } from 'lucide-react';
+import { usePatientDrawer } from 'hooks';
 import { PatientDrawerFooter } from '../PatientDrawerFooter';
 import { PatientDischargeModal, type DischargePayload } from './PatientDischargeModal';
 import { PatientInfoTab } from './PatientInfoTab';
@@ -105,6 +104,7 @@ interface PatientDrawerProps {
   onEditPatient?: () => void;
   onUpdateMeds?: () => void;
   onDischarge?: (patientId: string, payload: DischargePayload) => Promise<void> | void;
+  isLoading?: boolean;
 }
 
 const MAIN_TABS = [
@@ -122,9 +122,31 @@ const MORE_TABS = [
   { value: 'risk', label: 'Risk' },
 ];
 
-export function PatientDrawer({ patient, open, onOpenChange, onEditPatient, onUpdateMeds, onDischarge }: PatientDrawerProps) {
-  const [activeTab, setActiveTab] = useState('info');
-  const [dischargeModalOpen, setDischargeModalOpen] = useState(false);
+function TabBodySkeleton() {
+  return (
+    <div className="space-y-4">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="rounded-lg border border-cf-border p-4 space-y-3">
+          <div className="h-4 w-32 rounded bg-cf-ink-40/20 animate-pulse" />
+          <div className="h-3 w-full rounded bg-cf-ink-40/20 animate-pulse" />
+          <div className="h-3 w-2/3 rounded bg-cf-ink-40/20 animate-pulse" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function PatientDrawer({
+  patient,
+  open,
+  onOpenChange,
+  onEditPatient,
+  onUpdateMeds,
+  onDischarge,
+  isLoading = false,
+}: PatientDrawerProps) {
+  const { activeTab, setActiveTab, dischargeModalOpen, setDischargeModalOpen } =
+    usePatientDrawer(open, patient?.id);
 
   if (!patient) return null;
 
@@ -208,62 +230,74 @@ export function PatientDrawer({ patient, open, onOpenChange, onEditPatient, onUp
             </div>
 
             <TabsContent value="info" className="p-6">
-              <PatientInfoTab patient={patient} />
+              {isLoading ? <TabBodySkeleton /> : <PatientInfoTab patient={patient} />}
             </TabsContent>
 
             <TabsContent value="medical" className="p-6">
-              <PatientMedicalHistoryTab
-                conditions={patient.conditions || []}
-                allergies={patient.allergies || []}
-                hospitalisations={patient.hospitalisations || []}
-              />
+              {isLoading ? (
+                <TabBodySkeleton />
+              ) : (
+                <PatientMedicalHistoryTab
+                  conditions={patient.conditions || []}
+                  allergies={patient.allergies || []}
+                  hospitalisations={patient.hospitalisations || []}
+                />
+              )}
             </TabsContent>
 
             <TabsContent value="communication" className="p-6">
-              <PatientCommunicationTab
-                preferredLanguage={patient.preferredLanguage}
-                hearingImpairment={patient.hearingImpairment}
-                visionImpairment={patient.visionImpairment}
-                mentalCapacity={patient.mentalCapacity}
-                hearingAids={patient.hearingAids}
-                glasses={patient.glasses}
-                pictureBoard={patient.pictureBoard}
-                interpreter={patient.interpreter}
-                communicationNotes={patient.communicationNotes}
-                poaName={patient.poaName}
-                poaRelationship={patient.poaRelationship}
-                poaPhone={patient.poaPhone}
-              />
+              {isLoading ? (
+                <TabBodySkeleton />
+              ) : (
+                <PatientCommunicationTab
+                  preferredLanguage={patient.preferredLanguage}
+                  hearingImpairment={patient.hearingImpairment}
+                  visionImpairment={patient.visionImpairment}
+                  mentalCapacity={patient.mentalCapacity}
+                  hearingAids={patient.hearingAids}
+                  glasses={patient.glasses}
+                  pictureBoard={patient.pictureBoard}
+                  interpreter={patient.interpreter}
+                  communicationNotes={patient.communicationNotes}
+                  poaName={patient.poaName}
+                  poaRelationship={patient.poaRelationship}
+                  poaPhone={patient.poaPhone}
+                />
+              )}
             </TabsContent>
 
             <TabsContent value="preferences" className="p-6">
-              <PatientPreferencesTab
-                wakeTime={patient.wakeTime}
-                bedTime={patient.bedTime}
-                breakfastTime={patient.breakfastTime}
-                lunchTime={patient.lunchTime}
-                dinnerTime={patient.dinnerTime}
-                bathPreference={patient.bathPreference}
-                teaPreference={patient.teaPreference}
-                dietaryPreferences={patient.dietaryPreferences}
-                culturalReligious={patient.culturalReligious}
-                likes={patient.likes}
-                dislikes={patient.dislikes}
-                hobbies={patient.hobbies}
-                dailyRoutine={patient.dailyRoutine}
-              />
+              {isLoading ? (
+                <TabBodySkeleton />
+              ) : (
+                <PatientPreferencesTab
+                  wakeTime={patient.wakeTime}
+                  bedTime={patient.bedTime}
+                  breakfastTime={patient.breakfastTime}
+                  lunchTime={patient.lunchTime}
+                  dinnerTime={patient.dinnerTime}
+                  bathPreference={patient.bathPreference}
+                  teaPreference={patient.teaPreference}
+                  dietaryPreferences={patient.dietaryPreferences}
+                  culturalReligious={patient.culturalReligious}
+                  likes={patient.likes}
+                  dislikes={patient.dislikes}
+                  hobbies={patient.hobbies}
+                  dailyRoutine={patient.dailyRoutine}
+                />
+              )}
             </TabsContent>
 
             <TabsContent value="activity" className="p-6">
-              <PatientActivityTab />
+              <PatientActivityTab patientId={patient.id} />
             </TabsContent>
 
             <TabsContent value="medications" className="p-6">
-              <PatientMedicationsTab />
+              <PatientMedicationsTab patientId={patient.id} />
             </TabsContent>
 
             <TabsContent value="documents" className="p-6">
-              <PatientDocumentsTab />
+              <PatientDocumentsTab patientId={patient.id} />
             </TabsContent>
 
             <TabsContent value="clinical" className="p-6">

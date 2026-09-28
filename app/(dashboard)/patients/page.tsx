@@ -41,10 +41,7 @@ export default function PatientsPage() {
   const [medicationModalOpen, setMedicationModalOpen] = useState(false);
   const [patientMeds, setPatientMeds] = useState<Medication[]>([]);
 
-  const handleEditMedications = (medications: Medication[]) => {
-    setPatientMeds(medications);
-    setMedicationModalOpen(true);
-  };
+  const handleEditMedications = () => setMedicationModalOpen(true);
 
   const handleSaveMedications = async (medications: Medication[]) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));

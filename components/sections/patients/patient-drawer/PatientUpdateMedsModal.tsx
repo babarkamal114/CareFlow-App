@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui";
-import { Label } from "@/components/ui";
-import { Card, CardContent } from "@/components/ui";
-import { Badge } from "@/components/ui";
 import {
-   Dialog,
+  Button,
+  Input,
+  Label,
+  Card,
+  CardContent,
+  Badge,
+  Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -20,40 +20,18 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { X, Plus, Loader2 } from 'lucide-react';
+import { useMedicationForm } from 'hooks';
+import {
+  MEDICATION_ROUTES,
+  MEDICATION_TYPES,
+  getMedicationTypeBadgeVariant,
+  getMedicationTypeLabel,
+  type MedicationType,
+  type PatientMedication,
+} from 'utils';
 
-const MEDICATION_TYPES = [
-  { value: 'regular', label: 'Regular' },
-  { value: 'prn', label: 'PRN (As Needed)' },
-  { value: 'controlled', label: 'Controlled Drug' },
-  { value: 'short-course', label: 'Short Course' },
-  { value: 'variable-dose', label: 'Variable Dose' },
-] as const;
-
-const ROUTES = ['Oral', 'Topical', 'Inhaled', 'Subcutaneous', 'Intramuscular', 'Patch', 'PEG'];
-
-const medicationTypeLabel = (value: string) =>
-  MEDICATION_TYPES.find((t) => t.value === value)?.label || 'Regular';
-
-const medicationTypeBadgeVariant = (value: string) => {
-  if (value === 'controlled') return 'pastel-danger';
-  if (value === 'prn') return 'pastel-warning';
-  if (value === 'variable-dose') return 'pastel-info';
-  return 'pastel-success';
-};
-
-export interface Medication {
-  id: string;
-  name: string;
-  dosage: string;
-  frequency: string;
-  timing: string;
-  indication: string;
-  route?: string;
-  prescriber?: string;
-  startDate?: string;
-  medicationType?: 'regular' | 'prn' | 'controlled' | 'short-course' | 'variable-dose';
-  instructions?: string;
-}
+// Re-exported so `import { type Medication } from "sections"` keeps working.
+export type Medication = PatientMedication;
 
 interface EditMedicationModalProps {
   open: boolean;
@@ -63,18 +41,60 @@ interface EditMedicationModalProps {
   patientName?: string;
 }
 
-const emptyMedication = {
-  name: '',
-  dosage: '',
-  frequency: '',
-  timing: '',
-  indication: '',
-  route: 'Oral',
-  prescriber: '',
-  startDate: '',
-  medicationType: 'regular' as const,
-  instructions: '',
-};
+interface DraftFieldProps {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  type?: string;
+  error?: string | undefined;
+}
+
+/** Label + input + error for the "add medication" form. */
+function DraftField({ id, label, value, onChange, placeholder = '', type = 'text', error }: DraftFieldProps) {
+  return (
+    <div className="space-y-1">
+      <Label htmlFor={id} className="text-xs font-medium">
+        {label}
+      </Label>
+      <Input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`border-cf-border h-8 text-sm ${error ? 'border-red-500' : ''}`}
+      />
+      {error && <p className="text-xs text-red-500">{error}</p>}
+    </div>
+  );
+}
+
+/** Compact input for editing a medication that is already on the list. */
+function RowInput({
+  value,
+  onChange,
+  placeholder = '',
+  type = 'text',
+  className = 'flex-1',
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  type?: string;
+  className?: string;
+}) {
+  return (
+    <Input
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e.target.value)}
+      className={`border-cf-border h-7 text-sm ${className}`}
+    />
+  );
+}
 
 export function EditMedicationModal({
   open,
@@ -83,55 +103,25 @@ export function EditMedicationModal({
   onSave,
   patientName,
 }: EditMedicationModalProps) {
-  const [meds, setMeds] = useState<Medication[]>([]);
-  const [newMedication, setNewMedication] = useState(emptyMedication);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (open && medications) {
-      setMeds(medications);
-    }
-  }, [open, medications]);
-
-  const handleAddMedication = () => {
-    if (
-      newMedication.name &&
-      newMedication.dosage &&
-      newMedication.frequency &&
-      newMedication.timing
-    ) {
-      setMeds([
-        ...meds,
-        {
-          id: Date.now().toString(),
-          ...newMedication,
-        },
-      ]);
-      setNewMedication(emptyMedication);
-    }
-  };
-
-  const handleRemoveMedication = (id: string) => {
-    setMeds(meds.filter((med) => med.id !== id));
-  };
-
-  const handleUpdateMedication = (id: string, field: keyof Medication, value: string) => {
-    setMeds(meds.map((med) =>
-      med.id === id ? { ...med, [field]: value } : med
-    ));
-  };
-
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    try {
-      await onSave(meds);
-      onOpenChange(false);
-    } catch (error) {
-      console.error('Failed to update medications:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const {
+    meds,
+    draft,
+    draftErrors,
+    incompleteIds,
+    isLoading,
+    isDirty,
+    hasPendingDraft,
+    updateDraft,
+    addMedication,
+    removeMedication,
+    updateMedication,
+    submit,
+  } = useMedicationForm({
+    open,
+    medications,
+    onSave,
+    onClose: () => onOpenChange(false),
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -146,91 +136,21 @@ export function EditMedicationModal({
         <div className="space-y-4 py-4">
           <Card className="border-cf-border p-4 space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <Label htmlFor="med-name" className="text-xs font-medium">
-                  Medication Name
-                </Label>
-                <Input
-                  id="med-name"
-                  placeholder="Lisinopril"
-                  value={newMedication.name}
-                  onChange={(e) =>
-                    setNewMedication((prev) => ({
-                      ...prev,
-                      name: e.target.value,
-                    }))
-                  }
-                  className="border-cf-border h-8 text-sm"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <Label htmlFor="med-dosage" className="text-xs font-medium">
-                  Dosage
-                </Label>
-                <Input
-                  id="med-dosage"
-                  placeholder="10mg"
-                  value={newMedication.dosage}
-                  onChange={(e) =>
-                    setNewMedication((prev) => ({
-                      ...prev,
-                      dosage: e.target.value,
-                    }))
-                  }
-                  className="border-cf-border h-8 text-sm"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <Label htmlFor="med-frequency" className="text-xs font-medium">
-                  Frequency
-                </Label>
-                <Input
-                  id="med-frequency"
-                  placeholder="Once daily"
-                  value={newMedication.frequency}
-                  onChange={(e) =>
-                    setNewMedication((prev) => ({
-                      ...prev,
-                      frequency: e.target.value,
-                    }))
-                  }
-                  className="border-cf-border h-8 text-sm"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <Label htmlFor="med-timing" className="text-xs font-medium">
-                  Timing
-                </Label>
-                <Input
-                  id="med-timing"
-                  placeholder="Morning"
-                  value={newMedication.timing}
-                  onChange={(e) =>
-                    setNewMedication((prev) => ({
-                      ...prev,
-                      timing: e.target.value,
-                    }))
-                  }
-                  className="border-cf-border h-8 text-sm"
-                />
-              </div>
+              <DraftField id="med-name" label="Medication Name *" placeholder="Lisinopril" value={draft.name} error={draftErrors.name} onChange={(v) => updateDraft('name', v)} />
+              <DraftField id="med-dosage" label="Dosage *" placeholder="10mg" value={draft.dosage} error={draftErrors.dosage} onChange={(v) => updateDraft('dosage', v)} />
+              <DraftField id="med-frequency" label="Frequency *" placeholder="Once daily" value={draft.frequency} error={draftErrors.frequency} onChange={(v) => updateDraft('frequency', v)} />
+              <DraftField id="med-timing" label="Timing *" placeholder="Morning" value={draft.timing} error={draftErrors.timing} onChange={(v) => updateDraft('timing', v)} />
 
               <div className="space-y-1">
                 <Label htmlFor="med-route" className="text-xs font-medium">
                   Route
                 </Label>
-                <Select
-                  value={newMedication.route}
-                  onValueChange={(val) => setNewMedication((prev) => ({ ...prev, route: val! }))}
-                >
+                <Select value={draft.route} onValueChange={(val) => updateDraft('route', val ?? 'Oral')}>
                   <SelectTrigger id="med-route" className="border-cf-border h-8 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {ROUTES.map((r) => (
+                    {MEDICATION_ROUTES.map((r) => (
                       <SelectItem key={r} value={r}>
                         {r}
                       </SelectItem>
@@ -244,10 +164,8 @@ export function EditMedicationModal({
                   Medication Type
                 </Label>
                 <Select
-                  value={newMedication.medicationType}
-                  onValueChange={(val) =>
-                    setNewMedication((prev) => ({ ...prev, medicationType: val as any }))
-                  }
+                  value={draft.medicationType}
+                  onValueChange={(val) => updateDraft('medicationType', (val ?? 'regular') as MedicationType)}
                 >
                   <SelectTrigger id="med-type" className="border-cf-border h-8 text-sm">
                     <SelectValue />
@@ -262,81 +180,15 @@ export function EditMedicationModal({
                 </Select>
               </div>
 
-              <div className="space-y-1">
-                <Label htmlFor="med-prescriber" className="text-xs font-medium">
-                  Prescriber
-                </Label>
-                <Input
-                  id="med-prescriber"
-                  placeholder="Dr. Sarah Ahmed"
-                  value={newMedication.prescriber}
-                  onChange={(e) =>
-                    setNewMedication((prev) => ({
-                      ...prev,
-                      prescriber: e.target.value,
-                    }))
-                  }
-                  className="border-cf-border h-8 text-sm"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <Label htmlFor="med-start-date" className="text-xs font-medium">
-                  Start Date
-                </Label>
-                <Input
-                  id="med-start-date"
-                  type="date"
-                  value={newMedication.startDate}
-                  onChange={(e) =>
-                    setNewMedication((prev) => ({
-                      ...prev,
-                      startDate: e.target.value,
-                    }))
-                  }
-                  className="border-cf-border h-8 text-sm"
-                />
-              </div>
+              <DraftField id="med-prescriber" label="Prescriber" placeholder="Dr. Sarah Ahmed" value={draft.prescriber} onChange={(v) => updateDraft('prescriber', v)} />
+              <DraftField id="med-start-date" label="Start Date" type="date" value={draft.startDate} onChange={(v) => updateDraft('startDate', v)} />
             </div>
 
-            <div className="space-y-1">
-              <Label htmlFor="med-indication" className="text-xs font-medium">
-                Indication (optional)
-              </Label>
-              <Input
-                id="med-indication"
-                placeholder="Hypertension"
-                value={newMedication.indication}
-                onChange={(e) =>
-                  setNewMedication((prev) => ({
-                    ...prev,
-                    indication: e.target.value,
-                  }))
-                }
-                className="border-cf-border h-8 text-sm"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor="med-instructions" className="text-xs font-medium">
-                Special Instructions (optional)
-              </Label>
-              <Input
-                id="med-instructions"
-                placeholder="Take with food, avoid grapefruit..."
-                value={newMedication.instructions}
-                onChange={(e) =>
-                  setNewMedication((prev) => ({
-                    ...prev,
-                    instructions: e.target.value,
-                  }))
-                }
-                className="border-cf-border h-8 text-sm"
-              />
-            </div>
+            <DraftField id="med-indication" label="Indication (optional)" placeholder="Hypertension" value={draft.indication} onChange={(v) => updateDraft('indication', v)} />
+            <DraftField id="med-instructions" label="Special Instructions (optional)" placeholder="Take with food, avoid grapefruit..." value={draft.instructions} onChange={(v) => updateDraft('instructions', v)} />
 
             <Button
-              onClick={handleAddMedication}
+              onClick={addMedication}
               variant="outline"
               size="sm"
               className="w-full border-cf-border hover:bg-cf-surface-muted text-xs gap-1.5"
@@ -344,115 +196,66 @@ export function EditMedicationModal({
               <Plus className="h-3.5 w-3.5" />
               Add Medication
             </Button>
+            {hasPendingDraft && (
+              <p className="text-xs text-cf-ink-60">
+                Not added yet. Click Add Medication or it won&apos;t be saved.
+              </p>
+            )}
           </Card>
 
           {meds.length > 0 && (
             <div className="space-y-2">
-              <p className="text-xs font-semibold text-cf-ink-60">
-                Current Medications ({meds.length})
-              </p>
-              {meds.map((med) => (
-                <Card key={med.id} className="border-cf-border p-3">
-                  <CardContent className="p-0 space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1 space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Input
-                            value={med.name}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'name', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm flex-1"
-                          />
-                          <Input
-                            value={med.dosage}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'dosage', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm w-20"
-                            placeholder="Dosage"
-                          />
-                          {med.medicationType && (
-                            <Badge
-                              variant={medicationTypeBadgeVariant(med.medicationType)}
-                              className="text-[10px] shrink-0"
-                              shape="pill"
-                            >
-                              {medicationTypeLabel(med.medicationType)}
-                            </Badge>
+              <p className="text-xs font-semibold text-cf-ink-60">Current Medications ({meds.length})</p>
+              {meds.map((med) => {
+                const incomplete = incompleteIds.includes(med.id);
+
+                return (
+                  <Card key={med.id} className={`border-cf-border p-3 ${incomplete ? 'border-red-500' : ''}`}>
+                    <CardContent className="p-0 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 space-y-1">
+                          <div className="flex items-center gap-2">
+                            <RowInput value={med.name} onChange={(v) => updateMedication(med.id, 'name', v)} />
+                            <RowInput value={med.dosage} onChange={(v) => updateMedication(med.id, 'dosage', v)} placeholder="Dosage" className="w-20" />
+                            {med.medicationType && (
+                              <Badge
+                                variant={getMedicationTypeBadgeVariant(med.medicationType)}
+                                className="text-[10px] shrink-0"
+                                shape="pill"
+                              >
+                                {getMedicationTypeLabel(med.medicationType)}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <RowInput value={med.frequency} onChange={(v) => updateMedication(med.id, 'frequency', v)} placeholder="Frequency" />
+                            <RowInput value={med.timing} onChange={(v) => updateMedication(med.id, 'timing', v)} placeholder="Timing" />
+                            <RowInput value={med.route || ''} onChange={(v) => updateMedication(med.id, 'route', v)} placeholder="Route" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <RowInput value={med.prescriber || ''} onChange={(v) => updateMedication(med.id, 'prescriber', v)} placeholder="Prescriber" />
+                            <RowInput type="date" value={med.startDate || ''} onChange={(v) => updateMedication(med.id, 'startDate', v)} />
+                          </div>
+                          <RowInput className="w-full" value={med.indication || ''} onChange={(v) => updateMedication(med.id, 'indication', v)} placeholder="Indication (optional)" />
+                          <RowInput className="w-full" value={med.instructions || ''} onChange={(v) => updateMedication(med.id, 'instructions', v)} placeholder="Special instructions (optional)" />
+                          {incomplete && (
+                            <p className="text-xs text-red-500">
+                              Name, dosage, frequency and timing are required.
+                            </p>
                           )}
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            value={med.frequency}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'frequency', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm flex-1"
-                            placeholder="Frequency"
-                          />
-                          <Input
-                            value={med.timing}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'timing', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm flex-1"
-                            placeholder="Timing"
-                          />
-                          <Input
-                            value={med.route || ''}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'route', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm flex-1"
-                            placeholder="Route"
-                          />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            value={med.prescriber || ''}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'prescriber', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm flex-1"
-                            placeholder="Prescriber"
-                          />
-                          <Input
-                            type="date"
-                            value={med.startDate || ''}
-                            onChange={(e) =>
-                              handleUpdateMedication(med.id, 'startDate', e.target.value)
-                            }
-                            className="border-cf-border h-7 text-sm flex-1"
-                          />
-                        </div>
-                        <Input
-                          value={med.indication || ''}
-                          onChange={(e) =>
-                            handleUpdateMedication(med.id, 'indication', e.target.value)
-                          }
-                          className="border-cf-border h-7 text-sm"
-                          placeholder="Indication (optional)"
-                        />
-                        <Input
-                          value={med.instructions || ''}
-                          onChange={(e) =>
-                            handleUpdateMedication(med.id, 'instructions', e.target.value)
-                          }
-                          className="border-cf-border h-7 text-sm"
-                          placeholder="Special instructions (optional)"
-                        />
+                        <button
+                          onClick={() => removeMedication(med.id)}
+                          className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 mt-1"
+                          aria-label={`Remove ${med.name}`}
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => handleRemoveMedication(med.id)}
-                        className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 mt-1"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>
@@ -469,8 +272,8 @@ export function EditMedicationModal({
           </Button>
           <Button
             type="button"
-            onClick={handleSubmit}
-            disabled={isLoading}
+            onClick={submit}
+            disabled={isLoading || !isDirty}
             className="flex-1 bg-cf-primary hover:bg-cf-primary/90"
           >
             {isLoading ? (

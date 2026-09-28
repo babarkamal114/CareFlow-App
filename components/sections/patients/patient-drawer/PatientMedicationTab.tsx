@@ -1,136 +1,126 @@
 'use client';
 
+import { Fragment } from 'react';
 import { Card, CardContent, Badge } from "@/components/ui";
+import { Pill } from 'lucide-react';
+import { usePatientMedications } from 'hooks';
+import { getMedicationTypeBadgeVariant, getMedicationTypeLabel } from 'utils';
 
-const MEDICATION_TYPE_LABEL: Record<string, string> = {
-  regular: 'Regular',
-  prn: 'PRN',
-  controlled: 'Controlled',
-  'short-course': 'Short Course',
-  'variable-dose': 'Variable Dose',
-};
+interface PatientMedicationsTabProps {
+  patientId?: string;
+}
 
-const medicationTypeBadgeVariant = (value: string) => {
-  if (value === 'controlled') return 'pastel-danger';
-  if (value === 'prn') return 'pastel-warning';
-  if (value === 'variable-dose') return 'pastel-info';
-  return 'pastel-success';
-};
+function MedicationCardSkeleton() {
+  return (
+    <Card className="border-cf-border">
+      <CardContent className="pt-4 space-y-2.5">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1.5">
+            <div className="h-3.5 w-32 rounded bg-cf-ink-40/20 animate-pulse" />
+            <div className="h-3 w-24 rounded bg-cf-ink-40/20 animate-pulse" />
+          </div>
+          <div className="h-5 w-12 rounded-full bg-cf-ink-40/20 animate-pulse" />
+        </div>
+        <div className="h-3 w-52 rounded bg-cf-ink-40/20 animate-pulse" />
+        <div className="h-2.5 w-44 rounded bg-cf-ink-40/20 animate-pulse" />
+      </CardContent>
+    </Card>
+  );
+}
 
-const mockMedications = [
-  {
-    id: '1',
-    name: 'Lisinopril',
-    dosage: '10mg',
-    frequency: 'Once daily',
-    timing: 'Morning',
-    route: 'Oral',
-    indication: 'Hypertension',
-    prescriber: 'Dr. Sarah Ahmed',
-    prescribedDate: '2024-01-15',
-    medicationType: 'regular',
-    instructions: 'Take with water, avoid grapefruit',
-  },
-  {
-    id: '2',
-    name: 'Metformin',
-    dosage: '500mg',
-    frequency: 'Twice daily',
-    timing: 'With meals',
-    route: 'Oral',
-    indication: 'Type 2 Diabetes',
-    prescriber: 'Dr. Sarah Ahmed',
-    prescribedDate: '2023-11-20',
-    medicationType: 'regular',
-    instructions: '',
-  },
-  {
-    id: '3',
-    name: 'Amlodipine',
-    dosage: '5mg',
-    frequency: 'Once daily',
-    timing: 'Evening',
-    route: 'Oral',
-    indication: 'Hypertension',
-    prescriber: 'Dr. James Wilson',
-    prescribedDate: '2024-02-01',
-    medicationType: 'regular',
-    instructions: '',
-  },
-  {
-    id: '4',
-    name: 'Paracetamol',
-    dosage: '500mg',
-    frequency: 'Up to 4x daily',
-    timing: 'As needed',
-    route: 'Oral',
-    indication: 'Pain relief',
-    prescriber: 'Dr. James Wilson',
-    prescribedDate: '2024-01-05',
-    medicationType: 'prn',
-    instructions: 'Do not exceed 8 tablets in 24 hours',
-  },
-  {
-    id: '5',
-    name: 'Morphine Sulfate',
-    dosage: '10mg',
-    frequency: 'Every 4 hours',
-    timing: 'As directed',
-    route: 'Oral',
-    indication: 'Severe pain management',
-    prescriber: 'Dr. Sarah Ahmed',
-    prescribedDate: '2024-03-01',
-    medicationType: 'controlled',
-    instructions: 'Dual-witness administration required. Log stock balance after each dose.',
-  },
-];
+export function PatientMedicationsTab({ patientId }: PatientMedicationsTabProps) {
+  const { medications, isLoading, error, refetch } = usePatientMedications(patientId);
 
-export function PatientMedicationsTab() {
+  if (error) {
+    return (
+      <div className="flex items-center justify-between text-sm py-4">
+        <span className="text-cf-ink-60">Couldn&apos;t load medications.</span>
+        <button onClick={refetch} className="font-semibold text-cf-ink underline">
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <MedicationCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (medications.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <Pill className="h-12 w-12 text-cf-ink-40 mx-auto mb-3" />
+        <p className="text-sm text-cf-ink-60">No medications recorded</p>
+        <p className="text-xs text-cf-ink-40 mt-1">
+          Use Update Medication to add this patient&apos;s prescriptions
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
-      {mockMedications.map((med) => (
-        <Card key={med.id} className="border-cf-border">
-          <CardContent className="pt-4">
-            <div className="space-y-2.5">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-medium text-sm text-cf-ink">{med.name}</p>
-                    <Badge
-                      variant={medicationTypeBadgeVariant(med.medicationType)}
-                      className="text-[10px]"
-                      shape="pill"
-                    >
-                      {MEDICATION_TYPE_LABEL[med.medicationType] || 'Regular'}
-                    </Badge>
+      {medications.map((med) => {
+        const details = [med.frequency, med.timing, med.route].filter(Boolean) as string[];
+
+        return (
+          <Card key={med.id} className="border-cf-border">
+            <CardContent className="pt-4">
+              <div className="space-y-2.5">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-medium text-sm text-cf-ink">{med.name}</p>
+                      <Badge
+                        variant={getMedicationTypeBadgeVariant(med.medicationType)}
+                        className="text-[10px]"
+                        shape="pill"
+                      >
+                        {getMedicationTypeLabel(med.medicationType, 'short')}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-cf-ink-60 mt-0.5">{med.indication}</p>
                   </div>
-                  <p className="text-xs text-cf-ink-60 mt-0.5">{med.indication}</p>
+                  <Badge variant="pastel-info" className="text-xs shrink-0" shape="pill">
+                    {med.dosage}
+                  </Badge>
                 </div>
-                <Badge variant="pastel-info" className="text-xs shrink-0" shape="pill">
-                  {med.dosage}
-                </Badge>
-              </div>
-              <div className="flex items-center gap-4 text-xs text-cf-ink-60 flex-wrap">
-                <span>{med.frequency}</span>
-                <span>•</span>
-                <span>{med.timing}</span>
-                <span>•</span>
-                <span>{med.route}</span>
-              </div>
-              {med.instructions && (
-                <div className="text-xs text-cf-ink-60 bg-cf-surface-muted rounded p-2">
-                  {med.instructions}
+
+                <div className="flex items-center gap-4 text-xs text-cf-ink-60 flex-wrap">
+                  {details.map((part, i) => (
+                    <Fragment key={i}>
+                      {i > 0 && <span>•</span>}
+                      <span>{part}</span>
+                    </Fragment>
+                  ))}
                 </div>
-              )}
-              <div className="flex items-center gap-2 text-[10px] text-cf-ink-40">
-                <span>Prescribed by {med.prescriber}</span>
-                <span>•</span>
-                <span>Since {new Date(med.prescribedDate).toLocaleDateString('en-GB')}</span>
+
+                {med.instructions && (
+                  <div className="text-xs text-cf-ink-60 bg-cf-surface-muted rounded p-2">
+                    {med.instructions}
+                  </div>
+                )}
+
+                {(med.prescriber || med.startDate) && (
+                  <div className="flex items-center gap-2 text-[10px] text-cf-ink-40">
+                    {med.prescriber && <span>Prescribed by {med.prescriber}</span>}
+                    {med.prescriber && med.startDate && <span>•</span>}
+                    {med.startDate && (
+                      <span>Since {new Date(med.startDate).toLocaleDateString('en-GB')}</span>
+                    )}
+                  </div>
+                )}
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 }

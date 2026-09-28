@@ -10,3 +10,7 @@ export * from './use-patients';
 export * from './use-patients-page';
 export * from './use-patient-activity';
 export * from './use-discharge-form'
+export * from './use-patient-documents'
+export * from './use-patient-drawer'
+export * from './use-patient-medications'
+export * from './use-medication-form'

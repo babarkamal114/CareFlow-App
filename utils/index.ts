@@ -19,6 +19,11 @@ export * from './patients'
 export * from './patient-activity'
 export * from './patient-communication'
 export * from './patient-discharge'
+export * from './patient-documents'
+export * from './patient-info'
+export * from './patient-medications'
+export * from './patient-medical-history'
+export * from './patient-preferences'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,
