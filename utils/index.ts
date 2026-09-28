@@ -17,6 +17,8 @@ export * from './progress-colors'
 export * from './patient-stats'
 export * from './patients'
 export * from './patient-activity'
+export * from './patient-communication'
+export * from './patient-discharge'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,

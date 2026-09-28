@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -20,29 +19,15 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { AlertTriangle } from 'lucide-react';
+import { useDischargeForm } from 'hooks';
+import {
+  DISCHARGE_REASONS,
+  DISCHARGE_REASON_LABELS,
+  type DischargePayload,
+  type DischargeReason,
+} from 'utils';
 
-export type DischargeReason =
-  | 'recovered'
-  | 'deceased'
-  | 'moved-out-of-area'
-  | 'moved-to-care-home'
-  | 'hospital-admission-permanent'
-  | 'self-funding-withdrawn'
-  | 'family-request'
-  | 'other';
-
-export interface DischargePayload {
-  reason: DischargeReason;
-  notes: string;
-  dischargeDate: string;
-  scheduleFinalVisit: boolean;
-  finalVisitDate?: string;
-  finalVisitTime?: string;
-  notifyGp: boolean;
-  notifyNextOfKin: boolean;
-  notifyEmergencyContact: boolean;
-  otherNotifications: string;
-}
+export type { DischargePayload, DischargeReason } from 'utils';
 
 interface PatientDischargeModalProps {
   open: boolean;
@@ -54,19 +39,6 @@ interface PatientDischargeModalProps {
   onConfirm: (payload: DischargePayload) => Promise<void> | void;
 }
 
-const REASON_LABELS: Record<DischargeReason, string> = {
-  recovered: 'Recovered / no longer needs care',
-  deceased: 'Deceased',
-  'moved-out-of-area': 'Moved out of area',
-  'moved-to-care-home': 'Moved to residential care home',
-  'hospital-admission-permanent': 'Permanent hospital admission',
-  'self-funding-withdrawn': 'Self-funding withdrawn',
-  'family-request': 'Family request',
-  other: 'Other',
-};
-
-const todayISO = () => new Date().toISOString().split('T')[0];
-
 export function PatientDischargeModal({
   open,
   onOpenChange,
@@ -76,68 +48,14 @@ export function PatientDischargeModal({
   emergencyContact,
   onConfirm,
 }: PatientDischargeModalProps) {
-  const [reason, setReason] = useState<DischargeReason>('recovered');
-  const [notes, setNotes] = useState('');
-  const [dischargeDate, setDischargeDate] = useState(todayISO());
-  const [scheduleFinalVisit, setScheduleFinalVisit] = useState(true);
-  const [finalVisitDate, setFinalVisitDate] = useState('');
-  const [finalVisitTime, setFinalVisitTime] = useState('');
-  const [notifyGp, setNotifyGp] = useState(!!gpName);
-  const [notifyNextOfKin, setNotifyNextOfKin] = useState(!!nextOfKinName);
-  const [notifyEmergencyContact, setNotifyEmergencyContact] = useState(!!emergencyContact);
-  const [otherNotifications, setOtherNotifications] = useState('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-
-  const resetForm = () => {
-    setReason('recovered');
-    setNotes('');
-    setDischargeDate(todayISO());
-    setScheduleFinalVisit(true);
-    setFinalVisitDate('');
-    setFinalVisitTime('');
-    setNotifyGp(!!gpName);
-    setNotifyNextOfKin(!!nextOfKinName);
-    setNotifyEmergencyContact(!!emergencyContact);
-    setOtherNotifications('');
-    setErrors({});
-  };
-
-  const validate = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    if (!dischargeDate) newErrors.dischargeDate = 'Discharge date is required';
-    if (scheduleFinalVisit && !finalVisitDate) {
-      newErrors.finalVisitDate = 'Pick a date for the final visit, or turn scheduling off';
-    }
-    if (reason === 'other' && !notes.trim()) {
-      newErrors.notes = 'Add a reason since "Other" was selected';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleConfirm = async () => {
-    if (!validate()) return;
-    setSubmitting(true);
-    try {
-      await onConfirm({
-        reason,
-        notes,
-        dischargeDate,
-        scheduleFinalVisit,
-        finalVisitDate: scheduleFinalVisit ? finalVisitDate : undefined,
-        finalVisitTime: scheduleFinalVisit ? finalVisitTime : undefined,
-        notifyGp,
-        notifyNextOfKin,
-        notifyEmergencyContact,
-        otherNotifications,
-      });
-      resetForm();
-      onOpenChange(false);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const { form, errors, submitting, updateField, submit } = useDischargeForm({
+    open,
+    gpName,
+    nextOfKinName,
+    emergencyContact,
+    onConfirm,
+    onClose: () => onOpenChange(false),
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -158,17 +76,19 @@ export function PatientDischargeModal({
         </DialogHeader>
 
         <div className="space-y-5 py-2">
-          {/* Reason */}
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Reason for discharge *</Label>
-            <Select value={reason} onValueChange={(val) => setReason(val as DischargeReason)}>
+            <Select
+              value={form.reason}
+              onValueChange={(val) => updateField('reason', val as DischargeReason)}
+            >
               <SelectTrigger className="border-cf-border h-9 text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {(Object.keys(REASON_LABELS) as DischargeReason[]).map((key) => (
+                {DISCHARGE_REASONS.map((key) => (
                   <SelectItem key={key} value={key}>
-                    {REASON_LABELS[key]}
+                    {DISCHARGE_REASON_LABELS[key]}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -177,25 +97,23 @@ export function PatientDischargeModal({
 
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">
-              Notes {reason === 'other' && '*'}
+              Notes {form.reason === 'other' && '*'}
             </Label>
             <Textarea
               placeholder="Any additional context for the record..."
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              value={form.notes}
+              onChange={(e) => updateField('notes', e.target.value)}
               className="border-cf-border text-sm min-h-20"
             />
-            {errors.notes && (
-              <p className="text-xs text-[var(--cf-error)]">{errors.notes}</p>
-            )}
+            {errors.notes && <p className="text-xs text-[var(--cf-error)]">{errors.notes}</p>}
           </div>
 
           <div className="space-y-1.5">
             <Label className="text-xs font-medium">Discharge date *</Label>
             <Input
               type="date"
-              value={dischargeDate}
-              onChange={(e) => setDischargeDate(e.target.value)}
+              value={form.dischargeDate}
+              onChange={(e) => updateField('dischargeDate', e.target.value)}
               className="border-cf-border h-9 text-sm"
             />
             {errors.dischargeDate && (
@@ -203,30 +121,29 @@ export function PatientDischargeModal({
             )}
           </div>
 
-          {/* Final visit */}
           <div className="space-y-2 rounded-lg border border-cf-border-light p-3">
             <div className="flex items-center gap-2">
               <Checkbox
                 id="scheduleFinalVisit"
-                checked={scheduleFinalVisit}
-                onCheckedChange={(checked) => setScheduleFinalVisit(checked as boolean)}
+                checked={form.scheduleFinalVisit}
+                onCheckedChange={(checked) => updateField('scheduleFinalVisit', checked as boolean)}
               />
               <Label htmlFor="scheduleFinalVisit" className="text-sm font-medium cursor-pointer">
                 Schedule a final visit
               </Label>
             </div>
-            {scheduleFinalVisit && (
+            {form.scheduleFinalVisit && (
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <Input
                   type="date"
-                  value={finalVisitDate}
-                  onChange={(e) => setFinalVisitDate(e.target.value)}
+                  value={form.finalVisitDate}
+                  onChange={(e) => updateField('finalVisitDate', e.target.value)}
                   className="border-cf-border h-8 text-sm"
                 />
                 <Input
                   type="time"
-                  value={finalVisitTime}
-                  onChange={(e) => setFinalVisitTime(e.target.value)}
+                  value={form.finalVisitTime}
+                  onChange={(e) => updateField('finalVisitTime', e.target.value)}
                   className="border-cf-border h-8 text-sm"
                 />
               </div>
@@ -236,16 +153,15 @@ export function PatientDischargeModal({
             )}
           </div>
 
-          {/* Notifications */}
           <div className="space-y-2 rounded-lg border border-cf-border-light p-3">
             <p className="text-xs font-medium text-cf-ink-60">Notify on discharge</p>
 
             <div className="flex items-center gap-2">
               <Checkbox
                 id="notifyGp"
-                checked={notifyGp}
+                checked={form.notifyGp}
                 disabled={!gpName}
-                onCheckedChange={(checked) => setNotifyGp(checked as boolean)}
+                onCheckedChange={(checked) => updateField('notifyGp', checked as boolean)}
               />
               <Label htmlFor="notifyGp" className="text-sm font-normal cursor-pointer">
                 GP {gpName ? `(${gpName})` : '(no GP on file)'}
@@ -255,9 +171,9 @@ export function PatientDischargeModal({
             <div className="flex items-center gap-2">
               <Checkbox
                 id="notifyNextOfKin"
-                checked={notifyNextOfKin}
+                checked={form.notifyNextOfKin}
                 disabled={!nextOfKinName}
-                onCheckedChange={(checked) => setNotifyNextOfKin(checked as boolean)}
+                onCheckedChange={(checked) => updateField('notifyNextOfKin', checked as boolean)}
               />
               <Label htmlFor="notifyNextOfKin" className="text-sm font-normal cursor-pointer">
                 Next of kin {nextOfKinName ? `(${nextOfKinName})` : '(none on file)'}
@@ -267,9 +183,9 @@ export function PatientDischargeModal({
             <div className="flex items-center gap-2">
               <Checkbox
                 id="notifyEmergencyContact"
-                checked={notifyEmergencyContact}
+                checked={form.notifyEmergencyContact}
                 disabled={!emergencyContact}
-                onCheckedChange={(checked) => setNotifyEmergencyContact(checked as boolean)}
+                onCheckedChange={(checked) => updateField('notifyEmergencyContact', checked as boolean)}
               />
               <Label htmlFor="notifyEmergencyContact" className="text-sm font-normal cursor-pointer">
                 Emergency contact {emergencyContact ? `(${emergencyContact})` : '(none on file)'}
@@ -280,8 +196,8 @@ export function PatientDischargeModal({
               <Label className="text-xs font-medium">Other professionals to notify</Label>
               <Input
                 placeholder="e.g. Social worker, pharmacist..."
-                value={otherNotifications}
-                onChange={(e) => setOtherNotifications(e.target.value)}
+                value={form.otherNotifications}
+                onChange={(e) => updateField('otherNotifications', e.target.value)}
                 className="border-cf-border h-8 text-sm"
               />
             </div>
@@ -294,7 +210,7 @@ export function PatientDischargeModal({
           </Button>
           <Button
             className="bg-[var(--cf-error)] text-white hover:bg-[var(--cf-error)]/90"
-            onClick={handleConfirm}
+            onClick={submit}
             disabled={submitting}
           >
             {submitting ? 'Discharging...' : 'Confirm Discharge'}

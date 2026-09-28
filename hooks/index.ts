@@ -9,3 +9,4 @@ export * from './use-patient-stats';
 export * from './use-patients';
 export * from './use-patients-page';
 export * from './use-patient-activity';
+export * from './use-discharge-form'
