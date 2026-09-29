@@ -9,7 +9,9 @@ declare module "next-auth" {
     email: string;
     name: string;
     accessToken?: string;
+    accessTokenExpires?: number;
     refreshToken?: string;
+    refreshTokenExpires?: number;
     isEmailVerified?: boolean;
     hasActiveSubscription?: boolean;
     hasAgency? : boolean

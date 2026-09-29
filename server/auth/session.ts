@@ -1,10 +1,11 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import { auth0 } from "lib";
+import { auth } from "@/auth";
+
 
 export async function requireSession() {
-  const session = await auth0.getSession();
+  const session = await auth();
   if (!session?.user) {
     redirect("/login");
   }
