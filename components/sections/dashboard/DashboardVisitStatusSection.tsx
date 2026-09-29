@@ -2,10 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui';
-import { useTodaysVisits } from 'hooks';
 import {
-  SUMMARY_STATUSES,
-  VISIT_STATUS_META,
+  buildVisitStatusSummary,
   canSeeVisits,
   type StatusTone,
 } from 'utils';
@@ -19,14 +17,12 @@ const toneClasses: Record<StatusTone, { bg: string; text: string; icon: string }
 };
 
 function VisitStatusCards() {
-  const { data, isLoading, error } = useTodaysVisits();
+  const summary = buildVisitStatusSummary();
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-      {SUMMARY_STATUSES.map((status, i) => {
-        const { label, Icon, tone: toneKey } = VISIT_STATUS_META[status];
+      {summary.map(({ status, label, Icon, tone: toneKey, value }, i) => {
         const tone = toneClasses[toneKey];
-        const value = isLoading || error ? '—' : data?.statusCounts[status] ?? 0;
 
         return (
           <motion.div
@@ -42,7 +38,7 @@ function VisitStatusCards() {
                   <Icon className={`size-4 ${tone.icon}`} />
                 </div>
                 <div>
-                  <p className={`text-2xl font-bold leading-none ${tone.text} ${isLoading ? 'animate-pulse' : ''}`}>
+                  <p className={`text-2xl font-bold leading-none ${tone.text}`}>
                     {value}
                   </p>
                   <p className="mt-1.5 text-[11px] font-medium text-cf-ink-60">{label}</p>

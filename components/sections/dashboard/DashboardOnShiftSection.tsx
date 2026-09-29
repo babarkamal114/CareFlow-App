@@ -1,17 +1,13 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@/components/ui';
+import { Card, CardContent, CardHeader, CardTitle, Badge } from '@/components/ui';
 import { Users } from 'lucide-react';
 
-import { useOnShiftCarers } from 'hooks';
-import { canSeeStaff, getCarerBadgeVariant } from 'utils';
+import { canSeeStaff, getCarerBadgeVariant, getOnShiftCarers } from 'utils';
 
 function OnShiftCard() {
-  const { data, isLoading, error, refetch } = useOnShiftCarers();
-
-  const carers = data?.carers ?? [];
-  const remainingCount = Math.max(0, (data?.total ?? 0) - carers.length);
+  const { total, carers, remainingCount } = getOnShiftCarers();
 
   return (
     <Card className="border-cf-border w-full">
@@ -22,36 +18,17 @@ function OnShiftCard() {
             On Shift Now
           </CardTitle>
         </div>
-        {data && (
-          <Badge variant="pastel-zinc" shape={'pill'}>
-            {data.total} active
-          </Badge>
-        )}
+        <Badge variant="pastel-zinc" shape={'pill'}>
+          {total} active
+        </Badge>
       </CardHeader>
 
       <CardContent className="px-4 pb-4">
-        {isLoading && (
-          <div className="flex flex-wrap gap-2 animate-pulse">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-7 w-24 rounded-full bg-cf-ink-40/20" />
-            ))}
-          </div>
-        )}
-
-        {!isLoading && error && (
-          <p className="text-xs text-cf-ink-60">
-            Couldn&apos;t load staff.{' '}
-            <Button onClick={refetch} className="font-semibold text-cf-ink underline">
-              Retry
-            </Button>
-          </p>
-        )}
-
-        {!isLoading && !error && carers.length === 0 && (
+        {carers.length === 0 && (
           <p className="text-xs text-cf-ink-40">Nobody is on shift right now.</p>
         )}
 
-        {!isLoading && !error && carers.length > 0 && (
+        {carers.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {carers.map((carer) => (
               <Badge

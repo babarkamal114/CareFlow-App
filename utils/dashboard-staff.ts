@@ -1,7 +1,6 @@
 import type { BadgeProps } from "@/components/ui";
 import { canAccess } from "./dashboard-helpers";
 
-
 export type ShiftStatus = "active" | "break" | "en-route";
 
 export interface CarerOnShiftDTO {
@@ -12,8 +11,8 @@ export interface CarerOnShiftDTO {
 }
 
 export interface OnShiftResponse {
-  total: number; 
-  carers: CarerOnShiftDTO[]; 
+  total: number;
+  carers: CarerOnShiftDTO[];
 }
 
 export interface StaffSnapshotResponse {
@@ -23,6 +22,23 @@ export interface StaffSnapshotResponse {
 }
 
 export const canSeeStaff = (role: string) => canAccess(role, "staff");
+
+export const MOCK_ON_SHIFT: OnShiftResponse = {
+  total: 12,
+  carers: [
+    { id: "1", name: "Sarah Johnson", status: "active" },
+    { id: "2", name: "Michael Chen", status: "en-route" },
+    { id: "3", name: "Emma Williams", status: "active" },
+    { id: "4", name: "David Smith", status: "break" },
+    { id: "5", name: "Lisa Garcia", status: "active" },
+  ],
+};
+
+export const MOCK_STAFF_SNAPSHOT: StaffSnapshotResponse = {
+  onShift: 12,
+  available: 15,
+  onLeave: 4,
+};
 
 
 const CARER_BADGE_VARIANTS: BadgeProps["variant"][] = [
@@ -50,6 +66,16 @@ export function getCarerBadgeVariant(id: string): BadgeProps["variant"] {
   return CARER_BADGE_VARIANTS[hash % CARER_BADGE_VARIANTS.length];
 }
 
+export interface OnShiftView {
+  total: number;
+  carers: CarerOnShiftDTO[];
+  remainingCount: number; 
+}
+
+export function getOnShiftCarers(): OnShiftView {
+  const { total, carers } = MOCK_ON_SHIFT;
+  return { total, carers, remainingCount: Math.max(0, total - carers.length) };
+}
 
 export type SnapshotTone = "success" | "info" | "muted";
 
@@ -68,7 +94,7 @@ export interface SnapshotSegment {
   label: string;
   tone: SnapshotTone;
   value: number;
-  percent: number; 
+  percent: number;
 }
 
 export function buildSnapshotSegments(data: StaffSnapshotResponse): SnapshotSegment[] {
@@ -84,4 +110,8 @@ export function buildSnapshotSegments(data: StaffSnapshotResponse): SnapshotSegm
       percent: total > 0 ? (value / total) * 100 : 0,
     };
   });
+}
+
+export function getStaffSnapshotSegments(): SnapshotSegment[] {
+  return buildSnapshotSegments(MOCK_STAFF_SNAPSHOT);
 }

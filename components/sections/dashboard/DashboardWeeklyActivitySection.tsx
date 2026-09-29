@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { motion } from 'framer-motion';
 import {
@@ -14,23 +13,17 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from '@/components/ui';
 
-import { useWeeklyActivity } from 'hooks';
 import {
+  ACTIVITY_CHART_CONFIG,
   ACTIVITY_SERIES,
-  buildActivityPoints,
   canSeeActivity,
+  getActivityPoints,
 } from 'utils';
 
-const chartConfig = Object.fromEntries(
-  ACTIVITY_SERIES.map((s) => [s.key, { label: s.label, color: s.color }])
-) as ChartConfig;
-
 function WeeklyActivityCard() {
-  const { data, isLoading, error, refetch } = useWeeklyActivity();
-  const points = useMemo(() => (data ? buildActivityPoints(data.days) : []), [data]);
+  const points = getActivityPoints();
 
   return (
     <motion.div
@@ -61,29 +54,14 @@ function WeeklyActivityCard() {
         </CardHeader>
 
         <CardContent className="px-4 pb-4 flex-1 flex flex-col">
-          {isLoading && (
-            <div className="flex-1 w-full rounded-lg bg-cf-ink-40/20 animate-pulse" />
-          )}
-
-          {!isLoading && error && (
-            <p className="flex-1 flex items-center justify-center text-sm text-cf-ink-60">
-              <span>
-                Couldn&apos;t load activity.{' '}
-                <button onClick={refetch} className="font-semibold text-cf-ink underline">
-                  Retry
-                </button>
-              </span>
-            </p>
-          )}
-
-          {!isLoading && !error && points.length === 0 && (
+          {points.length === 0 && (
             <p className="flex-1 flex items-center justify-center text-sm text-cf-ink-60">
               No visit activity yet.
             </p>
           )}
 
-          {!isLoading && !error && points.length > 0 && (
-            <ChartContainer config={chartConfig} className="flex-1 w-full">
+          {points.length > 0 && (
+            <ChartContainer config={ACTIVITY_CHART_CONFIG} className="flex-1 w-full">
               <LineChart
                 accessibilityLayer
                 data={points}

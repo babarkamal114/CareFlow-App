@@ -14,14 +14,22 @@ export interface DashboardStatsResponse {
   activeStaff?: TrendMetric;
   todaysVisits?: {
     value: number;
-    completionRate: number; 
+    completionRate: number;
   };
   revenue?: {
     value: number;
-    targetAttainment: number; 
-    currency: string; 
+    targetAttainment: number;
+    currency: string;
   };
 }
+
+
+export const MOCK_DASHBOARD_STATS: DashboardStatsResponse = {
+  totalPatients: { value: 142, changePercent: 12 },
+  activeStaff: { value: 31, changePercent: 8 },
+  todaysVisits: { value: 48, completionRate: 92 },
+  revenue: { value: 42500, targetAttainment: 78, currency: "GBP" },
+};
 
 
 const formatNumber = (n: number) => new Intl.NumberFormat("en-GB").format(n);
@@ -52,7 +60,6 @@ const getScoreProps = (score: number): Partial<StatCardProps> => ({
   showScore: true,
   score: clampScore(score),
 });
-
 
 interface StatDefinition {
   id: string;
@@ -145,7 +152,7 @@ export function buildStatCards(
 ): DashboardStatCard[] {
   return getVisibleStatDefinitions(role).flatMap((def) => {
     const built = def.build(data);
-    if (!built) return []; 
+    if (!built) return [];
 
     return [
       {
@@ -165,4 +172,13 @@ export function buildStatCards(
       },
     ];
   });
+}
+
+
+export function getDashboardStatCards(role: string): DashboardStatCard[] {
+  return buildStatCards(MOCK_DASHBOARD_STATS, role);
+}
+
+export function getStatGridColumns(cardCount: number): 1 | 2 | 3 | 4 {
+  return Math.min(Math.max(cardCount, 1), 4) as 1 | 2 | 3 | 4;
 }

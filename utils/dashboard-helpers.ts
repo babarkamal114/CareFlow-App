@@ -49,3 +49,30 @@ export function daysFromToday(iso: string, now: Date = new Date()): number {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   return Math.round((parseLocalDay(iso).getTime() - today.getTime()) / 86400000);
 }
+
+export function pluralize(count: number, singular: string, plural = `${singular}s`): string {
+  return count === 1 ? singular : plural;
+}
+
+export const isoMinutesAgo = (m: number): string =>
+  new Date(Date.now() - m * 60000).toISOString();
+
+export function isoDateInDays(n: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  const pad = (x: number) => String(x).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+export function isoTodayAt(hours: number, minutes: number): string {
+  const d = new Date();
+  d.setHours(hours, minutes, 0, 0);
+  return d.toISOString();
+}
+
+export type ThemeName = "light" | "dark";
+
+export const getNextTheme = (isDark: boolean): ThemeName => (isDark ? "light" : "dark");
+
+export const getThemeToggleLabel = (isDark: boolean): string =>
+  isDark ? "Switch to light mode" : "Switch to dark mode";

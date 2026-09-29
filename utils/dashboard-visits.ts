@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { canAccessModule } from "./dashboard-nav-filter";
+import { isoTodayAt } from "./dashboard-helpers";
 
 export type VisitStatus =
   | "scheduled"
@@ -22,15 +23,15 @@ export interface VisitDTO {
   patientName: string;
   patientAvatar?: string | null;
   carerName: string;
-  careTypes: string[]; 
-  startTime: string; 
+  careTypes: string[];
+  startTime: string;
   endTime: string;
   status: VisitStatus;
 }
 
 export interface TodaysVisitsResponse {
-  visits: VisitDTO[]; 
-  total: number; 
+  visits: VisitDTO[];
+  total: number;
   statusCounts: Partial<Record<VisitStatus, number>>;
 }
 
@@ -131,4 +132,90 @@ export function mapVisitToRow(v: VisitDTO): VisitRow {
 export function canSeeVisits(role: string): boolean {
   const normalizedRole = (role || "").toLowerCase().trim().replace(/[\s-]+/g, "_");
   return canAccessModule(normalizedRole, "visits");
+}
+
+
+export const MOCK_VISITS: VisitDTO[] = [
+  { id: "1", patientName: "Margaret Johnson", carerName: "Sarah Williams", careTypes: ["Personal Care", "Medication"], startTime: isoTodayAt(8, 0), endTime: isoTodayAt(9, 0), status: "completed" },
+  { id: "2", patientName: "Robert Chen", carerName: "James O'Brien", careTypes: ["Meal Preparation"], startTime: isoTodayAt(9, 30), endTime: isoTodayAt(10, 30), status: "in-progress" },
+  { id: "3", patientName: "Patricia Smith", carerName: "Emma Davis", careTypes: ["Medication", "Personal Care"], startTime: isoTodayAt(11, 0), endTime: isoTodayAt(12, 0), status: "scheduled" },
+  { id: "4", patientName: "David Wilson", carerName: "Michael Brown", careTypes: ["Personal Care"], startTime: isoTodayAt(13, 0), endTime: isoTodayAt(14, 0), status: "scheduled" },
+  { id: "5", patientName: "Susan Taylor", carerName: "Laura Martinez", careTypes: ["Medication", "Meal", "Personal Care"], startTime: isoTodayAt(15, 0), endTime: isoTodayAt(16, 30), status: "scheduled" },
+];
+
+export const MOCK_VISIT_STATUS_COUNTS: TodaysVisitsResponse["statusCounts"] = {
+  scheduled: 18,
+  completed: 20,
+  "in-progress": 6,
+  late: 3,
+  missed: 1,
+};
+
+export interface VisitTableColumn {
+  key: string;
+  label: string;
+  minWidth: number;
+  align: "left" | "right";
+}
+
+export const VISIT_TABLE_COLUMNS: VisitTableColumn[] = [
+  { key: "patient", label: "Patient", minWidth: 200, align: "left" },
+  { key: "carer", label: "Carer", minWidth: 150, align: "left" },
+  { key: "time", label: "Time", minWidth: 120, align: "left" },
+  { key: "status", label: "Status", minWidth: 100, align: "left" },
+  { key: "duration", label: "Duration", minWidth: 80, align: "right" },
+];
+
+export function filterVisitsByStatus(visits: VisitDTO[], status?: VisitStatus): VisitDTO[] {
+  return status ? visits.filter((v) => v.status === status) : visits;
+}
+
+export function getTodaysVisitRows(status?: VisitStatus): VisitRow[] {
+  return filterVisitsByStatus(MOCK_VISITS, status).map(mapVisitToRow);
+}
+
+export function toggleVisitStatusFilter(
+  current: VisitStatus | undefined,
+  clicked: VisitStatus
+): VisitStatus | undefined {
+  return current === clicked ? undefined : clicked;
+}
+
+export function getVisitFilterButtonLabel(status?: VisitStatus): string {
+  return status ? `Filter · ${statusLabelMap[status]}` : "Filter";
+}
+
+export interface VisitFilterOption {
+  status: VisitStatus;
+  text: string; 
+  isActive: boolean;
+}
+
+export function buildVisitFilterOptions(activeStatus?: VisitStatus): VisitFilterOption[] {
+  return VISIT_STATUSES.map((status) => {
+    const count = MOCK_VISIT_STATUS_COUNTS[status];
+    return {
+      status,
+      text: `${statusLabelMap[status]}${count !== undefined ? ` (${count})` : ""}`,
+      isActive: activeStatus === status,
+    };
+  });
+}
+
+
+export interface VisitStatusSummary {
+  status: VisitStatus;
+  label: string;
+  Icon: LucideIcon;
+  tone: StatusTone;
+  value: number;
+}
+
+export function buildVisitStatusSummary(
+  counts: TodaysVisitsResponse["statusCounts"] = MOCK_VISIT_STATUS_COUNTS
+): VisitStatusSummary[] {
+  return SUMMARY_STATUSES.map((status) => {
+    const { label, Icon, tone } = VISIT_STATUS_META[status];
+    return { status, label, Icon, tone, value: counts[status] ?? 0 };
+  });
 }

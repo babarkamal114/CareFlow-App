@@ -1,3 +1,6 @@
+import type { LucideIcon } from "lucide-react";
+import { Settings, User } from "lucide-react";
+
 import { NavItem } from "./data";
 
 export const ROLE_NAV_ACCESS: Record<string, string[]> = {
@@ -64,7 +67,6 @@ export function filterNavItemsByRole(items: NavItem[], role: string): NavItem[] 
   const normalizedRole = (role || "").toLowerCase().trim();
   const accessibleModules = ROLE_NAV_ACCESS[normalizedRole] || [];
 
-  // Unknown/unmatched role → show everything rather than hide everything.
   if (accessibleModules.length === 0) return items;
 
   return items.filter((item) => accessibleModules.includes(item.requiredModule));
@@ -83,3 +85,15 @@ export function isNavItemActive(href: string, pathname: string): boolean {
     pathname === normalizedHref || pathname.startsWith(`${normalizedHref}/`)
   );
 }
+
+export interface ProfileMenuItem {
+  key: string;
+  label: string;
+  href: string;
+  Icon: LucideIcon;
+}
+
+export const PROFILE_MENU_ITEMS: ProfileMenuItem[] = [
+  { key: "profile", label: "Profile", href: "/profile", Icon: User },
+  { key: "settings", label: "Settings", href: "/settings", Icon: Settings },
+];

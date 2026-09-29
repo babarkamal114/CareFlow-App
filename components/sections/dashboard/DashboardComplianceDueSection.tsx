@@ -1,16 +1,15 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Badge } from '@/components/ui';
+import { Card, CardContent, CardHeader, CardTitle, Badge } from '@/components/ui';
 import { Calendar, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { useComplianceDue } from 'hooks';
 import {
   COMPLIANCE_WINDOW_DAYS,
-  buildComplianceRows,
   canSeeCompliance,
+  countUrgentCompliance,
+  getComplianceRows,
+  getUrgentItemNoun,
   type CompliancePriority,
 } from 'utils';
 
@@ -33,10 +32,8 @@ const priorityDotColors: Record<CompliancePriority, string> = {
 };
 
 function ComplianceDueCard() {
-  const { data, isLoading, error, refetch } = useComplianceDue();
-
-  const rows = useMemo(() => (data ? buildComplianceRows(data.items) : []), [data]);
-  const urgentCount = rows.filter((r) => r.priority === 'high').length;
+  const rows = getComplianceRows();
+  const urgentCount = countUrgentCompliance(rows);
 
   return (
     <motion.div
@@ -57,24 +54,7 @@ function ComplianceDueCard() {
         </CardHeader>
 
         <CardContent className="px-4 pb-4 flex-1 flex flex-col min-h-0">
-          {isLoading && (
-            <div className="space-y-2 animate-pulse">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-16 rounded-lg bg-cf-ink-40/20" />
-              ))}
-            </div>
-          )}
-
-          {!isLoading && error && (
-            <div className="py-8 text-center text-sm text-cf-ink-60">
-              Couldn&apos;t load compliance items.{' '}
-              <button onClick={refetch} className="font-semibold text-cf-ink underline">
-                Retry
-              </button>
-            </div>
-          )}
-
-          {!isLoading && !error && urgentCount > 0 && (
+          {urgentCount > 0 && (
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -84,12 +64,12 @@ function ComplianceDueCard() {
               <AlertCircle className="h-4 w-4 text-[var(--cf-error)] flex-shrink-0 mt-0.5" />
               <p className="text-xs text-[var(--cf-error)]">
                 <span className="font-medium">{urgentCount}</span> urgent compliance{' '}
-                {urgentCount === 1 ? 'item' : 'items'} due
+                {getUrgentItemNoun(urgentCount)} due
               </p>
             </motion.div>
           )}
 
-          {!isLoading && !error && rows.length > 0 && (
+          {rows.length > 0 && (
             <div className="space-y-2 overflow-y-auto flex-1">
               {rows.map((item, i) => (
                 <motion.div
@@ -138,7 +118,7 @@ function ComplianceDueCard() {
             </div>
           )}
 
-          {!isLoading && !error && rows.length === 0 && (
+          {rows.length === 0 && (
             <div className="py-8 text-center">
               <p className="text-sm text-cf-ink-60">No compliance items due</p>
             </div>
