@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { Card, Button, Textarea, ScrollArea } from '@/components/ui';
 import { User } from 'lucide-react';
-import { Incident } from '@/types';
+import { Incident } from 'types';
+import { canSubmitNote, formatNoteTimestamp } from 'utils';
 
 interface IncidentLogsTabProps {
   incident: Incident;
@@ -13,7 +14,7 @@ export function IncidentLogsTab({ incident }: IncidentLogsTabProps) {
   const [newNote, setNewNote] = useState('');
 
   const handleAddNote = () => {
-    if (newNote.trim()) {
+    if (canSubmitNote(newNote)) {
       console.log('Adding note:', newNote);
       setNewNote('');
     }
@@ -34,7 +35,7 @@ export function IncidentLogsTab({ incident }: IncidentLogsTabProps) {
           <Button
             size="sm"
             onClick={handleAddNote}
-            disabled={!newNote.trim()}
+            disabled={!canSubmitNote(newNote)}
             className="w-full"
           >
             Add Note
@@ -54,7 +55,7 @@ export function IncidentLogsTab({ incident }: IncidentLogsTabProps) {
                     <p className="text-xs font-medium text-cf-ink-80">{note.author}</p>
                   </div>
                   <p className="text-xs text-cf-ink-60">
-                    {note.timestamp.toLocaleDateString()} {note.timestamp.toLocaleTimeString()}
+                    {formatNoteTimestamp(note.timestamp)}
                   </p>
                 </div>
                 <p className="text-sm text-cf-ink ml-8">{note.note}</p>

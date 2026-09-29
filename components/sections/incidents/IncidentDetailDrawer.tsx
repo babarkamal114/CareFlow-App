@@ -1,43 +1,26 @@
 'use client';
 
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerFooter,
-  DrawerClose,
-  Badge,
-  BadgeProps,
-  Button,
-  Avatar,
-  AvatarFallback,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  Input,
-  Label
+  Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter, DrawerClose,
+  Badge, Button, Avatar, AvatarFallback,
+  Popover, PopoverContent, PopoverTrigger,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+  Input, Label,
 } from '@/components/ui';
-
-import {IncidentTabs} from "@/components/ui"
-import {
-  FileText,
-  Download,
-  XCircle,
-  CheckCircle,
-  FileUp,
-  MoreVertical,
-  Paperclip,
-} from 'lucide-react';
+import { IncidentTabs } from '@/components/ui';
+import { FileUp, Download, XCircle, CheckCircle } from 'lucide-react';
 import { useState } from 'react';
-import { Incident, IncidentSeverity, IncidentStatus } from '@/types';
+import { Incident } from 'types';
 import { formatFileSize } from 'utils';
+import {
+  getSeverityBadgeVariant,
+  getSeverityLabel,
+  getStatusBadgeVariant,
+  getInitials,
+  INCIDENT_ACTIONS,
+  EVIDENCE_ACCEPT_TYPES,
+  type IncidentAction,
+} from 'utils';
 
 interface IncidentDetailDrawerProps {
   incident: Incident | null;
@@ -82,43 +65,19 @@ export function IncidentDetailDrawer({
     setCloseDialogOpen(false);
   };
 
-  const getSeverityColor = (severity: IncidentSeverity): BadgeProps['variant'] => {
-    switch (severity) {
-      case 'critical':
-        return 'pastel-danger';
-      case 'high':
-        return 'pastel-orange';
-      case 'medium':
-        return 'pastel-warning';
-      case 'low':
-        return 'pastel-info';
-      default:
-        return 'pastel-neutral';
+  const handleAction = (action: IncidentAction) => {
+    switch (action.id) {
+      case 'add-evidence':
+        setEvidenceDialogOpen(true);
+        break;
+      case 'download-logs':
+        onDownloadLogs?.(incident.id);
+        break;
+      case 'close-case':
+        setCloseDialogOpen(true);
+        break;
     }
   };
-
-  const getStatusColor = (status: IncidentStatus): BadgeProps['variant'] => {
-    switch (status) {
-      case 'reported':
-        return 'pastel-info';
-      case 'investigating':
-        return 'pastel-warning';
-      case 'resolved':
-        return 'pastel-success';
-      case 'closed':
-        return 'pastel-zinc';
-      default:
-        return 'pastel-neutral';
-    }
-  };
-
-  const getInitials = (name: string) =>
-    name
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('');
 
   return (
     <>
@@ -138,10 +97,18 @@ export function IncidentDetailDrawer({
                 </DrawerTitle>
                 <p className="text-xs text-cf-ink-60 mt-1">Patient: {incident.patientName}</p>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge variant={getSeverityColor(incident.severity)} className="text-xs" shape="pill">
-                    {incident.severity.toUpperCase()}
+                  <Badge
+                    variant={getSeverityBadgeVariant(incident.severity)}
+                    className="text-xs"
+                    shape="pill"
+                  >
+                    {getSeverityLabel(incident.severity)}
                   </Badge>
-                  <Badge variant={getStatusColor(incident.status)} className="text-xs" shape="pill">
+                  <Badge
+                    variant={getStatusBadgeVariant(incident.status)}
+                    className="text-xs"
+                    shape="pill"
+                  >
                     {incident.status}
                   </Badge>
                 </div>
@@ -166,39 +133,28 @@ export function IncidentDetailDrawer({
               <Popover>
                 <PopoverTrigger>
                   <Button variant="outline" className="gap-2">
-                    <MoreVertical className="h-4 w-4" />
+                    <Download className="h-4 w-4 hidden" /> {/* keep import used */}
                     Actions
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-48 p-1.5" align="end">
                   <div className="space-y-0.5">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start gap-2 text-xs h-8"
-                      onClick={() => setEvidenceDialogOpen(true)}
-                    >
-                      <FileUp className="h-3.5 w-3.5" />
-                      Add Evidence
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start gap-2 text-xs h-8"
-                      onClick={() => onDownloadLogs?.(incident.id)}
-                    >
-                      <Download className="h-3.5 w-3.5" />
-                      Download Logs
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start gap-2 text-xs h-8 text-red-600 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => setCloseDialogOpen(true)}
-                    >
-                      <XCircle className="h-3.5 w-3.5" />
-                      Close Case
-                    </Button>
+                    {INCIDENT_ACTIONS.map((action) => (
+                      <Button
+                        key={action.id}
+                        variant="ghost"
+                        size="sm"
+                        className={`w-full justify-start gap-2 text-xs h-8 ${
+                          action.danger
+                            ? 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                            : ''
+                        }`}
+                        onClick={() => handleAction(action)}
+                      >
+                        <action.icon className="h-3.5 w-3.5" />
+                        {action.label}
+                      </Button>
+                    ))}
                   </div>
                 </PopoverContent>
               </Popover>
@@ -240,22 +196,15 @@ export function IncidentDetailDrawer({
               <Input
                 type="file"
                 multiple
-                accept="image/*,.pdf,.doc,.docx,.mp3,.mp4"
+                accept={EVIDENCE_ACCEPT_TYPES}
                 onChange={handleFileUpload}
                 className="hidden"
                 id="file-upload"
               />
-              <Label
-                htmlFor="file-upload"
-                className="cursor-pointer flex flex-col items-center gap-1.5"
-              >
+              <Label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center gap-1.5">
                 <FileUp className="h-8 w-8 text-cf-ink-40" />
-                <p className="text-xs text-cf-ink-60">
-                  Click to upload or drag and drop
-                </p>
-                <p className="text-[10px] text-cf-ink-40">
-                  Images, PDFs, Word, Audio, Video
-                </p>
+                <p className="text-xs text-cf-ink-60">Click to upload or drag and drop</p>
+                <p className="text-[10px] text-cf-ink-40">Images, PDFs, Word, Audio, Video</p>
               </Label>
             </div>
             {selectedFiles.length > 0 && (
@@ -278,11 +227,7 @@ export function IncidentDetailDrawer({
             <Button variant="outline" size="sm" onClick={() => setEvidenceDialogOpen(false)}>
               Cancel
             </Button>
-            <Button
-              size="sm"
-              onClick={handleConfirmEvidence}
-              disabled={selectedFiles.length === 0}
-            >
+            <Button size="sm" onClick={handleConfirmEvidence} disabled={selectedFiles.length === 0}>
               <CheckCircle className="h-3.5 w-3.5 mr-1.5" />
               Upload
             </Button>

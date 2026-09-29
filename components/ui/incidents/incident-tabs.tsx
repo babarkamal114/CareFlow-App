@@ -1,11 +1,11 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
-import { Incident } from '@/types';
+import { Incident } from 'types';
+import { INCIDENT_TABS } from 'utils';
 import { IncidentInfoTab } from './incident-info-tab';
 import { IncidentLogsTab } from './incident-logs-tab';
 import { IncidentEvidenceTab } from './incident-evidence-tab';
-
 
 interface IncidentTabsProps {
   selectedTab: string;
@@ -13,25 +13,18 @@ interface IncidentTabsProps {
   incident: Incident;
 }
 
-const TABS = [
-  { value: 'info', label: 'Info' },
-  { value: 'logs', label: 'Logs' },
-  { value: 'evidence', label: 'Evidence' },
-];
-
 export function IncidentTabs({
   selectedTab,
   onTabChange,
   incident,
 }: IncidentTabsProps) {
-
   const evidenceCount = 0;
 
   return (
     <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full h-full">
       <div className="border-b border-cf-border px-6">
         <TabsList className="w-auto justify-start rounded-none bg-transparent">
-          {TABS.map((tab) => (
+          {INCIDENT_TABS.map((tab) => (
             <TabsTrigger
               key={tab.value}
               value={tab.value}

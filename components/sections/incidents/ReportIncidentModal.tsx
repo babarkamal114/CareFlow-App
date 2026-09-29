@@ -2,47 +2,29 @@
 
 import { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Button,
-  Input,
-  Textarea,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Card,
-  Badge,
-  Label
+  Dialog, DialogContent, DialogHeader, DialogTitle,
+  Button, Input, Textarea,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Card, Badge, Label,
 } from '@/components/ui';
-import { Incident, IncidentSeverity, IncidentType } from '@/types';
-
+import {
+  INCIDENT_TYPE_OPTIONS,
+  INCIDENT_SEVERITY_OPTIONS,
+  getDefaultIncidentFormData,
+  getIncidentTypeOptionLabel,
+  getSeverityOption,
+  isIncidentStepOneValid,
+  isIncidentStepTwoValid,
+  buildIncidentPayload,
+  formatIncidentDateTime,
+  type IncidentFormData,
+} from 'utils';
 
 interface ReportIncidentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (incident: Omit<Incident, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onSubmit: (incident: Omit<import('@/types').Incident, 'id' | 'createdAt' | 'updatedAt'>) => void;
 }
-
-const incidentTypes: { value: IncidentType; label: string }[] = [
-  { value: 'fall', label: 'Fall / Slip' },
-  { value: 'medication-error', label: 'Medication Error' },
-  { value: 'bruise', label: 'Bruise / Injury' },
-  { value: 'abuse-allegation', label: 'Abuse Allegation' },
-  { value: 'safeguarding', label: 'Safeguarding Concern' },
-  { value: 'missed-visit', label: 'Missed Visit' },
-  { value: 'other', label: 'Other' },
-];
-
-const severityLevels: { value: IncidentSeverity; label: string; color: string }[] = [
-  { value: 'low', label: 'Low', color: 'pastel-info' },
-  { value: 'medium', label: 'Medium', color: 'pastel-warning' },
-  { value: 'high', label: 'High', color: 'pastel-danger' },
-  { value: 'critical', label: 'Critical', color: 'pastel-danger' },
-];
 
 export function ReportIncidentModal({
   open,
@@ -50,54 +32,20 @@ export function ReportIncidentModal({
   onSubmit,
 }: ReportIncidentModalProps) {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    type: '' as IncidentType,
-    severity: '' as IncidentSeverity,
-    title: '',
-    description: '',
-    patientName: '',
-    patientId: '',
-    dateTime: new Date().toISOString().slice(0, 16),
-    location: '',
-    reportedBy: 'Current User (placeholder)',
-    assignedTo: 'John Manager (placeholder)',
-  });
+  const [formData, setFormData] = useState<IncidentFormData>(getDefaultIncidentFormData);
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: keyof IncidentFormData, value: string) => {
     setFormData({ ...formData, [field]: value });
   };
 
   const handleSubmit = () => {
-    const incident: Omit<Incident, 'id' | 'createdAt' | 'updatedAt'> = {
-      ...formData,
-      dateTime: new Date(formData.dateTime),
-      status: 'reported',
-      investigationNotes: [
-        {
-          note: `Incident reported by ${formData.reportedBy}`,
-          author: formData.reportedBy,
-          timestamp: new Date(),
-        },
-      ],
-      witnesses: [],
-      evidence: [],
-    };
-    onSubmit(incident);
+    onSubmit(buildIncidentPayload(formData));
     setStep(1);
-    setFormData({
-      type: 'other',
-      severity: 'low',
-      title: '',
-      description: '',
-      patientName: '',
-      patientId: '',
-      dateTime: new Date().toISOString().slice(0, 16),
-      location: '',
-      reportedBy: 'Current User (placeholder)',
-      assignedTo: 'John Manager (placeholder)',
-    });
+    setFormData(getDefaultIncidentFormData());
     onOpenChange(false);
   };
+
+  const selectedSeverity = getSeverityOption(formData.severity as never);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -105,7 +53,6 @@ export function ReportIncidentModal({
         <DialogHeader>
           <DialogTitle>Report Incident / Safeguarding Concern</DialogTitle>
         </DialogHeader>
-
 
         {step === 1 && (
           <div className="space-y-4">
@@ -118,7 +65,7 @@ export function ReportIncidentModal({
                   <SelectValue placeholder="Select incident type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {incidentTypes.map((type) => (
+                  {INCIDENT_TYPE_OPTIONS.map((type) => (
                     <SelectItem key={type.value} value={type.value}>
                       {type.label}
                     </SelectItem>
@@ -132,7 +79,7 @@ export function ReportIncidentModal({
                 Severity *
               </Label>
               <div className="grid grid-cols-4 gap-2">
-                {severityLevels.map((level) => (
+                {INCIDENT_SEVERITY_OPTIONS.map((level) => (
                   <Button
                     key={level.value}
                     onClick={() => handleChange('severity', level.value)}
@@ -142,7 +89,7 @@ export function ReportIncidentModal({
                         : 'border-cf-border bg-white'
                     }`}
                   >
-                    <Badge variant={level.color as any} className="w-full justify-center">
+                    <Badge variant={level.color} className="w-full justify-center">
                       {level.label}
                     </Badge>
                   </Button>
@@ -151,17 +98,13 @@ export function ReportIncidentModal({
             </div>
 
             <div className="flex gap-2 pt-4">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => onOpenChange(false)}
-              >
+              <Button variant="outline" className="flex-1" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
               <Button
                 className="flex-1"
                 onClick={() => setStep(2)}
-                disabled={!formData.type || !formData.severity}
+                disabled={!isIncidentStepOneValid(formData)}
               >
                 Next
               </Button>
@@ -235,7 +178,7 @@ export function ReportIncidentModal({
               <Button
                 className="flex-1"
                 onClick={() => setStep(3)}
-                disabled={!formData.patientName || !formData.title || !formData.description}
+                disabled={!isIncidentStepTwoValid(formData)}
               >
                 Review
               </Button>
@@ -251,16 +194,12 @@ export function ReportIncidentModal({
                   <div>
                     <p className="text-xs text-cf-ink-60">Type</p>
                     <p className="font-medium text-cf-ink">
-                      {incidentTypes.find((t) => t.value === formData.type)?.label}
+                      {getIncidentTypeOptionLabel(formData.type as never)}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-cf-ink-60">Severity</p>
-                    <Badge
-                      variant={
-                        severityLevels.find((s) => s.value === formData.severity)?.color as any
-                      }
-                    >
+                    <Badge variant={selectedSeverity?.color}>
                       {formData.severity}
                     </Badge>
                   </div>
@@ -271,8 +210,7 @@ export function ReportIncidentModal({
                   <div>
                     <p className="text-xs text-cf-ink-60">Date & Time</p>
                     <p className="font-medium text-cf-ink">
-                      {new Date(formData.dateTime).toLocaleDateString()} at{' '}
-                      {new Date(formData.dateTime).toLocaleTimeString()}
+                      {formatIncidentDateTime(new Date(formData.dateTime))}
                     </p>
                   </div>
                 </div>

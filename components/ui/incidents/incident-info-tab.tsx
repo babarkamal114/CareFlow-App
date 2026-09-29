@@ -1,37 +1,23 @@
 'use client';
 
-import { Card, Badge, BadgeProps, ScrollArea } from '@/components/ui';
+import { Card, Badge, ScrollArea } from '@/components/ui';
+import { MapPin, UserRound, AlertCircle } from 'lucide-react';
+import { Incident } from 'types';
 import {
-  User,
-  Calendar,
-  MapPin,
-  Users,
-  Tag,
-  AlertCircle,
-  UserRound,
-} from 'lucide-react';
-import { Incident, IncidentSeverity } from '@/types';
+  getIncidentDetailFields,
+  getSeverityBadgeVariant,
+  getSeverityLabel,
+  getIncidentStatusHistory,
+} from '@/utils/incidents';
 
 interface IncidentInfoTabProps {
   incident: Incident;
 }
 
-const getSeverityColor = (severity: IncidentSeverity): BadgeProps['variant'] => {
-  switch (severity) {
-    case 'critical':
-      return 'pastel-danger';
-    case 'high':
-      return 'pastel-orange';
-    case 'medium':
-      return 'pastel-warning';
-    case 'low':
-      return 'pastel-info';
-    default:
-      return 'pastel-neutral';
-  }
-};
-
 export function IncidentInfoTab({ incident }: IncidentInfoTabProps) {
+  const detailFields = getIncidentDetailFields(incident);
+  const statusHistory = getIncidentStatusHistory(incident);
+
   return (
     <ScrollArea className="h-[calc(100vh-280px)] pr-4">
       <div className="space-y-4 pb-4">
@@ -45,50 +31,25 @@ export function IncidentInfoTab({ incident }: IncidentInfoTabProps) {
         <Card className="border-cf-border p-4">
           <p className="text-sm font-semibold text-cf-ink mb-4">Incident Details</p>
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-xs text-cf-ink-60 mb-1">Patient</p>
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-cf-ink-40" />
-                <p className="font-medium text-cf-ink">{incident.patientName}</p>
+            {detailFields.map((field) => (
+              <div key={field.label}>
+                <p className="text-xs text-cf-ink-60 mb-1">{field.label}</p>
+                <div className="flex items-center gap-2">
+                  <field.icon className="h-4 w-4 text-cf-ink-40" />
+                  <p className="font-medium text-cf-ink">{field.value}</p>
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-xs text-cf-ink-60 mb-1">Type</p>
-              <div className="flex items-center gap-2">
-                <Tag className="h-4 w-4 text-cf-ink-40" />
-                <p className="font-medium text-cf-ink capitalize">{incident.type}</p>
-              </div>
-            </div>
-            <div>
-              <p className="text-xs text-cf-ink-60 mb-1">Date & Time</p>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-cf-ink-40" />
-                <p className="font-medium text-cf-ink">
-                  {incident.dateTime.toLocaleDateString()} at{' '}
-                  {incident.dateTime.toLocaleTimeString()}
-                </p>
-              </div>
-            </div>
-            <div>
-              <p className="text-xs text-cf-ink-60 mb-1">Reported By</p>
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-cf-ink-40" />
-                <p className="font-medium text-cf-ink">{incident.reportedBy}</p>
-              </div>
-            </div>
-            <div>
-              <p className="text-xs text-cf-ink-60 mb-1">Assigned To</p>
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-cf-ink-40" />
-                <p className="font-medium text-cf-ink">{incident.assignedTo}</p>
-              </div>
-            </div>
+            ))}
             <div>
               <p className="text-xs text-cf-ink-60 mb-1">Severity</p>
               <div className="flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 text-cf-ink-40" />
-                <Badge variant={getSeverityColor(incident.severity)} badgeSize={'md'} shape={'pill'}>
-                  {incident.severity.toUpperCase()}
+                <Badge
+                  variant={getSeverityBadgeVariant(incident.severity)}
+                  badgeSize={'md'}
+                  shape={'pill'}
+                >
+                  {getSeverityLabel(incident.severity)}
                 </Badge>
               </div>
             </div>
@@ -129,49 +90,19 @@ export function IncidentInfoTab({ incident }: IncidentInfoTabProps) {
         <Card className="border-cf-border p-4">
           <p className="text-sm font-semibold text-cf-ink mb-4">Status History</p>
           <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="h-2 w-2 rounded-full animate-pulse bg-green-500 mt-1.5" />
-              <div>
-                <p className="text-sm text-cf-ink">Reported</p>
-                <p className="text-xs text-cf-ink-60">
-                  {incident.dateTime.toLocaleDateString()} at{' '}
-                  {incident.dateTime.toLocaleTimeString()}
-                </p>
-              </div>
-            </div>
-            {incident.status !== 'reported' && (
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full animate-pulse bg-yellow-500 mt-1.5" />
+            {statusHistory.map((entry) => (
+              <div key={entry.label} className="flex items-start gap-3">
+                <div
+                  className={`h-2 w-2 rounded-full mt-1.5 ${entry.dotClass} ${
+                    entry.animate ? 'animate-pulse' : ''
+                  }`}
+                />
                 <div>
-                  <p className="text-sm text-cf-ink">Investigating</p>
-                  <p className="text-xs text-cf-ink-60">
-                    Investigation in progress
-                  </p>
+                  <p className="text-sm text-cf-ink">{entry.label}</p>
+                  <p className="text-xs text-cf-ink-60">{entry.note}</p>
                 </div>
               </div>
-            )}
-            {(incident.status === 'resolved' || incident.status === 'closed') && (
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-blue-500 mt-1.5" />
-                <div>
-                  <p className="text-sm text-cf-ink">Resolved</p>
-                  <p className="text-xs text-cf-ink-60">
-                    Incident resolved
-                  </p>
-                </div>
-              </div>
-            )}
-            {incident.status === 'closed' && (
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-gray-500 mt-1.5" />
-                <div>
-                  <p className="text-sm text-cf-ink">Closed</p>
-                  <p className="text-xs text-cf-ink-60">
-                    Case closed
-                  </p>
-                </div>
-              </div>
-            )}
+            ))}
           </div>
         </Card>
       </div>
