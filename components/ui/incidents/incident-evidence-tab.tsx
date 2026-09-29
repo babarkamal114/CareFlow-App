@@ -7,7 +7,7 @@ import {
   MOCK_EVIDENCE,
   getEvidenceIcon,
   formatEvidenceDate,
-} from '@/utils/incidents';
+} from 'utils';
 
 export function IncidentEvidenceTab() {
   const evidence = MOCK_EVIDENCE;

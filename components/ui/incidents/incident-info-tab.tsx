@@ -8,7 +8,7 @@ import {
   getSeverityBadgeVariant,
   getSeverityLabel,
   getIncidentStatusHistory,
-} from '@/utils/incidents';
+} from 'utils';
 
 interface IncidentInfoTabProps {
   incident: Incident;
