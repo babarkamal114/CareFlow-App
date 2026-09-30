@@ -4,14 +4,11 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { StatCard } from "shared";
 import { usePatientStats } from "hooks";
-import { buildPatientStatCards, getVisiblePatientStatDefinitions } from "utils";
-
-const GRID_COLS: Record<number, string> = {
-  1: "lg:grid-cols-1",
-  2: "lg:grid-cols-2",
-  3: "lg:grid-cols-3",
-  4: "lg:grid-cols-4",
-};
+import {
+  buildPatientStatCards,
+  getVisiblePatientStatDefinitions,
+  getPatientStatGridClass,
+} from "utils";
 
 function StatCardSkeleton() {
   return (
@@ -34,9 +31,7 @@ function PatientStatSection() {
 
   if (visibleCount === 0) return null;
 
-  const gridClass = `grid grid-cols-1 sm:grid-cols-2 ${
-    GRID_COLS[Math.min(visibleCount, 4)]
-  } gap-4`;
+  const gridClass = getPatientStatGridClass(visibleCount);
 
   if (isLoading) {
     return (

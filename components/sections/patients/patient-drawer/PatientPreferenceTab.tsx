@@ -1,8 +1,9 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
-import { Clock, Coffee, Heart, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Clock, Coffee, Heart } from 'lucide-react';
 import {
+  PREFERENCE_OPINION_BLOCKS,
   getPreferenceRows,
   getRoutineRows,
   hasLikesSection,
@@ -25,7 +26,7 @@ function RowList({ rows }: { rows: PreferenceRow[] }) {
 }
 
 export function PatientPreferencesTab(props: PatientPreferencesInfo) {
-  const { likes, dislikes, hobbies, dailyRoutine } = props;
+  const { hobbies, dailyRoutine } = props;
 
   if (!hasPreferenceInfo(props)) {
     return (
@@ -81,21 +82,15 @@ export function PatientPreferencesTab(props: PatientPreferencesInfo) {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {likes && (
-              <div className="p-2 bg-green-50/50 rounded-lg border border-green-200/50">
-                <div className="flex items-start gap-2">
-                  <ThumbsUp className="h-4 w-4 text-green-600 mt-0.5" />
-                  <p className="text-sm text-cf-ink">{likes}</p>
+            {PREFERENCE_OPINION_BLOCKS.map(({ key, Icon, boxClass, iconClass }) =>
+              props[key] ? (
+                <div key={key} className={boxClass}>
+                  <div className="flex items-start gap-2">
+                    <Icon className={iconClass} />
+                    <p className="text-sm text-cf-ink">{props[key]}</p>
+                  </div>
                 </div>
-              </div>
-            )}
-            {dislikes && (
-              <div className="p-2 bg-red-50/50 rounded-lg border border-red-200/50">
-                <div className="flex items-start gap-2">
-                  <ThumbsDown className="h-4 w-4 text-red-600 mt-0.5" />
-                  <p className="text-sm text-cf-ink">{dislikes}</p>
-                </div>
-              </div>
+              ) : null
             )}
             {hobbies && <RowList rows={[{ label: 'Hobbies', value: hobbies }]} />}
             {dailyRoutine && (

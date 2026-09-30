@@ -21,8 +21,12 @@ import {
 import { AlertTriangle } from 'lucide-react';
 import { useDischargeForm } from 'hooks';
 import {
+  DISCHARGE_FINAL_VISIT_FIELDS,
+  DISCHARGE_NOTIFY_OPTIONS,
   DISCHARGE_REASONS,
   DISCHARGE_REASON_LABELS,
+  getDischargeNotifyLabel,
+  type DischargeContacts,
   type DischargePayload,
   type DischargeReason,
 } from 'utils';
@@ -37,6 +41,11 @@ interface PatientDischargeModalProps {
   nextOfKinName?: string;
   emergencyContact?: string;
   onConfirm: (payload: DischargePayload) => Promise<void> | void;
+}
+
+function DischargeFieldError({ message }: { message?: string | undefined }) {
+  if (!message) return null;
+  return <p className="text-xs text-[var(--cf-error)]">{message}</p>;
 }
 
 export function PatientDischargeModal({
@@ -56,6 +65,8 @@ export function PatientDischargeModal({
     onConfirm,
     onClose: () => onOpenChange(false),
   });
+
+  const contacts: DischargeContacts = { gpName, nextOfKinName, emergencyContact };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -105,7 +116,7 @@ export function PatientDischargeModal({
               onChange={(e) => updateField('notes', e.target.value)}
               className="border-cf-border text-sm min-h-20"
             />
-            {errors.notes && <p className="text-xs text-[var(--cf-error)]">{errors.notes}</p>}
+            <DischargeFieldError message={errors.notes} />
           </div>
 
           <div className="space-y-1.5">
@@ -116,9 +127,7 @@ export function PatientDischargeModal({
               onChange={(e) => updateField('dischargeDate', e.target.value)}
               className="border-cf-border h-9 text-sm"
             />
-            {errors.dischargeDate && (
-              <p className="text-xs text-[var(--cf-error)]">{errors.dischargeDate}</p>
-            )}
+            <DischargeFieldError message={errors.dischargeDate} />
           </div>
 
           <div className="space-y-2 rounded-lg border border-cf-border-light p-3">
@@ -134,63 +143,36 @@ export function PatientDischargeModal({
             </div>
             {form.scheduleFinalVisit && (
               <div className="grid grid-cols-2 gap-2 pt-1">
-                <Input
-                  type="date"
-                  value={form.finalVisitDate}
-                  onChange={(e) => updateField('finalVisitDate', e.target.value)}
-                  className="border-cf-border h-8 text-sm"
-                />
-                <Input
-                  type="time"
-                  value={form.finalVisitTime}
-                  onChange={(e) => updateField('finalVisitTime', e.target.value)}
-                  className="border-cf-border h-8 text-sm"
-                />
+                {DISCHARGE_FINAL_VISIT_FIELDS.map(({ field, type }) => (
+                  <Input
+                    key={field}
+                    type={type}
+                    value={form[field]}
+                    onChange={(e) => updateField(field, e.target.value)}
+                    className="border-cf-border h-8 text-sm"
+                  />
+                ))}
               </div>
             )}
-            {errors.finalVisitDate && (
-              <p className="text-xs text-[var(--cf-error)]">{errors.finalVisitDate}</p>
-            )}
+            <DischargeFieldError message={errors.finalVisitDate} />
           </div>
 
           <div className="space-y-2 rounded-lg border border-cf-border-light p-3">
             <p className="text-xs font-medium text-cf-ink-60">Notify on discharge</p>
 
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="notifyGp"
-                checked={form.notifyGp}
-                disabled={!gpName}
-                onCheckedChange={(checked) => updateField('notifyGp', checked as boolean)}
-              />
-              <Label htmlFor="notifyGp" className="text-sm font-normal cursor-pointer">
-                GP {gpName ? `(${gpName})` : '(no GP on file)'}
-              </Label>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="notifyNextOfKin"
-                checked={form.notifyNextOfKin}
-                disabled={!nextOfKinName}
-                onCheckedChange={(checked) => updateField('notifyNextOfKin', checked as boolean)}
-              />
-              <Label htmlFor="notifyNextOfKin" className="text-sm font-normal cursor-pointer">
-                Next of kin {nextOfKinName ? `(${nextOfKinName})` : '(none on file)'}
-              </Label>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="notifyEmergencyContact"
-                checked={form.notifyEmergencyContact}
-                disabled={!emergencyContact}
-                onCheckedChange={(checked) => updateField('notifyEmergencyContact', checked as boolean)}
-              />
-              <Label htmlFor="notifyEmergencyContact" className="text-sm font-normal cursor-pointer">
-                Emergency contact {emergencyContact ? `(${emergencyContact})` : '(none on file)'}
-              </Label>
-            </div>
+            {DISCHARGE_NOTIFY_OPTIONS.map((option) => (
+              <div key={option.field} className="flex items-center gap-2">
+                <Checkbox
+                  id={option.field}
+                  checked={form[option.field]}
+                  disabled={!contacts[option.contact]}
+                  onCheckedChange={(checked) => updateField(option.field, checked as boolean)}
+                />
+                <Label htmlFor={option.field} className="text-sm font-normal cursor-pointer">
+                  {getDischargeNotifyLabel(option, contacts)}
+                </Label>
+              </div>
+            ))}
 
             <div className="space-y-1 pt-1">
               <Label className="text-xs font-medium">Other professionals to notify</Label>

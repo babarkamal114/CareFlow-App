@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import {
   Button,
   Card,
@@ -13,7 +13,12 @@ import {
 } from "@/components/ui";
 import { FileText, Upload, X, FolderOpen } from 'lucide-react';
 import { usePatientDocuments } from 'hooks';
-import { PATIENT_DOCUMENT_TYPES, getDocumentTypeLabel } from 'utils';
+import {
+  DEFAULT_PATIENT_DOCUMENT_TYPE,
+  PATIENT_DOCUMENT_ACCEPT,
+  PATIENT_DOCUMENT_TYPES,
+  getDocumentMetaParts,
+} from 'utils';
 
 interface PatientDocumentsTabProps {
   patientId?: string;
@@ -38,7 +43,7 @@ function DocumentRowSkeleton() {
 export function PatientDocumentsTab({ patientId }: PatientDocumentsTabProps) {
   const { documents, isLoading, error, refetch, addFiles, removeDocument } =
     usePatientDocuments(patientId);
-  const [docType, setDocType] = useState<string>('other');
+  const [docType, setDocType] = useState<string>(DEFAULT_PATIENT_DOCUMENT_TYPE);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,12 +54,89 @@ export function PatientDocumentsTab({ patientId }: PatientDocumentsTabProps) {
     }
   };
 
+  const renderBody = () => {
+    if (error) {
+      return (
+        <div className="flex items-center justify-between text-sm py-4">
+          <span className="text-cf-ink-60">Couldn&apos;t load documents.</span>
+          <button onClick={refetch} className="font-semibold text-cf-ink underline">
+            Retry
+          </button>
+        </div>
+      );
+    }
+
+    if (isLoading) {
+      return (
+        <div className="space-y-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <DocumentRowSkeleton key={i} />
+          ))}
+        </div>
+      );
+    }
+
+    if (documents.length === 0) {
+      return (
+        <div className="text-center py-8">
+          <FolderOpen className="h-12 w-12 text-cf-ink-40 mx-auto mb-3" />
+          <p className="text-sm text-cf-ink-60">No documents uploaded</p>
+          <p className="text-xs text-cf-ink-40 mt-1">
+            Upload capacity assessments, DNAR orders, POA, or discharge summaries
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-3">
+        {documents.map((doc) => (
+          <Card
+            key={doc.id}
+            className="border-cf-border hover:bg-cf-surface-muted/50 transition-colors"
+          >
+            <CardContent className="pt-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-lg bg-cf-primary/10 flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-5 h-5 text-cf-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-cf-ink truncate">{doc.name}</p>
+                    <div className="flex items-center gap-2 text-xs text-cf-ink-60 mt-0.5">
+                      {getDocumentMetaParts(doc).map((part, i) => (
+                        <Fragment key={i}>
+                          {i > 0 && <span>•</span>}
+                          <span>{part}</span>
+                        </Fragment>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => removeDocument(doc.id)}
+                  className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 p-1"
+                  aria-label={`Remove ${doc.name}`}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-end gap-2">
         <div className="flex-1 space-y-1">
           <label className="text-xs font-medium text-cf-ink">Document Type</label>
-          <Select value={docType} onValueChange={(val) => setDocType(val ?? 'other')}>
+          <Select
+            value={docType}
+            onValueChange={(val) => setDocType(val ?? DEFAULT_PATIENT_DOCUMENT_TYPE)}
+          >
             <SelectTrigger className="border-cf-border h-9">
               <SelectValue placeholder="Select document type" />
             </SelectTrigger>
@@ -82,68 +164,11 @@ export function PatientDocumentsTab({ patientId }: PatientDocumentsTabProps) {
           multiple
           onChange={handleFileUpload}
           className="hidden"
-          accept=".pdf,.doc,.docx,.jpg,.png"
+          accept={PATIENT_DOCUMENT_ACCEPT}
         />
       </div>
 
-      {error ? (
-        <div className="flex items-center justify-between text-sm py-4">
-          <span className="text-cf-ink-60">Couldn&apos;t load documents.</span>
-          <button onClick={refetch} className="font-semibold text-cf-ink underline">
-            Retry
-          </button>
-        </div>
-      ) : isLoading ? (
-        <div className="space-y-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <DocumentRowSkeleton key={i} />
-          ))}
-        </div>
-      ) : documents.length === 0 ? (
-        <div className="text-center py-8">
-          <FolderOpen className="h-12 w-12 text-cf-ink-40 mx-auto mb-3" />
-          <p className="text-sm text-cf-ink-60">No documents uploaded</p>
-          <p className="text-xs text-cf-ink-40 mt-1">
-            Upload capacity assessments, DNAR orders, POA, or discharge summaries
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {documents.map((doc) => (
-            <Card
-              key={doc.id}
-              className="border-cf-border hover:bg-cf-surface-muted/50 transition-colors"
-            >
-              <CardContent className="pt-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-lg bg-cf-primary/10 flex items-center justify-center flex-shrink-0">
-                      <FileText className="w-5 h-5 text-cf-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-cf-ink truncate">{doc.name}</p>
-                      <div className="flex items-center gap-2 text-xs text-cf-ink-60 mt-0.5">
-                        <span>{getDocumentTypeLabel(doc.docType)}</span>
-                        <span>•</span>
-                        <span>{new Date(doc.uploadedDate).toLocaleDateString('en-GB')}</span>
-                        <span>•</span>
-                        <span>{doc.size}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <Button
-                    onClick={() => removeDocument(doc.id)}
-                    className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 p-1"
-                    aria-label={`Remove ${doc.name}`}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      {renderBody()}
     </div>
   );
 }

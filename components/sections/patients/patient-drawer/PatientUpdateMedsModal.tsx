@@ -22,15 +22,23 @@ import {
 import { X, Plus, Loader2 } from 'lucide-react';
 import { useMedicationForm } from 'hooks';
 import {
+  EMPTY_MEDICATION_DRAFT,
+  MEDICATION_DRAFT_NOTE_FIELDS,
+  MEDICATION_DRAFT_OPTIONAL_FIELDS,
+  MEDICATION_DRAFT_REQUIRED_FIELDS,
   MEDICATION_ROUTES,
+  MEDICATION_ROW_DETAIL_LINES,
+  MEDICATION_ROW_LEAD_FIELDS,
+  MEDICATION_ROW_NOTE_FIELDS,
   MEDICATION_TYPES,
   getMedicationTypeBadgeVariant,
   getMedicationTypeLabel,
+  type MedicationDraftFieldDef,
+  type MedicationRowFieldDef,
   type MedicationType,
   type PatientMedication,
 } from 'utils';
 
-// Re-exported so `import { type Medication } from "sections"` keeps working.
 export type Medication = PatientMedication;
 
 interface EditMedicationModalProps {
@@ -51,7 +59,6 @@ interface DraftFieldProps {
   error?: string | undefined;
 }
 
-/** Label + input + error for the "add medication" form. */
 function DraftField({ id, label, value, onChange, placeholder = '', type = 'text', error }: DraftFieldProps) {
   return (
     <div className="space-y-1">
@@ -71,7 +78,6 @@ function DraftField({ id, label, value, onChange, placeholder = '', type = 'text
   );
 }
 
-/** Compact input for editing a medication that is already on the list. */
 function RowInput({
   value,
   onChange,
@@ -123,6 +129,30 @@ export function EditMedicationModal({
     onClose: () => onOpenChange(false),
   });
 
+  const renderDraftField = (field: MedicationDraftFieldDef) => (
+    <DraftField
+      key={field.id}
+      id={field.id}
+      label={field.label}
+      placeholder={field.placeholder}
+      type={field.type}
+      value={draft[field.name]}
+      error={draftErrors[field.name]}
+      onChange={(v) => updateDraft(field.name, v)}
+    />
+  );
+
+  const renderRowInput = (med: Medication, field: MedicationRowFieldDef) => (
+    <RowInput
+      key={field.name}
+      value={med[field.name] || ''}
+      placeholder={field.placeholder}
+      type={field.type}
+      className={field.className}
+      onChange={(v) => updateMedication(med.id, field.name, v)}
+    />
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -136,16 +166,16 @@ export function EditMedicationModal({
         <div className="space-y-4 py-4">
           <Card className="border-cf-border p-4 space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <DraftField id="med-name" label="Medication Name *" placeholder="Lisinopril" value={draft.name} error={draftErrors.name} onChange={(v) => updateDraft('name', v)} />
-              <DraftField id="med-dosage" label="Dosage *" placeholder="10mg" value={draft.dosage} error={draftErrors.dosage} onChange={(v) => updateDraft('dosage', v)} />
-              <DraftField id="med-frequency" label="Frequency *" placeholder="Once daily" value={draft.frequency} error={draftErrors.frequency} onChange={(v) => updateDraft('frequency', v)} />
-              <DraftField id="med-timing" label="Timing *" placeholder="Morning" value={draft.timing} error={draftErrors.timing} onChange={(v) => updateDraft('timing', v)} />
+              {MEDICATION_DRAFT_REQUIRED_FIELDS.map(renderDraftField)}
 
               <div className="space-y-1">
                 <Label htmlFor="med-route" className="text-xs font-medium">
                   Route
                 </Label>
-                <Select value={draft.route} onValueChange={(val) => updateDraft('route', val ?? 'Oral')}>
+                <Select
+                  value={draft.route}
+                  onValueChange={(val) => updateDraft('route', val ?? EMPTY_MEDICATION_DRAFT.route)}
+                >
                   <SelectTrigger id="med-route" className="border-cf-border h-8 text-sm">
                     <SelectValue />
                   </SelectTrigger>
@@ -165,7 +195,9 @@ export function EditMedicationModal({
                 </Label>
                 <Select
                   value={draft.medicationType}
-                  onValueChange={(val) => updateDraft('medicationType', (val ?? 'regular') as MedicationType)}
+                  onValueChange={(val) =>
+                    updateDraft('medicationType', (val ?? EMPTY_MEDICATION_DRAFT.medicationType) as MedicationType)
+                  }
                 >
                   <SelectTrigger id="med-type" className="border-cf-border h-8 text-sm">
                     <SelectValue />
@@ -180,12 +212,10 @@ export function EditMedicationModal({
                 </Select>
               </div>
 
-              <DraftField id="med-prescriber" label="Prescriber" placeholder="Dr. Sarah Ahmed" value={draft.prescriber} onChange={(v) => updateDraft('prescriber', v)} />
-              <DraftField id="med-start-date" label="Start Date" type="date" value={draft.startDate} onChange={(v) => updateDraft('startDate', v)} />
+              {MEDICATION_DRAFT_OPTIONAL_FIELDS.map(renderDraftField)}
             </div>
 
-            <DraftField id="med-indication" label="Indication (optional)" placeholder="Hypertension" value={draft.indication} onChange={(v) => updateDraft('indication', v)} />
-            <DraftField id="med-instructions" label="Special Instructions (optional)" placeholder="Take with food, avoid grapefruit..." value={draft.instructions} onChange={(v) => updateDraft('instructions', v)} />
+            {MEDICATION_DRAFT_NOTE_FIELDS.map(renderDraftField)}
 
             <Button
               onClick={addMedication}
@@ -215,8 +245,7 @@ export function EditMedicationModal({
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2">
-                            <RowInput value={med.name} onChange={(v) => updateMedication(med.id, 'name', v)} />
-                            <RowInput value={med.dosage} onChange={(v) => updateMedication(med.id, 'dosage', v)} placeholder="Dosage" className="w-20" />
+                            {MEDICATION_ROW_LEAD_FIELDS.map((field) => renderRowInput(med, field))}
                             {med.medicationType && (
                               <Badge
                                 variant={getMedicationTypeBadgeVariant(med.medicationType)}
@@ -227,17 +256,12 @@ export function EditMedicationModal({
                               </Badge>
                             )}
                           </div>
-                          <div className="flex items-center gap-2">
-                            <RowInput value={med.frequency} onChange={(v) => updateMedication(med.id, 'frequency', v)} placeholder="Frequency" />
-                            <RowInput value={med.timing} onChange={(v) => updateMedication(med.id, 'timing', v)} placeholder="Timing" />
-                            <RowInput value={med.route || ''} onChange={(v) => updateMedication(med.id, 'route', v)} placeholder="Route" />
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <RowInput value={med.prescriber || ''} onChange={(v) => updateMedication(med.id, 'prescriber', v)} placeholder="Prescriber" />
-                            <RowInput type="date" value={med.startDate || ''} onChange={(v) => updateMedication(med.id, 'startDate', v)} />
-                          </div>
-                          <RowInput className="w-full" value={med.indication || ''} onChange={(v) => updateMedication(med.id, 'indication', v)} placeholder="Indication (optional)" />
-                          <RowInput className="w-full" value={med.instructions || ''} onChange={(v) => updateMedication(med.id, 'instructions', v)} placeholder="Special instructions (optional)" />
+                          {MEDICATION_ROW_DETAIL_LINES.map((line, i) => (
+                            <div key={i} className="flex items-center gap-2">
+                              {line.map((field) => renderRowInput(med, field))}
+                            </div>
+                          ))}
+                          {MEDICATION_ROW_NOTE_FIELDS.map((field) => renderRowInput(med, field))}
                           {incomplete && (
                             <p className="text-xs text-red-500">
                               Name, dosage, frequency and timing are required.

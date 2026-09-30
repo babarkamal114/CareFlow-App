@@ -6,22 +6,46 @@ import { ShieldCheck, ShieldQuestion } from 'lucide-react';
 import {
   CONSENT_ITEMS,
   RISK_DOMAIN_LABELS,
+  getEmergencyContactRows,
+  getGpInfoRows,
+  getNextOfKinRows,
   getPatientStatusBadge,
+  getPersonalInfoRows,
   getRiskLevelBadge,
   hasGpDetails,
   type PatientInfoData,
+  type PatientInfoRowData,
 } from 'utils';
 
 interface PatientInfoTabProps {
   patient: PatientInfoData;
 }
 
-function InfoRow({ label, value }: { label: string; value?: string | undefined }) {
+function InfoRow({ label, value }: PatientInfoRowData) {
   if (!value) return null;
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-cf-ink-60">{label}</span>
       <span className="text-cf-ink font-medium">{value}</span>
+    </div>
+  );
+}
+
+function InfoRows({ rows }: { rows: PatientInfoRowData[] }) {
+  return (
+    <>
+      {rows.map((row) => (
+        <InfoRow key={row.label} {...row} />
+      ))}
+    </>
+  );
+}
+
+function BadgeRow({ label, badge }: { label: string; badge: ReturnType<typeof getRiskLevelBadge> }) {
+  return (
+    <div className="flex justify-between items-center text-sm">
+      <span className="text-cf-ink-60">{label}</span>
+      <Badge variant={badge.variant} className="text-xs" shape="pill">{badge.label}</Badge>
     </div>
   );
 }
@@ -65,40 +89,21 @@ export function PatientInfoTab({ patient }: PatientInfoTabProps) {
   return (
     <div className="space-y-4">
       <InfoCard title="Personal Information">
-        <InfoRow label="Full Name" value={patient.name} />
-        <InfoRow label="Preferred Name" value={patient.preferredName} />
-        <InfoRow
-          label="Date of Birth"
-          value={patient.dateOfBirth ? new Date(patient.dateOfBirth).toLocaleDateString('en-GB') : undefined}
-        />
-        <InfoRow label="NHS Number" value={patient.nhsNumber} />
-        <InfoRow label="Address" value={patient.address} />
-        <InfoRow label="Email" value={patient.email} />
-        <InfoRow label="Phone" value={patient.phone} />
+        <InfoRows rows={getPersonalInfoRows(patient)} />
       </InfoCard>
 
       {hasGpDetails(patient) && (
         <InfoCard title="GP Details">
-          <InfoRow label="GP Name" value={patient.gpName} />
-          <InfoRow label="GP Phone" value={patient.gpPhone} />
-          <InfoRow label="GP Address" value={patient.gpAddress} />
+          <InfoRows rows={getGpInfoRows(patient)} />
         </InfoCard>
       )}
 
       {(hasKin || hasEmergency) && (
         <InfoCard title="Next of Kin & Emergency">
-          {hasKin && (
-            <>
-              <InfoRow label="Next of Kin" value={patient.nextOfKinName} />
-              <InfoRow label="Relationship" value={patient.nextOfKinRelationship} />
-              <InfoRow label="Phone" value={patient.nextOfKinPhone} />
-            </>
-          )}
+          {hasKin && <InfoRows rows={getNextOfKinRows(patient)} />}
           {hasEmergency && (
             <div className={`space-y-3 ${hasKin ? 'border-t border-cf-border pt-3' : ''}`}>
-              <InfoRow label="Emergency Contact" value={patient.emergencyContact} />
-              <InfoRow label="Relationship" value={patient.emergencyRelationship} />
-              <InfoRow label="Phone" value={patient.emergencyPhone} />
+              <InfoRows rows={getEmergencyContactRows(patient)} />
             </div>
           )}
         </InfoCard>
@@ -106,14 +111,8 @@ export function PatientInfoTab({ patient }: PatientInfoTabProps) {
 
       <InfoCard title="Care Details">
         <InfoRow label="Primary Carer" value={patient.carer} />
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-cf-ink-60">Risk Level</span>
-          <Badge variant={risk.variant} className="text-xs" shape="pill">{risk.label}</Badge>
-        </div>
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-cf-ink-60">Status</span>
-          <Badge variant={status.variant} className="text-xs" shape="pill">{status.label}</Badge>
-        </div>
+        <BadgeRow label="Risk Level" badge={risk} />
+        <BadgeRow label="Status" badge={status} />
         <InfoRow label="Next Visit" value={patient.nextVisit} />
       </InfoCard>
 

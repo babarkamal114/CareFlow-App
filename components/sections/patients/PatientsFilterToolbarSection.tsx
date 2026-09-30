@@ -1,11 +1,8 @@
 'use client';
 
-import { Button } from "@/components/ui";
+import { Button, Tabs, TabsList, TabsTrigger, Input } from "@/components/ui";
 import { Download, Search } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
-import { Input } from "@/components/ui";
-
-type PatientTab = 'active' | 'on-hold' | 'high-risk' | 'review-date' | 'new' | 'all';
+import { PATIENT_TAB_DEFS, type PatientTab } from 'utils';
 
 interface PatientsFilterToolbarSectionProps {
   onTabChange: (tab: PatientTab) => void;
@@ -16,15 +13,6 @@ interface PatientsFilterToolbarSectionProps {
   onSearchChange: (query: string) => void;
   tabCounts: Record<PatientTab, number>;
 }
-
-const tabDefs: Array<{ id: PatientTab; label: string }> = [
-  { id: 'all', label: 'All' },
-  { id: 'active', label: 'Active' },
-  { id: 'on-hold', label: 'On Hold' },
-  { id: 'high-risk', label: 'High Risk' },
-  { id: 'review-date', label: 'Review Date' },
-  { id: 'new', label: 'New' },
-];
 
 export function PatientsFilterToolbarSection({
   onTabChange,
@@ -39,7 +27,7 @@ export function PatientsFilterToolbarSection({
       <div className="flex items-center justify-between gap-6">
         <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as PatientTab)} className="flex-1">
           <TabsList className="bg-cf-surface-muted">
-            {tabDefs.map((tab) => (
+            {PATIENT_TAB_DEFS.map((tab) => (
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}

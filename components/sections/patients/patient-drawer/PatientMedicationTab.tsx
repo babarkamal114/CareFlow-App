@@ -4,7 +4,12 @@ import { Fragment } from 'react';
 import { Card, CardContent, Badge } from "@/components/ui";
 import { Pill } from 'lucide-react';
 import { usePatientMedications } from 'hooks';
-import { getMedicationTypeBadgeVariant, getMedicationTypeLabel } from 'utils';
+import {
+  getMedicationDetailParts,
+  getMedicationPrescribedParts,
+  getMedicationTypeBadgeVariant,
+  getMedicationTypeLabel,
+} from 'utils';
 
 interface PatientMedicationsTabProps {
   patientId?: string;
@@ -25,6 +30,19 @@ function MedicationCardSkeleton() {
         <div className="h-2.5 w-44 rounded bg-cf-ink-40/20 animate-pulse" />
       </CardContent>
     </Card>
+  );
+}
+
+function DotSeparated({ parts }: { parts: string[] }) {
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={i}>
+          {i > 0 && <span>•</span>}
+          <span>{part}</span>
+        </Fragment>
+      ))}
+    </>
   );
 }
 
@@ -67,7 +85,7 @@ export function PatientMedicationsTab({ patientId }: PatientMedicationsTabProps)
   return (
     <div className="space-y-3">
       {medications.map((med) => {
-        const details = [med.frequency, med.timing, med.route].filter(Boolean) as string[];
+        const prescribedParts = getMedicationPrescribedParts(med);
 
         return (
           <Card key={med.id} className="border-cf-border">
@@ -93,12 +111,7 @@ export function PatientMedicationsTab({ patientId }: PatientMedicationsTabProps)
                 </div>
 
                 <div className="flex items-center gap-4 text-xs text-cf-ink-60 flex-wrap">
-                  {details.map((part, i) => (
-                    <Fragment key={i}>
-                      {i > 0 && <span>•</span>}
-                      <span>{part}</span>
-                    </Fragment>
-                  ))}
+                  <DotSeparated parts={getMedicationDetailParts(med)} />
                 </div>
 
                 {med.instructions && (
@@ -107,13 +120,9 @@ export function PatientMedicationsTab({ patientId }: PatientMedicationsTabProps)
                   </div>
                 )}
 
-                {(med.prescriber || med.startDate) && (
+                {prescribedParts.length > 0 && (
                   <div className="flex items-center gap-2 text-[10px] text-cf-ink-40">
-                    {med.prescriber && <span>Prescribed by {med.prescriber}</span>}
-                    {med.prescriber && med.startDate && <span>•</span>}
-                    {med.startDate && (
-                      <span>Since {new Date(med.startDate).toLocaleDateString('en-GB')}</span>
-                    )}
+                    <DotSeparated parts={prescribedParts} />
                   </div>
                 )}
               </div>

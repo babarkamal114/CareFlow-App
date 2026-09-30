@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui
 import { AlertTriangle, Heart, Activity } from 'lucide-react';
 import {
   capitalise,
+  formatPatientDateGB,
   getAllergyBadgeVariant,
   getConditionBadgeVariant,
   sortAllergies,
@@ -54,7 +55,7 @@ export function PatientMedicalHistoryTab({ conditions, allergies, hospitalisatio
                 <div>
                   <p className="text-sm font-medium text-cf-ink">{condition.name}</p>
                   <p className="text-xs text-cf-ink-60">
-                    Diagnosed: {new Date(condition.diagnosedDate).toLocaleDateString('en-GB')}
+                    Diagnosed: {formatPatientDateGB(condition.diagnosedDate)}
                   </p>
                 </div>
                 <Badge variant={getConditionBadgeVariant(condition.status)} className="text-[10px]">
@@ -106,7 +107,7 @@ export function PatientMedicalHistoryTab({ conditions, allergies, hospitalisatio
                   <span className="text-xs text-cf-ink-60">{hospitalisation.duration}</span>
                 </div>
                 <p className="text-xs text-cf-ink-60">
-                  {new Date(hospitalisation.date).toLocaleDateString('en-GB')}
+                  {formatPatientDateGB(hospitalisation.date)}
                 </p>
                 <p className="text-xs text-cf-ink-60 mt-1">Outcome: {hospitalisation.outcome}</p>
               </div>

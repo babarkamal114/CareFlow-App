@@ -12,24 +12,26 @@ export * from './attention-helpers';
 export * from './visit-to-event-converter';
 export * from './style-getters';
 export * from './type-color-map';
-export * from './file-format-size'
-export * from './progress-colors'
-export * from './patient-stats'
-export * from './patients'
-export * from './patient-activity'
-export * from './patient-communication'
-export * from './patient-discharge'
-export * from './patient-documents'
-export * from './patient-info'
-export * from './patient-medications'
-export * from './patient-medical-history'
-export * from './patient-preferences'
-export * from './patient-create'
-export * from './carers'
+export * from './file-format-size';
+export * from './progress-colors';
+export * from './patients';
+export * from './patients-page';
+export * from './patient-profile';
+export * from './patient-records';
+export * from './patient-drawer';
+export * from './patient-edit';
+export * from './patient-medication-form';
+export * from './patient-risk-assessments';
+export * from './patient-daily-notes';
+export * from './patient-form-fields';
+export * from './patient-create';
+export * from './patient-discharge';
+
+export * from './carers';
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,
   type CarePlanSuggestion,
   type VisitNote,
   type VisitNoteTag,
-} from "./care-plan-ai-suggestions";
+} from './care-plan-ai-suggestions';

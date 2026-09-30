@@ -53,6 +53,29 @@ export const DISCHARGE_REASON_LABELS: Record<DischargeReason, string> = {
 
 export const DISCHARGE_REASONS = Object.keys(DISCHARGE_REASON_LABELS) as DischargeReason[];
 
+export const DISCHARGE_FINAL_VISIT_FIELDS = [
+  { field: 'finalVisitDate', type: 'date' },
+  { field: 'finalVisitTime', type: 'time' },
+] as const;
+
+export const DISCHARGE_NOTIFY_OPTIONS = [
+  { field: 'notifyGp', label: 'GP', contact: 'gpName', emptyText: '(no GP on file)' },
+  { field: 'notifyNextOfKin', label: 'Next of kin', contact: 'nextOfKinName', emptyText: '(none on file)' },
+  {
+    field: 'notifyEmergencyContact',
+    label: 'Emergency contact',
+    contact: 'emergencyContact',
+    emptyText: '(none on file)',
+  },
+] as const;
+
+export type DischargeNotifyOption = (typeof DISCHARGE_NOTIFY_OPTIONS)[number];
+
+export function getDischargeNotifyLabel(option: DischargeNotifyOption, contacts: DischargeContacts): string {
+  const name = contacts[option.contact];
+  return `${option.label} ${name ? `(${name})` : option.emptyText}`;
+}
+
 export const todayISO = () => new Date().toLocaleDateString('en-CA');
 
 export function getInitialDischargeForm(contacts: DischargeContacts): DischargeFormState {

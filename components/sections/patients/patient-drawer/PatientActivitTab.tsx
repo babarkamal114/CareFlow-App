@@ -2,7 +2,7 @@
 
 import { Activity } from 'lucide-react';
 import { usePatientActivity } from 'hooks';
-import { getActivityColor } from 'utils';
+import { getActivityDotClass } from 'utils';
 import { Button } from "@/components/ui";
 
 interface PatientActivityTabProps {
@@ -56,9 +56,9 @@ export function PatientActivityTab({ patientId }: PatientActivityTabProps) {
           : activities.map((activity) => (
               <div key={activity.id} className="relative pl-16">
                 <div
-                  className={`absolute left-0 top-1 w-3 h-3 rounded-full border-2 border-cf-surface ${
-                    getActivityColor(activity.type).split(' ')[0]
-                  }`}
+                  className={`absolute left-0 top-1 w-3 h-3 rounded-full border-2 border-cf-surface ${getActivityDotClass(
+                    activity.type
+                  )}`}
                 />
                 <div className="space-y-1">
                   <div className="flex items-start justify-between gap-2">
