@@ -12,9 +12,11 @@ export * from './attention-helpers';
 export * from './visit-to-event-converter';
 export * from './style-getters';
 export * from './type-color-map';
-export * from './file-format-size'
-export * from './slug-generator'
-export * from './progress-colors'
+export * from './file-format-size';
+export * from './slug-generator';
+export * from './progress-colors';
+export * from './staff';
+export * from './add-staff'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,

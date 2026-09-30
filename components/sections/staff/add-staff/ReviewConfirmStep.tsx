@@ -1,10 +1,14 @@
 "use client";
 
-import { Button, Badge, Checkbox, Label } from "ui-components";
+import { Button, Badge, Checkbox, Label } from "@/components/ui";
 import { Pencil, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { SectionLabel, ReviewItem } from "./AddStaffFormPrimitives";
-import { ROLE_LABELS, EMPLOYMENT_LABELS, REF_LABELS } from "./types";
-import type { AddStaffFormData, RefRelationship } from "./types";
+import {
+  REVIEW_COPY,
+  buildAddStaffReviewSections,
+  type AddStaffFormData,
+  type AddStaffReviewRow,
+} from "utils";
 
 interface Props {
   data: AddStaffFormData;
@@ -30,7 +34,7 @@ function ReviewSection({
       {onEdit && (
         <div className="flex justify-end pt-1">
           <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={onEdit}>
-            <Pencil className="mr-1 h-3 w-3" /> Edit
+            <Pencil className="mr-1 h-3 w-3" /> {REVIEW_COPY.editLabel}
           </Button>
         </div>
       )}
@@ -38,95 +42,57 @@ function ReviewSection({
   );
 }
 
+function ReviewValue({ row }: { row: AddStaffReviewRow }) {
+  if (!row.badge) return <>{row.value}</>;
+
+  const badge = (
+    <Badge variant={row.badge.variant} className={row.details ? "mb-1" : undefined}>
+      {row.badge.withCheckIcon && <CheckCircle2 className="mr-1 h-3 w-3" />}
+      {row.badge.text}
+    </Badge>
+  );
+
+  if (!row.details) return badge;
+
+  return (
+    <div className="space-y-0.5 text-right">
+      {badge}
+      {row.details.map((line) => (
+        <p key={line} className="text-xs text-muted-foreground">
+          {line}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export function ReviewConfirmStep({ data, onEdit, onConfirmChange }: Props) {
-  const { personal: p, employment: e } = data;
-
-  const refsObtained =
-    e.ref1Name && e.ref1Contact && e.ref1Relationship &&
-    e.ref2Name && e.ref2Contact && e.ref2Relationship;
-
-  const formatDate = (iso: string) =>
-    iso
-      ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
-      : "—";
+  const sections = buildAddStaffReviewSections(data);
+  const { nextSteps } = REVIEW_COPY;
 
   return (
     <div className="space-y-6">
-      <ReviewSection title="Personal Information" onEdit={() => onEdit(1)}>
-        <ReviewItem label="Name" value={p.fullName} />
-        <ReviewItem label="Email" value={p.email} />
-        <ReviewItem label="Phone" value={p.phone} />
-        <ReviewItem label="Date of Birth" value={formatDate(p.dateOfBirth)} />
-        <ReviewItem label="Address" value={p.address} />
-        <ReviewItem label="NI Number" value={p.niNumber || "—"} />
-        <ReviewItem
-          label="Emergency Contact"
-          value={p.emergencyContactName ? `${p.emergencyContactName} (${p.emergencyContactPhone})` : "—"}
-        />
-      </ReviewSection>
+      {sections.map((section) => (
+        <ReviewSection
+          key={section.id}
+          title={section.title}
+          onEdit={section.editStep ? () => onEdit(section.editStep!) : undefined}
+        >
+          {section.rows.map((row) => (
+            <ReviewItem key={row.label} label={row.label} value={<ReviewValue row={row} />} />
+          ))}
+        </ReviewSection>
+      ))}
 
-      <ReviewSection title="Employment Details" onEdit={() => onEdit(2)}>
-        <ReviewItem label="Role" value={e.role ? ROLE_LABELS[e.role] : "—"} />
-        <ReviewItem label="Start Date" value={formatDate(e.startDate)} />
-        <ReviewItem label="Employment Type" value={e.employmentType ? EMPLOYMENT_LABELS[e.employmentType] : "—"} />
-        <ReviewItem label="Hours / Week" value={e.hoursPerWeek || "—"} />
-      </ReviewSection>
-
-      <ReviewSection title="Pre-Employment Checks">
-        <ReviewItem
-          label="Right to Work"
-          value={
-            e.rightToWorkVerified ? (
-              <Badge variant="softSuccess">
-                <CheckCircle2 className="mr-1 h-3 w-3" />
-                Verified{e.rightToWorkFileName ? ` · ${e.rightToWorkFileName}` : ""}
-              </Badge>
-            ) : (
-              <Badge variant="softWarning">Pending verification</Badge>
-            )
-          }
-        />
-        <ReviewItem
-          label="Overseas Worker"
-          value={
-            e.isOverseasWorker === true ? (
-              <Badge variant="softInfo">Yes{e.goodConductFileName ? ` · ${e.goodConductFileName}` : ""}</Badge>
-            ) : e.isOverseasWorker === false ? (
-              <Badge variant="softMuted">No</Badge>
-            ) : "—"
-          }
-        />
-        <ReviewItem
-          label="References"
-          value={
-            refsObtained ? (
-              <div className="space-y-0.5 text-right">
-                <Badge variant="softSuccess" className="mb-1">
-                  <CheckCircle2 className="mr-1 h-3 w-3" /> 2 obtained
-                </Badge>
-                <p className="text-xs text-muted-foreground">
-                  {e.ref1Name} ({e.ref1Relationship ? REF_LABELS[e.ref1Relationship as RefRelationship] : ""})
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {e.ref2Name} ({e.ref2Relationship ? REF_LABELS[e.ref2Relationship as RefRelationship] : ""})
-                </p>
-              </div>
-            ) : (
-              <Badge variant="softWarning">Incomplete</Badge>
-            )
-          }
-        />
-      </ReviewSection>
-
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/40 dark:bg-amber-950/20">
+      <div className="rounded-lg border border-warning/30 bg-warning-muted p-4">
         <div className="flex items-start gap-2.5">
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
           <div className="space-y-1">
-            <p className="text-sm font-semibold text-amber-800 dark:text-amber-400">Next Steps</p>
-            <p className="text-sm text-amber-700 dark:text-amber-500">
-              After confirming, this staff member will be created with status{" "}
-              <span className="font-semibold">Onboarding Required</span>. The manager must
-              complete the onboarding checklist within 5 days before staff can be scheduled.
+            <p className="text-sm font-semibold text-foreground">{nextSteps.title}</p>
+            <p className="text-sm text-muted-foreground">
+              {nextSteps.beforeStatus}
+              <span className="font-semibold text-foreground">{nextSteps.status}</span>
+              {nextSteps.afterStatus}
             </p>
           </div>
         </div>
@@ -137,8 +103,8 @@ export function ReviewConfirmStep({ data, onEdit, onConfirmChange }: Props) {
           checked={data.confirmed}
           onCheckedChange={(checked) => onConfirmChange(!!checked)}
         />
-        <Label className="cursor-pointer text-sm font-medium text-cf-ink">
-          I confirm all information is correct
+        <Label className="cursor-pointer text-sm font-medium text-foreground">
+          {REVIEW_COPY.confirmLabel}
         </Label>
       </div>
     </div>

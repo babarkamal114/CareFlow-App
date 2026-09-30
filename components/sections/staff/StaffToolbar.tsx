@@ -1,5 +1,3 @@
-// src/app/components/StaffToolbar.tsx
-
 "use client";
 
 import { Input } from "@/components/ui";
@@ -7,8 +5,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 import { mapRolesToDisplay, useGetAllRolesApi } from "lib";
 import { formatRoleName } from "utils";
 import { Search } from "lucide-react";
-
-
 
 interface StaffToolbarProps {
   activeRole: string;

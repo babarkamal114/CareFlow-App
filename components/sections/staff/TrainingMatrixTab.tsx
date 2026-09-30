@@ -1,8 +1,8 @@
 'use client';
 
 import type { ReactElement } from 'react';
-
 import type { StaffMember } from 'types';
+import { Table } from "@/components/ui";
 import {
   TRAINING_MODULES,
   buildComplianceForStaff,
@@ -31,7 +31,7 @@ export function TrainingMatrixTab({ staffMembers }: TrainingMatrixTabProps) {
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <Table className="w-full text-sm">
           <thead>
             <tr className="border-b border-cf-border-light bg-cf-surface-muted/50">
               <th className="text-left px-4 py-2.5 font-medium text-cf-ink-60 sticky left-0 bg-cf-surface-muted/50">
@@ -61,7 +61,7 @@ export function TrainingMatrixTab({ staffMembers }: TrainingMatrixTabProps) {
               );
             })}
           </tbody>
-        </table>
+        </Table>
       </div>
       <div className="flex items-center gap-4 px-4 py-3 border-t border-cf-border-light text-xs text-cf-ink-60">
         <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-green-600" /> Pass</span>

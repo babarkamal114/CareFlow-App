@@ -1,4 +1,3 @@
-// components/sections/staff/PermissionTableSkeleton.tsx
 'use client';
 
 import { Skeleton } from "@/components/ui";

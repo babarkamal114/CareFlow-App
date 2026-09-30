@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronRight } from 'lucide-react';
-import { Badge } from "@/components/ui";
+import { Badge, Button } from "@/components/ui";
 import { cn } from "lib";
 import { PermissionActions } from './permission-actionts';
 
@@ -31,7 +31,7 @@ export function PermissionRow({
 
   return (
     <div className="border border-cf-border rounded-lg overflow-hidden">
-      <button
+      <Button
         onClick={() => onToggleModule(module.id)}
         className="w-full px-4 py-3 flex items-center justify-between hover:bg-cf-surface-muted/50 transition-colors text-left bg-white"
       >
@@ -55,7 +55,7 @@ export function PermissionRow({
         >
           {granted}/{total}
         </Badge>
-      </button>
+      </Button>
 
       {isExpanded && (
         <div className="border-t border-cf-border px-4 py-3 bg-cf-surface-muted/30">

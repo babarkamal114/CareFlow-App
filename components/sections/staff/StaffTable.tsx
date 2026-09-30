@@ -9,14 +9,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Checkbox,
+  Avatar,
+  AvatarFallback, 
+  AvatarImage,
+  Badge, type BadgeProps
 } from "@/components/ui";
-import { Checkbox } from "@/components/ui";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { ArrowUpDown, ChevronRight } from "lucide-react";
 import { SortDirection, SortField, StaffTableProps } from "types";
 import { formatUKPhone, getEmployeeStatusLabel, getEmployeeStatusVariant, getRoleBadgeColor, getStatusBadgeColor } from "utils";
 import { TableBulkActions, StaffViewDrawer } from "@/components/ui";
-import { Badge, type BadgeProps } from"@/components/ui"
 import { formatRoleName } from "utils";
 import { buildComplianceForStaff, overallComplianceStatus } from "lib";
 import { ComplianceIndicator } from "./ComplianceIndicator";

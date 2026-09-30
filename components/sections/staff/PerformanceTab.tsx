@@ -1,77 +1,121 @@
 'use client';
 
 import type { StaffMember } from 'types';
-import { buildPerformanceForStaff } from 'lib';
+import { buildPerformanceForStaff, cn } from 'lib';
 import { Star } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui';
+import {
+  PERFORMANCE_TABLE_COLUMNS,
+  SCORE_STAR_INDEXES,
+  formatPercent,
+  formatScore,
+  getMetricColorClass,
+  getStarClassName,
+  type PerformanceColumn,
+  type StaffPerformance,
+} from 'utils';
 
 interface PerformanceTabProps {
   staffMembers: StaffMember[];
 }
 
-function metricColor(pct: number) {
-  if (pct >= 90) return "text-green-700";
-  if (pct >= 75) return "text-amber-700";
-  return "text-red-700";
-}
-
 function ScoreStars({ score }: { score: number }) {
   return (
-    <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <Star
-          key={i}
-          className={`w-3.5 h-3.5 ${i <= Math.round(score) ? "fill-amber-400 text-amber-400" : "text-cf-border"}`}
-        />
+    <div className="flex items-center justify-center gap-0.5">
+      {SCORE_STAR_INDEXES.map((i) => (
+        <Star key={i} className={cn('size-3.5', getStarClassName(i, score))} />
       ))}
-      <span className="text-xs text-cf-ink-60 ml-1">{score.toFixed(1)}</span>
+      <span className="ml-1 text-xs text-muted-foreground">{formatScore(score)}</span>
     </div>
+  );
+}
+
+function PerformanceCell({
+  column,
+  staff,
+  perf,
+}: {
+  column: PerformanceColumn;
+  staff: StaffMember;
+  perf: StaffPerformance;
+}) {
+  if (column.kind === 'name') {
+    return (
+      <TableCell className="px-4 py-2.5 font-medium text-foreground">
+        {staff.name}
+      </TableCell>
+    );
+  }
+
+  const value = perf[column.field!];
+
+  if (column.kind === 'percent') {
+    return (
+      <TableCell className={cn('text-center font-semibold', getMetricColorClass(value))}>
+        {formatPercent(value)}
+      </TableCell>
+    );
+  }
+
+  return (
+    <TableCell>
+      <ScoreStars score={value} />
+    </TableCell>
   );
 }
 
 export function PerformanceTab({ staffMembers }: PerformanceTabProps) {
   return (
-    <div className="rounded-xl border border-cf-border bg-cf-surface overflow-hidden">
-      <div className="p-4 border-b border-cf-border-light">
-        <p className="text-sm font-semibold text-cf-ink">Performance dashboard</p>
-        <p className="text-xs text-cf-ink-60 mt-0.5">
+    <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="border-b border-border p-4">
+        <p className="text-sm font-semibold text-foreground">Performance dashboard</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
           Punctuality, visit completion, note quality, and patient feedback per carer
         </p>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-cf-border-light bg-cf-surface-muted/50">
-              <th className="text-left px-4 py-2.5 font-medium text-cf-ink-60">Staff member</th>
-              <th className="text-center px-3 py-2.5 font-medium text-cf-ink-60">Punctuality</th>
-              <th className="text-center px-3 py-2.5 font-medium text-cf-ink-60">Visit completion</th>
-              <th className="text-center px-3 py-2.5 font-medium text-cf-ink-60">Note quality</th>
-              <th className="text-center px-3 py-2.5 font-medium text-cf-ink-60">Patient feedback</th>
-            </tr>
-          </thead>
-          <tbody>
-            {staffMembers.map((staff, index) => {
-              const perf = buildPerformanceForStaff(staff.id, index);
-              return (
-                <tr key={staff.id} className="border-b border-cf-border-light hover:bg-cf-surface-muted/30">
-                  <td className="px-4 py-2.5 font-medium text-cf-ink whitespace-nowrap">{staff.name}</td>
-                  <td className={`text-center px-3 py-2.5 font-semibold ${metricColor(perf.punctualityPct)}`}>
-                    {perf.punctualityPct}%
-                  </td>
-                  <td className={`text-center px-3 py-2.5 font-semibold ${metricColor(perf.visitCompletionPct)}`}>
-                    {perf.visitCompletionPct}%
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <div className="flex justify-center"><ScoreStars score={perf.noteQualityScore} /></div>
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <div className="flex justify-center"><ScoreStars score={perf.patientFeedbackScore} /></div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+
+      <Table variant="minimal" className="w-full text-sm">
+        <TableHeader>
+          <TableRow className="bg-muted/50">
+            {PERFORMANCE_TABLE_COLUMNS.map((column) => (
+              <TableHead
+                key={column.id}
+                className={cn(
+                  'font-medium text-muted-foreground',
+                  column.kind === 'name' ? 'px-4 text-left' : 'px-3 text-center',
+                )}
+              >
+                {column.label}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {staffMembers.map((staff, index) => {
+            const perf = buildPerformanceForStaff(staff.id, index);
+            return (
+              <TableRow key={staff.id}>
+                {PERFORMANCE_TABLE_COLUMNS.map((column) => (
+                  <PerformanceCell
+                    key={column.id}
+                    column={column}
+                    staff={staff}
+                    perf={perf}
+                  />
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 }

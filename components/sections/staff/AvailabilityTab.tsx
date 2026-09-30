@@ -1,77 +1,100 @@
 'use client';
 
 import type { StaffMember } from 'types';
-import { buildAvailabilityForStaff } from 'lib';
+import { buildAvailabilityForStaff, cn } from 'lib';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui';
+import {
+  AVAILABILITY_LEGEND,
+  AVAILABILITY_WEEK_DAYS,
+  availabilityCellClasses,
+  formatBookedHours,
+  getAvailabilityState,
+  type AvailabilityDay,
+} from 'utils';
 
 interface AvailabilityTabProps {
   staffMembers: StaffMember[];
 }
 
+function AvailabilityCell({ day }: { day: AvailabilityDay }) {
+  const state = getAvailabilityState(day);
+
+  return (
+    <TableCell className="px-3 py-2.5 text-center">
+      {state === 'unavailable' ? (
+        <span className="text-xs text-cf-ink-40">—</span>
+      ) : (
+        <span
+          className={cn(
+            'inline-flex items-center rounded-md px-2 py-1 text-[11px] font-medium',
+            availabilityCellClasses[state],
+          )}
+        >
+          {formatBookedHours(day)}
+        </span>
+      )}
+    </TableCell>
+  );
+}
+
 export function AvailabilityTab({ staffMembers }: AvailabilityTabProps) {
   return (
-    <div className="rounded-xl border border-cf-border bg-cf-surface overflow-hidden">
-      <div className="p-4 border-b border-cf-border-light">
-        <p className="text-sm font-semibold text-cf-ink">Weekly availability</p>
-        <p className="text-xs text-cf-ink-60 mt-0.5">
+    <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="border-b border-border p-4">
+        <p className="text-sm font-semibold text-foreground">Weekly availability</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
           Available hours vs. booked hours per carer, this week
         </p>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-cf-border-light bg-cf-surface-muted/50">
-              <th className="text-left px-4 py-2.5 font-medium text-cf-ink-60 sticky left-0 bg-cf-surface-muted/50">
-                Carer
-              </th>
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-                <th key={d} className="text-center px-3 py-2.5 font-medium text-cf-ink-60">
-                  {d}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {staffMembers.map((staff, index) => {
-              const availability = buildAvailabilityForStaff(staff.id, index);
-              return (
-                <tr key={staff.id} className="border-b border-cf-border-light hover:bg-cf-surface-muted/30">
-                  <td className="px-4 py-2.5 font-medium text-cf-ink whitespace-nowrap sticky left-0 bg-cf-surface">
-                    {staff.name}
-                  </td>
-                  {availability.week.map((d) => {
-                    const isFull = d.availableHours > 0 && d.bookedHours >= d.availableHours;
-                    const isPartial = d.bookedHours > 0 && d.bookedHours < d.availableHours;
-                    const isUnavailable = d.availableHours === 0;
-                    return (
-                      <td key={d.day} className="text-center px-3 py-2.5">
-                        {isUnavailable ? (
-                          <span className="text-xs text-cf-ink-40">—</span>
-                        ) : (
-                          <div
-                            className={`inline-flex flex-col items-center px-2 py-1 rounded-md text-[11px] font-medium ${
-                              isFull
-                                ? "bg-cf-primary/10 text-cf-primary"
-                                : isPartial
-                                ? "bg-amber-50 text-amber-700"
-                                : "bg-cf-surface-muted text-cf-ink-60"
-                            }`}
-                          >
-                            <span>{d.bookedHours}/{d.availableHours}h</span>
-                          </div>
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex items-center gap-4 px-4 py-3 border-t border-cf-border-light text-xs text-cf-ink-60">
-        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-cf-primary/20" /> Fully booked</span>
-        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-amber-100" /> Partially booked</span>
-        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-cf-surface-muted" /> Available, unbooked</span>
+
+      <Table variant="minimal" className="w-full text-sm">
+        <TableHeader>
+          <TableRow className="bg-muted/50">
+            <TableHead className="sticky left-0 bg-muted px-4 text-left font-medium text-muted-foreground">
+              Carer
+            </TableHead>
+            {AVAILABILITY_WEEK_DAYS.map((day) => (
+              <TableHead
+                key={day}
+                className="px-3 text-center font-medium text-muted-foreground"
+              >
+                {day}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {staffMembers.map((staff, index) => {
+            const availability = buildAvailabilityForStaff(staff.id, index);
+            return (
+              <TableRow key={staff.id}>
+                <TableCell className="sticky left-0 bg-card px-4 py-2.5 font-medium text-foreground">
+                  {staff.name}
+                </TableCell>
+                {availability.week.map((day) => (
+                  <AvailabilityCell key={day.day} day={day} />
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+
+      <div className="flex items-center gap-4 border-t border-border px-4 py-3 text-xs text-muted-foreground">
+        {AVAILABILITY_LEGEND.map((item) => (
+          <span key={item.id} className="flex items-center gap-1.5">
+            <span className={cn('size-2.5 rounded-sm', item.swatchClass)} />
+            {item.label}
+          </span>
+        ))}
       </div>
     </div>
   );
