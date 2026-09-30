@@ -221,14 +221,6 @@ export const ACTION_TO_COLUMN: Record<string, string> = {
   all: 'All',
 };
 
-export const PERMISSIONS_TABLE_HEADER_COLUMNS = [
-  { label: 'Module' },
-  { label: 'Create' },  
-  { label: 'Read' },
-  { label: 'Update' },
-  { label: 'Delete' },
-];
-
 export const mockVisits: Visit[] = [
   {
     id: '1',

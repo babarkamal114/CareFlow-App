@@ -1,11 +1,10 @@
 'use client';
 
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from "@/components/ui"
+import { Checkbox, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge, Button } from "@/components/ui"
 import { useGetUserPermissionsApi } from "lib";
 import { StaffMember } from "types";
 import { PERMISSION_MODULES } from '@/utils';
 import { PermissionsModal } from './PermissionsModal';
-import { Button } from "@/components/ui"
 import { Shield, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import { PermissionTableSkeleton } from "@/components/ui";
@@ -53,8 +52,6 @@ const StaffPermissionTab = ({
     permissionMap.set(`${perm.module}:${perm.action}`, perm.source);
   });
 
-
-
   const hasPermission = (module: string, action: string) => {
     const source = permissionMap.get(`${module.toLowerCase()}:${action}`);
     return source !== undefined && source !== 'block';
@@ -69,7 +66,6 @@ const StaffPermissionTab = ({
   if (isLoading) {
     return (<PermissionTableSkeleton />);
   }
-
 
   if (error) {
     return (
@@ -103,7 +99,6 @@ const StaffPermissionTab = ({
         </Button>
       </div>
 
-      {/* Table */}
       <div className="overflow-hidden rounded-lg">
         <Table>
           <TableHeader>

@@ -2,20 +2,20 @@
 
 import { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  Label,
-  Badge,
-  BadgeProps,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Label, Badge, BadgeProps, Button, Input,
 } from "@/components/ui";
-import { Button } from "@/components/ui";
-import { Input } from "@/components/ui";
 import { StaffMember } from "types";
 import { Loader2, AlertCircle, CheckCircle2, User, Mail, Phone } from 'lucide-react';
-import { getRoleBadgeColor, getRoleDisplayName, getStatusBadgeColor } from 'utils';
+import {
+  getRoleBadgeColor,
+  getRoleDisplayName, 
+  getStatusBadgeColor,
+  getDefaultStaffFormData,
+  validateStaffForm,
+  getStaffModalInitials,
+  type StaffFormData,
+} from 'utils';
 
 interface EditStaffModalProps {
   staff: StaffMember;
@@ -24,17 +24,8 @@ interface EditStaffModalProps {
   onSave?: (data: Partial<StaffMember>) => Promise<void>;
 }
 
-export function EditStaffModal({
-  staff,
-  open,
-  onOpenChange,
-  onSave,
-}: EditStaffModalProps) {
-  const [formData, setFormData] = useState({
-    name: staff.name,
-    email: staff.email,
-    phone: staff.phone || '',
-  });
+export function EditStaffModal({ staff, open, onOpenChange, onSave }: EditStaffModalProps) {
+  const [formData, setFormData] = useState<StaffFormData>(getDefaultStaffFormData(staff));
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -47,33 +38,16 @@ export function EditStaffModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError(null);
 
+    const validationError = validateStaffForm(formData);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      if (!formData.name.trim()) throw new Error('Name is required');
-      if (!formData.email.trim()) throw new Error('Email is required');
-
-      if (onSave) {
-        await onSave({
-          id: staff.id,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
-        });
-      } else {
-        const response = await fetch(`/api/staff/${staff.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone || null,
-          }),
-        });
-        if (!response.ok) throw new Error('Failed to update staff member');
-      }
-
       setSuccess(true);
       setTimeout(() => {
         onOpenChange(false);
@@ -86,10 +60,7 @@ export function EditStaffModal({
     }
   };
 
-  const initials = formData.name
-    ? formData.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
-    : '?';
-
+  const initials = getStaffModalInitials(formData.name);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md p-0 overflow-hidden">
@@ -99,7 +70,6 @@ export function EditStaffModal({
           </DialogTitle>
         </DialogHeader>
 
-        {/* Identity strip — live preview of what's being edited */}
         <div className="flex items-center gap-3 px-6 pt-4">
           <div className="w-11 h-11 rounded-full bg-cf-primary/10 flex items-center justify-center text-sm font-semibold text-cf-primary flex-shrink-0">
             {initials}
@@ -129,7 +99,6 @@ export function EditStaffModal({
 
         <form onSubmit={handleSubmit}>
           <div className="px-6 space-y-5">
-            {/* Personal */}
             <div className="space-y-3">
               <p className="text-xs font-semibold text-cf-ink-40 uppercase tracking-wide">
                 Personal
@@ -149,7 +118,6 @@ export function EditStaffModal({
               </div>
             </div>
 
-            {/* Contact */}
             <div className="space-y-3">
               <p className="text-xs font-semibold text-cf-ink-40 uppercase tracking-wide">
                 Contact
@@ -187,7 +155,6 @@ export function EditStaffModal({
               </div>
             </div>
 
-            {/* Role & status — read-only chips instead of grey text */}
             <div className="flex items-center gap-2 p-3 bg-cf-surface-muted rounded-lg">
               <Badge variant={getRoleBadgeColor(staff.role)} >
                 {getRoleDisplayName(staff.role)}

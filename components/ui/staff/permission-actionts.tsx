@@ -2,6 +2,7 @@
 
 import { cn } from "lib";
 import { ACTION_DISPLAY_NAMES, SORTED_ACTIONS } from "utils";
+import { Button } from "@/components/ui";
 
 interface PermissionActionsProps {
   module: { id: string; label: string; actions: string[] };
@@ -20,8 +21,7 @@ export function PermissionActions({
 }: PermissionActionsProps) {
   return (
     <div className="flex flex-wrap gap-2">
-      {/* Select All */}
-      <button
+      <Button
         onClick={() => onToggleAllModule(module.id)}
         className={cn(
           'px-3 py-1.5 rounded text-sm font-medium transition-colors border',
@@ -31,9 +31,8 @@ export function PermissionActions({
         )}
       >
         Select All
-      </button>
+      </Button>
 
-      {/* Individual Actions */}
       {SORTED_ACTIONS.map((action) => {
         const isAvailable = module.actions.includes(action);
         if (!isAvailable) return null;
@@ -41,7 +40,7 @@ export function PermissionActions({
         const granted = current.includes(action);
 
         return (
-          <button
+          <Button
             key={action}
             onClick={() => onTogglePermission(module.id, action)}
             className={cn(
@@ -59,7 +58,7 @@ export function PermissionActions({
               )}
             </div>
             {ACTION_DISPLAY_NAMES[action]}
-          </button>
+          </Button>
         );
       })}
     </div>

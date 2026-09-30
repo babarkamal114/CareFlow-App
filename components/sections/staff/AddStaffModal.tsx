@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui"
-import { Input } from "@/components/ui"
-import { Label } from "@/components/ui"
 import {
+  Button,
+  Input,
+  Label,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -18,10 +18,9 @@ import {
 } from "@/components/ui";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
-import { useAddStaffApi } from "lib";
+import { useAddStaffApi, mapRolesToDisplay, useGetAllRolesApi } from "lib";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { mapRolesToDisplay, useGetAllRolesApi } from "lib";
 import { Role } from "types";
 
 export function AddStaffModal() {
@@ -74,10 +73,6 @@ export function AddStaffModal() {
       }
     });
   }
-
-  
-
-
 
   return (
 

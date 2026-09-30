@@ -24,8 +24,6 @@ const item = {
   },
 };
 
-// Label-left / value-right row, matching the reference layout —
-// thin divider between rows, no leading icon.
 function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-cf-border py-3 last:border-b-0">
@@ -51,7 +49,6 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 export function StaffDetailsTab({ staff }: StaffDetailsTabProps) {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-4">
-      {/* Contact Information */}
       <Section title="Contact Information">
         <InfoRow
           label="Email"
@@ -82,8 +79,7 @@ export function StaffDetailsTab({ staff }: StaffDetailsTabProps) {
         )}
         {staff.invitedBy && <InfoRow label="Invited By" value={staff.invitedBy} />}
       </Section>
-
-      {/* Account Status */}
+      
       <Section title="Account Status">
         <InfoRow
           label="User Status"

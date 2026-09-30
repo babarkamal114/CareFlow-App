@@ -5,8 +5,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Skeleton,
 } from "@/components/ui";
-import { Skeleton } from "@/components/ui";
 
 export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
   return (
@@ -44,12 +44,10 @@ export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
                 key={index}
                 className="border-b border-cf-border-light hover:bg-transparent"
               >
-                {/* Checkbox */}
                 <TableCell className="px-4">
                   <Skeleton className="h-4 w-4 rounded bg-cf-surface-muted" />
                 </TableCell>
 
-                {/* Employee (Avatar + Name) */}
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Skeleton className="h-8 w-8 rounded-full border border-cf-border-light bg-cf-surface-muted shrink-0" />
@@ -57,7 +55,6 @@ export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
                   </div>
                 </TableCell>
 
-                {/* Contact Info (Email + Phone) */}
                 <TableCell>
                   <div className="flex flex-col">
                     <Skeleton className="h-4 w-36 rounded bg-cf-surface-muted" />
@@ -65,22 +62,18 @@ export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
                   </div>
                 </TableCell>
 
-                {/* Role Pill */}
                 <TableCell>
                   <Skeleton className="h-5 w-16 rounded-full bg-cf-surface-muted" />
                 </TableCell>
 
-                {/* Status Pill */}
                 <TableCell>
                   <Skeleton className="h-5 w-20 rounded-full bg-cf-surface-muted" />
                 </TableCell>
 
-                {/* Join Date */}
                 <TableCell>
                   <Skeleton className="h-4 w-20 rounded bg-cf-surface-muted" />
                 </TableCell>
 
-                {/* Actions Icon */}
                 <TableCell>
                   <Skeleton className="h-8 w-8 rounded-md bg-cf-surface-muted ml-auto" />
                 </TableCell>

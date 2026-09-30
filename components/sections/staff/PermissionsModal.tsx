@@ -1,19 +1,23 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { Dialog, DialogContent, PermissionsBody } from "@/components/ui";
+import type { StaffMember } from "types";
 import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui";
-import { StaffMember } from "types";
-import { ALL_MODULES } from "utils";
+  ALL_MODULES,
+  initializePermissions,
+  togglePermissionAction,
+  toggleAllModuleActions,
+  getAllModuleIds,
+  toggleSetValue,
+  type RawPermission,
+} from "utils";
 import PermissionsHeader from './PermissionHeader';
-import { PermissionsBody } from "@/components/ui";
 import PermissionsFooter from './PermissionFooter';
 
 interface PermissionsModalProps {
   staff: StaffMember;
-  defaultPermissions?: Array<{ module: string; action: string; source?: string }>;
+  defaultPermissions?: RawPermission[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSave?: (data: { permissions: Record<string, string[]> }) => Promise<void>;
@@ -31,81 +35,34 @@ export function PermissionsModal({
   isSuccess,
 }: PermissionsModalProps) {
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const [permissions, setPermissions] = useState<Record<string, string[]>>({});
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
 
-  const memoizedDefaultPermissions = useMemo(() => defaultPermissions, [
-    JSON.stringify(defaultPermissions),
-  ]);
+  const memoizedDefaultPermissions = useMemo(
+    () => defaultPermissions,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(defaultPermissions)],
+  );
 
   useEffect(() => {
-    if (open) {
-      const initialPermissions: Record<string, string[]> = {};
-
-      ALL_MODULES.forEach((module) => {
-        initialPermissions[module.id] = [];
-      });
-
-      if (memoizedDefaultPermissions && memoizedDefaultPermissions.length > 0) {
-        memoizedDefaultPermissions.forEach((perm) => {
-          if (perm.source !== 'block') {
-            if (!initialPermissions[perm.module]) {
-              initialPermissions[perm.module] = [];
-            }
-            if (!initialPermissions[perm.module].includes(perm.action)) {
-              initialPermissions[perm.module].push(perm.action);
-            }
-          }
-        });
-      }
-
-      setPermissions(initialPermissions);
-      setExpandedModules(new Set(ALL_MODULES.map((m) => m.id)));
-    }
+    if (!open) return;
+    setPermissions(initializePermissions(memoizedDefaultPermissions));
+    setExpandedModules(getAllModuleIds(ALL_MODULES));
   }, [open, memoizedDefaultPermissions]);
 
-  const togglePermission = (moduleId: string, action: string) => {
-    setPermissions((prev) => {
-      const current = prev[moduleId] || [];
-      const updated = current.includes(action)
-        ? current.filter((a) => a !== action)
-        : [...current, action];
-      return { ...prev, [moduleId]: updated };
-    });
-  };
+  const handleTogglePermission = (moduleId: string, action: string) =>
+    setPermissions((prev) => togglePermissionAction(prev, moduleId, action));
 
-  const toggleAllModule = (moduleId: string) => {
-    const module = ALL_MODULES.find((m) => m.id === moduleId);
-    if (!module) return;
+  const handleToggleAllModule = (moduleId: string) =>
+    setPermissions((prev) => toggleAllModuleActions(prev, moduleId));
 
-    setPermissions((prev) => {
-      const current = prev[moduleId] || [];
-      const allGranted = module.actions.every((a) => current.includes(a));
-      const updated = allGranted ? [] : [...module.actions];
-      return { ...prev, [moduleId]: updated };
-    });
-  };
-
-  const toggleModule = (moduleId: string) => {
-    setExpandedModules((prev) => {
-      const next = new Set(prev);
-      if (next.has(moduleId)) {
-        next.delete(moduleId);
-      } else {
-        next.add(moduleId);
-      }
-      return next;
-    });
-  };
+  const handleToggleModule = (moduleId: string) =>
+    setExpandedModules((prev) => toggleSetValue(prev, moduleId));
 
   const handleSubmit = async () => {
     setError(null);
-
     try {
-      if (onSave) {
-        await onSave({ permissions });
-      }
+      await onSave?.({ permissions });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     }
@@ -113,15 +70,15 @@ export function PermissionsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent size="screen" showCloseButton={true} className="flex flex-col p-0 gap-0">
+      <DialogContent size="screen" showCloseButton className="flex flex-col gap-0 p-0">
         <PermissionsHeader staff={staff} permissions={permissions} />
 
         <PermissionsBody
           permissions={permissions}
           expandedModules={expandedModules}
-          onToggleModule={toggleModule}
-          onTogglePermission={togglePermission}
-          onToggleAllModule={toggleAllModule}
+          onToggleModule={handleToggleModule}
+          onTogglePermission={handleTogglePermission}
+          onToggleAllModule={handleToggleAllModule}
           error={error}
           success={isSuccess}
         />
