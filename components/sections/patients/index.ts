@@ -41,3 +41,4 @@ export { PreferencesStep } from "./patient-create-modal/PatientCreateModalPrefer
 export { CreatePatientModalProgress } from "./patient-create-modal/PatientCreateModalProgress";
 export * from "./DotSeparated";
 export * from "./PatientFormField";
+export * from './CompactField';

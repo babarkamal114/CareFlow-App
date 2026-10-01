@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Button } from "@/components/ui"
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -15,10 +15,9 @@ import {
   EDIT_PATIENT_SECTIONS,
   buildEditPatientForm,
   validateEditPatientForm,
-  type EditPatientFieldDef,
   type PatientEditData,
 } from 'utils';
-import { PatientFormField } from '../PatientFormField';
+import { PatientFormSections } from '../PatientFormField';
 
 interface EditPatientModalProps {
   open: boolean;
@@ -49,7 +48,7 @@ export function EditPatientModal({
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     clearError(name);
@@ -81,17 +80,6 @@ export function EditPatientModal({
 
   if (!patient) return null;
 
-  const renderField = (field: EditPatientFieldDef) => (
-    <PatientFormField
-      key={field.name}
-      field={field}
-      value={formData[field.name] || ''}
-      error={errors[field.name]}
-      onInputChange={handleInputChange}
-      onSelectChange={handleSelectChange}
-    />
-  );
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
@@ -103,15 +91,13 @@ export function EditPatientModal({
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          {EDIT_PATIENT_SECTIONS.map((section) =>
-            section.gridClass ? (
-              <div key={section.id} className={section.gridClass}>
-                {section.fields.map(renderField)}
-              </div>
-            ) : (
-              section.fields.map(renderField)
-            )
-          )}
+          <PatientFormSections
+            sections={EDIT_PATIENT_SECTIONS}
+            values={formData}
+            errors={errors}
+            onInputChange={handleInputChange}
+            onSelectChange={handleSelectChange}
+          />
         </div>
 
         <DialogFooter className="flex gap-3">

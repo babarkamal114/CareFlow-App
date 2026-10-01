@@ -1,4 +1,6 @@
-import type { MedicationDraft, PatientMedication } from './patient-records';
+import { MEDICATION_ROUTES, MEDICATION_TYPES, type MedicationDraft, type PatientMedication } from './patient-records';
+import type { PatientFormData } from './patient-create';
+import type { SelectOption } from './patient-form-fields';
 
 export type MedicationDraftTextKey = Extract<
   keyof MedicationDraft,
@@ -69,3 +71,32 @@ export const MEDICATION_ROW_NOTE_FIELDS: MedicationRowFieldDef[] = [
   { name: 'indication', placeholder: 'Indication (optional)', type: 'text', className: 'w-full' },
   { name: 'instructions', placeholder: 'Special instructions (optional)', type: 'text', className: 'w-full' },
 ];
+
+export const MEDICATION_ROUTE_OPTIONS: SelectOption[] = MEDICATION_ROUTES.map((route) => ({
+  value: route,
+  label: route,
+}));
+
+export const MEDICATION_TYPE_OPTIONS: SelectOption[] = MEDICATION_TYPES.map((type) => ({
+  value: type.value,
+  label: type.label,
+}));
+
+export const MEDICATION_WIZARD_REQUIRED_FIELDS: MedicationDraftFieldDef[] = MEDICATION_DRAFT_REQUIRED_FIELDS.map(
+  (field) => ({ ...field, label: field.label.replace(/ \*$/, '') })
+);
+
+export const canAddMedicationDraft = (draft: MedicationDraft) =>
+  !!(draft.name && draft.dosage && draft.frequency && draft.timing);
+
+export function buildMedicationFromDraft(draft: MedicationDraft): PatientFormData['medications'][number] {
+  return { id: Date.now().toString(), ...draft };
+}
+
+export function removeMedicationById<T extends { id: string }>(medications: T[], id: string): T[] {
+  return medications.filter((med) => med.id !== id);
+}
+
+export function getMedicationSummaryParts(med: PatientMedication): string[] {
+  return [med.dosage, med.frequency, med.timing, med.route].filter((part): part is string => !!part);
+}

@@ -1,7 +1,7 @@
 'use client';
 
-import { CREATE_PATIENT_INFO_SECTIONS, type PatientFieldDef, type CreatePatientInfoKey, type PatientFormData } from 'utils';
-import { PatientFormField } from '../PatientFormField';
+import { CREATE_PATIENT_INFO_SECTIONS, type PatientFormData } from 'utils';
+import { PatientFormSections } from '../PatientFormField';
 
 interface PatientInfoStepProps {
   formData: PatientFormData;
@@ -16,7 +16,9 @@ export function PatientInfoStep({
   errors,
   setErrors,
 }: PatientInfoStepProps) {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -34,17 +36,6 @@ export function PatientInfoStep({
     });
   };
 
-  const renderField = (field: PatientFieldDef<CreatePatientInfoKey>) => (
-    <PatientFormField
-      key={field.name}
-      field={field}
-      value={formData[field.name] || ''}
-      error={errors[field.name]}
-      onInputChange={handleInputChange}
-      onSelectChange={handleSelectChange}
-    />
-  );
-
   return (
     <div className="space-y-4 pb-4">
       <h3 className="text-lg font-semibold text-cf-ink">
@@ -54,15 +45,13 @@ export function PatientInfoStep({
         Basic information about the patient
       </p>
 
-      {CREATE_PATIENT_INFO_SECTIONS.map((section) =>
-        section.gridClass ? (
-          <div key={section.id} className={section.gridClass}>
-            {section.fields.map(renderField)}
-          </div>
-        ) : (
-          section.fields.map(renderField)
-        )
-      )}
+      <PatientFormSections
+        sections={CREATE_PATIENT_INFO_SECTIONS}
+        values={formData}
+        errors={errors}
+        onInputChange={handleInputChange}
+        onSelectChange={handleSelectChange}
+      />
     </div>
   );
 }

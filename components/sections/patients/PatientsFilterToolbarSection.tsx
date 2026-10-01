@@ -1,7 +1,9 @@
 'use client';
 
-import { Button, Tabs, TabsList, TabsTrigger, Input } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { Download, Search } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
+import { Input } from "@/components/ui";
 import { PATIENT_TAB_DEFS, type PatientTab } from 'utils';
 
 interface PatientsFilterToolbarSectionProps {
@@ -23,7 +25,7 @@ export function PatientsFilterToolbarSection({
   tabCounts,
 }: PatientsFilterToolbarSectionProps) {
   return (
-    <div className="">
+    <div className="mb-4">
       <div className="flex items-center justify-between gap-6">
         <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as PatientTab)} className="flex-1">
           <TabsList className="bg-cf-surface-muted">

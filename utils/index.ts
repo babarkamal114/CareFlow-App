@@ -14,12 +14,16 @@ export * from './style-getters';
 export * from './type-color-map';
 export * from './file-format-size';
 export * from './progress-colors';
+
+// Patients
 export * from './patients';
 export * from './patients-page';
 export * from './patient-profile';
 export * from './patient-records';
 export * from './patient-drawer';
 export * from './patient-edit';
+export * from './patient-create-steps';
+export * from './patient-history-form';
 export * from './patient-medication-form';
 export * from './patient-risk-assessments';
 export * from './patient-daily-notes';

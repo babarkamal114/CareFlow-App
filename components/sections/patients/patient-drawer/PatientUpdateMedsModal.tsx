@@ -3,7 +3,6 @@
 import {
   Button,
   Input,
-  Label,
   Card,
   CardContent,
   Badge,
@@ -13,24 +12,18 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "@/components/ui";
 import { X, Plus, Loader2 } from 'lucide-react';
 import { useMedicationForm } from 'hooks';
 import {
-  EMPTY_MEDICATION_DRAFT,
   MEDICATION_DRAFT_NOTE_FIELDS,
   MEDICATION_DRAFT_OPTIONAL_FIELDS,
   MEDICATION_DRAFT_REQUIRED_FIELDS,
-  MEDICATION_ROUTES,
+  MEDICATION_ROUTE_OPTIONS,
   MEDICATION_ROW_DETAIL_LINES,
   MEDICATION_ROW_LEAD_FIELDS,
   MEDICATION_ROW_NOTE_FIELDS,
-  MEDICATION_TYPES,
+  MEDICATION_TYPE_OPTIONS,
   getMedicationTypeBadgeVariant,
   getMedicationTypeLabel,
   type MedicationDraftFieldDef,
@@ -38,6 +31,7 @@ import {
   type MedicationType,
   type PatientMedication,
 } from 'utils';
+import { CompactInputField, CompactSelectField } from 'sections';
 
 export type Medication = PatientMedication;
 
@@ -47,35 +41,6 @@ interface EditMedicationModalProps {
   medications: Medication[];
   onSave: (medications: Medication[]) => Promise<void>;
   patientName?: string;
-}
-
-interface DraftFieldProps {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  type?: string;
-  error?: string | undefined;
-}
-
-function DraftField({ id, label, value, onChange, placeholder = '', type = 'text', error }: DraftFieldProps) {
-  return (
-    <div className="space-y-1">
-      <Label htmlFor={id} className="text-xs font-medium">
-        {label}
-      </Label>
-      <Input
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`border-cf-border h-8 text-sm ${error ? 'border-red-500' : ''}`}
-      />
-      {error && <p className="text-xs text-red-500">{error}</p>}
-    </div>
-  );
 }
 
 function RowInput({
@@ -130,7 +95,7 @@ export function EditMedicationModal({
   });
 
   const renderDraftField = (field: MedicationDraftFieldDef) => (
-    <DraftField
+    <CompactInputField
       key={field.id}
       id={field.id}
       label={field.label}
@@ -168,49 +133,21 @@ export function EditMedicationModal({
             <div className="grid grid-cols-2 gap-3">
               {MEDICATION_DRAFT_REQUIRED_FIELDS.map(renderDraftField)}
 
-              <div className="space-y-1">
-                <Label htmlFor="med-route" className="text-xs font-medium">
-                  Route
-                </Label>
-                <Select
-                  value={draft.route}
-                  onValueChange={(val) => updateDraft('route', val ?? EMPTY_MEDICATION_DRAFT.route)}
-                >
-                  <SelectTrigger id="med-route" className="border-cf-border h-8 text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {MEDICATION_ROUTES.map((r) => (
-                      <SelectItem key={r} value={r}>
-                        {r}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <CompactSelectField
+                id="med-route"
+                label="Route"
+                value={draft.route}
+                options={MEDICATION_ROUTE_OPTIONS}
+                onChange={(val) => updateDraft('route', val)}
+              />
 
-              <div className="space-y-1">
-                <Label htmlFor="med-type" className="text-xs font-medium">
-                  Medication Type
-                </Label>
-                <Select
-                  value={draft.medicationType}
-                  onValueChange={(val) =>
-                    updateDraft('medicationType', (val ?? EMPTY_MEDICATION_DRAFT.medicationType) as MedicationType)
-                  }
-                >
-                  <SelectTrigger id="med-type" className="border-cf-border h-8 text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {MEDICATION_TYPES.map((t) => (
-                      <SelectItem key={t.value} value={t.value}>
-                        {t.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <CompactSelectField
+                id="med-type"
+                label="Medication Type"
+                value={draft.medicationType}
+                options={MEDICATION_TYPE_OPTIONS}
+                onChange={(val) => updateDraft('medicationType', val as MedicationType)}
+              />
 
               {MEDICATION_DRAFT_OPTIONAL_FIELDS.map(renderDraftField)}
             </div>

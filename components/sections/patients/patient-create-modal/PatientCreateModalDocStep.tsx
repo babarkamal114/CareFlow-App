@@ -75,7 +75,10 @@ export function AttachmentsStep({
         <Label htmlFor="docType" className="text-sm font-medium">
           Document Type
         </Label>
-        <Select value={docType} onValueChange={setDocType}>
+        <Select
+          value={docType}
+          onValueChange={(val) => setDocType(val ?? DEFAULT_PATIENT_DOCUMENT_TYPE)}
+        >
           <SelectTrigger id="docType" className="border-cf-border">
             <SelectValue placeholder="Select document type" />
           </SelectTrigger>

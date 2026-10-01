@@ -1,22 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Input,
-  Label,
-  Button,
-  Card,
-  CardContent,
-  Checkbox,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui"
+import { Label, Button, Card, CardContent, Checkbox } from "@/components/ui";
 import { X, Plus, User, Phone, Mail, AlertCircle } from 'lucide-react';
-import { PatientFormData } from './PatientCreateModal';
-
+import {
+  CONTACT_DRAFT_FIELDS,
+  CONTACT_FLAGS,
+  CONTACT_TYPE_LABELS,
+  CONTACT_TYPE_OPTIONS,
+  EMPTY_CONTACT_DRAFT,
+  addPatientContact,
+  canAddPatientContact,
+  removePatientContact,
+  type ContactDraft,
+  type PatientContact,
+  type PatientFormData,
+} from 'utils';
+import { CompactInputField, CompactSelectField } from 'sections';
 
 interface KeyContactsStepProps {
   formData: PatientFormData;
@@ -25,79 +25,23 @@ interface KeyContactsStepProps {
   setErrors: (errors: Record<string, string>) => void;
 }
 
-interface Contact {
-  id: string;
-  type: 'gp' | 'district-nurse' | 'social-worker' | 'pharmacist' | 'family' | 'other';
-  name: string;
-  role: string;
-  phone: string;
-  email: string;
-  relationship: string;
-  isPrimary: boolean;
-  isEmergency: boolean;
-}
-
 export function KeyContactsStep({ formData, setFormData, errors, setErrors }: KeyContactsStepProps) {
-  const [newContact, setNewContact] = useState<Omit<Contact, 'id'>>({
-    type: 'family',
-    name: '',
-    role: '',
-    phone: '',
-    email: '',
-    relationship: '',
-    isPrimary: false,
-    isEmergency: false,
-  });
+  const [newContact, setNewContact] = useState<ContactDraft>({ ...EMPTY_CONTACT_DRAFT });
+
+  const contacts = formData.contacts || [];
 
   const handleAddContact = () => {
-    if (newContact.name && newContact.phone) {
-      const contacts = formData.contacts || [];
-      setFormData({
-        ...formData,
-        contacts: [
-          ...contacts,
-          { ...newContact, id: Date.now().toString() },
-        ],
-      });
-      setNewContact({
-        type: 'family',
-        name: '',
-        role: '',
-        phone: '',
-        email: '',
-        relationship: '',
-        isPrimary: false,
-        isEmergency: false,
-      });
-      if (errors.contacts) {
-        setErrors({ ...errors, contacts: '' });
-      }
+    if (!canAddPatientContact(newContact)) return;
+
+    setFormData(addPatientContact(formData, newContact));
+    setNewContact({ ...EMPTY_CONTACT_DRAFT });
+    if (errors.contacts) {
+      setErrors({ ...errors, contacts: '' });
     }
   };
 
   const handleRemoveContact = (id: string) => {
-    setFormData({
-      ...formData,
-      contacts: (formData.contacts || []).filter((c: Contact) => c.id !== id),
-    });
-  };
-
-  const contactTypeLabels: Record<Contact['type'], string> = {
-    'gp': 'GP',
-    'district-nurse': 'District Nurse',
-    'social-worker': 'Social Worker',
-    'pharmacist': 'Pharmacist',
-    'family': 'Family Member',
-    'other': 'Other',
-  };
-
-  const contactTypeIcons: Record<Contact['type'], React.ReactNode> = {
-    'gp': <User className="h-4 w-4" />,
-    'district-nurse': <User className="h-4 w-4" />,
-    'social-worker': <User className="h-4 w-4" />,
-    'pharmacist': <User className="h-4 w-4" />,
-    'family': <User className="h-4 w-4" />,
-    'other': <User className="h-4 w-4" />,
+    setFormData(removePatientContact(formData, id));
   };
 
   return (
@@ -116,98 +60,39 @@ export function KeyContactsStep({ formData, setFormData, errors, setErrors }: Ke
 
       <Card className="border-cf-border p-4 space-y-3">
         <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1">
-            <Label className="text-xs font-medium">Contact Type</Label>
-            <Select
-              value={newContact.type}
-              onValueChange={(val) => setNewContact({ ...newContact, type: val as Contact['type'] })}
-            >
-              <SelectTrigger className="border-cf-border h-8 text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="gp">GP</SelectItem>
-                <SelectItem value="district-nurse">District Nurse</SelectItem>
-                <SelectItem value="social-worker">Social Worker</SelectItem>
-                <SelectItem value="pharmacist">Pharmacist</SelectItem>
-                <SelectItem value="family">Family Member</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <CompactSelectField
+            id="contact-type"
+            label="Contact Type"
+            value={newContact.type}
+            options={CONTACT_TYPE_OPTIONS}
+            onChange={(val) => setNewContact({ ...newContact, type: val as PatientContact['type'] })}
+          />
 
-          <div className="space-y-1">
-            <Label className="text-xs font-medium">Name *</Label>
-            <Input
-              placeholder="Margaret Chen"
-              value={newContact.name}
-              onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
-              className="border-cf-border h-8 text-sm"
+          {CONTACT_DRAFT_FIELDS.map((field) => (
+            <CompactInputField
+              key={field.id}
+              id={field.id}
+              label={field.label}
+              placeholder={field.placeholder}
+              value={newContact[field.name] || ''}
+              onChange={(val) => setNewContact({ ...newContact, [field.name]: val })}
             />
-          </div>
-
-          <div className="space-y-1">
-            <Label className="text-xs font-medium">Role</Label>
-            <Input
-              placeholder="Daughter, Primary Carer"
-              value={newContact.role}
-              onChange={(e) => setNewContact({ ...newContact, role: e.target.value })}
-              className="border-cf-border h-8 text-sm"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label className="text-xs font-medium">Relationship</Label>
-            <Input
-              placeholder="Daughter"
-              value={newContact.relationship || ''}
-              onChange={(e) => setNewContact({ ...newContact, relationship: e.target.value })}
-              className="border-cf-border h-8 text-sm"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label className="text-xs font-medium">Phone *</Label>
-            <Input
-              placeholder="07700 900123"
-              value={newContact.phone}
-              onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
-              className="border-cf-border h-8 text-sm"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label className="text-xs font-medium">Email</Label>
-            <Input
-              placeholder="margaret@email.com"
-              value={newContact.email || ''}
-              onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
-              className="border-cf-border h-8 text-sm"
-            />
-          </div>
+          ))}
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="isPrimary"
-              checked={newContact.isPrimary}
-              onCheckedChange={(checked) => setNewContact({ ...newContact, isPrimary: checked as boolean })}
-            />
-            <Label htmlFor="isPrimary" className="text-xs font-normal cursor-pointer">
-              Primary Contact
-            </Label>
-          </div>
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="isEmergency"
-              checked={newContact.isEmergency}
-              onCheckedChange={(checked) => setNewContact({ ...newContact, isEmergency: checked as boolean })}
-            />
-            <Label htmlFor="isEmergency" className="text-xs font-normal cursor-pointer">
-              Emergency Contact
-            </Label>
-          </div>
+          {CONTACT_FLAGS.map((flag) => (
+            <div key={flag.name} className="flex items-center gap-2">
+              <Checkbox
+                id={flag.id}
+                checked={newContact[flag.name]}
+                onCheckedChange={(checked) => setNewContact({ ...newContact, [flag.name]: checked as boolean })}
+              />
+              <Label htmlFor={flag.id} className="text-xs font-normal cursor-pointer">
+                {flag.label}
+              </Label>
+            </div>
+          ))}
         </div>
 
         <Button
@@ -221,22 +106,19 @@ export function KeyContactsStep({ formData, setFormData, errors, setErrors }: Ke
         </Button>
       </Card>
 
-      {(formData.contacts || []).length > 0 && (
+      {contacts.length > 0 && (
         <div className="space-y-2">
-          {(formData.contacts || []).map((contact: Contact) => (
+          {contacts.map((contact) => (
             <Card key={contact.id} className="border-cf-border p-3">
               <CardContent className="p-0 flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    {contactTypeIcons[contact.type]}
+                    <User className="h-4 w-4" />
                     <p className="text-sm font-medium text-cf-ink">{contact.name}</p>
-                    <span className="text-xs text-cf-ink-40">({contactTypeLabels[contact.type]})</span>
-                    {contact.isPrimary && (
-                      <span className="text-[10px] bg-[var(--cf-info-muted)] text-[var(--cf-info)] px-1.5 py-0.5 rounded-full">Primary</span>
-                    )}
-                    {contact.isEmergency && (
-                      <span className="text-[10px] bg-[var(--cf-error-muted)] text-[var(--cf-error)] px-1.5 py-0.5 rounded-full">Emergency</span>
-                    )}
+                    <span className="text-xs text-cf-ink-40">({CONTACT_TYPE_LABELS[contact.type]})</span>
+                    {CONTACT_FLAGS.filter((flag) => contact[flag.name]).map((flag) => (
+                      <span key={flag.name} className={flag.badgeClass}>{flag.badgeLabel}</span>
+                    ))}
                   </div>
                   <div className="flex items-center gap-3 text-xs text-cf-ink-60 mt-1">
                     {contact.role && <span>{contact.role}</span>}
@@ -258,6 +140,7 @@ export function KeyContactsStep({ formData, setFormData, errors, setErrors }: Ke
                 <button
                   onClick={() => handleRemoveContact(contact.id)}
                   className="text-cf-ink-40 hover:text-cf-error transition-colors"
+                  aria-label={`Remove ${contact.name}`}
                 >
                   <X className="w-4 h-4" />
                 </button>

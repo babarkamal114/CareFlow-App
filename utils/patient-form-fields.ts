@@ -20,7 +20,7 @@ export const COMMUNICATION_SELECTS: {
   placeholder: string;
   defaultValue: string;
   options: SelectOption[];
-    }[] = [
+}[] = [
   {
     name: 'hearingImpairment',
     label: 'Hearing Impairment',
@@ -88,12 +88,11 @@ export function getSelectValue(
   return formData[field.name] || field.defaultValue;
 }
 
-
 export type PatientFieldDef<N extends string = string> =
   | { kind: 'input'; name: N; label: string; placeholder: string; type: string }
+  | { kind: 'textarea'; name: N; label: string; placeholder: string; minHeightClass: string; hint?: string }
   | { kind: 'select'; name: N; label: string; placeholder: string; options: SelectOption[] };
 
-/** A row of fields. With no gridClass the field sits on its own row. */
 export interface PatientFieldSection<N extends string = string> {
   id: string;
   gridClass?: string;
@@ -111,7 +110,6 @@ export const PATIENT_STATUS_OPTIONS: SelectOption[] = [
   { value: 'active', label: 'Active' },
   { value: 'on-hold', label: 'On Hold' },
 ];
-
 
 export type CreatePatientInfoKey =
   | 'name'
