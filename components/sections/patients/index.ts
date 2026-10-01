@@ -5,10 +5,6 @@ export { PatientsPageHeader } from "./PatientsPageHeader";
 export { PatientDrawerFooter } from "./PatientDrawerFooter";
 export { PatientDrawer } from "./patient-drawer/PatientDrawer";
 export { EditPatientModal } from "./patient-drawer/PatientEditModal";
-export {
-  EditMedicationModal,
-  type Medication,
-} from "./patient-drawer/PatientUpdateMedsModal";
 export { PatientActivityTab } from "./patient-drawer/PatientActivitTab";
 export { PatientRiskAssessmentsTab } from "./patient-drawer/PatientAssessmentTab";
 export { PatientClinicalNotesTab } from "./patient-drawer/PatientClinicalNotesTab";
@@ -18,11 +14,15 @@ export { PatientInfoTab } from "./patient-drawer/PatientInfoTab";
 export { PatientMedicalHistoryTab } from "./patient-drawer/PatientMedicalHistoryTab";
 export { PatientMedicationsTab } from "./patient-drawer/PatientMedicationTab";
 export { PatientPreferencesTab } from "./patient-drawer/PatientPreferenceTab";
-export { PatientDischargeModal} from "./patient-drawer/PatientDischargeModal";
+export { PatientDischargeModal } from "./patient-drawer/PatientDischargeModal";
+export type { Medication } from "./patient-drawer/PatientUpdateMedsModal";
 export {
-  CreatePatientModal,
-  type PatientFormData,
-} from "./patient-create-modal/PatientCreateModal";
+  EditMedicationModal,
+  type Medication as EditMedicationModalMedication, 
+} from "./patient-drawer/PatientUpdateMedsModal";
+
+export { CreatePatientModal } from "./patient-create-modal/PatientCreateModal";
+export type { PatientFormData } from "./patient-create-modal/PatientCreateModal";
 export { AssignCarersStep } from "./patient-create-modal/PatientCreateModalAssignCarerStep";
 export { CommunicationStep } from "./patient-create-modal/PatientCreateModalCommunicationStep";
 export {
@@ -39,3 +39,5 @@ export { MedicalHistoryStep } from "./patient-create-modal/PatientCreateModalMed
 export { MedicationsStep } from "./patient-create-modal/PatientCreateModalMedStep";
 export { PreferencesStep } from "./patient-create-modal/PatientCreateModalPreferencesStep";
 export { CreatePatientModalProgress } from "./patient-create-modal/PatientCreateModalProgress";
+export * from "./DotSeparated";
+export * from "./PatientFormField";

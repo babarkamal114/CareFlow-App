@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { 
+import { useState, type ReactNode } from 'react';
+import {
   Card,
   Label,
   CardContent,
@@ -9,30 +9,30 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue, } from "@/components/ui";
-import { Upload, X, FileText, ShieldAlert, Scale, FileHeart } from 'lucide-react';
-import { PatientFormData } from './PatientCreateModal';
+  SelectValue,
+} from "@/components/ui";
+import { Upload, X } from 'lucide-react';
+import {
+  DEFAULT_PATIENT_DOCUMENT_TYPE,
+  PATIENT_ATTACHMENT_ICONS,
+  PATIENT_ATTACHMENT_TYPES,
+  PATIENT_DOCUMENT_ACCEPT,
+  buildPatientAttachments,
+  getAttachmentMetaParts,
+  getDocumentTypeLabel,
+  removePatientAttachment,
+  type PatientFormData,
+} from 'utils';
+import { DotSeparated } from '../DotSeparated';
 
-export const DOCUMENT_TYPES = [
-  { value: 'capacity-assessment', label: 'Capacity Assessment' },
-  { value: 'dnar', label: 'DNAR Order' },
-  { value: 'poa', label: 'Power of Attorney' },
-  { value: 'discharge-summary', label: 'Hospital Discharge Summary' },
-  { value: 'care-plan', label: 'Care Plan' },
-  { value: 'other', label: 'Other' },
-] as const;
-
-export const documentTypeIcon: Record<string, React.ReactNode> = {
-  'capacity-assessment': <ShieldAlert className="w-5 h-5" />,
-  dnar: <FileHeart className="w-5 h-5" />,
-  poa: <Scale className="w-5 h-5" />,
-  'discharge-summary': <FileText className="w-5 h-5" />,
-  'care-plan': <FileText className="w-5 h-5" />,
-  other: <FileText className="w-5 h-5" />,
-};
-
-export const documentTypeLabel = (value: string) =>
-  DOCUMENT_TYPES.find((t) => t.value === value)?.label || 'Other';
+export const DOCUMENT_TYPES = PATIENT_ATTACHMENT_TYPES;
+export const documentTypeLabel = getDocumentTypeLabel;
+export const documentTypeIcon: Record<string, ReactNode> = Object.fromEntries(
+  Object.entries(PATIENT_ATTACHMENT_ICONS).map(([value, Icon]) => [
+    value,
+    <Icon key={value} className="w-5 h-5" />,
+  ])
+);
 
 interface AttachmentsStepProps {
   formData: PatientFormData;
@@ -43,21 +43,14 @@ export function AttachmentsStep({
   formData,
   setFormData,
 }: AttachmentsStepProps) {
-  const [docType, setDocType] = useState<string>('other');
+  const [docType, setDocType] = useState<string>(DEFAULT_PATIENT_DOCUMENT_TYPE);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
     if (files) {
-      const newAttachments = Array.from(files).map((file) => ({
-        id: Date.now().toString() + Math.random(),
-        name: file.name,
-        size: file.size,
-        docType,
-        file,
-      }));
       setFormData({
         ...formData,
-        attachments: [...formData.attachments, ...newAttachments],
+        attachments: [...formData.attachments, ...buildPatientAttachments(Array.from(files), docType)],
       });
     }
   };
@@ -65,16 +58,8 @@ export function AttachmentsStep({
   const handleRemoveAttachment = (id: string) => {
     setFormData({
       ...formData,
-      attachments: formData.attachments.filter((att:any) => att.id !== id),
+      attachments: removePatientAttachment(formData.attachments, id),
     });
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
   };
 
   return (
@@ -95,7 +80,7 @@ export function AttachmentsStep({
             <SelectValue placeholder="Select document type" />
           </SelectTrigger>
           <SelectContent>
-            {DOCUMENT_TYPES.map((t) => (
+            {PATIENT_ATTACHMENT_TYPES.map((t) => (
               <SelectItem key={t.value} value={t.value}>
                 {t.label}
               </SelectItem>
@@ -123,7 +108,7 @@ export function AttachmentsStep({
             multiple
             onChange={handleFileUpload}
             className="hidden"
-            accept=".pdf,.doc,.docx,.jpg,.png"
+            accept={PATIENT_DOCUMENT_ACCEPT}
           />
         </label>
       </Card>
@@ -133,7 +118,7 @@ export function AttachmentsStep({
           <p className="text-xs font-semibold text-cf-ink-60">
             Uploaded Files:
           </p>
-          {formData.attachments.map((attachment:any) => (
+          {formData.attachments.map((attachment) => (
             <Card key={attachment.id} className="border-cf-border p-3">
               <CardContent className="p-0 flex items-center justify-between gap-2">
                 <div className="flex-1 min-w-0">
@@ -141,18 +126,13 @@ export function AttachmentsStep({
                     {attachment.name}
                   </p>
                   <div className="flex items-center gap-2 text-xs text-cf-ink-60">
-                    <span>{formatFileSize(attachment.size)}</span>
-                    {attachment.docType && (
-                      <>
-                        <span>•</span>
-                        <span>{documentTypeLabel(attachment.docType)}</span>
-                      </>
-                    )}
+                    <DotSeparated parts={getAttachmentMetaParts(attachment)} />
                   </div>
                 </div>
                 <button
                   onClick={() => handleRemoveAttachment(attachment.id)}
                   className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
+                  aria-label={`Remove ${attachment.name}`}
                 >
                   <X className="w-4 h-4" />
                 </button>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,7 @@ import {
   getStepKey,
   validatePatientStep,
   type PatientFormData,
+  type PatientStepKey,
 } from 'utils';
 import { CreatePatientModalProgress } from './PatientCreateModalProgress';
 import { CreatePatientModalFooter } from './PatientCreateModalFooter';
@@ -39,6 +40,53 @@ interface CreatePatientModalProps {
   onPatientCreate?: (patient: any) => void;
 }
 
+interface StepContext {
+  formData: PatientFormData;
+  setFormData: (data: PatientFormData) => void;
+  errors: Record<string, string>;
+  setErrors: (errors: Record<string, string>) => void;
+  carersState: ReturnType<typeof useCarers>;
+}
+
+const STEP_RENDERERS: Record<PatientStepKey, (ctx: StepContext) => ReactNode> = {
+  personal: ({ formData, setFormData, errors, setErrors }) => (
+    <PatientInfoStep formData={formData} setFormData={setFormData} errors={errors} setErrors={setErrors} />
+  ),
+  'medical-history': ({ formData, setFormData }) => (
+    <MedicalHistoryStep formData={formData} setFormData={setFormData} />
+  ),
+  communication: ({ formData, setFormData }) => (
+    <CommunicationStep formData={formData} setFormData={setFormData} />
+  ),
+  preferences: ({ formData, setFormData }) => (
+    <PreferencesStep formData={formData} setFormData={setFormData} />
+  ),
+  contacts: ({ formData, setFormData, errors, setErrors }) => (
+    <KeyContactsStep formData={formData} setFormData={setFormData} errors={errors} setErrors={setErrors} />
+  ),
+  'life-story': ({ formData, setFormData }) => (
+    <LifeStoryStep formData={formData} setFormData={setFormData} />
+  ),
+  medications: ({ formData, setFormData }) => (
+    <MedicationsStep formData={formData} setFormData={setFormData} />
+  ),
+  carers: ({ formData, setFormData, errors, setErrors, carersState }) => (
+    <AssignCarersStep
+      formData={formData}
+      setFormData={setFormData}
+      errors={errors}
+      setErrors={setErrors}
+      carers={carersState.carers}
+      isLoading={carersState.isLoading}
+      error={carersState.error}
+      onRetry={carersState.refetch}
+    />
+  ),
+  documents: ({ formData, setFormData }) => (
+    <AttachmentsStep formData={formData} setFormData={setFormData} />
+  ),
+};
+
 export function CreatePatientModal({
   open,
   onOpenChange,
@@ -47,8 +95,6 @@ export function CreatePatientModal({
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState<PatientFormData>(createEmptyPatientForm);
-
-  // Only fetch while the modal is open.
   const carersState = useCarers(open);
 
   const stepKey = getStepKey(currentStep);
@@ -78,55 +124,8 @@ export function CreatePatientModal({
     onOpenChange(false);
   };
 
-  const renderStep = () => {
-    switch (stepKey) {
-      case 'personal':
-        return (
-          <PatientInfoStep
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-          />
-        );
-      case 'medical-history':
-        return <MedicalHistoryStep formData={formData} setFormData={setFormData} />;
-      case 'communication':
-        return <CommunicationStep formData={formData} setFormData={setFormData} />;
-      case 'preferences':
-        return <PreferencesStep formData={formData} setFormData={setFormData} />;
-      case 'contacts':
-        return (
-          <KeyContactsStep
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-          />
-        );
-      case 'life-story':
-        return <LifeStoryStep formData={formData} setFormData={setFormData} />;
-      case 'medications':
-        return <MedicationsStep formData={formData} setFormData={setFormData} />;
-      case 'carers':
-        return (
-          <AssignCarersStep
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-            carers={carersState.carers}
-            isLoading={carersState.isLoading}
-            error={carersState.error}
-            onRetry={carersState.refetch}
-          />
-        );
-      case 'documents':
-        return <AttachmentsStep formData={formData} setFormData={setFormData} />;
-      default:
-        return null;
-    }
-  };
+  const renderStep = () =>
+    stepKey ? STEP_RENDERERS[stepKey]({ formData, setFormData, errors, setErrors, carersState }) : null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

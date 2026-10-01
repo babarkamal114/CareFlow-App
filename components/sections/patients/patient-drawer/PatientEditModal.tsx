@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import {
-  Label,
-  Input,
   Button,
   Dialog,
   DialogContent,
@@ -11,11 +9,6 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from "@/components/ui"
 import { Loader2 } from 'lucide-react';
 import {
@@ -25,62 +18,13 @@ import {
   type EditPatientFieldDef,
   type PatientEditData,
 } from 'utils';
+import { PatientFormField } from '../PatientFormField';
 
 interface EditPatientModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   patient: PatientEditData | null;
   onSave: (data: Partial<PatientEditData>) => Promise<void>;
-}
-
-interface EditPatientFieldProps {
-  field: EditPatientFieldDef;
-  value: string;
-  error: string | undefined;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSelectChange: (name: string, value: string) => void;
-}
-
-function EditPatientField({ field, value, error, onInputChange, onSelectChange }: EditPatientFieldProps) {
-  if (field.kind === 'select') {
-    return (
-      <div className="space-y-2">
-        <Label htmlFor={field.name} className="text-sm font-medium">
-          {field.label}
-        </Label>
-        <Select value={value} onValueChange={(val) => onSelectChange(field.name, val!)}>
-          <SelectTrigger className="border-cf-border">
-            <SelectValue placeholder={field.placeholder} />
-          </SelectTrigger>
-          <SelectContent>
-            {field.options.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={field.name} className="text-sm font-medium">
-        {field.label}
-      </Label>
-      <Input
-        id={field.name}
-        name={field.name}
-        type={field.type}
-        placeholder={field.placeholder}
-        value={value}
-        onChange={onInputChange}
-        className={`border-cf-border ${error ? 'border-red-500' : ''}`}
-      />
-      {error && <p className="text-xs text-red-500">{error}</p>}
-    </div>
-  );
 }
 
 export function EditPatientModal({
@@ -138,7 +82,7 @@ export function EditPatientModal({
   if (!patient) return null;
 
   const renderField = (field: EditPatientFieldDef) => (
-    <EditPatientField
+    <PatientFormField
       key={field.name}
       field={field}
       value={formData[field.name] || ''}

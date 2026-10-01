@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger, ScrollArea, Avatar, AvatarFallback, AvatarImage, Badge  } from "@/components/ui";
+import { Button , Tabs, TabsContent, TabsList, TabsTrigger, ScrollArea, Avatar, AvatarFallback, AvatarImage, Badge  } from "@/components/ui";
 import {
   Drawer,
   DrawerContent,
@@ -13,7 +13,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui";
-import { Button } from "@/components/ui";
 import { ChevronDown } from 'lucide-react';
 import { usePatientDrawer } from 'hooks';
 import {

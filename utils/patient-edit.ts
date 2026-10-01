@@ -1,4 +1,9 @@
-import type { SelectOption } from './patient-form-fields';
+import {
+  PATIENT_RISK_OPTIONS,
+  PATIENT_STATUS_OPTIONS,
+  type PatientFieldDef,
+  type PatientFieldSection,
+} from './patient-form-fields';
 
 export interface PatientEditData {
   id: string;
@@ -47,29 +52,10 @@ export type EditPatientInputKey =
 
 export type EditPatientSelectKey = 'risk' | 'status';
 
-export type EditPatientFieldDef =
-  | { kind: 'input'; name: EditPatientInputKey; label: string; placeholder: string; type: string }
-  | {
-      kind: 'select';
-      name: EditPatientSelectKey;
-      label: string;
-      placeholder: string;
-      options: SelectOption[];
-    };
+export type EditPatientFieldDef = PatientFieldDef<EditPatientInputKey | EditPatientSelectKey>;
 
-export const EDIT_PATIENT_RISK_OPTIONS: SelectOption[] = [
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-];
-
-export const EDIT_PATIENT_STATUS_OPTIONS: SelectOption[] = [
-  { value: 'new', label: 'New' },
-  { value: 'active', label: 'Active' },
-  { value: 'on-hold', label: 'On Hold' },
-];
-
-export const EDIT_PATIENT_SECTIONS: { id: string; gridClass?: string; fields: EditPatientFieldDef[] }[] = [
+/** Form layout, top to bottom. A section with no gridClass renders its field on its own row. */
+export const EDIT_PATIENT_SECTIONS: PatientFieldSection<EditPatientInputKey | EditPatientSelectKey>[] = [
   {
     id: 'personal',
     gridClass: 'grid grid-cols-2 gap-4',
@@ -126,12 +112,13 @@ export const EDIT_PATIENT_SECTIONS: { id: string; gridClass?: string; fields: Ed
     fields: [
       { kind: 'input', name: 'carer', label: 'Primary Carer', placeholder: 'Sarah Johnson', type: 'text' },
       { kind: 'input', name: 'nextVisit', label: 'Next Visit', placeholder: 'Today, 2:00 PM', type: 'text' },
-      { kind: 'select', name: 'risk', label: 'Risk Level', placeholder: 'Select risk level', options: EDIT_PATIENT_RISK_OPTIONS },
-      { kind: 'select', name: 'status', label: 'Status', placeholder: 'Select status', options: EDIT_PATIENT_STATUS_OPTIONS },
+      { kind: 'select', name: 'risk', label: 'Risk Level', placeholder: 'Select risk level', options: PATIENT_RISK_OPTIONS },
+      { kind: 'select', name: 'status', label: 'Status', placeholder: 'Select status', options: PATIENT_STATUS_OPTIONS },
     ],
   },
 ];
 
+/** Starting form values for a patient (missing optional fields become empty strings). */
 export function buildEditPatientForm(patient: PatientEditData): Partial<PatientEditData> {
   return {
     name: patient.name,

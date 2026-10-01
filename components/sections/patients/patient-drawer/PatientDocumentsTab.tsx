@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Button,
   Card,
@@ -19,6 +19,7 @@ import {
   PATIENT_DOCUMENT_TYPES,
   getDocumentMetaParts,
 } from 'utils';
+import { DotSeparated } from '../DotSeparated';
 
 interface PatientDocumentsTabProps {
   patientId?: string;
@@ -104,12 +105,7 @@ export function PatientDocumentsTab({ patientId }: PatientDocumentsTabProps) {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-cf-ink truncate">{doc.name}</p>
                     <div className="flex items-center gap-2 text-xs text-cf-ink-60 mt-0.5">
-                      {getDocumentMetaParts(doc).map((part, i) => (
-                        <Fragment key={i}>
-                          {i > 0 && <span>•</span>}
-                          <span>{part}</span>
-                        </Fragment>
-                      ))}
+                      <DotSeparated parts={getDocumentMetaParts(doc)} />
                     </div>
                   </div>
                 </div>

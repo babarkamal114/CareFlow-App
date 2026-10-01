@@ -1,6 +1,5 @@
 'use client';
 
-import { Fragment } from 'react';
 import { Card, CardContent, Badge } from "@/components/ui";
 import { Pill } from 'lucide-react';
 import { usePatientMedications } from 'hooks';
@@ -10,6 +9,7 @@ import {
   getMedicationTypeBadgeVariant,
   getMedicationTypeLabel,
 } from 'utils';
+import { DotSeparated } from '../DotSeparated';
 
 interface PatientMedicationsTabProps {
   patientId?: string;
@@ -30,19 +30,6 @@ function MedicationCardSkeleton() {
         <div className="h-2.5 w-44 rounded bg-cf-ink-40/20 animate-pulse" />
       </CardContent>
     </Card>
-  );
-}
-
-function DotSeparated({ parts }: { parts: string[] }) {
-  return (
-    <>
-      {parts.map((part, i) => (
-        <Fragment key={i}>
-          {i > 0 && <span>•</span>}
-          <span>{part}</span>
-        </Fragment>
-      ))}
-    </>
   );
 }
 
