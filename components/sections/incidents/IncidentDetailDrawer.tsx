@@ -16,8 +16,10 @@ import {
   getSeverityBadgeVariant,
   getSeverityLabel,
   getStatusBadgeVariant,
+  getIncidentFlags,
   getInitials,
   INCIDENT_ACTIONS,
+  INCIDENT_TABS,
   EVIDENCE_ACCEPT_TYPES,
   type IncidentAction,
 } from 'utils';
@@ -39,12 +41,14 @@ export function IncidentDetailDrawer({
   onAddEvidence,
   onDownloadLogs,
 }: IncidentDetailDrawerProps) {
-  const [selectedTab, setSelectedTab] = useState('info');
+  const [selectedTab, setSelectedTab] = useState<string>(INCIDENT_TABS[0].value);
   const [closeDialogOpen, setCloseDialogOpen] = useState(false);
   const [evidenceDialogOpen, setEvidenceDialogOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   if (!incident) return null;
+
+  const flags = getIncidentFlags(incident);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -95,8 +99,8 @@ export function IncidentDetailDrawer({
                 <DrawerTitle className="text-xl font-semibold text-cf-ink">
                   {incident.title}
                 </DrawerTitle>
-                <p className="text-xs text-cf-ink-60 mt-1">Patient: {incident.patientName}</p>
-                <div className="flex items-center gap-2 mt-2">
+                <p className="mt-1 text-xs text-cf-ink-60">Patient: {incident.patientName}</p>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
                   <Badge
                     variant={getSeverityBadgeVariant(incident.severity)}
                     className="text-xs"
@@ -106,11 +110,16 @@ export function IncidentDetailDrawer({
                   </Badge>
                   <Badge
                     variant={getStatusBadgeVariant(incident.status)}
-                    className="text-xs"
+                    className="text-xs capitalize"
                     shape="pill"
                   >
                     {incident.status}
                   </Badge>
+                  {flags.map((flag) => (
+                    <Badge key={flag.id} variant="softDanger" className="text-xs" shape="pill">
+                      {flag.label}
+                    </Badge>
+                  ))}
                 </div>
               </div>
             </div>
@@ -212,8 +221,11 @@ export function IncidentDetailDrawer({
                 <p className="text-xs font-medium text-cf-ink">
                   Selected files ({selectedFiles.length})
                 </p>
-                {selectedFiles.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between p-1.5 bg-cf-surface-muted rounded text-xs">
+                {selectedFiles.map((file) => (
+                  <div
+                    key={`${file.name}-${file.size}-${file.lastModified}`}
+                    className="flex items-center justify-between p-1.5 bg-cf-surface-muted rounded text-xs"
+                  >
                     <span className="text-cf-ink truncate max-w-[120px]">{file.name}</span>
                     <span className="text-cf-ink-60 text-[10px]">
                       {formatFileSize(file.size)}

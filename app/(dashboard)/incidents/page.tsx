@@ -30,17 +30,17 @@ import { mockIncidents } from 'utils';
 import { ReportIncidentModal, IncidentDetailDrawer, IncidentStatsSection, IncidentHeaderSection } from 'sections';
 
 const severityDot: Record<IncidentSeverity, string> = {
-  critical: 'bg-cf-red-500',
-  high: 'bg-cf-red-500',
-  medium: 'bg-cf-amber-500',
-  low: 'bg-cf-blue-500',
+  catastrophic: 'bg-cf-red-500',
+  severe: 'bg-cf-red-500',
+  moderate: 'bg-cf-amber-500',
+  minor: 'bg-cf-blue-500',
 };
 
 const severityText: Record<IncidentSeverity, string> = {
-  critical: 'text-cf-red-500',
-  high: 'text-cf-red-500',
-  medium: 'text-cf-amber-500',
-  low: 'text-cf-blue-500',
+  catastrophic: 'text-cf-red-500',
+  severe: 'text-cf-red-500',
+  moderate: 'text-cf-amber-500',
+  minor: 'text-cf-blue-500',
 };
 
 const statusText: Record<IncidentStatus, string> = {

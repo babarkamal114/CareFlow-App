@@ -1,18 +1,34 @@
 import {
-  Image, File, FileText, Paperclip,
-  User, Tag, Calendar, Users,
-  FileUp, Download, XCircle, CheckCircle,
-  Clock, AlertCircle,
+  User, Tag, Calendar, Users, Paperclip,
+  FileText, Clock, AlertCircle, CheckCircle,
   type LucideIcon,
 } from "lucide-react";
 import type { BadgeProps } from "@/components/ui";
 import type {
   Incident,
+  IncidentFormData,
   IncidentSeverity,
   IncidentStatus,
   IncidentType,
   StatCardProps,
-} from "@/types";
+} from "types";
+import {
+  evidenceTypeConfig,
+  incidentSeverityConfig,
+  incidentStatusConfig,
+  INCIDENT_TYPE_LABELS,
+  INCIDENT_TYPE_OPTIONS,
+  INCIDENT_SEVERITY_OPTIONS,
+} from "./constants";
+import {
+  mockIncidentAssignedTo,
+  mockIncidentReportedBy,
+} from "./data";
+import {
+  getBodyMarkings,
+  getIncidentDescriptionFromForm,
+  getIncidentTitleFromForm,
+} from "./incident-form";
 
 export interface Evidence {
   id: string;
@@ -26,35 +42,29 @@ export interface Evidence {
 
 export type EvidenceType = "image" | "document" | "audio" | "video";
 
-export const MOCK_EVIDENCE: Evidence[] = [
-  {
-    id: "1",
-    name: "incident-photo-1.jpg",
-    type: "image",
-    url: "/images/incident-1.jpg",
-    uploadedBy: "Sarah Johnson",
-    uploadedAt: new Date("2024-03-15T14:30:00"),
-    size: 2450000,
-  },
-  {
-    id: "2",
-    name: "witness-statement.pdf",
-    type: "document",
-    url: "/documents/witness-statement.pdf",
-    uploadedBy: "Michael Chen",
-    uploadedAt: new Date("2024-03-16T09:15:00"),
-    size: 450000,
-  },
-];
+export interface IncidentAction {
+  id: "add-evidence" | "download-logs" | "close-case";
+  label: string;
+  icon: LucideIcon;
+  danger: boolean;
+}
 
+export interface IncidentDetailField {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}
 
-export const evidenceTypeConfig: Record<EvidenceType, { icon: LucideIcon }> = {
-  image: { icon: Image },
-  document: { icon: File },
-  audio: { icon: FileText },
-  video: { icon: FileText },
-};
+export interface StatusHistoryEntry {
+  label: string;
+  note: string;
+  dotClass: string;
+  animate: boolean;
+}
 
+/* -------------------------------------------------------------------------- */
+/*                                  Evidence                                   */
+/* -------------------------------------------------------------------------- */
 
 export function getEvidenceIcon(type: EvidenceType): LucideIcon {
   return evidenceTypeConfig[type]?.icon ?? Paperclip;
@@ -64,16 +74,9 @@ export function formatEvidenceDate(date: Date): string {
   return date.toLocaleDateString();
 }
 
-
-export const incidentSeverityConfig: Record<
-  IncidentSeverity,
-  { badgeVariant: BadgeProps["variant"]; label: string }
-> = {
-  critical: { badgeVariant: "pastel-danger", label: "CRITICAL" },
-  high: { badgeVariant: "pastel-orange", label: "HIGH" },
-  medium: { badgeVariant: "pastel-warning", label: "MEDIUM" },
-  low: { badgeVariant: "pastel-info", label: "LOW" },
-};
+/* -------------------------------------------------------------------------- */
+/*                                   Severity                                  */
+/* -------------------------------------------------------------------------- */
 
 export function getSeverityBadgeVariant(
   severity: IncidentSeverity
@@ -85,15 +88,27 @@ export function getSeverityLabel(severity: IncidentSeverity): string {
   return incidentSeverityConfig[severity]?.label ?? severity.toUpperCase();
 }
 
-export const INCIDENT_TYPE_LABELS: Record<IncidentType, string> = {
-  fall: "Fall",
-  "medication-error": "Medication Error",
-  bruise: "Bruise",
-  "abuse-allegation": "Abuse Allegation",
-  safeguarding: "Safeguarding",
-  "missed-visit": "Missed Visit",
-  other: "Other",
-};
+export function getIncidentTypeOptionLabel(type: IncidentType): string {
+  return INCIDENT_TYPE_OPTIONS.find((o) => o.value === type)?.label ?? type;
+}
+
+export function getSeverityOption(severity: IncidentSeverity) {
+  return INCIDENT_SEVERITY_OPTIONS.find((o) => o.value === severity);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    Status                                   */
+/* -------------------------------------------------------------------------- */
+
+export function getStatusBadgeVariant(
+  status: IncidentStatus
+): BadgeProps["variant"] {
+  return incidentStatusConfig[status]?.badgeVariant ?? "pastel-neutral";
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  Formatting                                 */
+/* -------------------------------------------------------------------------- */
 
 export function getIncidentTypeLabel(type: IncidentType): string {
   return INCIDENT_TYPE_LABELS[type] ?? type;
@@ -107,12 +122,18 @@ export function formatNoteTimestamp(date: Date): string {
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
 
-
-export interface IncidentDetailField {
-  icon: LucideIcon;
-  label: string;
-  value: string;
+export function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                Derivation                                   */
+/* -------------------------------------------------------------------------- */
 
 export function getIncidentDetailFields(incident: Incident): IncidentDetailField[] {
   return [
@@ -122,13 +143,6 @@ export function getIncidentDetailFields(incident: Incident): IncidentDetailField
     { icon: User, label: "Reported By", value: incident.reportedBy },
     { icon: Users, label: "Assigned To", value: incident.assignedTo },
   ];
-}
-
-export interface StatusHistoryEntry {
-  label: string;
-  note: string;
-  dotClass: string;
-  animate: boolean;
 }
 
 export function getIncidentStatusHistory(incident: Incident): StatusHistoryEntry[] {
@@ -171,60 +185,9 @@ export function getIncidentStatusHistory(incident: Incident): StatusHistoryEntry
   return entries;
 }
 
-
 export function canSubmitNote(note: string): boolean {
   return note.trim().length > 0;
 }
-
-export const INCIDENT_TABS = [
-  { value: "info", label: "Info" },
-  { value: "logs", label: "Logs" },
-  { value: "evidence", label: "Evidence" },
-] as const;
-
-
-export const incidentStatusConfig: Record<
-  IncidentStatus,
-  { badgeVariant: BadgeProps["variant"] }
-> = {
-  reported: { badgeVariant: "pastel-info" },
-  investigating: { badgeVariant: "pastel-warning" },
-  resolved: { badgeVariant: "pastel-success" },
-  closed: { badgeVariant: "pastel-zinc" },
-};
-
-export function getStatusBadgeVariant(
-  status: IncidentStatus
-): BadgeProps["variant"] {
-  return incidentStatusConfig[status]?.badgeVariant ?? "pastel-neutral";
-}
-
-export function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
-
-export interface IncidentAction {
-  id: "add-evidence" | "download-logs" | "close-case";
-  label: string;
-  icon: LucideIcon;
-  danger: boolean;
-}
-
-export const INCIDENT_ACTIONS: IncidentAction[] = [
-  { id: "add-evidence", label: "Add Evidence", icon: FileUp, danger: false },
-  { id: "download-logs", label: "Download Logs", icon: Download, danger: false },
-  { id: "close-case", label: "Close Case", icon: XCircle, danger: true },
-];
-
-export const INCIDENTS_PAGE_TITLE = "Incidents & Safeguarding";
-
-export const INCIDENTS_PAGE_SUBTITLE =
-  "Manage incident reporting, investigations, and safeguarding concerns";
 
 export function getOpenIncidentCount(incidents: Incident[]): number {
   return incidents.filter(
@@ -321,87 +284,79 @@ export function getIncidentStatCards(incidents: Incident[]): StatCardProps[] {
   ];
 }
 
-export const INCIDENT_TYPE_OPTIONS: { value: IncidentType; label: string }[] = [
-  { value: "fall", label: "Fall / Slip" },
-  { value: "medication-error", label: "Medication Error" },
-  { value: "bruise", label: "Bruise / Injury" },
-  { value: "abuse-allegation", label: "Abuse Allegation" },
-  { value: "safeguarding", label: "Safeguarding Concern" },
-  { value: "missed-visit", label: "Missed Visit" },
-  { value: "other", label: "Other" },
-];
-
-export const INCIDENT_SEVERITY_OPTIONS: {
-  value: IncidentSeverity;
-  label: string;
-  color: BadgeProps["variant"];
-}[] = [
-  { value: "low", label: "Low", color: "pastel-info" },
-  { value: "medium", label: "Medium", color: "pastel-warning" },
-  { value: "high", label: "High", color: "pastel-danger" },
-  { value: "critical", label: "Critical", color: "pastel-danger" },
-];
-
-export function getIncidentTypeOptionLabel(type: IncidentType): string {
-  return INCIDENT_TYPE_OPTIONS.find((o) => o.value === type)?.label ?? type;
-}
-
-export function getSeverityOption(severity: IncidentSeverity) {
-  return INCIDENT_SEVERITY_OPTIONS.find((o) => o.value === severity);
-}
-
-export interface IncidentFormData {
-  type: IncidentType | "";
-  severity: IncidentSeverity | "";
-  title: string;
-  description: string;
-  patientName: string;
-  patientId: string;
-  dateTime: string;
-  location: string;
-  reportedBy: string;
-  assignedTo: string;
-}
 
 export function getDatetimeInputValue(date: Date = new Date()): string {
   return date.toISOString().slice(0, 16);
 }
 
-export const INCIDENT_REPORTED_BY_PLACEHOLDER = "Current User (placeholder)";
-export const INCIDENT_ASSIGNED_TO_PLACEHOLDER = "John Manager (placeholder)";
-
 export function getDefaultIncidentFormData(): IncidentFormData {
   return {
     type: "",
     severity: "",
-    title: "",
-    description: "",
-    patientName: "",
     patientId: "",
+    patientName: "",
     dateTime: getDatetimeInputValue(),
     location: "",
-    reportedBy: INCIDENT_REPORTED_BY_PLACEHOLDER,
-    assignedTo: INCIDENT_ASSIGNED_TO_PLACEHOLDER,
+    reportedBy: mockIncidentReportedBy,
+    reportedByName: "Current User",
+    antecedent: "",
+    description: "",
+    consequence: "",
+    injuriesObserved: false,
+    injuryDetails: [],
+    bodyMapData: { markings: [] },
+    immediateActions: "",
+    carePlanFollowed: null,
+    carePlanDeviationReason: "",
+    emergencyServicesCalled: false,
+    emergencyServicesDetails: "",
+    evidence: [],
+    contributingFactors: [],
+    followUpPlan: "",
+    status: "reported",
+    assignedTo: mockIncidentAssignedTo,
+    rootCause: "",
+    preventiveActions: "",
+    lessonsLearned: "",
+    isCqcNotifiable: false,
+    isRiddorReportable: false,
+    isSafeguardingConcern: false,
   };
-}
-
-export function isIncidentStepOneValid(form: IncidentFormData): boolean {
-  return Boolean(form.type && form.severity);
-}
-
-export function isIncidentStepTwoValid(form: IncidentFormData): boolean {
-  return Boolean(form.patientName && form.title && form.description);
 }
 
 export function buildIncidentPayload(
   form: IncidentFormData
 ): Omit<Incident, "id" | "createdAt" | "updatedAt"> {
   return {
-    ...form,
+    patientId: form.patientId,
+    patientName: form.patientName,
     type: form.type || "other",
-    severity: form.severity || "low",
+    severity: form.severity || "minor",
+    title: getIncidentTitleFromForm(form),
+    description: getIncidentDescriptionFromForm(form),
     dateTime: new Date(form.dateTime),
-    status: "reported",
+    reportedBy: form.reportedByName.trim() || form.reportedBy,
+    assignedTo: form.assignedTo ?? "",
+    status: form.status,
+    location: form.location,
+    antecedent: form.antecedent,
+    consequence: form.consequence,
+    immediateActions: form.immediateActions,
+    carePlanFollowed: form.carePlanFollowed,
+    carePlanDeviationReason: form.carePlanDeviationReason,
+    emergencyServicesCalled: form.emergencyServicesCalled,
+    emergencyServicesDetails: form.emergencyServicesDetails,
+    injuriesObserved: form.injuriesObserved,
+    injuryDetails: form.injuryDetails,
+    bodyMapMarkings: getBodyMarkings(form),
+    contributingFactors: form.contributingFactors,
+    followUpPlan: form.followUpPlan,
+    rootCause: form.rootCause,
+    preventiveActions: form.preventiveActions,
+    lessonsLearned: form.lessonsLearned,
+    isCqcNotifiable: form.isCqcNotifiable,
+    isRiddorReportable: form.isRiddorReportable,
+    isSafeguardingConcern: form.isSafeguardingConcern,
     investigationNotes: [
       {
         note: `Incident reported by ${form.reportedBy}`,
@@ -410,8 +365,6 @@ export function buildIncidentPayload(
       },
     ],
     witnesses: [],
-    evidence: [],
+    evidence: form.evidence.map((item) => item.url),
   };
 }
-
-export const EVIDENCE_ACCEPT_TYPES = "image/*,.pdf,.doc,.docx,.mp3,.mp4";
