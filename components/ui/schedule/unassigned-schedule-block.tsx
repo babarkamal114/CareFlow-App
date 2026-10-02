@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, GripVertical } from "lucide-react";
-import { borderColorMap, reasonColorMap, typeColorMap } from "utils";
+import { typeColorMap } from "utils";
 
 export type VisitUrgency = "overdue" | "urgent" | "soon" | "upcoming";
 
@@ -40,13 +40,10 @@ interface UnassignedScheduleBlockProps {
   reason: string;
   typeKey: string;
   reasonKey: string;
-  /** Drives the urgency badge + accent. Defaults to "upcoming" when omitted. */
   urgency?: VisitUrgency;
-  /** Enables native HTML5 drag so the card can be dropped onto a calendar slot to assign a carer. */
   draggable?: boolean;
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void;
   onDragEnd?: (event: React.DragEvent<HTMLDivElement>) => void;
-  /** Fired when the user clicks the quick "Assign" affordance (e.g. to open the assign modal or trigger AI suggestion). */
   onAssignClick?: () => void;
 }
 
@@ -58,7 +55,6 @@ export function UnassignedScheduleBlock({
   type,
   typeKey,
   reason,
-  reasonKey,
   urgency = "upcoming",
   draggable = false,
   onDragStart,

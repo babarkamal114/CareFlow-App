@@ -1,7 +1,5 @@
-
-import React from "react";
 import { StatCard } from "shared";
-import { Calendar, Clock, CheckCircle, XCircle, Users, AlertCircle } from "lucide-react";
+import { Calendar, Clock, CheckCircle, XCircle} from "lucide-react";
 
 function ScheduleStatSection() {
   return (

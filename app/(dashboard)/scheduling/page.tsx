@@ -13,8 +13,10 @@ import {
 } from "sections";
 import { mockVisits, convertVisitToEvent } from "utils";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import type { Visit } from "types";
 import { toast } from "sonner";
+import type { ScheduleFilters } from "sections";
 
 const mockPatients = [
   { id: 'P-12345', name: 'Dorothy Chen' },
@@ -31,6 +33,15 @@ const mockCarers = [
   { id: 'carer-3', name: 'Emma Williams' },
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+};
 
 export default function Page() {
   const [currentDate, setCurrentDate] = useState(new Date("2024-03-18"));
@@ -41,6 +52,20 @@ export default function Page() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [visits, setVisits] = useState(mockVisits);
   const events = convertVisitToEvent(visits);
+
+  // Calendar filters (5.2 Scheduling Module — filter by carer/patient/area/status).
+  // Previously the CalendarWrapper had this built but nothing passed it real
+  // options, so the carer/patient dropdowns never rendered at all.
+  const [filters, setFilters] = useState<ScheduleFilters>({
+    carerId: 'all',
+    patientId: 'all',
+    area: 'all',
+    status: 'all',
+  });
+
+  // AI Scheduler (calendar toolbar) — was previously wired to nothing
+  // (onAiSchedule had no handler), so the button did nothing on click.
+  const [isAiScheduling, setIsAiScheduling] = useState(false);
 
   const handleSelectEvent = (event: any) => {
     setSelectedEvent(event);
@@ -116,32 +141,25 @@ export default function Page() {
     console.log("Selected slot:", slotInfo.start, slotInfo.end);
   };
 
- 
-
- 
   const handleEventDrop = (args: { event: any; start: Date; end: Date }) => {
     const { event, start, end } = args;
-    
- 
+
     const visitId = event?.resource?.id || event?.id;
     const existingVisit = visits.find(v => v.id === visitId);
-    
+
     if (!existingVisit) {
       toast.error('Visit not found');
       return;
     }
 
- 
     const newStartTime = start.toTimeString().slice(0, 5);
     const newEndTime = end.toTimeString().slice(0, 5);
     const newDate = start.toISOString().split('T')[0];
-
 
     const hasConflict = visits.some(v => {
       if (v.id === visitId) return false;
       if (v.carerId !== existingVisit.carerId) return false;
       if (v.date !== newDate) return false;
-      
 
       const vStart = v.startTime;
       const vEnd = v.endTime;
@@ -156,7 +174,6 @@ export default function Page() {
       return;
     }
 
-
     const updatedVisit = {
       ...existingVisit,
       date: newDate,
@@ -164,30 +181,26 @@ export default function Page() {
       endTime: newEndTime,
     };
 
- 
     setVisits((prev) =>
       prev.map((v) =>
         v.id === visitId ? updatedVisit : v
       )
     );
 
- 
     toast.success(`Visit rescheduled to ${newDate} ${newStartTime} - ${newEndTime}`, {
       description: `${existingVisit.patientName} - ${existingVisit.carerName}`,
     });
-
 
     setEventModalOpen(false);
     setSelectedEvent(null);
   };
 
- 
   const handleEventResize = (args: { event: any; start: Date; end: Date }) => {
     const { event, start, end } = args;
-    
+
     const visitId = event?.resource?.id || event?.id;
     const existingVisit = visits.find(v => v.id === visitId);
-    
+
     if (!existingVisit) {
       toast.error('Visit not found');
       return;
@@ -197,12 +210,11 @@ export default function Page() {
     const newEndTime = end.toTimeString().slice(0, 5);
     const newDate = start.toISOString().split('T')[0];
 
-
     const hasConflict = visits.some(v => {
       if (v.id === visitId) return false;
       if (v.carerId !== existingVisit.carerId) return false;
       if (v.date !== newDate) return false;
-      
+
       const vStart = v.startTime;
       const vEnd = v.endTime;
       return (newStartTime < vEnd && newEndTime > vStart);
@@ -212,7 +224,6 @@ export default function Page() {
       toast.warning('Cannot resize: time conflict with another visit');
       return;
     }
-
 
     const updatedVisit = {
       ...existingVisit,
@@ -230,10 +241,9 @@ export default function Page() {
     toast.success(`Visit duration updated`);
   };
 
-
   const handleDropFromOutside = (visitId: string, slotInfo: { start: Date; end: Date }) => {
     const { start, end } = slotInfo;
-    
+
     const visit = visits.find(v => v.id === visitId);
     if (!visit) {
       toast.error('Visit not found');
@@ -243,7 +253,6 @@ export default function Page() {
     const newStartTime = start.toTimeString().slice(0, 5);
     const newEndTime = end.toTimeString().slice(0, 5);
     const newDate = start.toISOString().split('T')[0];
-
 
     const updatedVisit = {
       ...visit,
@@ -264,60 +273,117 @@ export default function Page() {
     });
   };
 
+  // Calendar toolbar's AI Scheduler — separate from the one inside the
+  // Unassigned Visits panel. TODO: replace with the real optimiser endpoint.
+  const handleAiSchedule = async () => {
+    setIsAiScheduling(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1400));
+      toast.success('Schedule optimised', {
+        description: 'AI has proposed assignments for unassigned visits — review them in the Unassigned panel.',
+      });
+    } finally {
+      setIsAiScheduling(false);
+    }
+  };
 
+  // Bulk actions — stubs that give real feedback instead of silently doing
+  // nothing. Each needs a proper confirmation modal (reason, scope, preview)
+  // before this should touch real data — same pattern as the patient
+  // discharge modal.
+  const handleBulkAssignRecurring = () => {
+    toast.info('Assign recurring visits', {
+      description: 'Full recurring-assignment flow not built yet — this needs a dedicated modal.',
+    });
+  };
+
+  const handleBulkCancelWeek = () => {
+    toast.info("Cancel a patient's week", {
+      description: 'Full cancel-week flow not built yet — this needs a dedicated modal with patient selection + confirmation.',
+    });
+  };
+
+  const handleBulkReassignCarer = () => {
+    toast.info("Reassign a carer's visits", {
+      description: 'Full reassignment flow not built yet — this needs a dedicated modal with carer selection + confirmation.',
+    });
+  };
 
   return (
-    <div className="h-screen w-full space-y-4 overflow-y-scroll overflow-x-hidden min-w-0 no-scrollbar">
-      <ScheduleHeaderSection onAddVisit={handleAddVisit} />
-      <ScheduleStatSection />
-      
-      <div className="w-full flex gap-x-4">
-        <div className="flex flex-col gap-y-4 w-full">
-          <CalendarWrapper
-            events={events}
-            view={view}
-            onViewChange={setView}
-            date={currentDate}
-            onDateChange={setCurrentDate}
-            onSelectEvent={handleSelectEvent}
-            onSelectSlot={handleSelectSlot}
-            onEventDrop={handleEventDrop}
-            onEventResize={handleEventResize}
-            onDropFromOutside={handleDropFromOutside}
-            
-          />
-          <CapacityPlanningSection />
-        </div>
-        <div className="flex flex-col gap-y-4 w-full max-w-sm h-full">
-          <UnassignedVisits />
-          <ScheduleCarerVisitSwaps />
-        </div>
-      </div>
+    <div className="w-full p-6 bg-transparent">
+      {/* One white rounded panel holding the heading and everything below
+          it — same structure as Dashboard/Staff/Patients. No overflow
+          here: the shell's <main> is the only scroll container. */}
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={container}
+        className="rounded-2xl bg-cf-surface shadow-cf-md p-6 space-y-4"
+      >
+        <motion.div variants={item}>
+          <ScheduleHeaderSection onAddVisit={handleAddVisit} />
+        </motion.div>
 
-      <EventDetailsModal
-        open={eventModalOpen}
-        onOpenChange={setEventModalOpen}
-        event={selectedEvent}
-        onEdit={handleEditVisit}
-      />
+        <motion.div variants={item}>
+          <ScheduleStatSection />
+        </motion.div>
 
-      <EditVisitModal
-        open={editModalOpen}
-        onOpenChange={setEditModalOpen}
-        visit={selectedEvent}
-        onSave={handleEditSave}
-        patients={mockPatients}
-        carers={mockCarers}
-      />
+        <motion.div variants={item} className="w-full flex gap-x-4">
+          <div className="flex flex-col gap-y-4 w-full">
+            <CalendarWrapper
+              events={events}
+              view={view}
+              onViewChange={setView}
+              date={currentDate}
+              onDateChange={setCurrentDate}
+              onSelectEvent={handleSelectEvent}
+              onSelectSlot={handleSelectSlot}
+              onEventDrop={handleEventDrop}
+              onEventResize={handleEventResize}
+              onDropFromOutside={handleDropFromOutside}
+              carers={mockCarers}
+              patients={mockPatients}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onAiSchedule={handleAiSchedule}
+              isAiScheduling={isAiScheduling}
+              onBulkAssignRecurring={handleBulkAssignRecurring}
+              onBulkCancelWeek={handleBulkCancelWeek}
+              onBulkReassignCarer={handleBulkReassignCarer}
+            />
+            <CapacityPlanningSection />
+          </div>
+          <div className="flex flex-col gap-y-4 w-full max-w-sm h-full">
+            <UnassignedVisits />
+            <ScheduleCarerVisitSwaps />
+          </div>
+        </motion.div>
 
-      <AddVisitModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        onSave={handleSaveVisit}
-        patients={mockPatients}
-        carers={mockCarers}
-        defaultDate={new Date()}
-      />
+        <EventDetailsModal
+          open={eventModalOpen}
+          onOpenChange={setEventModalOpen}
+          event={selectedEvent}
+          onEdit={handleEditVisit}
+        />
+
+        <EditVisitModal
+          open={editModalOpen}
+          onOpenChange={setEditModalOpen}
+          visit={selectedEvent}
+          onSave={handleEditSave}
+          patients={mockPatients}
+          carers={mockCarers}
+        />
+
+        <AddVisitModal
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          onSave={handleSaveVisit}
+          patients={mockPatients}
+          carers={mockCarers}
+          defaultDate={new Date()}
+        />
+      </motion.div>
     </div>
   );
 }

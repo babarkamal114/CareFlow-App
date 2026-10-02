@@ -31,10 +31,6 @@ export default function DashboardHomePage() {
             <DashboardOnShiftSection />
           </div>
         </div>
-
-        {/* Fixed row height so all three cards get a real, equal height
-            to fill — and the chart's container has an actual number to
-            compute against instead of leaving blank space below it. */}
         <div className="grid grid-cols-3 gap-4 h-[440px]">
           <DashboardWeeklyActivity />
           <DashboardCQCBreakdown />
