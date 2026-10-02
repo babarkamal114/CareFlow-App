@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-import { BrandHeader, BrandHero, BrandQuote } from "ui-components";
+import { BrandHeader, BrandHero, BrandQuote } from "@/components/ui";
 
 const BrandSection = () => {
   return (

@@ -58,7 +58,7 @@ export function useEmailVerification(): UseEmailVerificationReturn {
     return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  // Start countdown
+
   const startCountdown = (seconds: number = 120) => {
     setCanResend(false);
     setCountdown(seconds);
@@ -80,10 +80,15 @@ export function useEmailVerification(): UseEmailVerificationReturn {
     const handleEmailVerification = async () => {
         setIsError(null)
         const data = await mutateAsync({code : otp , accessToken})
-        if (data.success) {
-            await update()
+        if (data.success === true) {
+            
+            await update({ isEmailVerified: true })
             toast.success('Email verified successfully')
             router.push('/')
+        }
+        if (data.success === false) {
+          toast.error(data.message)
+          setIsError(data.message)
         }
         if (error) {
             toast.error('error verifying email')

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "ui-components"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from @/components/ui
 
 const meta = {
   title: "UI/Select",

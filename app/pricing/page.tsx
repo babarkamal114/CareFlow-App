@@ -1,4 +1,4 @@
-import { PricingCards } from "@/components/subscription/pricing-cards";
+import { PricingCards } from "sections";
 
 export default function PricingPage() {
   return (

@@ -22,6 +22,8 @@ async function request<T>(
     'Content-Type': 'application/json',
     ...customHeaders,
   };
+
+  
   const res = await fetch(url, {
     method,
     headers,
@@ -40,8 +42,8 @@ async function request<T>(
 }
 
 export const apiClient = {
-  get<T>(url: string): Promise<T> {
-    return request<T>(url, { method: 'GET' });
+  get<T>(url: string, headers? : Record<string , string>): Promise<T> {
+    return request<T>(url, { method: 'GET' ,headers});
   },
   post<T>(url: string, body?: unknown, headers?: Record<string, string>): Promise<T> {
     return request<T>(url, { method: 'POST', body, headers });
@@ -49,8 +51,8 @@ export const apiClient = {
   put<T>(url: string, body?: unknown): Promise<T> {
     return request<T>(url, { method: 'PUT', body });
   },
-  patch<T>(url: string, body?: unknown): Promise<T> {
-    return request<T>(url, { method: 'PATCH', body });
+  patch<T>(url: string, body?: unknown, headers?: Record<string, string>): Promise<T> {
+    return request<T>(url, { method: 'PATCH', body, headers });
   },
   delete<T>(url: string): Promise<T> {
     return request<T>(url, { method: 'DELETE' });

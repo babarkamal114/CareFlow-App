@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "ui-components"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from @/components/ui
 
 const meta = {
   title: "UI/Accordion",

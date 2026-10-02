@@ -10,12 +10,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "./dialog"
 import {
   InputGroup,
   InputGroupAddon,
-} from "@/components/ui/input-group"
-import { cn } from "@/lib/utils"
+} from "./input-group"
+import { cn } from "lib"
 
 function Command({
   className,
