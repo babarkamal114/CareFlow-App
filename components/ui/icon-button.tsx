@@ -7,17 +7,17 @@ import {
   iconButtonVariants,
 } from "variants"
 import { cn } from "lib"
+import { Button } from "./button"
 
 export type IconButtonProps = React.ComponentProps<"button"> &
   IconButtonVariants & {
-    /** Required for accessibility when the control has no visible text */
     "aria-label": string
   }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ className, variant, size, type = "button", ...props }, ref) => {
     return (
-      <button
+      <Button
         ref={ref}
         type={type}
         data-slot="icon-button"

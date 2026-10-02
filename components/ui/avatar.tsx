@@ -3,7 +3,7 @@
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "lib"
 
 type AvatarSize = "xs" | "sm" | "default" | "lg" | "xl"
 type AvatarShape = "square" | "round"
