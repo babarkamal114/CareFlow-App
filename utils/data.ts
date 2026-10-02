@@ -1,5 +1,6 @@
 import { CarePlan, CarePlanModule, Incident, StatCardProps, Visit } from "types";
 import { UserCheck, UserPlus, Users, UserX2 } from "lucide-react";
+import type { Evidence } from "./incidents";
 
 export type NavItem = {
   href: string;
@@ -127,7 +128,7 @@ export const navGroups: NavGroup[] = [
 export const staffStatsData: StatCardProps[] = [
   {
     label: "Total Staff",
-    Icon: Users, // ✅ Component reference, not JSX
+    Icon: Users, 
     value: "42",
     description: "All staff members in your agency",
   },
@@ -906,7 +907,7 @@ export const mockIncidents: Incident[] = [
     patientName: 'Dorothy Chen',
     patientId: 'patient-1',
     type: 'fall',
-    severity: 'high',
+    severity: 'severe',
     title: 'Fall in bathroom',
     description: 'Patient slipped on wet floor while using toilet. No immediate injuries but some bruising on left arm.',
     dateTime: new Date('2024-06-15 14:30'),
@@ -915,7 +916,47 @@ export const mockIncidents: Incident[] = [
     status: 'investigating',
     location: '123 Oak Street, Bathroom',
     witnesses: ['None'],
-    evidence: [],
+    evidence: [
+      '/uploads/incident-1-fall-photo.jpg',
+      '/documents/witness-statement-1.pdf',
+    ],
+    antecedent: 'Patient was being assisted to the bathroom and had appeared unsteady. There was no grab rail beside the toilet and the floor had been mopped shortly before.',
+    consequence: 'Patient was assessed where they fell, no injury was visible at the time, and personal care was completed later with a second carer present.',
+    immediateActions: 'Stayed with the patient, checked for injuries, helped them into a chair and applied a cold pack. Duty manager called at 14:35.',
+    carePlanFollowed: false,
+    carePlanDeviationReason: 'The care plan required two staff for transfers but only one carer was available at the time of the visit.',
+    emergencyServicesCalled: true,
+    emergencyServicesDetails: '999 called at 14:40. Ambulance attended at 15:05 and advised a GP review within 24 hours. Case number 44821.',
+    injuriesObserved: true,
+    injuryDetails: [
+      {
+        id: 'injury-1-1',
+        bodyPart: 'Left forearm',
+        description: 'Purple bruising on the outer left forearm, approx. 3cm',
+        severity: 'minor',
+        photoUrls: ['/uploads/incident-1-fall-photo.jpg'],
+      },
+    ],
+    bodyMapMarkings: [
+      {
+        id: 'marking-1-1',
+        bodyPart: 'Left forearm',
+        markType: 'bruise',
+        notes: 'Handprint shape, approx. 3cm, purple. First seen 16 June.',
+      },
+    ],
+    contributingFactors: [
+      'Environment (wet floor, clutter, lighting)',
+      'Equipment failure or missing equipment',
+      'Inadequate care plan or assessment',
+    ],
+    followUpPlan: 'Fit a grab rail beside the toilet by 22 June (owner: maintenance). Add a falls check to every visit note, reviewed weekly by the manager.',
+    rootCause: 'The falls risk assessment was not updated after the June home visit, so the bathroom was never flagged as a hazard area.',
+    preventiveActions: 'Grab rail fitted on 21 June. Mobility assessment reviewed weekly by the registered manager.',
+    lessonsLearned: 'Moving and handling refresher shared with the team, and the updated risk assessment discussed with the family.',
+    isCqcNotifiable: true,
+    isRiddorReportable: false,
+    isSafeguardingConcern: false,
     investigationNotes: [
       {
         note: 'Incident reported by carer Sarah. Patient conscious and responsive. No visible fractures.',
@@ -937,7 +978,7 @@ export const mockIncidents: Incident[] = [
     patientName: 'James Okafor',
     patientId: 'patient-2',
     type: 'medication-error',
-    severity: 'critical',
+    severity: 'catastrophic',
     title: 'Missed medication dose - Lisinopril',
     description: 'Carer forgot to administer 10mg Lisinopril at scheduled time (09:00). Dose given 2 hours late at 11:00.',
     dateTime: new Date('2024-06-14 09:00'),
@@ -946,7 +987,23 @@ export const mockIncidents: Incident[] = [
     status: 'resolved',
     location: '456 Maple Ave, Patient Home',
     witnesses: [],
-    evidence: [],
+    evidence: ['/documents/incident-2-medication-chart.pdf'],
+    antecedent: 'The 09:00 medication round was due. The carer was dealing with a boiling pot in the kitchen when the round was due.',
+    consequence: 'The dose was given two hours late at 11:00. No adverse effects were observed and the patient was not aware of the delay.',
+    immediateActions: 'Dose administered at 11:00, the GP was informed by phone, and the incident was escalated to the duty manager the same day.',
+    carePlanFollowed: true,
+    emergencyServicesCalled: false,
+    injuriesObserved: false,
+    injuryDetails: [],
+    bodyMapMarkings: [],
+    contributingFactors: ['Medication error', 'Staffing level or skill mix'],
+    followUpPlan: 'Move every medication round onto the phone alarm system by 20 June (owner: manager). Retrain all carers on the medication round checklist.',
+    rootCause: 'There was no reminder system in place, so the dose depended on the carer remembering the round.',
+    preventiveActions: 'Medication reminder app with a fixed phone alarm rolled out to all carers and audited weekly.',
+    lessonsLearned: 'Medication rounds are now scheduled with a fixed alarm and a second check before the carer leaves the visit.',
+    isCqcNotifiable: false,
+    isRiddorReportable: true,
+    isSafeguardingConcern: false,
     investigationNotes: [
       {
         note: 'Carer reported missed dose. Patient took medication at 11:00 instead. No adverse effects observed.',
@@ -973,7 +1030,7 @@ export const mockIncidents: Incident[] = [
     patientName: 'Edna Morris',
     patientId: 'patient-3',
     type: 'safeguarding',
-    severity: 'critical',
+    severity: 'catastrophic',
     title: 'Potential financial abuse concern',
     description: 'Patient mentioned that family member asked for access to bank account "temporarily". Patient unsure if this is appropriate.',
     dateTime: new Date('2024-06-16 10:15'),
@@ -982,7 +1039,23 @@ export const mockIncidents: Incident[] = [
     status: 'investigating',
     location: '789 Cedar Lane, Patient Home',
     witnesses: ['Patient (Edna Morris)'],
-    evidence: [],
+    evidence: ['/documents/saf-2024-1847-referral.pdf'],
+    antecedent: 'The patient raised the concern unprompted at the start of the morning call and again when the carer sat down with them.',
+    consequence: 'The patient remained anxious for the rest of the visit. No funds had been transferred and no access had been given.',
+    immediateActions: 'The concern was listened to and recorded, the patient was reassured, and the safeguarding lead was notified within 30 minutes.',
+    carePlanFollowed: true,
+    emergencyServicesCalled: false,
+    injuriesObserved: false,
+    injuryDetails: [],
+    bodyMapMarkings: [],
+    contributingFactors: ['Communication failure between staff', 'Inadequate care plan or assessment'],
+    followUpPlan: 'Referral to the safeguarding board by 17 June (owner: John Manager). Review access to the person finances at the next visit and record their consent preference.',
+    rootCause: 'There was no documented consent check for third-party access to the person accounts.',
+    preventiveActions: 'Financial abuse checklist added to the monthly welfare check for every resident at risk.',
+    lessonsLearned: 'Staff now ask directly about finances during the monthly welfare check and record the answer.',
+    isCqcNotifiable: true,
+    isRiddorReportable: false,
+    isSafeguardingConcern: true,
     investigationNotes: [
       {
         note: 'CRITICAL: Carer flagged potential financial abuse. Immediate escalation to safeguarding team.',
@@ -1004,7 +1077,7 @@ export const mockIncidents: Incident[] = [
     patientName: 'Robert Hayes',
     patientId: 'patient-4',
     type: 'missed-visit',
-    severity: 'high',
+    severity: 'severe',
     title: 'Missed afternoon visit - no check-in',
     description: 'Carer (David Smith) scheduled for 2:00 PM visit never checked in. No contact with patient until evening.',
     dateTime: new Date('2024-06-13 14:00'),
@@ -1014,6 +1087,23 @@ export const mockIncidents: Incident[] = [
     location: '321 Oak Road, Patient Home',
     witnesses: [],
     evidence: [],
+    antecedent: 'The afternoon visit was scheduled for 14:00 with a check-in expected within the first 15 minutes.',
+    consequence: 'There was no contact with the patient until 18:00 when the family raised it. The patient was safe but anxious.',
+    immediateActions: 'The system alerted the manager at 14:30, the carer was contacted, and the visit was rescheduled for 18:00 and completed.',
+    carePlanFollowed: false,
+    carePlanDeviationReason: 'The visit could not be completed on time because of a car breakdown, and no contingency handover was recorded.',
+    emergencyServicesCalled: false,
+    injuriesObserved: false,
+    injuryDetails: [],
+    bodyMapMarkings: [],
+    contributingFactors: ['External / weather', 'Not following procedure'],
+    followUpPlan: 'Issue backup phones or radios to all community carers by 30 June (owner: operations).',
+    rootCause: 'Carers had no redundant method for contacting the office when mobile signal failed.',
+    preventiveActions: 'Backup communication devices rolled out to all community staff.',
+    lessonsLearned: 'Check-in alerts now escalate to the duty manager after 15 minutes and are reviewed weekly.',
+    isCqcNotifiable: false,
+    isRiddorReportable: false,
+    isSafeguardingConcern: false,
     investigationNotes: [
       {
         note: 'Auto-alert: No check-in by 14:30. Manager notified. Called carer David Smith.',
@@ -1036,3 +1126,27 @@ export const mockIncidents: Incident[] = [
     updatedAt: new Date('2024-06-13 19:00'),
   },
 ];
+
+export const mockEvidence: Evidence[] = [
+  {
+    id: "1",
+    name: "incident-photo-1.jpg",
+    type: "image",
+    url: "/images/incident-1.jpg",
+    uploadedBy: "Sarah Johnson",
+    uploadedAt: new Date("2024-03-15T14:30:00"),
+    size: 2450000,
+  },
+  {
+    id: "2",
+    name: "witness-statement.pdf",
+    type: "document",
+    url: "/documents/witness-statement.pdf",
+    uploadedBy: "Michael Chen",
+    uploadedAt: new Date("2024-03-16T09:15:00"),
+    size: 450000,
+  },
+];
+
+export const mockIncidentReportedBy = "Current User (placeholder)";
+export const mockIncidentAssignedTo = "John Manager (placeholder)";
