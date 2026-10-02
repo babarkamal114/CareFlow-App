@@ -308,7 +308,7 @@ export function AddVisitModal({
                 className="flex flex-wrap gap-1.5 pt-1 overflow-hidden"
               >
                 {weekdayOptions.map((day) => (
-                  <button
+                  <Button
                     key={day.value}
                     type="button"
                     onClick={() => toggleRecurrenceDay(day.value)}
@@ -319,7 +319,7 @@ export function AddVisitModal({
                     }`}
                   >
                     {day.label}
-                  </button>
+                  </Button>
                 ))}
               </motion.div>
             )}

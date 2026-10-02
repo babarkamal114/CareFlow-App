@@ -29,8 +29,7 @@ const ROLE_COLORS: Record<string, string> = {
   admin: "var(--cf-ink-40)",
 };
 
-// Same four soft tones used on the Dashboard stat cards, cycled per card
-// so each metric reads as visually distinct instead of one repeated icon chip.
+
 const STAT_BADGE_VARIANTS = ["softSuccess", "softInfo", "softWarning", "softDanger"] as const;
 
 const container = {
@@ -118,9 +117,7 @@ export default function StaffPage() {
 
   return (
     <div className="w-full p-6 bg-transparent">
-      {/* One white rounded panel holding the heading and everything below
-          it — same structure as Dashboard/Patients/Care Plans. No
-          overflow here: the shell's <main> is the only scroll container. */}
+    
       <motion.div
         initial="hidden"
         animate="show"

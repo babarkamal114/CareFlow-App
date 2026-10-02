@@ -188,16 +188,16 @@ export function RecentAuditTrailCard() {
               className="w-full pl-8 pr-8 py-2 text-sm bg-cf-surface-muted border border-cf-border rounded-lg text-cf-ink placeholder:text-cf-ink-40 focus:outline-none focus:ring-2 focus:ring-cf-brand-300"
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+              <Button onClick={() => setSearch('')} >
                 <X className="h-3.5 w-3.5 text-cf-ink-40" />
-              </button>
+              </Button>
             )}
           </div>
 
           {/* Filter pills */}
           <div className="flex gap-1.5 mt-2 flex-wrap">
             {ENTITY_TYPES.map(type => (
-              <button
+              <Button
                 key={type}
                 onClick={() => setActiveType(type)}
                 style={activeType === type ? { backgroundColor: '#16a34a', color: '#fff', borderColor: '#16a34a' } : {}}
@@ -206,7 +206,7 @@ export function RecentAuditTrailCard() {
                 }`}
               >
                 {type}
-              </button>
+              </Button>
             ))}
           </div>
         </CardHeader>

@@ -127,7 +127,7 @@ function CustomToolbar({
 
       <div className="relative flex items-center gap-0.5 rounded-lg bg-cf-surface-muted p-1">
         {views.map((v) => (
-          <button
+          <Button
             key={v.key}
             onClick={() => onView(v.key)}
             className={`relative z-10 px-3 py-1.5 text-sm rounded-md transition-colors ${
@@ -142,7 +142,7 @@ function CustomToolbar({
               />
             )}
             {v.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

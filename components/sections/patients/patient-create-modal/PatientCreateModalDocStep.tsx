@@ -9,7 +9,8 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue, } from "@/components/ui";
+  SelectValue,
+  Button, } from "@/components/ui";
 import { Upload, X, FileText, ShieldAlert, Scale, FileHeart } from 'lucide-react';
 import { PatientFormData } from './PatientCreateModal';
 
@@ -90,7 +91,7 @@ export function AttachmentsStep({
         <Label htmlFor="docType" className="text-sm font-medium">
           Document Type
         </Label>
-        <Select value={docType} onValueChange={setDocType}>
+        <Select value={docType} onValueChange={setDocType as any}>
           <SelectTrigger id="docType" className="border-cf-border">
             <SelectValue placeholder="Select document type" />
           </SelectTrigger>
@@ -150,12 +151,12 @@ export function AttachmentsStep({
                     )}
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveAttachment(attachment.id)}
                   className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

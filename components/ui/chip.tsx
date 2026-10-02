@@ -5,6 +5,7 @@ import * as React from "react"
 import { tv, type VariantProps } from "tailwind-variants"
 
 import { cn } from "lib"
+import { Button } from "./button"
 
 const chipVariants = tv({
   base: "inline-flex max-w-full items-center gap-1.5 rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-[13px] font-medium leading-tight motion-safe:transition-[background-color,border-color,color,box-shadow] motion-safe:duration-150",
@@ -67,7 +68,7 @@ function Chip({
     >
       <span className="min-w-0 truncate">{children}</span>
       {onDismiss ? (
-        <button
+        <Button
           type="button"
           className="inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full bg-black/10 text-foreground outline-none transition-[background-color,transform] hover:bg-black/15 focus-visible:ring-[3px] focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95 motion-reduce:transition-none dark:bg-white/15 dark:hover:bg-white/25"
           onClick={(e) => {
@@ -77,7 +78,7 @@ function Chip({
           aria-label={dismissLabel}
         >
           <XIcon className="pointer-events-none size-3 opacity-80" aria-hidden />
-        </button>
+        </Button>
       ) : null}
     </span>
   )
