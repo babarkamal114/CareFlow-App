@@ -8,7 +8,7 @@ import {
   AvatarWrap,
   Badge,
   Chip,
-} from @/components/ui
+} from '@/components/ui'
 
 export function GalleryBadgesAvatars(): ReactElement {
   return (
