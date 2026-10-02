@@ -60,7 +60,6 @@ export { default as VerifyEmailHeader } from "./auth/verify-email/verify-email-h
 export * from "./schedule/unassigned-schedule-block"
 export * from "./staff/staff-table-skeleton"
 export * from "./staff/permission-body"
-export * from "./staff/staff-view-tabs"
 export * from "./staff/staff-view-drawer"
 export * from "./staff/table-bulk-actions"
 export * from "./staff/permission-actionts"

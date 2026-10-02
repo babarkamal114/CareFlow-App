@@ -355,12 +355,12 @@ export function MedicationsStep({
                     </div>
                   )}
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveMedication(med.id)}
                   className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

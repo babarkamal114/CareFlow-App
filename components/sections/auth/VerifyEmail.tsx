@@ -69,13 +69,13 @@ export function VerifyEmailUI({
                   {canResend ? "00:00" : formatTime(countdown)}
                 </span>
               </p>
-              <button
+              <Button
                 onClick={handleResend}
                 disabled={!canResend}
                 className="mt-1 text-xs text-primary hover:underline disabled:cursor-not-allowed disabled:text-muted-foreground"
               >
                 {canResend ? "Resend code" : "Please wait..."}
-              </button>
+              </Button>
             </div>
           </CardContent>
         </Card>
