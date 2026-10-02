@@ -10,7 +10,6 @@ import { cn } from "lib"
 
 export type IconButtonProps = React.ComponentProps<"button"> &
   IconButtonVariants & {
-    /** Required for accessibility when the control has no visible text */
     "aria-label": string
   }
 

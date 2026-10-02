@@ -55,7 +55,7 @@ export function CarePlanBlocksSection({ carePlans = [] }: CarePlanBlocksSectionP
 
   return (
     <>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
         {carePlans.map((plan) => {
           const daysUntil = getDaysUntil(plan.nextReviewDate);
           const isOverdue = daysUntil.includes('overdue');

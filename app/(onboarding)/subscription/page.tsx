@@ -1,7 +1,7 @@
 import { PricingCards } from "sections";
 export default function SubscriptionOnboardingPage() {
   return (
-    <div className="min-h-screen bg-[#F6F7F9] px-6 py-16">
+    <div className="min-h-screen bg-linear-to-b from-primary/20 px-6 py-16">
       <div className="mx-auto max-w-5xl text-center">
         <h1 className="font-heading text-3xl font-bold tracking-tight text-zinc-900">
           Choose your plan

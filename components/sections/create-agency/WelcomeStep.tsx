@@ -1,9 +1,7 @@
-// src/app/create-agency/components/WelcomeStep.tsx
-
 "use client";
 
-import { Button } from "@/components/ui";
-import { ArrowRight, CheckCircle2, FolderKanban, Hospital, Users } from "lucide-react";
+import { Badge, Button } from "@/components/ui";
+import { ArrowRight, CheckCircle2, FolderKanban, HeartHandshake, Hospital, Users } from "lucide-react";
 import Image from "next/image";
 
 interface WelcomeStepProps {
@@ -13,81 +11,80 @@ interface WelcomeStepProps {
 export function WelcomeStep({ onNext }: WelcomeStepProps) {
   const features = [
     {
-      icon: <Hospital className="text-white"/>,
+      icon: Hospital,
       title: "Create your agency profile",
       description: "Set up your agency details and branding",
     },
     {
-      icon: <Users className="text-white"/>,
+      icon: Users,
       title: "Invite team members",
-      description: "Optional - add your team for collaboration",
+      description: "Optional — add your team for collaboration",
     },
     {
-      icon: <FolderKanban className="text-white"/>,
+      icon: FolderKanban,
       title: "Manage care",
       description: "Start managing patients, carers, and schedules",
     },
   ];
 
   return (
-    <div className="flex h-full flex-col justify-between py-8">
-      <div className="space-y-10">
-        <div className="space-y-6">
-          <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl text-3xl font-bold text-white shadow-lg overflow-hidden">
-            <Image 
-            src='/logo.png'
-            alt="careflow logo"
-            width={80}
-            height={80}
-            className="object-cover"
-            />
-          </div>
+    <div className="flex h-full flex-col justify-between">
+      <div className="space-y-8">
+        <div className="space-y-5">
+          <Badge badgeSize={'icon'} variant={'ghost'} shape={'rounded'}>
+            <HeartHandshake className="size-14 text-primary/70" />
+          </Badge>
 
-          <div className="space-y-3">
-            <h1 className="text-[60px] font-bold text-white">
-              Welcome to CareFlow
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold leading-tight tracking-tight text-cf-ink-80 sm:text-4xl">
+              Welcome to <span className="text-primary">CareFlow</span>
             </h1>
-            <p className="max-w-md text-lg text-white/70">
+            <p className="max-w-md text-base leading-relaxed text-cf-ink-60">
               Let's get your agency set up so you can start managing care
               effortlessly.
             </p>
           </div>
         </div>
 
-        {/* Features List */}
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-widest text-white">
+
+        <div className="space-y-1">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-cf-ink-40">
             What you'll do
           </p>
-          <div className="space-y-4">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="flex gap-4 rounded-lg border border-primary/20 bg-primary/30 p-4 "
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center text-xl">
-                  {feature.icon}
+          <div className="divide-y divide-cf-ink-40/10 border-y border-cf-ink-40/10">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className="group flex items-center gap-4 py-4 transition-colors"
+                >
+                  <Badge badgeSize={'icon'} shape={'rounded'} variant={'pastel-success'}>
+                    <Icon size={18} className="text-primary/60"/>
+                  </Badge>
+                  <div className="min-w-0 flex-1 space-y-0.5">
+                    <p className="font-semibold text-cf-ink-80">{feature.title}</p>
+                    <p className="text-sm text-cf-ink-60">{feature.description}</p>
+                  </div>
+                  <span className="font-mono text-xs font-bold text-cf-ink-40/50">
+                    0{index + 1}
+                  </span>
                 </div>
-                <div className="space-y-1">
-                  <p className="font-medium text-white">{feature.title}</p>
-                  <p className="text-sm text-white/70">{feature.description}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Action Button */}
-      <div className="pt-6">
-        <Button
-          onClick={onNext}
-          size="lg"
-          className="w-full gap-2 bg-cf-brand-500 text-base font-semibold text-white hover:bg-cf-brand-600 active:bg-cf-brand-700"
-        >
+      <div className="flex flex-col gap-3 pt-8 sm:flex-row sm:items-center">
+        <Button onClick={onNext} size="lg" className="gap-2">
           Get Started
           <ArrowRight className="h-5 w-5" />
         </Button>
+        <span className="inline-flex items-center gap-1.5 text-xs text-cf-ink-40">
+          <CheckCircle2 size={13} className="text-primary" />
+          Takes about 2 minutes
+        </span>
       </div>
     </div>
   );

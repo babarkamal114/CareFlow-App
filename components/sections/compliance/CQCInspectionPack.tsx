@@ -1,15 +1,10 @@
-
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, Badge, Button } from '@/components/ui';
 import {
-  FileText,
   Download,
   Eye,
-  Calendar,
-  File,
   Shield,
-  CheckCircle,
   Clock,
 } from 'lucide-react';
 
@@ -29,7 +24,7 @@ export function CQCInspectionPack({
   isGenerating = false,
 }: CQCInspectionPackProps) {
   return (
-    <Card className="border-cf-border shadow-sm">
+    <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full h-full">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

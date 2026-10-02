@@ -7,9 +7,7 @@ export const SUBSCRIPTION_ROUTE = '/subscription'
 export const AGENCY_CREATION_ROUTE = '/create-agency'
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
-  // TEMP: bypassing auth checks to work on dashboard UI without backend running
-  // TODO: remove this before pushing/merging
-  return NextResponse.next();
+ 
 
   const { pathname } = request.nextUrl;
   const session = await auth();
@@ -106,7 +104,5 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
-  ],
+  matcher:  ["/((?!_next/static|_next/image|api/auth|favicon.ico|logo\\.png|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|gif)$).*)"]
 };
