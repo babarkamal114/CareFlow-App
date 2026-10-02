@@ -19,3 +19,4 @@ export * from './incidents'
 export * from './incident-form'
 export * from './incident-display'
 export * from './constants'
+export * from './care-plan-ai-suggestions';
