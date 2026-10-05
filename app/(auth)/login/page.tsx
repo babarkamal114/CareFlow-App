@@ -1,12 +1,5 @@
-import { BrandSection } from "sections"
-import { FormSection } from "sections"
+import { LoginForm } from "./login-form";
 
 export default function LoginPage() {
-  return (
-    <div className="flex min-h-screen bg-background">
-      <BrandSection />
-      <FormSection />
-    </div>
-  )
-
+  return <LoginForm />;
 }

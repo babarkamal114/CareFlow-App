@@ -3,6 +3,7 @@ import type { PricingPlan } from "./components";
 export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "starter",
+    planId: "starter",
     name: "Starter",
     tagline: "Small care agencies getting started",
     monthlyPrice: 49,
@@ -19,8 +20,10 @@ export const PRICING_PLANS: PricingPlan[] = [
     ],
     cta: "Start with Starter",
   },
+
   {
     id: "professional",
+    planId: "professional",
     name: "Professional",
     tagline: "Growing agencies with multiple locations",
     monthlyPrice: 99,
@@ -39,8 +42,10 @@ export const PRICING_PLANS: PricingPlan[] = [
     cta: "Start with Professional",
     highlighted: true,
   },
+
   {
     id: "enterprise",
+    planId: "enterprise",
     name: "Enterprise",
     tagline: "Large care networks and national chains",
     monthlyPrice: null,
@@ -69,4 +74,8 @@ export const INCLUDED_IN_ALL = [
 export const SINGLE_AGENCY_NOTE =
   "Each account can create one agency. Need multiple agencies? Contact sales.";
 
-export const AGENCY_TYPES = ["Domiciliary care", "Live-in care", "Both"];
+export const AGENCY_TYPES = [
+  "Domiciliary care",
+  "Live-in care",
+  "Both",
+];

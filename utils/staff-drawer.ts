@@ -128,10 +128,12 @@ export function getStaffTrainingTone(record: TrainingRecord): StaffStatusTone {
   return "neutral";
 }
 
-export function getStaffDbsTone(status: string): StaffStatusTone {
-  if (status === "clear") return "success";
-  if (status === "flagged_for_review") return "danger";
-  if (status === "temporarily_verified") return "warning";
+export function getStaffDbsTone(
+  status: string
+): "green" | "amber" | "red" | "neutral" {
+  if (status === "clear") return "green";
+  if (status === "flagged_for_review") return "red";
+  if (status === "temporarily_verified") return "amber";
   return "neutral";
 }
 

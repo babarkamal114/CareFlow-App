@@ -58,10 +58,13 @@ export function StaffTrainingTab({ profile }: StaffTrainingTabProps) {
         <CardContent className="space-y-3">
           <div className="flex items-center gap-3">
             <Progress value={progress.percent} className="flex-1">
-              <ProgressTrack trackSize="lg">
+              <ProgressTrack>
                 <ProgressIndicator />
               </ProgressTrack>
-              <ProgressValue>{progress.percent}%</ProgressValue>
+
+              <ProgressValue>
+                {(formattedValue) => `${formattedValue}%`}
+              </ProgressValue>
             </Progress>
             <Badge
               variant={TONE_BADGE[progress.expired > 0 ? 'danger' : 'success']}
