@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { isExpired } from "./compliance-status";
-import { EMAIL_REGEX, UK_PHONE_REGEX, requiredText } from "./helpers";
+import {
+  EMAIL_REGEX,
+  UK_PHONE_REGEX,
+  requiredText,
+  requiredTrue,
+} from "./helpers";
 
 const MIN_REFEREES = 2;
 
@@ -51,9 +56,9 @@ const interimCertificateSchema = z.object({
   certificateNumber: requiredText("Certificate number"),
   issueDate: requiredText("Issue date"),
   statusCheckDate: requiredText("Status check date"),
-  updateServiceConsent: z.literal(true, {
-    error: "Consent to share with the update service is required",
-  }),
+  updateServiceConsent: requiredTrue(
+    "Consent to share with the update service is required"
+  ),
   originalSeenInPerson: z.boolean(),
   statusCheckResult: z.literal("current"),
 });
@@ -101,9 +106,9 @@ const refereeSchema = z.object({
     .min(1, "Email is required")
     .regex(EMAIL_REGEX, "Enter a valid email address"),
   relationship: z.enum(REFEREE_RELATIONSHIP_VALUES),
-  referenceReceived: z.literal(true, {
-    error: "Mark the reference as received before continuing",
-  }),
+  referenceReceived: requiredTrue(
+    "Mark the reference as received before continuing"
+  ),
 });
 
 export const complianceStepSchema = z

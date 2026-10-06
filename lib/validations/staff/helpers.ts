@@ -34,6 +34,10 @@ export function requiredNumber(label: string) {
   });
 }
 
+export function requiredTrue(message: string) {
+  return z.boolean().refine((value) => value === true, { error: message });
+}
+
 export function requiredIsoDate(label: string) {
   return z
     .string()
