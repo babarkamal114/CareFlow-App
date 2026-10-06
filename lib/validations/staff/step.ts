@@ -12,10 +12,6 @@ import type {
   StaffFormStepId,
 } from "types";
 
-/**
- * Validates a single step of the add-staff form. Each step owns its own
- * schema, so a step never reports errors belonging to another step.
- */
 export function validateStep(
   step: StaffFormStepId,
   data: StaffFormData

@@ -1,14 +1,24 @@
-// src/app/subscribe/success/page.tsx
-
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import Link from "next/link";
 
-export default function SubscriptionSuccessPage() {
+function LoadingView() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-8">
+      <div className="text-center">
+        <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
+        <h1 className="text-2xl font-bold text-gray-900">Processing your subscription...</h1>
+        <p className="mt-2 text-gray-600">Please wait while we confirm your payment.</p>
+      </div>
+    </div>
+  );
+}
+
+function SubscriptionSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { data: session, update } = useSession();
@@ -22,7 +32,7 @@ export default function SubscriptionSuccessPage() {
       setStatus("error");
       return;
     }
-    
+
     update()
       .then(() => {
         setStatus("success");
@@ -47,15 +57,7 @@ export default function SubscriptionSuccessPage() {
   }, [sessionId, update, router]);
 
   if (status === "loading") {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-8">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900">Processing your subscription...</h1>
-          <p className="mt-2 text-gray-600">Please wait while we confirm your payment.</p>
-        </div>
-      </div>
-    );
+    return <LoadingView />;
   }
 
   if (status === "error") {
@@ -111,5 +113,13 @@ export default function SubscriptionSuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function SubscriptionSuccessPage() {
+  return (
+    <Suspense fallback={<LoadingView />}>
+      <SubscriptionSuccessContent />
+    </Suspense>
   );
 }
