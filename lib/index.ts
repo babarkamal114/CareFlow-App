@@ -8,3 +8,5 @@ export * from "./mock/staff-mock-data";
 export * from "./mock/staff-compliance-mock";
 export * from "./validations";
 export * from "./mock/staff-profile-mock";
+export * from './mock/finance-mock'
+export * from './hooks/use-finance-workspace';
