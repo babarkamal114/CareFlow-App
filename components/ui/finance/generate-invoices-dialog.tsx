@@ -23,7 +23,6 @@ import { FinanceSelect } from "./finance-select";
 
 const PERIOD_DAYS: Record<BillingPeriodType, number> = { weekly: 7, fortnightly: 14, monthly: 30 };
 
-/** Default range = the last N days ending on `asOf`. The user can still edit both dates. */
 function rangeFor(type: BillingPeriodType, asOf: Date) {
   const start = new Date(asOf);
   start.setDate(start.getDate() - (PERIOD_DAYS[type] - 1));
@@ -44,7 +43,6 @@ export function GenerateInvoicesDialog({ open, onOpenChange, asOf, onSubmit }: G
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent size="md">
-        {/* Form mounts only while open, so its state resets every time the dialog is reopened. */}
         <GenerateInvoicesForm asOf={asOf} onSubmit={onSubmit} onCancel={() => onOpenChange(false)} />
       </DialogContent>
     </Dialog>

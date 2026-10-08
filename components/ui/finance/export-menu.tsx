@@ -16,7 +16,6 @@ export interface ExportOption {
   description?: string;
 }
 
-/** Local-authority formats from Blueprint 3.6.2. */
 export const INVOICE_EXPORT_OPTIONS: ExportOption[] = [
   { id: "csv", label: "CSV", description: "All visible invoices" },
   { id: "controcc", label: "ContrOCC", description: "Council purchasing format" },

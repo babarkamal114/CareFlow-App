@@ -17,7 +17,6 @@ import type { PnlMonth } from "types";
 import { formatCurrency, getMarginPct, getPnlDirectCosts, getPnlGrossMargin, getPnlMarginPct } from "utils";
 import { MarginBadge } from "./profitability-table";
 
-/** Monthly P&L: revenue, direct costs, gross margin (Blueprint 3.6.3). */
 export function PnlSummaryCard({ months }: { months: PnlMonth[] }) {
   const revenue = months.reduce((s, m) => s + m.revenue, 0);
   const costs = months.reduce((s, m) => s + getPnlDirectCosts(m), 0);

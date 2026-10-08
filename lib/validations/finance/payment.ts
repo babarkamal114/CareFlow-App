@@ -4,7 +4,6 @@ import { formatCurrency } from "utils";
 import { requiredChoice, requiredIsoDate, requiredText, runSchema } from "../staff/helpers";
 import { MAX_PAYMENT_REFERENCE_LENGTH, PAYMENT_METHOD_VALUES } from "./constants";
 
-/** Built per invoice because the amount is capped at that invoice's outstanding balance. */
 export function buildRecordPaymentSchema(balance: number) {
   return z.object({
     invoiceId: requiredText("Invoice"),

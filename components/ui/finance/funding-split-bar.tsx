@@ -1,7 +1,6 @@
 import type { FundingSource, RevenueByFunding } from "types";
 import { formatCurrency, formatPercent, FUNDING_SOURCE_LABEL } from "utils";
 
-// Segment colours come from the chart tokens in globals.css (--chart-1..3).
 const SEGMENT_CLASS: Record<FundingSource, string> = {
   "local-authority": "bg-chart-1",
   "nhs-chc": "bg-chart-2",
@@ -12,7 +11,6 @@ interface FundingSplitBarProps {
   data: RevenueByFunding[];
 }
 
-/** Stacked bar + legend showing how invoiced revenue splits across funders. */
 export function FundingSplitBar({ data }: FundingSplitBarProps) {
   const total = data.reduce((sum, d) => sum + d.invoiced, 0);
 

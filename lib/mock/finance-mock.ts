@@ -1,5 +1,3 @@
-// TEMP mock data for the Finance page (Blueprint 3.6). Deterministic: everything is relative to FINANCE_MOCK_TODAY.
-
 import type {
   AreaProfitability,
   CarerCostRecord,
@@ -27,7 +25,6 @@ function daysFromToday(days: number): Date {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-// ---- Rate card: 4 durations x 4 day types ----
 const DURATIONS: VisitDuration[] = [15, 30, 45, 60];
 const DAY_TYPES: DayType[] = ["weekday", "weekend", "bank-holiday", "unsocial"];
 const BASE_HOURLY_RATE = 24;

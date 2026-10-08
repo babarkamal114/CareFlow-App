@@ -1,5 +1,3 @@
-// Labels, badge variants and select options for finance UI. Colours come only from Badge variants (design tokens).
-
 import type { BadgeProps } from "@/components/ui";
 import type { BillingPeriodType, DayType, FundingSource, InvoiceStatus, PaymentMethod, VisitDuration } from "types";
 

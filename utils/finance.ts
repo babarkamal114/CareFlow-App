@@ -1,5 +1,3 @@
-// Pure finance helpers (no JSX, no React). Components keep state + JSX; maths lives here.
-
 import type {
   AreaProfitability,
   CarerCostRecord,
@@ -21,7 +19,6 @@ const gbpWhole = new Intl.NumberFormat("en-GB", { style: "currency", currency: "
 
 export const round2 = (n: number): number => Math.round(n * 100) / 100;
 
-/** £1,234.50 — or £1,235 when `whole` is true. (formatPrice in formatters.ts is for pricing plans in pence.) */
 export const formatCurrency = (amount: number, whole = false): string =>
   (whole ? gbpWhole : gbp).format(amount);
 
@@ -38,7 +35,6 @@ const startOfDay = (d: Date): Date => new Date(d.getFullYear(), d.getMonth(), d.
 
 export const getInvoiceBalance = (invoice: Invoice): number => round2(invoice.subtotal - invoice.amountPaid);
 
-/** Status shown to the user: a sent / part-paid invoice past its due date counts as overdue. */
 export function getInvoiceDisplayStatus(invoice: Invoice, asOf: Date = new Date()): InvoiceStatus {
   if (invoice.status === "draft") return "draft";
   if (getInvoiceBalance(invoice) <= 0) return "paid";

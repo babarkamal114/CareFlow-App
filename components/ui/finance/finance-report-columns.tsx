@@ -1,5 +1,3 @@
-// Column definitions for the four reports (Blueprint 3.6.3). Each feeds <ProfitabilityTable/>.
-
 import { MarginBadge, MoneyCell, type ProfitabilityColumn } from "@/components/ui";
 import type { AreaProfitability, CarerCostRecord, PatientProfitability } from "types";
 import {
