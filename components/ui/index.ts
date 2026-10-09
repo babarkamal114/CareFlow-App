@@ -81,3 +81,4 @@ export * from "./incidents/incident-logs-tab"
 export * from "./incidents/incident-evidence-tab"
 export * from "./compliance/safeguarding-notification-chain"
 export * from "./compliance/safeguarding-concern-row"
+export * from './dashboard'

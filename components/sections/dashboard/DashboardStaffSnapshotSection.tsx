@@ -1,75 +1,24 @@
-'use client';
+import { Card, StaffSnapshotRow } from "@/components/ui";
+import type { DashboardStaffSegment } from "utils";
 
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { Users } from 'lucide-react';
-
-import {
-  canSeeStaff,
-  getStaffSnapshotSegments,
-  type SnapshotTone,
-} from 'utils';
-
-const toneClasses: Record<SnapshotTone, string> = {
-  success: 'bg-[var(--cf-success)]',
-  info: 'bg-[var(--cf-info)]',
-  muted: 'bg-cf-ink-40',
-};
-
-function StaffSnapshotCard() {
-  const segments = getStaffSnapshotSegments();
-
-  return (
-    <motion.div
-      className="h-full flex-1 min-w-0"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <Card className="border-cf-border-light shadow-cf-sm rounded-2xl h-full">
-        <CardHeader className="flex flex-row items-center gap-2 pb-2 pt-4 px-4">
-          <Users className="size-4 text-cf-ink-60" />
-          <CardTitle className="text-sm font-semibold text-cf-ink">
-            Staff Snapshot
-          </CardTitle>
-        </CardHeader>
-
-        <CardContent className="px-4 pb-4 space-y-4">
-          <div className="flex h-2 w-full overflow-hidden rounded-full bg-cf-surface-muted">
-            {segments.map((segment, i) => (
-              <motion.div
-                key={segment.key}
-                className={toneClasses[segment.tone]}
-                initial={{ width: 0 }}
-                animate={{ width: `${segment.percent}%` }}
-                transition={{ duration: 0.6, delay: 0.15 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              />
-            ))}
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            {segments.map((segment, i) => (
-              <motion.div
-                key={segment.key}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.2 + i * 0.06 }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <span className={`size-2 rounded-full ${toneClasses[segment.tone]}`} />
-                  <span className="text-xs text-cf-ink-60">{segment.label}</span>
-                </div>
-                <p className="mt-1 text-xl font-bold text-cf-ink">{segment.value}</p>
-              </motion.div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
+interface DashboardStaffSnapshotSectionProps {
+  segments: DashboardStaffSegment[];
+  total: number;
 }
 
-export function DashboardStaffSnapshot({ role }: { role: string }) {
-  if (!canSeeStaff(role)) return null;
-  return <StaffSnapshotCard />;
+/** Carers on shift, available and on leave. */
+export function DashboardStaffSnapshotSection({ segments, total }: DashboardStaffSnapshotSectionProps) {
+  return (
+    <Card variant="elevated" className="gap-0 py-0">
+      <div className="flex items-center justify-between border-b border-cf-border-light px-4 py-3">
+        <h2 className="font-heading text-base font-semibold text-cf-ink">Staff Snapshot</h2>
+        <span className="text-sm text-cf-ink-60">{total} staff</span>
+      </div>
+      <ul className="space-y-4 p-4">
+        {segments.map((segment) => (
+          <StaffSnapshotRow key={segment.key} segment={segment} />
+        ))}
+      </ul>
+    </Card>
+  );
 }

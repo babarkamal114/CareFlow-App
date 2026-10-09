@@ -1,45 +1,111 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+import { Activity, AlertCircle, CalendarDays, CheckCircle2, Clock } from "lucide-react";
+import type { ReactNode } from "react";
+
+import { Progress, ProgressIndicator, ProgressTrack } from "@/components/ui";
 import { StatCard } from "shared";
-import { getDashboardStatCards, getStatGridColumns } from "utils";
+import type { DashboardVisitSummary } from "types";
 
-interface DashboardStatSectionProps {
-  role: string;
-}
-
-const GRID_COLS: Record<number, string> = {
-  1: "lg:grid-cols-1",
-  2: "lg:grid-cols-2",
-  3: "lg:grid-cols-3",
-  4: "lg:grid-cols-4",
+const gridVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
 };
 
-function DashboardStatSection({ role }: DashboardStatSectionProps) {
-  const cards = getDashboardStatCards(role);
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+};
 
-  if (cards.length === 0) return null;
-
-  const gridClass = `grid grid-cols-1 sm:grid-cols-2 ${
-    GRID_COLS[getStatGridColumns(cards.length)]
-  } gap-4`;
-
+function StatItem({ children }: { children: ReactNode }) {
   return (
-    <div className={gridClass}>
-      {cards.map(({ id, props }, i) => (
-        <motion.div
-          key={id}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-          whileHover={{ y: -3 }}
-        >
-          <StatCard {...props} />
-        </motion.div>
-      ))}
-    </div>
+    <motion.div variants={cardVariants} className="h-full [&>*]:h-full">
+      {children}
+    </motion.div>
   );
 }
 
-export default DashboardStatSection;
+interface DashboardStatSectionProps {
+  summary: DashboardVisitSummary;
+  /** 0-100 */
+  completionRate: number;
+  /** Visits that have not started yet */
+  upcoming: number;
+}
+
+/** Today's numbers: scheduled, completed, in progress, late and missed visits. */
+export function DashboardStatSection({ summary, completionRate, upcoming }: DashboardStatSectionProps) {
+  return (
+    <motion.div
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5"
+      variants={gridVariants}
+      initial="hidden"
+      animate="show"
+    >
+      <StatItem>
+        <StatCard
+          label="Visits Today"
+          value={summary.total.toLocaleString("en-GB")}
+          Icon={CalendarDays}
+          description="Total scheduled today"
+        >
+          <p className="text-xs text-cf-ink-60">{upcoming} still to start</p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="Completed"
+          value={summary.completed.toLocaleString("en-GB")}
+          Icon={CheckCircle2}
+          description="Visits finished today"
+        >
+          <Progress value={completionRate} aria-label="Share of today's visits completed" className="gap-0">
+            <ProgressTrack>
+              <ProgressIndicator className="bg-brand-500" />
+            </ProgressTrack>
+          </Progress>
+          <p className="mt-1.5 text-xs text-cf-ink-60">{completionRate}% of today&apos;s visits</p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="In Progress"
+          value={summary.inProgress.toLocaleString("en-GB")}
+          Icon={Activity}
+          description="Carers with a client now"
+        >
+          <p className="text-xs text-cf-ink-60">Carers with a client now</p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="Late"
+          value={summary.late.toLocaleString("en-GB")}
+          Icon={Clock}
+          description="Carers not checked in"
+        >
+          <p className={summary.late > 0 ? "text-xs font-medium text-cf-amber-500" : "text-xs text-brand-600"}>
+            {summary.late > 0 ? "Check carers have arrived" : "Everyone on time"}
+          </p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="Missed"
+          value={summary.missed.toLocaleString("en-GB")}
+          Icon={AlertCircle}
+          description="Visits with no check-in"
+        >
+          <p className={summary.missed > 0 ? "text-xs font-medium text-destructive" : "text-xs text-brand-600"}>
+            {summary.missed > 0 ? "Needs follow-up" : "None today"}
+          </p>
+        </StatCard>
+      </StatItem>
+    </motion.div>
+  );
+}

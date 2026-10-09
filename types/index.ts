@@ -5,3 +5,4 @@ export type PageParams<T extends Record<string, string>> = {
 };
 
 export * from "./components";
+export * from './dashboard'
