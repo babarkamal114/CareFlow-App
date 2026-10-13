@@ -6,3 +6,8 @@ export * from "./hooks";
 export * from "./api/client";
 export * from "./mock/staff-mock-data";
 export * from "./mock/staff-compliance-mock";
+export * from "./mock/patients-mock-data";
+export * from "./mock/patient-profiles-mock-data";
+export * from "./mock/patient-records-mock-data";
+export * from "./mock/patient-clinical-mock-data";
+export * from './validations/patients';

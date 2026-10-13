@@ -1,13 +1,14 @@
 'use client';
 
-import { CREATE_PATIENT_INFO_SECTIONS, type PatientFormData } from 'utils';
+import { CREATE_PATIENT_INFO_SECTIONS } from 'utils';
+import type { PatientFormData, PatientFormErrors } from 'types';
 import { PatientFormSections } from '../PatientFormField';
 
 interface PatientInfoStepProps {
   formData: PatientFormData;
   setFormData: (data: PatientFormData) => void;
-  errors: Record<string, string>;
-  setErrors: (errors: Record<string, string>) => void;
+  errors: PatientFormErrors;
+  setErrors: (errors: PatientFormErrors) => void;
 }
 
 export function PatientInfoStep({

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
-import type { SelectOption } from 'utils';
+import { SelectOption } from 'utils';
 
 interface CompactInputFieldProps {
   id: string;
@@ -42,9 +42,9 @@ export function CompactInputField({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`border-cf-border h-8 text-sm ${error ? 'border-red-500' : ''}`}
+        className={`border-cf-border h-8 text-sm ${error ? 'border-destructive' : ''}`}
       />
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
 }

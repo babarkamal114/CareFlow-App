@@ -2,15 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
 import { Clock, Coffee, Heart } from 'lucide-react';
-import {
-  PREFERENCE_OPINION_BLOCKS,
-  getPreferenceRows,
-  getRoutineRows,
-  hasLikesSection,
-  hasPreferenceInfo,
-  type PatientPreferencesInfo,
-  type PreferenceRow,
-} from 'utils';
+import { PREFERENCE_OPINION_BLOCKS, getPreferenceRows, getRoutineRows, hasLikesSection, hasPreferenceInfo, type PreferenceRow } from 'utils';
+import type { PatientPreferencesInfo } from 'types';
 
 function RowList({ rows }: { rows: PreferenceRow[] }) {
   return (

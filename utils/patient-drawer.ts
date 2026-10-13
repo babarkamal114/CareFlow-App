@@ -1,72 +1,7 @@
 import { ThumbsUp, ThumbsDown, type LucideIcon } from 'lucide-react';
+import type { Patient } from 'types';
 import type { PatientInfoData } from './patient-profile';
 import { formatPatientDateGB } from './patient-records';
-
-export interface PatientDrawerPatient {
-  id: string;
-  name: string;
-  preferredName?: string;
-  dateOfBirth?: string;
-  nhsNumber?: string;
-  address: string;
-  avatar?: string;
-  initials: string;
-  age: number;
-  risk: 'low' | 'medium' | 'high';
-  status: 'active' | 'on-hold' | 'new' | 'discharged';
-  carer: string;
-  nextVisit: string;
-  email: string;
-  phone: string;
-  gpName?: string;
-  gpPhone?: string;
-  gpAddress?: string;
-  nextOfKinName?: string;
-  nextOfKinPhone?: string;
-  nextOfKinRelationship?: string;
-  emergencyContact?: string;
-  emergencyPhone?: string;
-  emergencyRelationship?: string;
-  conditions?: Array<{ name: string; diagnosedDate: string; status: 'active' | 'managed' | 'resolved' }>;
-  allergies?: Array<{ name: string; severity: 'mild' | 'moderate' | 'severe'; reaction: string }>;
-  hospitalisations?: Array<{ date: string; reason: string; duration: string; outcome: string }>;
-  preferredLanguage?: string;
-  hearingImpairment?: string;
-  visionImpairment?: string;
-  mentalCapacity?: string;
-  hearingAids?: boolean;
-  glasses?: boolean;
-  pictureBoard?: boolean;
-  interpreter?: boolean;
-  communicationNotes?: string;
-  poaName?: string;
-  poaRelationship?: string;
-  poaPhone?: string;
-  consentDataSharing?: boolean;
-  consentFamilySharing?: boolean;
-  consentPhotoEvidence?: boolean;
-  consentNotes?: string;
-  wakeTime?: string;
-  bedTime?: string;
-  breakfastTime?: string;
-  lunchTime?: string;
-  dinnerTime?: string;
-  bathPreference?: string;
-  teaPreference?: string;
-  dietaryPreferences?: string;
-  culturalReligious?: string;
-  likes?: string;
-  dislikes?: string;
-  hobbies?: string;
-  dailyRoutine?: string;
-  personalHistory?: string;
-  familyBackground?: string;
-  whatMakesMeSmile?: string;
-  whatUpsetsMe?: string;
-  whatMattersToMe?: string;
-  lifeHistory?: string;
-  importantPeople?: string;
-}
 
 export const PATIENT_DRAWER_MAIN_TABS = [
   { value: 'info', label: 'Info' },
@@ -85,7 +20,6 @@ export const PATIENT_DRAWER_MORE_TABS = [
 
 export const PATIENT_DRAWER_TABS = [...PATIENT_DRAWER_MAIN_TABS, ...PATIENT_DRAWER_MORE_TABS];
 
-export type PatientDrawerTabId = (typeof PATIENT_DRAWER_TABS)[number]['value'];
 
 export const PATIENT_DRAWER_SKELETON_TAB_IDS: ReadonlySet<string> = new Set(
   PATIENT_DRAWER_MAIN_TABS.map((tab) => tab.value)
@@ -124,13 +58,13 @@ export const PATIENT_PREFERENCES_KEYS = [
 ] as const;
 
 /** Copies just the listed fields off the patient, so a tab gets exactly its own props. */
-export function pickPatientFields<K extends keyof PatientDrawerPatient>(
-  patient: PatientDrawerPatient,
+export function pickPatientFields<K extends keyof Patient>(
+  patient: Patient,
   keys: readonly K[]
-): Pick<PatientDrawerPatient, K> {
+): Pick<Patient, K> {
   return Object.fromEntries(
     keys.filter((key) => key in patient).map((key) => [key, patient[key]])
-  ) as Pick<PatientDrawerPatient, K>;
+  ) as Pick<Patient, K>;
 }
 
 
@@ -184,13 +118,13 @@ export const PREFERENCE_OPINION_BLOCKS: {
   {
     key: 'likes',
     Icon: ThumbsUp,
-    boxClass: 'p-2 bg-green-50/50 rounded-lg border border-green-200/50',
-    iconClass: 'h-4 w-4 text-green-600 mt-0.5',
+    boxClass: 'p-2 bg-brand-50/50 rounded-lg border border-brand-200/50',
+    iconClass: 'h-4 w-4 text-brand-500 mt-0.5',
   },
   {
     key: 'dislikes',
     Icon: ThumbsDown,
-    boxClass: 'p-2 bg-red-50/50 rounded-lg border border-red-200/50',
-    iconClass: 'h-4 w-4 text-red-600 mt-0.5',
+    boxClass: 'p-2 bg-cf-red-50/50 rounded-lg border border-destructive/20',
+    iconClass: 'h-4 w-4 text-destructive mt-0.5',
   },
 ];

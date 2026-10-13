@@ -1,5 +1,5 @@
 import { FileText, FileHeart, Scale, ShieldAlert, type LucideIcon } from 'lucide-react';
-import type { PatientFormData } from './patient-create';
+import type { PatientFormAttachment, PatientFormData } from 'types';
 import { formatFileSize } from './file-format-size';
 import { PATIENT_DOCUMENT_TYPES, getDocumentTypeLabel } from './patient-records';
 
@@ -209,7 +209,7 @@ export const PATIENT_ATTACHMENT_ICONS: Record<string, LucideIcon> = {
   other: FileText,
 };
 
-type PatientAttachment = PatientFormData['attachments'][number];
+type PatientAttachment = PatientFormAttachment;
 
 export function buildPatientAttachments(files: File[], docType: string): PatientAttachment[] {
   return files.map((file) => ({

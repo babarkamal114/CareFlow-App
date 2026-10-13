@@ -1,35 +1,35 @@
 import type { BadgeProps } from '@/components/ui';
+import type {
+  Patient,
+  PatientAllergy,
+  PatientCommunicationInfo,
+  PatientCondition,
+  PatientConsentInfo,
+  PatientHospitalisation,
+  PatientKeyPeople,
+  PatientPreferencesInfo,
+} from 'types';
 
 type BadgeVariant = BadgeProps['variant'];
 type BadgeInfo = { variant: BadgeVariant; label: string };
 
-export interface PatientInfoData {
-  id: string;
-  name: string;
-  preferredName?: string;
-  dateOfBirth?: string;
-  nhsNumber?: string;
-  address: string;
-  email: string;
-  phone: string;
-  carer: string;
-  status: 'active' | 'on-hold' | 'new' | 'discharged';
-  nextVisit: string;
-  gpName?: string;
-  gpPhone?: string;
-  gpAddress?: string;
-  nextOfKinName?: string;
-  nextOfKinPhone?: string;
-  nextOfKinRelationship?: string;
-  emergencyContact?: string;
-  emergencyPhone?: string;
-  emergencyRelationship?: string;
-  risk: 'low' | 'medium' | 'high';
-  consentDataSharing?: boolean;
-  consentFamilySharing?: boolean;
-  consentPhotoEvidence?: boolean;
-  consentNotes?: string;
-}
+export type PatientInfoData = Pick<
+  Patient,
+  | 'id'
+  | 'name'
+  | 'preferredName'
+  | 'dateOfBirth'
+  | 'nhsNumber'
+  | 'address'
+  | 'email'
+  | 'phone'
+  | 'carer'
+  | 'status'
+  | 'nextVisit'
+  | 'risk'
+  | keyof PatientKeyPeople
+  | keyof PatientConsentInfo
+>;
 
 const RISK_BADGES: Record<PatientInfoData['risk'], BadgeInfo> = {
   high: { variant: 'pastel-danger', label: 'High' },
@@ -56,25 +56,6 @@ export const CONSENT_ITEMS = [
 export const RISK_DOMAIN_LABELS = ['Falls', 'Skin Integrity', 'Nutrition', 'Medication', 'Safeguarding'];
 
 export const hasGpDetails = (p: PatientInfoData) => !!(p.gpName || p.gpPhone || p.gpAddress);
-
-export interface PatientCondition {
-  name: string;
-  diagnosedDate: string;
-  status: 'active' | 'managed' | 'resolved' | 'discharged';
-}
-
-export interface PatientAllergy {
-  name: string;
-  severity: 'mild' | 'moderate' | 'severe';
-  reaction: string;
-}
-
-export interface PatientHospitalisation {
-  date: string;
-  reason: string;
-  duration: string;
-  outcome: string;
-}
 
 const CONDITION_ORDER = ['active', 'managed', 'resolved', 'discharged'];
 const ALLERGY_ORDER = ['severe', 'moderate', 'mild'];
@@ -108,21 +89,6 @@ export function getAllergyBadgeVariant(severity: PatientAllergy['severity']): Ba
   if (severity === 'severe') return 'pastel-danger';
   if (severity === 'moderate') return 'pastel-warning';
   return 'pastel-info';
-}
-
-export interface PatientCommunicationInfo {
-  preferredLanguage?: string;
-  hearingImpairment?: string;
-  visionImpairment?: string;
-  mentalCapacity?: string;
-  hearingAids?: boolean;
-  glasses?: boolean;
-  pictureBoard?: boolean;
-  interpreter?: boolean;
-  communicationNotes?: string;
-  poaName?: string;
-  poaRelationship?: string;
-  poaPhone?: string;
 }
 
 const CAPACITY_BADGES: Record<string, BadgeInfo> = {
@@ -202,22 +168,6 @@ export function getPoaDetailRows(info: PatientCommunicationInfo): PatientDetailR
   if (info.poaRelationship) rows.push({ label: 'Relationship', value: info.poaRelationship });
   if (info.poaPhone) rows.push({ label: 'Phone', value: info.poaPhone });
   return rows;
-}
-
-export interface PatientPreferencesInfo {
-  wakeTime?: string;
-  bedTime?: string;
-  breakfastTime?: string;
-  lunchTime?: string;
-  dinnerTime?: string;
-  bathPreference?: string;
-  teaPreference?: string;
-  dietaryPreferences?: string;
-  culturalReligious?: string;
-  likes?: string;
-  dislikes?: string;
-  hobbies?: string;
-  dailyRoutine?: string;
 }
 
 export interface PreferenceRow {

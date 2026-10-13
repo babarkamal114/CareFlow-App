@@ -1,4 +1,4 @@
-import type { PatientContact, PatientFormData } from './patient-create';
+import type { PatientContact, PatientContactDraft, PatientFormData } from 'types';
 import type { PatientFieldSection } from './patient-form-fields';
 
 export type CreatePatientLifeStoryKey =
@@ -117,7 +117,7 @@ export const CREATE_PATIENT_PREFERENCES_SECTIONS: PatientFieldSection<CreatePati
   },
 ];
 
-export type ContactDraft = Omit<PatientContact, 'id'>;
+export type ContactDraft = PatientContactDraft;
 
 export const CONTACT_TYPE_OPTIONS: { value: PatientContact['type']; label: string }[] = [
   { value: 'gp', label: 'GP' },

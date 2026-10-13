@@ -2,19 +2,17 @@
 
 import { Card, CardContent, CardHeader, CardTitle, Badge, BadgeProps } from "@/components/ui";
 import { Clock, User, Shield } from 'lucide-react';
-import {
-  getRiskBadgeVariant,
-  formatPatientDateGB,
-  getInterventionPreview,
-  groupRiskAssessments,
-  MOCK_RISK_ASSESSMENTS,
-  RISK_ASSESSMENT_TYPE_META,
-  RISK_LEVEL_BORDER_CLASS,
-  type PatientRiskAssessment,
-} from 'utils';
+import { getRiskBadgeVariant, formatPatientDateGB, getInterventionPreview, groupRiskAssessments, RISK_ASSESSMENT_TYPE_META, RISK_LEVEL_BORDER_CLASS } from 'utils';
+import type { PatientRiskAssessment } from 'types';
+import { usePatientRiskAssessments } from 'hooks';
 
-export function PatientRiskAssessmentsTab() {
-  const groups = groupRiskAssessments(MOCK_RISK_ASSESSMENTS);
+interface PatientRiskAssessmentsTabProps {
+  patientId?: string;
+}
+
+export function PatientRiskAssessmentsTab({ patientId }: PatientRiskAssessmentsTabProps) {
+  const { assessments } = usePatientRiskAssessments(patientId);
+  const groups = groupRiskAssessments(assessments);
 
   return (
     <div className="space-y-4">
@@ -40,7 +38,7 @@ export function PatientRiskAssessmentsTab() {
           </div>
         ))}
 
-      {MOCK_RISK_ASSESSMENTS.length === 0 && (
+      {assessments.length === 0 && (
         <div className="text-center py-8">
           <Shield className="h-12 w-12 text-cf-ink-40 mx-auto mb-3" />
           <p className="text-sm text-cf-ink-60">No risk assessments found</p>

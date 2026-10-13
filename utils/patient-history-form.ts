@@ -1,4 +1,4 @@
-import type { PatientFormData } from './patient-create';
+import type { PatientFormData } from 'types';
 import type { SelectOption } from './patient-form-fields';
 import { capitalise } from './patient-profile';
 import { formatPatientDateGB } from './patient-records';
@@ -66,7 +66,7 @@ export const PATIENT_HISTORY_SECTIONS: PatientHistorySection[] = [
     extraFields: [],
     requiredFields: ['name', 'reaction'],
     emptyDraft: { name: '', severity: 'mild', reaction: '' },
-    listCardClass: 'border-l-4 border-l-red-500 p-3',
+    listCardClass: 'border-l-4 border-l-destructive p-3',
   },
   {
     key: 'hospitalisations',

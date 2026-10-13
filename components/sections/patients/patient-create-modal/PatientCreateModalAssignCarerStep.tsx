@@ -2,14 +2,15 @@
 
 import { Card, CardContent, Badge, Checkbox } from "@/components/ui";
 import { AlertCircle } from 'lucide-react';
-import { getCarerName, toggleCarer, type Carer } from 'utils';
-import type { PatientFormData } from 'utils';
+import { getCarerName, toggleCarer } from 'utils';
+import type { Carer, PatientFormErrors } from 'types';
+import type { PatientFormData } from 'types';
 
 interface AssignCarersStepProps {
   formData: PatientFormData;
   setFormData: (data: PatientFormData) => void;
-  errors: Record<string, string>;
-  setErrors: (errors: Record<string, string>) => void;
+  errors: PatientFormErrors;
+  setErrors: (errors: PatientFormErrors) => void;
   carers: Carer[];
   isLoading: boolean;
   error: Error | null;
@@ -42,8 +43,8 @@ export function AssignCarersStep({
       ...formData,
       selectedCarers: toggleCarer(formData.selectedCarers, carerId),
     });
-    if (errors.carers) {
-      setErrors({ ...errors, carers: '' });
+    if (errors.selectedCarers) {
+      setErrors({ ...errors, selectedCarers: '' });
     }
   };
 
@@ -84,7 +85,7 @@ export function AssignCarersStep({
             <Card
               key={carer.id}
               className={`border-cf-border cursor-pointer transition-colors ${
-                isSelected ? 'bg-cf-primary/10' : 'hover:bg-cf-surface-muted/50'
+                isSelected ? 'bg-brand-50' : 'hover:bg-cf-surface-muted/50'
               }`}
               onClick={() => handleCarerToggle(carer.id)}
             >
@@ -106,10 +107,10 @@ export function AssignCarersStep({
         Select at least one carer for this patient
       </p>
 
-      {errors.carers && (
-        <div className="flex items-center gap-2 p-3 bg-[var(--cf-error-muted)] border border-[var(--cf-error)]/20 rounded-lg">
-          <AlertCircle className="w-4 h-4 text-[var(--cf-error)] flex-shrink-0" />
-          <p className="text-xs text-[var(--cf-error)]">{errors.carers}</p>
+      {errors.selectedCarers && (
+        <div className="flex items-center gap-2 p-3 bg-cf-red-50 border border-destructive/20 rounded-lg">
+          <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" />
+          <p className="text-xs text-destructive">{errors.selectedCarers}</p>
         </div>
       )}
 

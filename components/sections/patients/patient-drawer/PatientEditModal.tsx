@@ -11,12 +11,9 @@ import {
   DialogDescription,
 } from "@/components/ui"
 import { Loader2 } from 'lucide-react';
-import {
-  EDIT_PATIENT_SECTIONS,
-  buildEditPatientForm,
-  validateEditPatientForm,
-  type PatientEditData,
-} from 'utils';
+import { EDIT_PATIENT_SECTIONS, buildEditPatientForm } from 'utils';
+import { validateEditPatientForm } from '@/lib/validations/patients';
+import type { PatientEditData, PatientFormErrors } from 'types';
 import { PatientFormSections } from '../PatientFormField';
 
 interface EditPatientModalProps {
@@ -33,7 +30,7 @@ export function EditPatientModal({
   onSave,
 }: EditPatientModalProps) {
   const [formData, setFormData] = useState<Partial<PatientEditData>>({});
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<PatientFormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -114,7 +111,7 @@ export function EditPatientModal({
             type="button"
             onClick={handleSubmit}
             disabled={isLoading}
-            className="flex-1 bg-cf-primary hover:bg-cf-primary/90"
+            className="flex-1"
           >
             {isLoading ? (
               <>

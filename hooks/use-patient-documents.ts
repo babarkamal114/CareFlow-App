@@ -5,8 +5,8 @@ import {
   buildDocumentsFromFiles,
   fetchPatientDocuments,
   sortDocumentsNewestFirst,
-  type PatientDocument,
 } from "utils";
+import type { PatientDocument } from "types";
 
 export function usePatientDocuments(patientId: string | undefined) {
   const [documents, setDocuments] = useState<PatientDocument[]>([]);
@@ -33,10 +33,11 @@ export function usePatientDocuments(patientId: string | undefined) {
   }, [load]);
 
   const addFiles = useCallback((files: File[], docType: string) => {
+    if (!patientId) return;
     setDocuments((prev) =>
-      sortDocumentsNewestFirst([...buildDocumentsFromFiles(files, docType), ...prev])
+      sortDocumentsNewestFirst([...buildDocumentsFromFiles(files, docType, patientId), ...prev])
     );
-  }, []);
+  }, [patientId]);
 
   const removeDocument = useCallback((id: string) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));

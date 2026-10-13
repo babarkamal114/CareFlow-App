@@ -13,12 +13,7 @@ import {
 } from "@/components/ui";
 import { FileText, Upload, X, FolderOpen } from 'lucide-react';
 import { usePatientDocuments } from 'hooks';
-import {
-  DEFAULT_PATIENT_DOCUMENT_TYPE,
-  PATIENT_DOCUMENT_ACCEPT,
-  PATIENT_DOCUMENT_TYPES,
-  getDocumentMetaParts,
-} from 'utils';
+import { DEFAULT_PATIENT_DOCUMENT_TYPE, PATIENT_DOCUMENT_ACCEPT, PATIENT_DOCUMENT_TYPES, getDocumentMetaParts } from 'utils';
 import { DotSeparated } from '../DotSeparated';
 
 interface PatientDocumentsTabProps {
@@ -99,8 +94,8 @@ export function PatientDocumentsTab({ patientId }: PatientDocumentsTabProps) {
             <CardContent className="pt-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-lg bg-cf-primary/10 flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-5 h-5 text-cf-primary" />
+                  <div className="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-5 h-5 text-brand-600" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-cf-ink truncate">{doc.name}</p>

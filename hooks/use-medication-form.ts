@@ -1,14 +1,14 @@
 "use client";
 
+import type { PatientFormErrors } from "types";
 import { useEffect, useMemo, useState } from "react";
 import {
   EMPTY_MEDICATION_DRAFT,
   getIncompleteMedicationIds,
   haveMedicationsChanged,
-  validateMedicationDraft,
-  type MedicationDraft,
-  type PatientMedication,
 } from "utils";
+import type { MedicationDraft, PatientMedication } from "types";
+import { validateMedicationDraft } from "@/lib/validations/patients";
 
 interface UseMedicationFormArgs {
   open: boolean;
@@ -21,7 +21,7 @@ export function useMedicationForm({ open, medications, onSave, onClose }: UseMed
   const [initialMeds, setInitialMeds] = useState<PatientMedication[]>([]);
   const [meds, setMeds] = useState<PatientMedication[]>([]);
   const [draft, setDraft] = useState<MedicationDraft>(EMPTY_MEDICATION_DRAFT);
-  const [draftErrors, setDraftErrors] = useState<Record<string, string>>({});
+  const [draftErrors, setDraftErrors] = useState<PatientFormErrors>({});
   const [incompleteIds, setIncompleteIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

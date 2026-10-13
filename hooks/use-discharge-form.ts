@@ -1,14 +1,13 @@
 "use client";
 
+import type { PatientFormErrors } from "types";
 import { useCallback, useEffect, useState } from "react";
 import {
   buildDischargePayload,
   getInitialDischargeForm,
-  validateDischargeForm,
-  type DischargeContacts,
-  type DischargeFormState,
-  type DischargePayload,
 } from "utils";
+import type { DischargeContacts, DischargeFormState, DischargePayload } from "types";
+import { validateDischargeForm } from "@/lib/validations/patients";
 
 interface UseDischargeFormArgs extends DischargeContacts {
   open: boolean;
@@ -27,7 +26,7 @@ export function useDischargeForm({
   const [form, setForm] = useState<DischargeFormState>(() =>
     getInitialDischargeForm({ gpName, nextOfKinName, emergencyContact })
   );
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<PatientFormErrors>({});
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {

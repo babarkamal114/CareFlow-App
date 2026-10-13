@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { fetchCarers, type Carer } from "utils";
+import {
+  fetchCarers,
+} from "utils";
+import type { Carer } from "types";
 
 /** Pass `enabled = false` to skip fetching (e.g. while a modal is closed). */
 export function useCarers(enabled = true) {

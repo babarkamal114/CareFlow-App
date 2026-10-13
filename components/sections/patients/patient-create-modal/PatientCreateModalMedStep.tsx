@@ -3,24 +3,8 @@
 import { useState } from 'react';
 import { Button, Card, CardContent, Badge } from "@/components/ui";
 import { X } from 'lucide-react';
-import {
-  EMPTY_MEDICATION_DRAFT,
-  MEDICATION_DRAFT_NOTE_FIELDS,
-  MEDICATION_DRAFT_OPTIONAL_FIELDS,
-  MEDICATION_ROUTE_OPTIONS,
-  MEDICATION_TYPE_OPTIONS,
-  MEDICATION_WIZARD_REQUIRED_FIELDS,
-  buildMedicationFromDraft,
-  canAddMedicationDraft,
-  getMedicationPrescribedParts,
-  getMedicationSummaryParts,
-  getMedicationTypeBadgeVariant,
-  getMedicationTypeLabel,
-  removeMedicationById,
-  type MedicationDraft,
-  type MedicationDraftFieldDef,
-  type PatientFormData,
-} from 'utils';
+import { EMPTY_MEDICATION_DRAFT, MEDICATION_DRAFT_NOTE_FIELDS, MEDICATION_DRAFT_OPTIONAL_FIELDS, MEDICATION_ROUTE_OPTIONS, MEDICATION_TYPE_OPTIONS, MEDICATION_WIZARD_REQUIRED_FIELDS, buildMedicationFromDraft, canAddMedicationDraft, getMedicationPrescribedParts, getMedicationSummaryParts, getMedicationTypeBadgeVariant, getMedicationTypeLabel, removeMedicationById, type MedicationDraftFieldDef } from 'utils';
+import type { MedicationDraft, PatientFormData } from 'types';
 import { CompactInputField, CompactSelectField } from 'sections';
 import { DotSeparated } from '../DotSeparated';
 
@@ -145,13 +129,13 @@ export function MedicationsStep({
                       </div>
                     )}
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleRemoveMedication(med.id)}
                     className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
                     aria-label={`Remove ${med.name}`}
                   >
                     <X className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </CardContent>
               </Card>
             );

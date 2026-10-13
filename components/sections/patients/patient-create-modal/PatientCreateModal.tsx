@@ -10,16 +10,9 @@ import {
   ScrollArea
 } from "@/components/ui"
 import { useCarers } from 'hooks';
-import {
-  STEP_LABELS,
-  TOTAL_STEPS,
-  buildNewPatient,
-  createEmptyPatientForm,
-  getStepKey,
-  validatePatientStep,
-  type PatientFormData,
-  type PatientStepKey,
-} from 'utils';
+import { STEP_LABELS, TOTAL_STEPS, buildNewPatient, createEmptyPatientForm, getStepKey } from 'utils';
+import { validatePatientStep } from 'lib';
+import type { Patient, PatientFormData, PatientFormErrors, PatientMedication, PatientStepKey } from 'types';
 import { CreatePatientModalProgress } from './PatientCreateModalProgress';
 import { CreatePatientModalFooter } from './PatientCreateModalFooter';
 import { AttachmentsStep } from './PatientCreateModalDocStep';
@@ -32,19 +25,17 @@ import { CommunicationStep } from './PatientCreateModalCommunicationStep';
 import { MedicalHistoryStep } from './PatientCreateModalMedHistoryStep';
 import { PatientInfoStep } from './PatientCreateModalInfoStep';
 
-export type { PatientFormData } from 'utils';
-
 interface CreatePatientModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onPatientCreate?: (patient: any) => void;
+  onPatientCreate?: (patient: Patient, medications: PatientMedication[]) => void;
 }
 
 interface StepContext {
   formData: PatientFormData;
   setFormData: (data: PatientFormData) => void;
-  errors: Record<string, string>;
-  setErrors: (errors: Record<string, string>) => void;
+  errors: PatientFormErrors;
+  setErrors: (errors: PatientFormErrors) => void;
   carersState: ReturnType<typeof useCarers>;
 }
 
@@ -93,7 +84,7 @@ export function CreatePatientModal({
   onPatientCreate,
 }: CreatePatientModalProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<PatientFormErrors>({});
   const [formData, setFormData] = useState<PatientFormData>(createEmptyPatientForm);
   const carersState = useCarers(open);
 
@@ -116,7 +107,7 @@ export function CreatePatientModal({
   const handleCreatePatient = () => {
     if (!validateStep()) return;
 
-    onPatientCreate?.(buildNewPatient(formData, carersState.carers));
+    onPatientCreate?.(buildNewPatient(formData, carersState.carers), formData.medications);
 
     setFormData(createEmptyPatientForm());
     setCurrentStep(1);

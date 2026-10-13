@@ -15,22 +15,8 @@ import {
 } from "@/components/ui";
 import { X, Plus, Loader2 } from 'lucide-react';
 import { useMedicationForm } from 'hooks';
-import {
-  MEDICATION_DRAFT_NOTE_FIELDS,
-  MEDICATION_DRAFT_OPTIONAL_FIELDS,
-  MEDICATION_DRAFT_REQUIRED_FIELDS,
-  MEDICATION_ROUTE_OPTIONS,
-  MEDICATION_ROW_DETAIL_LINES,
-  MEDICATION_ROW_LEAD_FIELDS,
-  MEDICATION_ROW_NOTE_FIELDS,
-  MEDICATION_TYPE_OPTIONS,
-  getMedicationTypeBadgeVariant,
-  getMedicationTypeLabel,
-  type MedicationDraftFieldDef,
-  type MedicationRowFieldDef,
-  type MedicationType,
-  type PatientMedication,
-} from 'utils';
+import { MEDICATION_DRAFT_NOTE_FIELDS, MEDICATION_DRAFT_OPTIONAL_FIELDS, MEDICATION_DRAFT_REQUIRED_FIELDS, MEDICATION_ROUTE_OPTIONS, MEDICATION_ROW_DETAIL_LINES, MEDICATION_ROW_LEAD_FIELDS, MEDICATION_ROW_NOTE_FIELDS, MEDICATION_TYPE_OPTIONS, getMedicationTypeBadgeVariant, getMedicationTypeLabel, type MedicationDraftFieldDef, type MedicationRowFieldDef } from 'utils';
+import type { MedicationType, PatientMedication } from 'types';
 import { CompactInputField, CompactSelectField } from 'sections';
 
 export type Medication = PatientMedication;
@@ -40,7 +26,7 @@ interface EditMedicationModalProps {
   onOpenChange: (open: boolean) => void;
   medications: Medication[];
   onSave: (medications: Medication[]) => Promise<void>;
-  patientName?: string;
+  patientName?: string | undefined;
 }
 
 function RowInput({
@@ -177,7 +163,7 @@ export function EditMedicationModal({
                 const incomplete = incompleteIds.includes(med.id);
 
                 return (
-                  <Card key={med.id} className={`border-cf-border p-3 ${incomplete ? 'border-red-500' : ''}`}>
+                  <Card key={med.id} className={`border-cf-border p-3 ${incomplete ? 'border-destructive' : ''}`}>
                     <CardContent className="p-0 space-y-2">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 space-y-1">
@@ -200,7 +186,7 @@ export function EditMedicationModal({
                           ))}
                           {MEDICATION_ROW_NOTE_FIELDS.map((field) => renderRowInput(med, field))}
                           {incomplete && (
-                            <p className="text-xs text-red-500">
+                            <p className="text-xs text-destructive">
                               Name, dosage, frequency and timing are required.
                             </p>
                           )}
@@ -235,7 +221,7 @@ export function EditMedicationModal({
             type="button"
             onClick={submit}
             disabled={isLoading || !isDirty}
-            className="flex-1 bg-cf-primary hover:bg-cf-primary/90"
+            className="flex-1"
           >
             {isLoading ? (
               <>

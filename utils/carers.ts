@@ -1,18 +1,8 @@
-export interface Carer {
-  id: string;
-  name: string;
-}
-
-const MOCK_CARERS: Carer[] = [
-  { id: '1', name: 'Sarah Johnson' },
-  { id: '2', name: 'Michael Chen' },
-  { id: '3', name: 'Emma Williams' },
-  { id: '4', name: 'David Smith' },
-  { id: '5', name: 'Lisa Garcia' },
-];
+import type { Carer } from 'types';
+import { MOCK_PATIENT_CARERS } from '@/lib/mock/patients-mock-data';
 
 export function fetchCarers(): Promise<Carer[]> {
-  return new Promise((resolve) => setTimeout(() => resolve([...MOCK_CARERS]), 500));
+  return new Promise((resolve) => setTimeout(() => resolve([...MOCK_PATIENT_CARERS]), 500));
 }
 
 export function toggleCarer(selectedIds: string[], carerId: string): string[] {

@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { fetchPatientActivity, PatientActivity } from "utils";
+import {
+  fetchPatientActivity,
+} from "utils";
+import type { PatientActivity } from "types";
 
 export function usePatientActivity(patientId: string | undefined) {
   const [activities, setActivities] = useState<PatientActivity[]>([]);

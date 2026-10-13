@@ -23,7 +23,7 @@ export function CreatePatientModalProgress({
       </div>
       <div className="w-full h-1.5 bg-cf-surface-muted rounded-full overflow-hidden">
         <div
-          className="h-full bg-[var(--cf-brand-500)] rounded-full transition-all duration-300"
+          className="h-full bg-brand-500 rounded-full transition-all duration-300"
           style={{ width: `${(currentStep / totalSteps) * 100}%` }}
         />
       </div>

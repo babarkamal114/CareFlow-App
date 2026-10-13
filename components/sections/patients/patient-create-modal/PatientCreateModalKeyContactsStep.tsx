@@ -3,26 +3,15 @@
 import { useState } from 'react';
 import { Label, Button, Card, CardContent, Checkbox } from "@/components/ui";
 import { X, Plus, User, Phone, Mail, AlertCircle } from 'lucide-react';
-import {
-  CONTACT_DRAFT_FIELDS,
-  CONTACT_FLAGS,
-  CONTACT_TYPE_LABELS,
-  CONTACT_TYPE_OPTIONS,
-  EMPTY_CONTACT_DRAFT,
-  addPatientContact,
-  canAddPatientContact,
-  removePatientContact,
-  type ContactDraft,
-  type PatientContact,
-  type PatientFormData,
-} from 'utils';
+import { CONTACT_DRAFT_FIELDS, CONTACT_FLAGS, CONTACT_TYPE_LABELS, CONTACT_TYPE_OPTIONS, EMPTY_CONTACT_DRAFT, addPatientContact, canAddPatientContact, removePatientContact, type ContactDraft } from 'utils';
+import type { PatientContact, PatientFormData, PatientFormErrors } from 'types';
 import { CompactInputField, CompactSelectField } from 'sections';
 
 interface KeyContactsStepProps {
   formData: PatientFormData;
   setFormData: (data: PatientFormData) => void;
-  errors: Record<string, string>;
-  setErrors: (errors: Record<string, string>) => void;
+  errors: PatientFormErrors;
+  setErrors: (errors: PatientFormErrors) => void;
 }
 
 export function KeyContactsStep({ formData, setFormData, errors, setErrors }: KeyContactsStepProps) {
@@ -52,9 +41,9 @@ export function KeyContactsStep({ formData, setFormData, errors, setErrors }: Ke
       </div>
 
       {errors.contacts && (
-        <div className="flex items-center gap-2 p-3 bg-[var(--cf-error-muted)] border border-[var(--cf-error)]/20 rounded-lg">
-          <AlertCircle className="w-4 h-4 text-[var(--cf-error)] flex-shrink-0" />
-          <p className="text-xs text-[var(--cf-error)]">{errors.contacts}</p>
+        <div className="flex items-center gap-2 p-3 bg-cf-red-50 border border-destructive/20 rounded-lg">
+          <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0" />
+          <p className="text-xs text-destructive">{errors.contacts}</p>
         </div>
       )}
 

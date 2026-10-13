@@ -1,44 +1,5 @@
-export type DischargeReason =
-  | 'recovered'
-  | 'deceased'
-  | 'moved-out-of-area'
-  | 'moved-to-care-home'
-  | 'hospital-admission-permanent'
-  | 'self-funding-withdrawn'
-  | 'family-request'
-  | 'other';
-
-export interface DischargePayload {
-  reason: DischargeReason;
-  notes: string;
-  dischargeDate: string;
-  scheduleFinalVisit: boolean;
-  finalVisitDate?: string | undefined;
-  finalVisitTime?: string | undefined;
-  notifyGp: boolean;
-  notifyNextOfKin: boolean;
-  notifyEmergencyContact: boolean;
-  otherNotifications: string;
-}
-
-export interface DischargeFormState {
-  reason: DischargeReason;
-  notes: string;
-  dischargeDate: string;
-  scheduleFinalVisit: boolean;
-  finalVisitDate: string;
-  finalVisitTime: string;
-  notifyGp: boolean;
-  notifyNextOfKin: boolean;
-  notifyEmergencyContact: boolean;
-  otherNotifications: string;
-}
-
-export interface DischargeContacts {
-  gpName?: string | undefined;
-  nextOfKinName?: string | undefined;
-  emergencyContact?: string | undefined;
-}
+import type { DischargeContacts, DischargeFormState, DischargePayload, DischargeReason, Patient } from 'types';
+import { getPatientsToday } from './patients';
 
 export const DISCHARGE_REASON_LABELS: Record<DischargeReason, string> = {
   recovered: 'Recovered / no longer needs care',
@@ -76,7 +37,7 @@ export function getDischargeNotifyLabel(option: DischargeNotifyOption, contacts:
   return `${option.label} ${name ? `(${name})` : option.emptyText}`;
 }
 
-export const todayISO = () => new Date().toLocaleDateString('en-CA');
+export const todayISO = () => getPatientsToday();
 
 export function getInitialDischargeForm(contacts: DischargeContacts): DischargeFormState {
   return {
@@ -93,23 +54,22 @@ export function getInitialDischargeForm(contacts: DischargeContacts): DischargeF
   };
 }
 
-export function validateDischargeForm(form: DischargeFormState): Record<string, string> {
-  const errors: Record<string, string> = {};
-  if (!form.dischargeDate) errors.dischargeDate = 'Discharge date is required';
-  if (form.scheduleFinalVisit && !form.finalVisitDate) {
-    errors.finalVisitDate = 'Pick a date for the final visit, or turn scheduling off';
-  }
-  if (form.reason === 'other' && !form.notes.trim()) {
-    errors.notes = 'Add a reason since "Other" was selected';
-  }
-  return errors;
-}
-
 export function buildDischargePayload(form: DischargeFormState): DischargePayload {
   const { finalVisitDate, finalVisitTime, ...rest } = form;
   return {
     ...rest,
     finalVisitDate: form.scheduleFinalVisit ? finalVisitDate : undefined,
     finalVisitTime: form.scheduleFinalVisit ? finalVisitTime : undefined,
+  };
+}
+
+/** A discharged patient is kept, never deleted (blueprint §12): status changes and visits stop. */
+export function applyDischarge(patient: Patient, payload: DischargePayload): Patient {
+  return {
+    ...patient,
+    status: 'discharged',
+    nextVisit: null,
+    carePlanReviewDate: null,
+    dischargeDetails: payload,
   };
 }

@@ -1,5 +1,5 @@
-import { MEDICATION_ROUTES, MEDICATION_TYPES, type MedicationDraft, type PatientMedication } from './patient-records';
-import type { PatientFormData } from './patient-create';
+import type { MedicationDraft, PatientFormData, PatientMedication } from 'types';
+import { MEDICATION_ROUTES, MEDICATION_TYPES } from './patient-records';
 import type { SelectOption } from './patient-form-fields';
 
 export type MedicationDraftTextKey = Extract<

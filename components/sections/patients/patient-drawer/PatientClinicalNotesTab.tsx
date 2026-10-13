@@ -1,20 +1,16 @@
 'use client';
 
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, Button, Badge } from "@/components/ui";
 import { FileClock, Plus, Sparkles } from 'lucide-react';
-import {
-  DAILY_NOTE_DOMAIN_META,
-  MOCK_DAILY_NOTES,
-  formatDailyNoteDate,
-  getDailyNoteCardClass,
-  getDailyNotesSummary,
-  groupDailyNotesByDate,
-  type PatientDailyNote,
-} from 'utils';
+import { DAILY_NOTE_DOMAIN_META, formatDailyNoteDate, getDailyNoteCardClass, getDailyNotesSummary, groupDailyNotesByDate } from 'utils';
+import { usePatientNotes } from 'hooks';
 
-export function PatientClinicalNotesTab() {
-  const [notes] = useState<PatientDailyNote[]>(MOCK_DAILY_NOTES);
+interface PatientClinicalNotesTabProps {
+  patientId?: string;
+}
+
+export function PatientClinicalNotesTab({ patientId }: PatientClinicalNotesTabProps) {
+  const { notes } = usePatientNotes(patientId);
 
   const groups = groupDailyNotesByDate(notes);
 
@@ -38,7 +34,7 @@ export function PatientClinicalNotesTab() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-xs text-cf-ink-60 bg-cf-surface-muted rounded-lg px-3 py-2 flex-1">
-          <Sparkles className="h-3.5 w-3.5 text-cf-primary flex-shrink-0" />
+          <Sparkles className="h-3.5 w-3.5 text-brand-600 flex-shrink-0" />
           <span>{getDailyNotesSummary(notes)}</span>
         </div>
         <Button size="sm" className="gap-1.5 ml-3 flex-shrink-0">

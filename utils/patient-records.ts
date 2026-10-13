@@ -1,5 +1,12 @@
 import type { BadgeProps } from '@/components/ui';
+import type { ActivityType, MedicationDraft, MedicationType, PatientActivity, PatientDocument, PatientMedication } from 'types';
+import {
+  MOCK_PATIENT_ACTIVITY,
+  MOCK_PATIENT_DOCUMENTS,
+  MOCK_PATIENT_MEDICATIONS,
+} from '@/lib/mock/patient-records-mock-data';
 import { formatFileSize } from './file-format-size';
+import { getPatientsToday } from './patients';
 
 export const MEDICATION_TYPES = [
   { value: 'regular', label: 'Regular' },
@@ -7,9 +14,7 @@ export const MEDICATION_TYPES = [
   { value: 'controlled', label: 'Controlled Drug' },
   { value: 'short-course', label: 'Short Course' },
   { value: 'variable-dose', label: 'Variable Dose' },
-] as const;
-
-export type MedicationType = (typeof MEDICATION_TYPES)[number]['value'];
+] as const satisfies readonly { value: MedicationType; label: string }[];
 
 export const MEDICATION_ROUTES = ['Oral', 'Topical', 'Inhaled', 'Subcutaneous', 'Intramuscular', 'Patch', 'PEG'];
 
@@ -20,33 +25,6 @@ const SHORT_LABELS: Record<string, string> = {
   'short-course': 'Short Course',
   'variable-dose': 'Variable Dose',
 };
-
-export interface PatientMedication {
-  id: string;
-  name: string;
-  dosage: string;
-  frequency: string;
-  timing: string;
-  indication: string;
-  route?: string;
-  prescriber?: string;
-  startDate?: string;
-  medicationType?: MedicationType;
-  instructions?: string;
-}
-
-export interface MedicationDraft {
-  name: string;
-  dosage: string;
-  frequency: string;
-  timing: string;
-  indication: string;
-  route: string;
-  prescriber: string;
-  startDate: string;
-  medicationType: MedicationType;
-  instructions: string;
-}
 
 export const EMPTY_MEDICATION_DRAFT: MedicationDraft = {
   name: '',
@@ -61,16 +39,11 @@ export const EMPTY_MEDICATION_DRAFT: MedicationDraft = {
   instructions: '',
 };
 
-const MOCK_MEDICATIONS: PatientMedication[] = [
-  { id: '1', name: 'Lisinopril', dosage: '10mg', frequency: 'Once daily', timing: 'Morning', route: 'Oral', indication: 'Hypertension', prescriber: 'Dr. Sarah Ahmed', startDate: '2024-01-15', medicationType: 'regular', instructions: 'Take with water, avoid grapefruit' },
-  { id: '2', name: 'Metformin', dosage: '500mg', frequency: 'Twice daily', timing: 'With meals', route: 'Oral', indication: 'Type 2 Diabetes', prescriber: 'Dr. Sarah Ahmed', startDate: '2023-11-20', medicationType: 'regular', instructions: '' },
-  { id: '3', name: 'Amlodipine', dosage: '5mg', frequency: 'Once daily', timing: 'Evening', route: 'Oral', indication: 'Hypertension', prescriber: 'Dr. James Wilson', startDate: '2024-02-01', medicationType: 'regular', instructions: '' },
-  { id: '4', name: 'Paracetamol', dosage: '500mg', frequency: 'Up to 4x daily', timing: 'As needed', route: 'Oral', indication: 'Pain relief', prescriber: 'Dr. James Wilson', startDate: '2024-01-05', medicationType: 'prn', instructions: 'Do not exceed 8 tablets in 24 hours' },
-  { id: '5', name: 'Morphine Sulfate', dosage: '10mg', frequency: 'Every 4 hours', timing: 'As directed', route: 'Oral', indication: 'Severe pain management', prescriber: 'Dr. Sarah Ahmed', startDate: '2024-03-01', medicationType: 'controlled', instructions: 'Dual-witness administration required. Log stock balance after each dose.' },
-];
-
 export function fetchPatientMedications(patientId: string): Promise<PatientMedication[]> {
-  return new Promise((resolve) => setTimeout(() => resolve([...MOCK_MEDICATIONS]), 500));
+  const items = MOCK_PATIENT_MEDICATIONS.filter((m) => m.patientId === patientId).map(
+    ({ patientId: _patientId, ...medication }) => medication
+  );
+  return new Promise((resolve) => setTimeout(() => resolve(items), 500));
 }
 
 export function getMedicationTypeLabel(value?: string, style: 'full' | 'short' = 'full'): string {
@@ -91,27 +64,6 @@ export function sortControlledFirst(meds: PatientMedication[]): PatientMedicatio
   );
 }
 
-export function validateMedicationDraft(
-  draft: MedicationDraft,
-  existing: PatientMedication[]
-): Record<string, string> {
-  const errors: Record<string, string> = {};
-
-  if (!draft.name.trim()) errors.name = 'Name is required';
-  if (!draft.dosage.trim()) errors.dosage = 'Dosage is required';
-  if (!draft.frequency.trim()) errors.frequency = 'Frequency is required';
-  if (!draft.timing.trim()) errors.timing = 'Timing is required';
-
-  if (!errors.name && !errors.dosage) {
-    const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
-    if (existing.some((m) => same(m.name, draft.name) && same(m.dosage, draft.dosage))) {
-      errors.name = 'Already on the list with this dosage';
-    }
-  }
-
-  return errors;
-}
-
 export function getIncompleteMedicationIds(meds: PatientMedication[]): string[] {
   return meds
     .filter((m) => !m.name.trim() || !m.dosage.trim() || !m.frequency.trim() || !m.timing.trim())
@@ -122,38 +74,22 @@ export function haveMedicationsChanged(a: PatientMedication[], b: PatientMedicat
   return JSON.stringify(a) !== JSON.stringify(b);
 }
 
-export type ActivityType = 'medication' | 'meal' | 'vital' | 'therapy' | 'other';
-
-export interface PatientActivity {
-  id: string;
-  carer: string;
-  activity: string;
-  time: string;
-  type: ActivityType;
-}
-
-const MOCK_ACTIVITY: PatientActivity[] = [
-  { id: '1', carer: 'Sarah Johnson', activity: 'Morning medication administered', time: '08:30 AM', type: 'medication' },
-  { id: '2', carer: 'Sarah Johnson', activity: 'Breakfast prepared and served', time: '09:00 AM', type: 'meal' },
-  { id: '3', carer: 'Michael Chen', activity: 'Vitals checked - BP: 120/80', time: '11:30 AM', type: 'vital' },
-  { id: '4', carer: 'Sarah Johnson', activity: 'Lunch prepared and served', time: '01:00 PM', type: 'meal' },
-  { id: '5', carer: 'Emma Williams', activity: 'Physical therapy session completed', time: '03:30 PM', type: 'therapy' },
-];
 
 export function fetchPatientActivity(patientId: string): Promise<PatientActivity[]> {
-  return new Promise((resolve) => setTimeout(() => resolve(MOCK_ACTIVITY), 500));
+  const items = MOCK_PATIENT_ACTIVITY.filter((a) => a.patientId === patientId);
+  return new Promise((resolve) => setTimeout(() => resolve(items), 500));
 }
 
-const ACTIVITY_COLORS: Record<ActivityType, string> = {
-  medication: 'bg-blue-500/20 text-blue-600',
-  meal: 'bg-green-500/20 text-green-600',
-  vital: 'bg-red-500/20 text-red-600',
-  therapy: 'bg-purple-500/20 text-purple-600',
-  other: 'bg-gray-500/20 text-gray-600',
+const ACTIVITY_STYLES: Record<ActivityType, { badge: string; dot: string }> = {
+  medication: { badge: 'bg-cf-blue-50 text-cf-blue-500', dot: 'bg-cf-blue-500' },
+  meal: { badge: 'bg-brand-50 text-brand-500', dot: 'bg-brand-500' },
+  vital: { badge: 'bg-cf-red-50 text-cf-red-500', dot: 'bg-cf-red-500' },
+  therapy: { badge: 'bg-cf-amber-50 text-cf-amber-500', dot: 'bg-cf-amber-500' },
+  other: { badge: 'bg-cf-surface-muted text-cf-ink-60', dot: 'bg-cf-ink-40' },
 };
 
 export function getActivityColor(type: ActivityType): string {
-  return ACTIVITY_COLORS[type] ?? ACTIVITY_COLORS.other;
+  return (ACTIVITY_STYLES[type] ?? ACTIVITY_STYLES.other).badge;
 }
 
 export const PATIENT_DOCUMENT_TYPES = [
@@ -166,23 +102,9 @@ export const PATIENT_DOCUMENT_TYPES = [
   { value: 'other', label: 'Other' },
 ] as const;
 
-export interface PatientDocument {
-  id: string;
-  name: string;
-  docType: string;
-  uploadedDate: string;
-  size: string;
-}
-
-const MOCK_DOCUMENTS: PatientDocument[] = [
-  { id: '1', name: 'Care Plan - March 2024', docType: 'care-plan', uploadedDate: '2024-03-01', size: '2.4 MB' },
-  { id: '2', name: 'Hospital Discharge Summary - Jan 2024', docType: 'discharge-summary', uploadedDate: '2024-01-15', size: '1.8 MB' },
-  { id: '3', name: 'Medication List - Current', docType: 'medication-list', uploadedDate: '2024-03-10', size: '456 KB' },
-  { id: '4', name: 'Power of Attorney - Registered', docType: 'poa', uploadedDate: '2024-02-15', size: '892 KB' },
-];
-
 export function fetchPatientDocuments(patientId: string): Promise<PatientDocument[]> {
-  return new Promise((resolve) => setTimeout(() => resolve([...MOCK_DOCUMENTS]), 500));
+  const items = MOCK_PATIENT_DOCUMENTS.filter((d) => d.patientId === patientId);
+  return new Promise((resolve) => setTimeout(() => resolve(items), 500));
 }
 
 export function getDocumentTypeLabel(value: string): string {
@@ -193,10 +115,11 @@ export function sortDocumentsNewestFirst(docs: PatientDocument[]): PatientDocume
   return [...docs].sort((a, b) => (a.uploadedDate < b.uploadedDate ? 1 : -1));
 }
 
-export function buildDocumentsFromFiles(files: File[], docType: string): PatientDocument[] {
-  const uploadedDate = new Date().toLocaleDateString('en-CA');
+export function buildDocumentsFromFiles(files: File[], docType: string, patientId: string): PatientDocument[] {
+  const uploadedDate = getPatientsToday();
   return files.map((file, i) => ({
     id: `${Date.now()}-${i}-${file.name}`,
+    patientId,
     name: file.name,
     docType,
     uploadedDate,
@@ -205,7 +128,7 @@ export function buildDocumentsFromFiles(files: File[], docType: string): Patient
 }
 
 export function getActivityDotClass(type: ActivityType): string {
-  return getActivityColor(type).split(' ')[0] ?? '';
+  return (ACTIVITY_STYLES[type] ?? ACTIVITY_STYLES.other).dot;
 }
 
 export const DEFAULT_PATIENT_DOCUMENT_TYPE = 'other';
@@ -228,4 +151,12 @@ export function getMedicationPrescribedParts(med: PatientMedication): string[] {
     med.prescriber ? `Prescribed by ${med.prescriber}` : '',
     med.startDate ? `Since ${formatPatientDateGB(med.startDate)}` : '',
   ].filter(Boolean);
+}
+
+/** "12 Oct, 08:30" for activity feed timestamps (ISO datetime in). */
+export function formatPatientDateTimeGB(isoDateTime: string): string {
+  const date = new Date(isoDateTime);
+  const day = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const time = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  return `${day}, ${time}`;
 }

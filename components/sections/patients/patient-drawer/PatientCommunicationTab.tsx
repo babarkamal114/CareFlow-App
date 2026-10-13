@@ -3,17 +3,8 @@
 import type { ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { Languages, Brain, Users, type LucideIcon } from 'lucide-react';
-import {
-  getCapacityBadge,
-  getCommunicationAids,
-  getCommunicationDetailRows,
-  getPoaDetailRows,
-  hasCommunicationCardInfo,
-  hasCommunicationInfo,
-  hasPoaInfo,
-  type PatientCommunicationInfo,
-  type PatientDetailRow,
-} from 'utils';
+import { getCapacityBadge, getCommunicationAids, getCommunicationDetailRows, getPoaDetailRows, hasCommunicationCardInfo, hasCommunicationInfo, hasPoaInfo, type PatientDetailRow } from 'utils';
+import type { PatientCommunicationInfo } from 'types';
 
 function CommunicationRow({ row }: { row: PatientDetailRow }) {
   return (

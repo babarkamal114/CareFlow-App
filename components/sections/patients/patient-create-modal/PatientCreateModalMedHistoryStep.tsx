@@ -3,16 +3,8 @@
 import { useState } from 'react';
 import { Button, Card, CardContent } from "@/components/ui";
 import { X, Plus } from 'lucide-react';
-import {
-  PATIENT_HISTORY_SECTIONS,
-  addPatientHistoryItem,
-  canAddPatientHistoryItem,
-  getEmptyPatientHistoryDrafts,
-  getPatientHistoryItems,
-  removePatientHistoryItem,
-  type PatientFormData,
-  type PatientHistorySection,
-} from 'utils';
+import { PATIENT_HISTORY_SECTIONS, addPatientHistoryItem, canAddPatientHistoryItem, getEmptyPatientHistoryDrafts, getPatientHistoryItems, removePatientHistoryItem, type PatientHistorySection } from 'utils';
+import type { PatientFormData } from 'types';
 import { CompactInputField, CompactSelectField } from 'sections';
 import { DotSeparated } from '../DotSeparated';
 

@@ -2,61 +2,16 @@
 
 import { Card, CardContent, Badge } from "@/components/ui";
 import { Pill } from 'lucide-react';
-import { usePatientMedications } from 'hooks';
-import {
-  getMedicationDetailParts,
-  getMedicationPrescribedParts,
-  getMedicationTypeBadgeVariant,
-  getMedicationTypeLabel,
-} from 'utils';
+import type { PatientMedication } from 'types';
+import { getMedicationDetailParts, getMedicationPrescribedParts, getMedicationTypeBadgeVariant, getMedicationTypeLabel } from 'utils';
 import { DotSeparated } from '../DotSeparated';
 
 interface PatientMedicationsTabProps {
-  patientId?: string;
+  /** Current medication list for this patient (already sorted). */
+  medications: PatientMedication[];
 }
 
-function MedicationCardSkeleton() {
-  return (
-    <Card className="border-cf-border">
-      <CardContent className="pt-4 space-y-2.5">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1.5">
-            <div className="h-3.5 w-32 rounded bg-cf-ink-40/20 animate-pulse" />
-            <div className="h-3 w-24 rounded bg-cf-ink-40/20 animate-pulse" />
-          </div>
-          <div className="h-5 w-12 rounded-full bg-cf-ink-40/20 animate-pulse" />
-        </div>
-        <div className="h-3 w-52 rounded bg-cf-ink-40/20 animate-pulse" />
-        <div className="h-2.5 w-44 rounded bg-cf-ink-40/20 animate-pulse" />
-      </CardContent>
-    </Card>
-  );
-}
-
-export function PatientMedicationsTab({ patientId }: PatientMedicationsTabProps) {
-  const { medications, isLoading, error, refetch } = usePatientMedications(patientId);
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-between text-sm py-4">
-        <span className="text-cf-ink-60">Couldn&apos;t load medications.</span>
-        <button onClick={refetch} className="font-semibold text-cf-ink underline">
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="space-y-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <MedicationCardSkeleton key={i} />
-        ))}
-      </div>
-    );
-  }
-
+export function PatientMedicationsTab({ medications }: PatientMedicationsTabProps) {
   if (medications.length === 0) {
     return (
       <div className="text-center py-8">

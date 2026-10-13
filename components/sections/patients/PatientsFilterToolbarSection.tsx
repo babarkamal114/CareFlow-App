@@ -4,11 +4,11 @@ import { Button } from "@/components/ui";
 import { Download, Search } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 import { Input } from "@/components/ui";
-import { PATIENT_TAB_DEFS, type PatientTab } from 'utils';
+import { PATIENT_TAB_DEFS } from 'utils';
+import type { PatientTab } from 'types';
 
 interface PatientsFilterToolbarSectionProps {
   onTabChange: (tab: PatientTab) => void;
-  onFilterClick: () => void;
   onExportClick: () => void;
   activeTab: PatientTab;
   searchQuery: string;
@@ -33,7 +33,7 @@ export function PatientsFilterToolbarSection({
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="data-[state=active]:bg-cf-surface data-[state=active]:text-cf-ink data-[state=active]:shadow-none text-xs"
+                className="data-active:bg-cf-surface data-active:text-cf-ink data-active:shadow-none text-xs"
               >
                 {tab.label}
                 <span className="ml-1.5 text-[10px] opacity-70">({tabCounts[tab.id]})</span>
@@ -50,7 +50,7 @@ export function PatientsFilterToolbarSection({
               placeholder="Search patients..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="h-8 w-full border-cf-border bg-cf-surface-muted pl-8 text-sm text-cf-ink placeholder:text-cf-ink-40 focus:border-cf-brand-300"
+              className="h-8 w-full border-cf-border bg-cf-surface-muted pl-8 text-sm text-cf-ink placeholder:text-cf-ink-40 focus-visible:border-brand-300"
             />
           </div>
           <Button variant="ghost" size="sm" onClick={onExportClick}>

@@ -3,19 +3,7 @@
 import type { ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { ShieldCheck, ShieldQuestion } from 'lucide-react';
-import {
-  CONSENT_ITEMS,
-  RISK_DOMAIN_LABELS,
-  getEmergencyContactRows,
-  getGpInfoRows,
-  getNextOfKinRows,
-  getPatientStatusBadge,
-  getPersonalInfoRows,
-  getRiskLevelBadge,
-  hasGpDetails,
-  type PatientInfoData,
-  type PatientInfoRowData,
-} from 'utils';
+import { CONSENT_ITEMS, RISK_DOMAIN_LABELS, getEmergencyContactRows, getGpInfoRows, getNextOfKinRows, getPatientStatusBadge, getPersonalInfoRows, getRiskLevelBadge, hasGpDetails, type PatientInfoData, type PatientInfoRowData, formatNextVisit } from 'utils';
 
 interface PatientInfoTabProps {
   patient: PatientInfoData;
@@ -113,7 +101,7 @@ export function PatientInfoTab({ patient }: PatientInfoTabProps) {
         <InfoRow label="Primary Carer" value={patient.carer} />
         <BadgeRow label="Risk Level" badge={risk} />
         <BadgeRow label="Status" badge={status} />
-        <InfoRow label="Next Visit" value={patient.nextVisit} />
+        <InfoRow label="Next Visit" value={formatNextVisit(patient.nextVisit)} />
       </InfoCard>
 
       <InfoCard title="Risk Profile">

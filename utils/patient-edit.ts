@@ -1,34 +1,11 @@
+import type { Patient, PatientEditData } from 'types';
+import { calculateAge, getInitials } from './patient-create';
 import {
   PATIENT_RISK_OPTIONS,
   PATIENT_STATUS_OPTIONS,
   type PatientFieldDef,
   type PatientFieldSection,
 } from './patient-form-fields';
-
-export interface PatientEditData {
-  id: string;
-  name: string;
-  preferredName?: string;
-  dateOfBirth?: string;
-  nhsNumber?: string;
-  age: number;
-  email: string;
-  phone: string;
-  address: string;
-  risk: 'low' | 'medium' | 'high';
-  status: 'active' | 'on-hold' | 'new' | 'discharged';
-  carer: string;
-  nextVisit: string;
-  gpName?: string;
-  gpPhone?: string;
-  gpAddress?: string;
-  nextOfKinName?: string;
-  nextOfKinPhone?: string;
-  nextOfKinRelationship?: string;
-  emergencyContact?: string;
-  emergencyPhone?: string;
-  emergencyRelationship?: string;
-}
 
 export type EditPatientInputKey =
   | 'name'
@@ -47,8 +24,7 @@ export type EditPatientInputKey =
   | 'emergencyContact'
   | 'emergencyPhone'
   | 'emergencyRelationship'
-  | 'carer'
-  | 'nextVisit';
+  | 'carer';
 
 export type EditPatientSelectKey = 'risk' | 'status';
 
@@ -111,7 +87,6 @@ export const EDIT_PATIENT_SECTIONS: PatientFieldSection<EditPatientInputKey | Ed
     gridClass: 'grid grid-cols-2 gap-4',
     fields: [
       { kind: 'input', name: 'carer', label: 'Primary Carer', placeholder: 'Sarah Johnson', type: 'text' },
-      { kind: 'input', name: 'nextVisit', label: 'Next Visit', placeholder: 'Today, 2:00 PM', type: 'text' },
       { kind: 'select', name: 'risk', label: 'Risk Level', placeholder: 'Select risk level', options: PATIENT_RISK_OPTIONS },
       { kind: 'select', name: 'status', label: 'Status', placeholder: 'Select status', options: PATIENT_STATUS_OPTIONS },
     ],
@@ -125,14 +100,12 @@ export function buildEditPatientForm(patient: PatientEditData): Partial<PatientE
     preferredName: patient.preferredName || '',
     dateOfBirth: patient.dateOfBirth || '',
     nhsNumber: patient.nhsNumber || '',
-    age: patient.age,
     email: patient.email,
     phone: patient.phone,
     address: patient.address,
     risk: patient.risk,
     status: patient.status,
     carer: patient.carer,
-    nextVisit: patient.nextVisit,
     gpName: patient.gpName || '',
     gpPhone: patient.gpPhone || '',
     gpAddress: patient.gpAddress || '',
@@ -145,21 +118,12 @@ export function buildEditPatientForm(patient: PatientEditData): Partial<PatientE
   };
 }
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export function validateEditPatientForm(formData: Partial<PatientEditData>): Record<string, string> {
-  const errors: Record<string, string> = {};
-  if (!formData.name?.trim()) errors.name = 'Name is required';
-  if (!formData.age) errors.age = 'Age is required';
-  if (formData.age && (formData.age < 0 || formData.age > 120)) {
-    errors.age = 'Age must be between 0 and 120';
-  }
-  if (!formData.email?.trim()) errors.email = 'Email is required';
-  if (formData.email && !EMAIL_PATTERN.test(formData.email)) {
-    errors.email = 'Invalid email format';
-  }
-  if (!formData.phone?.trim()) errors.phone = 'Phone number is required';
-  if (!formData.address?.trim()) errors.address = 'Address is required';
-  if (!formData.dateOfBirth) errors.dateOfBirth = 'Date of birth is required';
-  return errors;
+/** Applies the edit form to a patient. Age and initials are derived, never typed in. */
+export function applyPatientEdit(patient: Patient, data: Partial<PatientEditData>): Patient {
+  const updated: Patient = { ...patient, ...data };
+  return {
+    ...updated,
+    initials: getInitials(updated.name),
+    age: updated.dateOfBirth ? calculateAge(updated.dateOfBirth) : updated.age,
+  };
 }

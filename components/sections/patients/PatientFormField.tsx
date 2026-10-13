@@ -11,7 +11,8 @@ import {
   SelectValue,
   Textarea,
 } from "@/components/ui";
-import type { PatientFieldDef, PatientFieldSection } from 'utils';
+import { PatientFieldDef, PatientFieldSection } from 'utils';
+import type { PatientFormErrors } from 'types';
 
 type FieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 
@@ -20,13 +21,9 @@ interface PatientFormFieldProps {
   value: string;
   error?: string | undefined;
   onInputChange: FieldChangeHandler;
-  onSelectChange?: (name: string, value: string) => void;
+  onSelectChange?: ((name: string, value: string) => void) | undefined;
 }
 
-/**
- * One label + input / textarea / select (+ error or hint), driven by a field config.
- * Shared by the add-patient wizard steps and the edit-patient modal.
- */
 export function PatientFormField({ field, value, error, onInputChange, onSelectChange }: PatientFormFieldProps) {
   if (field.kind === 'select') {
     return (
@@ -81,9 +78,9 @@ export function PatientFormField({ field, value, error, onInputChange, onSelectC
         placeholder={field.placeholder}
         value={value}
         onChange={onInputChange}
-        className={`border-cf-border ${error ? 'border-red-500' : ''}`}
+        className={`border-cf-border ${error ? 'border-destructive' : ''}`}
       />
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
 }
@@ -91,12 +88,11 @@ export function PatientFormField({ field, value, error, onInputChange, onSelectC
 interface PatientFormSectionsProps<N extends string> {
   sections: PatientFieldSection<N>[];
   values: Partial<Record<N, string>>;
-  errors?: Record<string, string>;
+  errors?: PatientFormErrors | undefined;
   onInputChange: FieldChangeHandler;
-  onSelectChange?: (name: string, value: string) => void;
+  onSelectChange?: ((name: string, value: string) => void) | undefined;
 }
 
-/** Renders a list of field sections: a grid when the section has a gridClass, otherwise one field per row. */
 export function PatientFormSections<N extends string>({
   sections,
   values,

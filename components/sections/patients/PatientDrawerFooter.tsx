@@ -8,12 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 import { MoreHorizontal } from 'lucide-react';
-import {
-  PATIENT_DRAWER_FOOTER_ACTIONS,
-  PATIENT_DRAWER_FOOTER_MENU_ACTIONS,
-  PATIENT_DRAWER_FOOTER_DISCHARGE_ACTION,
-  type PatientDrawerFooterHandlers,
-} from 'utils';
+import { PATIENT_DRAWER_FOOTER_ACTIONS, PATIENT_DRAWER_FOOTER_MENU_ACTIONS, PATIENT_DRAWER_FOOTER_DISCHARGE_ACTION, type PatientDrawerFooterHandlers } from 'utils';
 
 type PatientDrawerFooterProps = PatientDrawerFooterHandlers;
 
@@ -32,11 +27,9 @@ export function PatientDrawerFooter(props: PatientDrawerFooterProps) {
       ))}
 
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button variant="outline" size="sm" className="gap-1.5">
-            <MoreHorizontal className="h-4 w-4" />
-            More
-          </Button>
+        <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="gap-1.5" />}>
+          <MoreHorizontal className="h-4 w-4" />
+          More
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           {PATIENT_DRAWER_FOOTER_MENU_ACTIONS.map(({ handler, label, Icon, className }) => (

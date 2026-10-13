@@ -88,34 +88,6 @@ export interface GroupedPermission {
   isPartiallyGranted: boolean;
 }
 
-export interface Patient {
-  id: string;
-  name: string;
-  preferredName?: string;
-  dateOfBirth?: string;
-  nhsNumber?: string;
-  address: string;
-  email: string;
-  phone: string;
-  carer: string;
-  status: 'active' | 'on-hold' | 'new' | 'discharged';
-  dischargeDetails?: any;  
-  nextVisit: string;
-  gpName?: string;
-  gpPhone?: string;
-  gpAddress?: string;
-  nextOfKinName?: string;
-  nextOfKinPhone?: string;
-  nextOfKinRelationship?: string;
-  emergencyContact?: string;
-  emergencyPhone?: string;
-  emergencyRelationship?: string;
-  risk: 'low' | 'medium' | 'high';
-  initials: string;
-  avatar?: string;
-  age: number;
-}
-
 export interface Visit {
   id: string;
   patientName: string;
@@ -413,4 +385,4 @@ export type CarePlanType = 'personal-care' | 'medication' | 'dementia' | 'nutrit
 
 export type SortField = keyof StaffMember;
 export type SortDirection = "asc" | "desc";
-export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED' 
+export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED'

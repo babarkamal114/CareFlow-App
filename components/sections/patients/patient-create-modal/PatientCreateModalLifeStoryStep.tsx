@@ -1,6 +1,7 @@
 'use client';
 
-import { CREATE_PATIENT_LIFE_STORY_SECTIONS, type PatientFormData } from 'utils';
+import { CREATE_PATIENT_LIFE_STORY_SECTIONS } from 'utils';
+import type { PatientFormData } from 'types';
 import { PatientFormSections } from '../PatientFormField';
 
 interface LifeStoryStepProps {

@@ -3,18 +3,8 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { AlertTriangle, Heart, Activity } from 'lucide-react';
-import {
-  capitalise,
-  formatPatientDateGB,
-  getAllergyBadgeVariant,
-  getConditionBadgeVariant,
-  sortAllergies,
-  sortConditions,
-  sortHospitalisations,
-  type PatientAllergy,
-  type PatientCondition,
-  type PatientHospitalisation,
-} from 'utils';
+import { capitalise, formatPatientDateGB, getAllergyBadgeVariant, getConditionBadgeVariant, sortAllergies, sortConditions, sortHospitalisations } from 'utils';
+import type { PatientAllergy, PatientCondition, PatientHospitalisation } from 'types';
 
 interface PatientMedicalHistoryTabProps {
   conditions: PatientCondition[];
@@ -68,16 +58,16 @@ export function PatientMedicalHistoryTab({ conditions, allergies, hospitalisatio
       )}
 
       {sortedAllergies.length > 0 && (
-        <Card className="border-cf-border border-l-4 border-l-red-500">
+        <Card className="border-cf-border border-l-4 border-l-destructive">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold flex items-center gap-2 text-red-700">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2 text-destructive">
               <AlertTriangle className="h-4 w-4" />
               Allergies
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {sortedAllergies.map((allergy, index) => (
-              <div key={index} className="flex items-center justify-between p-2 bg-red-50/30 rounded-lg border border-red-200/50">
+              <div key={index} className="flex items-center justify-between p-2 bg-cf-red-50/30 rounded-lg border border-destructive/20">
                 <div>
                   <p className="text-sm font-medium text-cf-ink">{allergy.name}</p>
                   <p className="text-xs text-cf-ink-60">Reaction: {allergy.reaction}</p>

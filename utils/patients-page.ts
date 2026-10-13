@@ -9,7 +9,7 @@ import {
   LogOut,
   type LucideIcon,
 } from 'lucide-react';
-import type { PatientTab } from './patients';
+import type { PatientTab } from 'types';
 
 export const PATIENT_TAB_DEFS: { id: PatientTab; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -54,15 +54,15 @@ export const PATIENTS_TABLE_SKELETON_CELLS = [
 ];
 
 export interface PatientDrawerFooterHandlers {
-  onScheduleVisit?: () => void;
-  onEdit?: () => void;
-  onCarePlan?: () => void;
-  onMedication?: () => void;
-  onAddDocument?: () => void;
-  onRiskAssessment?: () => void;
-  onGenerateReport?: () => void;
-  onArchive?: () => void;
-  onDischarge?: () => void;
+  onScheduleVisit?: (() => void) | undefined;
+  onEdit?: (() => void) | undefined;
+  onCarePlan?: (() => void) | undefined;
+  onMedication?: (() => void) | undefined;
+  onAddDocument?: (() => void) | undefined;
+  onRiskAssessment?: (() => void) | undefined;
+  onGenerateReport?: (() => void) | undefined;
+  onArchive?: (() => void) | undefined;
+  onDischarge?: (() => void) | undefined;
 }
 
 type FooterHandlerKey = keyof PatientDrawerFooterHandlers;

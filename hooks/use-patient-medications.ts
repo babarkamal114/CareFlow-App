@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import {
   fetchPatientMedications,
   sortControlledFirst,
-  type PatientMedication,
 } from "utils";
+import type { PatientMedication } from "types";
 
 export function usePatientMedications(patientId: string | undefined) {
   const [medications, setMedications] = useState<PatientMedication[]>([]);

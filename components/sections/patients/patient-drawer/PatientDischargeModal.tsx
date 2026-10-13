@@ -20,32 +20,19 @@ import {
 } from "@/components/ui";
 import { AlertTriangle } from 'lucide-react';
 import { useDischargeForm } from 'hooks';
-import {
-  DISCHARGE_FINAL_VISIT_FIELDS,
-  DISCHARGE_NOTIFY_OPTIONS,
-  DISCHARGE_REASONS,
-  DISCHARGE_REASON_LABELS,
-  getDischargeNotifyLabel,
-  type DischargeContacts,
-  type DischargePayload,
-  type DischargeReason,
-} from 'utils';
+import { DISCHARGE_FINAL_VISIT_FIELDS, DISCHARGE_NOTIFY_OPTIONS, DISCHARGE_REASONS, DISCHARGE_REASON_LABELS, getDischargeNotifyLabel } from 'utils';
+import type { DischargeContacts, DischargePayload, DischargeReason } from 'types';
 
-export type { DischargePayload, DischargeReason } from 'utils';
-
-interface PatientDischargeModalProps {
+interface PatientDischargeModalProps extends DischargeContacts {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   patientName: string;
-  gpName?: string;
-  nextOfKinName?: string;
-  emergencyContact?: string;
   onConfirm: (payload: DischargePayload) => Promise<void> | void;
 }
 
 function DischargeFieldError({ message }: { message?: string | undefined }) {
   if (!message) return null;
-  return <p className="text-xs text-[var(--cf-error)]">{message}</p>;
+  return <p className="text-xs text-destructive">{message}</p>;
 }
 
 export function PatientDischargeModal({
@@ -73,8 +60,8 @@ export function PatientDischargeModal({
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[var(--cf-error-muted)]">
-              <AlertTriangle className="size-4 text-[var(--cf-error)]" />
+            <span className="inline-flex size-8 items-center justify-center rounded-lg bg-cf-red-50">
+              <AlertTriangle className="size-4 text-destructive" />
             </span>
             <DialogTitle className="text-xl font-semibold text-cf-ink">
               Discharge {patientName}

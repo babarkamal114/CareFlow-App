@@ -5,3 +5,6 @@ export type PageParams<T extends Record<string, string>> = {
 };
 
 export * from "./components";
+export * from "./patients";
+export * from "./patient-forms";
+export * from "./patient-records";
