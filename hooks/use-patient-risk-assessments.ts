@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { PatientRiskAssessment } from "types";
-import { MOCK_PATIENT_RISK_ASSESSMENTS } from "@/lib/mock/patient-clinical-mock-data";
+import { MOCK_PATIENT_RISK_ASSESSMENTS } from "lib";
 
 export function usePatientRiskAssessments(patientId: string | undefined) {
   const assessments = useMemo<PatientRiskAssessment[]>(

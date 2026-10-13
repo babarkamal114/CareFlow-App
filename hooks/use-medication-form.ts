@@ -8,7 +8,7 @@ import {
   haveMedicationsChanged,
 } from "utils";
 import type { MedicationDraft, PatientMedication } from "types";
-import { validateMedicationDraft } from "@/lib/validations/patients";
+import { validateMedicationDraft } from "lib";
 
 interface UseMedicationFormArgs {
   open: boolean;

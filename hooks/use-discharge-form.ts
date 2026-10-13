@@ -7,7 +7,7 @@ import {
   getInitialDischargeForm,
 } from "utils";
 import type { DischargeContacts, DischargeFormState, DischargePayload } from "types";
-import { validateDischargeForm } from "@/lib/validations/patients";
+import { validateDischargeForm } from "lib";
 
 interface UseDischargeFormArgs extends DischargeContacts {
   open: boolean;

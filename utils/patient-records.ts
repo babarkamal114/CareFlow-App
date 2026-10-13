@@ -4,7 +4,7 @@ import {
   MOCK_PATIENT_ACTIVITY,
   MOCK_PATIENT_DOCUMENTS,
   MOCK_PATIENT_MEDICATIONS,
-} from '@/lib/mock/patient-records-mock-data';
+} from 'lib';
 import { formatFileSize } from './file-format-size';
 import { getPatientsToday } from './patients';
 

@@ -1,5 +1,5 @@
 import type { Carer } from 'types';
-import { MOCK_PATIENT_CARERS } from '@/lib/mock/patients-mock-data';
+import { MOCK_PATIENT_CARERS } from 'lib';
 
 export function fetchCarers(): Promise<Carer[]> {
   return new Promise((resolve) => setTimeout(() => resolve([...MOCK_PATIENT_CARERS]), 500));

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui"
 import { Loader2 } from 'lucide-react';
 import { EDIT_PATIENT_SECTIONS, buildEditPatientForm } from 'utils';
-import { validateEditPatientForm } from '@/lib/validations/patients';
+import { validateEditPatientForm } from 'lib';
 import type { PatientEditData, PatientFormErrors } from 'types';
 import { PatientFormSections } from '../PatientFormField';
 

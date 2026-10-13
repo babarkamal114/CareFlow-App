@@ -1,5 +1,5 @@
 import type { Patient, PatientStats, PatientTab } from 'types';
-import { PATIENTS_MOCK_TODAY } from '@/lib/mock/patients-mock-data';
+import { PATIENTS_MOCK_TODAY } from 'lib';
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
