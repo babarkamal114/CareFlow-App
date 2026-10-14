@@ -1,7 +1,3 @@
-// lib/mock/staff-mock-data.ts
-// TEMP: mock data to unblock frontend work while backend auth/schema issue is resolved.
-// Remove this file (and its usage in page.tsx) once the real API is wired back up.
-
 import type { StaffMember, EmployeeStatus } from "types";
 
 const ROLES = ["manager", "coordinator", "carer", "admin"] as const;

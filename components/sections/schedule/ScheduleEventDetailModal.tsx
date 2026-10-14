@@ -1,161 +1,119 @@
 'use client';
 
-import { format } from 'date-fns';
-import { Calendar, Clock, User, MapPin, FileText, Edit, X, Loader2 } from 'lucide-react';
+import { Calendar, Clock, Edit, FileText, MapPin, User, UserPlus } from 'lucide-react';
 import {
+  Button,
+  ConflictWarningList,
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
+  PreferenceWarningList,
+  VisitStatusBadge,
+  VisitTypeBadge,
 } from '@/components/ui';
-import { Button } from '@/components/ui';
-import { Badge } from '@/components/ui';
-import { Card, CardContent } from '@/components/ui';
+import type { ScheduleVisit, VisitIssues } from 'types';
+import { formatLongDate } from 'utils';
 
-interface EventDetailsModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  event: any;
-  onEdit: () => void;
+interface DetailTileProps {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
-const statusColorMap: Record<string, string> = {
-  'scheduled': 'bg-blue-100 text-blue-700 border-blue-200',
-  'in-progress': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  'completed': 'bg-green-100 text-green-700 border-green-200',
-  'missed': 'bg-red-100 text-red-700 border-red-200',
-  'cancelled': 'bg-gray-100 text-gray-700 border-gray-200',
-};
+function DetailTile({ icon, label, children, className }: DetailTileProps) {
+  return (
+    <div className={`rounded-lg border border-cf-border p-3 ${className ?? ''}`}>
+      <div className="flex items-center gap-2 text-sm text-cf-ink-60">
+        {icon}
+        {label}
+      </div>
+      <div className="mt-1 text-sm font-medium text-cf-ink">{children}</div>
+    </div>
+  );
+}
 
-const typeColorMap: Record<string, string> = {
-  'care-visit': 'bg-blue-500',
-  'appointment': 'bg-purple-500',
-  'medication': 'bg-green-500',
-  'assessment': 'bg-orange-500',
-  'meeting': 'bg-yellow-500',
-  'task': 'bg-gray-500',
-};
+interface ScheduleEventDetailsModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  visit: ScheduleVisit | null;
+  issues?: VisitIssues;
+  onEdit: () => void;
+  onAssign: (visitId: string) => void;
+}
 
-const typeLabelMap: Record<string, string> = {
-  'care-visit': 'Care Visit',
-  'appointment': 'Appointment',
-  'medication': 'Medication',
-  'assessment': 'Assessment',
-  'meeting': 'Meeting',
-  'task': 'Task',
-};
-
-export function EventDetailsModal({ open, onOpenChange, event, onEdit }: EventDetailsModalProps) {
-  if (!event) return null;
-
-  const visit = event.resource || event;
-  const typeColor = typeColorMap[visit.type] || 'bg-gray-500';
+export function ScheduleEventDetailsModal({
+  open,
+  onOpenChange,
+  visit,
+  issues,
+  onEdit,
+  onAssign,
+}: ScheduleEventDetailsModalProps) {
+  if (!visit) return null;
+  const isUnassigned = visit.carerId === null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${typeColor}`} />
-            <DialogTitle className="text-xl font-semibold">Visit Details</DialogTitle>
-          </div>
-          
+      <DialogContent size="lg" className="max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold">Visit Details</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="flex items-start justify-between">
+        <div className="space-y-4 py-2">
+          <div className="flex items-start justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-bold">{visit.patientName}</h2>
-              <p className="text-sm text-cf-ink-60">{visit.title || typeLabelMap[visit.type]}</p>
+              <h3 className="text-cf-h4 font-bold text-cf-ink">{visit.patientName}</h3>
+              <p className="text-sm text-cf-ink-60">{visit.title}</p>
             </div>
-            <Badge variant="outline" className={statusColorMap[visit.status] || 'bg-gray-100 text-gray-700'}>
-              {visit.status?.charAt(0).toUpperCase() + visit.status?.slice(1) || 'Scheduled'}
-            </Badge>
+            <VisitStatusBadge status={visit.status} unassigned={isUnassigned} />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <Card className="border-cf-border">
-              <CardContent className="pt-3">
-                <div className="flex items-center gap-2 text-sm text-cf-ink-60">
-                  <Calendar className="h-4 w-4" />
-                  Date
-                </div>
-                <p className="font-medium">
-                  {visit.date ? format(new Date(visit.date), 'dd MMM yyyy') : 'N/A'}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-cf-border">
-              <CardContent className="pt-3">
-                <div className="flex items-center gap-2 text-sm text-cf-ink-60">
-                  <Clock className="h-4 w-4" />
-                  Time
-                </div>
-                <p className="font-medium">
-                  {visit.startTime && visit.endTime 
-                    ? `${visit.startTime} - ${visit.endTime}`
-                    : visit.start && visit.end
-                    ? `${format(new Date(visit.start), 'HH:mm')} - ${format(new Date(visit.end), 'HH:mm')}`
-                    : 'N/A'}
-                </p>
-              </CardContent>
-            </Card>
+            <DetailTile icon={<Calendar className="size-4" />} label="Date">
+              {formatLongDate(visit.date)}
+            </DetailTile>
+            <DetailTile icon={<Clock className="size-4" />} label="Time">
+              {visit.startTime} - {visit.endTime}
+            </DetailTile>
+            <DetailTile icon={<User className="size-4" />} label="Carer">
+              <span className={isUnassigned ? 'text-error' : undefined}>
+                {visit.carerName || 'Unassigned'}
+              </span>
+            </DetailTile>
+            <DetailTile icon={<FileText className="size-4" />} label="Type">
+              <VisitTypeBadge type={visit.type} />
+            </DetailTile>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Card className="border-cf-border">
-              <CardContent className="pt-3">
-                <div className="flex items-center gap-2 text-sm text-cf-ink-60">
-                  <User className="h-4 w-4" />
-                  Carer
-                </div>
-                <p className="font-medium">{visit.carerName || 'Unassigned'}</p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-cf-border">
-              <CardContent className="pt-3">
-                <div className="flex items-center gap-2 text-sm text-cf-ink-60">
-                  <span className="text-xs font-semibold uppercase">Type</span>
-                </div>
-                <p className="font-medium">{typeLabelMap[visit.type] || visit.type || 'N/A'}</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {visit.location && (
-            <Card className="border-cf-border">
-              <CardContent className="pt-3">
-                <div className="flex items-center gap-2 text-sm text-cf-ink-60">
-                  <MapPin className="h-4 w-4" />
-                  Location
-                </div>
-                <p className="font-medium">{visit.location}</p>
-              </CardContent>
-            </Card>
-          )}
+          <DetailTile icon={<MapPin className="size-4" />} label="Location">
+            {visit.address || 'No address recorded'}
+          </DetailTile>
 
           {visit.notes && (
-            <Card className="border-cf-border">
-              <CardContent className="pt-3">
-                <div className="flex items-center gap-2 text-sm text-cf-ink-60">
-                  <FileText className="h-4 w-4" />
-                  Notes
-                </div>
-                <p className="text-sm text-cf-ink-60">{visit.notes}</p>
-              </CardContent>
-            </Card>
+            <DetailTile icon={<FileText className="size-4" />} label="Notes">
+              <span className="font-normal text-cf-ink-60">{visit.notes}</span>
+            </DetailTile>
           )}
+
+          <ConflictWarningList conflicts={issues?.conflicts ?? []} />
+          <PreferenceWarningList violations={issues?.violations ?? []} />
         </div>
 
         <DialogFooter className="flex gap-3">
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1 border-cf-border">
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="flex-1">
             Close
           </Button>
-          <Button onClick={onEdit} className="flex-1 gap-1.5">
-            <Edit className="h-4 w-4" />
+          {isUnassigned && (
+            <Button variant="brandOutline" onClick={() => onAssign(visit.id)} className="flex-1">
+              <UserPlus />
+              Assign carer
+            </Button>
+          )}
+          <Button onClick={onEdit} className="flex-1">
+            <Edit />
             Edit Visit
           </Button>
         </DialogFooter>

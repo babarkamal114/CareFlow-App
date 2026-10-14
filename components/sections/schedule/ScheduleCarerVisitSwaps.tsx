@@ -1,224 +1,139 @@
 'use client';
 
-import { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage, Button, Card, CardContent, CardHeader, CardTitle, Badge, BadgeProps } from '@/components/ui';
-import { Check, X, Clock } from 'lucide-react';
-
-interface SwapRequest {
-  id: string;
-  fromCarer: {
-    name: string;
-    image?: string;
-    initials: string;
-  };
-  toCarer: {
-    name: string;
-    image?: string;
-    initials: string;
-  };
-  date: string;
-  shiftTime: string;
-  shiftType: 'Morning' | 'Afternoon' | 'Evening' | 'Night';
-  status: 'pending' | 'approved' | 'rejected';
-  timestamp: string;
-}
-
-const mockSwapRequests: SwapRequest[] = [
-  {
-    id: '1',
-    fromCarer: {
-      name: 'Sarah Johnson',
-      image: '',
-      initials: 'SJ',
-    },
-    toCarer: {
-      name: 'William Chen',
-      image: '',
-      initials: 'WC',
-    },
-    date: 'Thu 3 Apr',
-    shiftTime: '08:00 - 14:00',
-    shiftType: 'Morning',
-    status: 'pending',
-    timestamp: '2 hours ago',
-  },
-  {
-    id: '2',
-    fromCarer: {
-      name: 'Emma Williams',
-      image: '',
-      initials: 'EW',
-    },
-    toCarer: {
-      name: 'Michael Brown',
-      image: '',
-      initials: 'MB',
-    },
-    date: 'Fri 4 Apr',
-    shiftTime: '14:00 - 20:00',
-    shiftType: 'Afternoon',
-    status: 'pending',
-    timestamp: '5 hours ago',
-  },
-  {
-    id: '3',
-    fromCarer: {
-      name: 'David Smith',
-      image: '',
-      initials: 'DS',
-    },
-    toCarer: {
-      name: 'Lisa Garcia',
-      image: '',
-      initials: 'LG',
-    },
-    date: 'Sat 5 Apr',
-    shiftTime: '20:00 - 02:00',
-    shiftType: 'Night',
-    status: 'pending',
-    timestamp: '1 day ago',
-  },
-];
-
-const shiftColors: Record<string, string> = {
-  'Morning': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  'Afternoon': 'bg-orange-100 text-orange-700 border-orange-200',
-  'Evening': 'bg-blue-100 text-blue-700 border-blue-200',
-  'Night': 'bg-indigo-100 text-indigo-700 border-indigo-200',
-};
+import { AlertTriangle, ArrowRight, Check, Clock, X } from 'lucide-react';
+import {
+  Alert,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui';
+import { cn } from 'lib';
+import type { ShiftSwapRequest } from 'types';
+import {
+  SHIFT_PERIOD_BADGE_VARIANT,
+  formatShortDate,
+  formatTimeAgo,
+  getInitials,
+  getShiftPeriod,
+} from 'utils';
 
 interface ScheduleCarerVisitSwapsProps {
-  onApprove?: (swapId: string) => void;
-  onReject?: (swapId: string) => void;
+  swaps: ShiftSwapRequest[];
+  /** Local ISO datetime treated as "now", used for the "2 hours ago" labels. */
+  nowIso: string;
+  onApprove: (swapId: string) => void;
+  onReject: (swapId: string) => void;
+  className?: string;
 }
 
-function ScheduleCarerVisitSwaps({ onApprove, onReject }: ScheduleCarerVisitSwapsProps) {
-  const [swaps, setSwaps] = useState<SwapRequest[]>(mockSwapRequests);
-  const pendingSwaps = swaps.filter(s => s.status === 'pending');
-  const totalPending = pendingSwaps.length;
+function SwapAvatar({ name }: { name: string }) {
+  return (
+    <Avatar className="size-9 shrink-0 border border-cf-border">
+      <AvatarFallback className="bg-brand-50 text-xs font-medium text-brand-700">
+        {getInitials(name)}
+      </AvatarFallback>
+    </Avatar>
+  );
+}
 
-  const handleApprove = (swapId: string) => {
-    setSwaps(prev =>
-      prev.map(swap =>
-        swap.id === swapId
-          ? { ...swap, status: 'approved' }
-          : swap
-      )
-    );
-    onApprove?.(swapId);
-  };
-
-  const handleReject = (swapId: string) => {
-    setSwaps(prev =>
-      prev.map(swap =>
-        swap.id === swapId
-          ? { ...swap, status: 'rejected' }
-          : swap
-      )
-    );
-    onReject?.(swapId);
-  };
-
-  if (totalPending === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            Pending Swaps
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-cf-ink-60">
-            <p className="text-sm">No pending swap requests</p>
-            <p className="text-xs mt-1">All shifts are assigned</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+export function ScheduleCarerVisitSwaps({
+  swaps,
+  nowIso,
+  onApprove,
+  onReject,
+  className,
+}: ScheduleCarerVisitSwapsProps) {
+  const pending = swaps.filter((swap) => swap.status === 'pending');
 
   return (
-    <Card>
+    <Card className={cn('w-full shrink-0', className)}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Clock className="h-4 w-4" />
+          <Clock className="size-4" aria-hidden />
           Pending Swaps
-          <Badge variant="pastel-danger" shape="pill" className="ml-2">
-            {totalPending}
-          </Badge>
+          {pending.length > 0 && (
+            <Badge variant="softDanger" shape="pill">
+              {pending.length}
+            </Badge>
+          )}
         </CardTitle>
       </CardHeader>
+
       <CardContent className="space-y-3">
-        {pendingSwaps.map((swap) => (
-          <div
-            key={swap.id}
-            className="border border-cf-border rounded-lg p-4 hover:bg-cf-surface-muted/50 transition-colors flex items-center justify-between gap-4"
-          >
-            
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <Avatar className="h-10 w-10 border border-cf-border flex-shrink-0">
-                <AvatarImage src={swap.fromCarer.image} alt={swap.fromCarer.name} />
-                <AvatarFallback className="bg-cf-brand-500/10 text-cf-brand-500 text-xs font-medium">
-                  {swap.fromCarer.initials}
-                </AvatarFallback>
-              </Avatar>
-
-              <div className="flex flex-col min-w-0">
-               
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-medium text-cf-ink truncate">
-                    {swap.fromCarer.name.split(' ')[0]}
-                  </span>
-                  <span className="text-xs text-cf-ink-40">→</span>
-                  <span className="text-sm font-medium text-cf-ink truncate">
-                    {swap.toCarer.name.split(' ')[0]}
-                  </span>
-                </div>
-
-               
-                <div className="flex items-center gap-2 text-xs text-cf-ink-60">
-                  <span>{swap.date}</span>
-                  <span>•</span>
-                  <span>{swap.shiftTime}</span>
-                </div>
-
-                
-                <Badge
-                  variant={shiftColors[swap.shiftType] as BadgeProps['variant']}
-                  
-                >
-                  {swap.shiftType}
-                </Badge>
-              </div>
-            </div>
-
-           
-            <div className="flex items-center gap-1.5 flex-shrink-0">
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-full"
-                onClick={() => handleApprove(swap.id)}
-                title="Approve swap"
-              >
-                <Check className="h-4 w-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full"
-                onClick={() => handleReject(swap.id)}
-                title="Reject swap"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+        {pending.length === 0 && (
+          <div className="py-8 text-center text-cf-ink-60">
+            <p className="text-sm">No pending swap requests</p>
+            <p className="mt-1 text-xs">Carers can request swaps from the mobile app</p>
           </div>
-        ))}
+        )}
+
+        {pending.map((swap) => {
+          const period = getShiftPeriod(swap.startTime);
+          return (
+            <article
+              key={swap.id}
+              className="space-y-3 rounded-xl border border-cf-border bg-cf-surface p-4"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <SwapAvatar name={swap.requesterName} />
+                  <ArrowRight className="size-3.5 text-cf-ink-40" aria-hidden />
+                  <SwapAvatar name={swap.targetName} />
+                </div>
+                <Badge variant={SHIFT_PERIOD_BADGE_VARIANT[period]}>{period}</Badge>
+              </div>
+
+              <div className="space-y-0.5">
+                <p className="text-sm font-semibold text-cf-ink">
+                  {swap.requesterName} <span className="font-normal text-cf-ink-60">to</span>{' '}
+                  {swap.targetName}
+                </p>
+                <p className="text-sm text-cf-ink-80">
+                  {formatShortDate(swap.date)} · {swap.startTime} - {swap.endTime}
+                </p>
+                <p className="text-xs text-cf-ink-60">
+                  Requested {formatTimeAgo(swap.requestedAt, nowIso)}
+                </p>
+              </div>
+
+              {swap.conflictMessage && (
+                <Alert variant="warning" className="px-3 py-2">
+                  <AlertIcon>
+                    <AlertTriangle />
+                  </AlertIcon>
+                  <AlertContent>
+                    <AlertDescription>{swap.conflictMessage}</AlertDescription>
+                  </AlertContent>
+                </Alert>
+              )}
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => onReject(swap.id)}
+                >
+                  <X />
+                  Decline
+                </Button>
+                <Button size="sm" className="flex-1" onClick={() => onApprove(swap.id)}>
+                  <Check />
+                  Approve
+                </Button>
+              </div>
+            </article>
+          );
+        })}
       </CardContent>
     </Card>
   );
 }
-
-export default ScheduleCarerVisitSwaps;

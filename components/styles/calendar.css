@@ -1,5 +1,3 @@
-/* styles/calendar.css — themed via CareFlow tokens (light + dark) */
-
 :root {
   --cal-bg: var(--cf-surface);
   --cal-bg-muted: var(--cf-surface-muted);
@@ -17,7 +15,7 @@
   --cal-error: var(--cf-error);
   --cal-radius-sm: 4px;
   --cal-radius-xl: 12px;
-  --cal-shadow-lg: 0 10px 40px rgb(0 0 0 / 0.15);
+  --cal-shadow-lg: var(--shadow-cf-lg);
   --cal-fast: 150ms ease;
 }
 
@@ -440,7 +438,7 @@
 .rbc-calendar .rbc-day-slot .rbc-event {
   padding: 4px 6px;
   border-radius: var(--cal-radius-sm);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-cf-xs);
   position: absolute;
   left: 2%;
   right: 2%;
@@ -455,7 +453,7 @@
 }
 
 .rbc-calendar .rbc-day-slot .rbc-event:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-cf-md);
   transform: translateY(-1px);
   z-index: 10;
 }
@@ -549,51 +547,72 @@
   font-size: 0.875rem;
 }
 
-.rbc-calendar .rbc-event.event-care-visit {
-  background: linear-gradient(135deg, #1a7f56, #2a9d6e);
-  color: white;
+/* Visit type colours. Each class sets --event-color; one rule paints the gradient. */
+.rbc-calendar .rbc-event {
+  background: linear-gradient(
+    135deg,
+    var(--event-color, var(--cf-brand-500)),
+    color-mix(in srgb, var(--event-color, var(--cf-brand-500)) 80%, var(--cf-surface))
+  );
+  color: var(--cf-surface);
 }
 
-.rbc-calendar .rbc-event.event-appointment {
-  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-  color: white;
+.rbc-calendar .rbc-event.event-care-visit {
+  --event-color: var(--cf-brand-500);
 }
 
 .rbc-calendar .rbc-event.event-medication {
-  background: linear-gradient(135deg, #059669, #10b981);
-  color: white;
+  --event-color: var(--cf-blue-500);
 }
 
-.rbc-calendar .rbc-event.event-assessment {
-  background: linear-gradient(135deg, #ea580c, #f97316);
-  color: white;
+.rbc-calendar .rbc-event.event-initial-assessment {
+  --event-color: var(--cf-amber-500);
 }
 
-.rbc-calendar .rbc-event.event-meeting {
-  background: linear-gradient(135deg, #d97706, #f59e0b);
-  color: white;
+.rbc-calendar .rbc-event.event-follow-up {
+  --event-color: var(--cf-brand-700);
 }
 
-.rbc-calendar .rbc-event.event-task {
-  background: linear-gradient(135deg, #4b5563, #6b7280);
-  color: white;
+.rbc-calendar .rbc-event.event-review {
+  --event-color: var(--cf-ink-80);
 }
 
+.rbc-calendar .rbc-event.event-appointment {
+  --event-color: color-mix(in srgb, var(--cf-blue-500) 60%, var(--cf-ink));
+}
+
+.rbc-calendar .rbc-event.event-emergency {
+  --event-color: var(--cf-red-500);
+}
+
+/* Unassigned visits are always red, whatever their type (blueprint 3.2.1). */
+.rbc-calendar .rbc-event.event-unassigned {
+  --event-color: var(--cf-red-500);
+}
+
+/* Status accents */
 .rbc-calendar .rbc-event.status-completed {
-  border-left: 4px solid #10b981;
+  border-left: 4px solid var(--cf-success);
+  opacity: 0.85;
 }
 
 .rbc-calendar .rbc-event.status-in-progress {
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid var(--cf-warning);
 }
 
 .rbc-calendar .rbc-event.status-missed {
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid var(--cf-error);
 }
 
 .rbc-calendar .rbc-event.status-cancelled {
-  border-left: 4px solid #9ca3af;
+  border-left: 4px solid var(--cf-ink-40);
   opacity: 0.6;
+}
+
+/* Visit has a conflict (double-booking, availability, skills, travel time) */
+.rbc-calendar .rbc-event.event-conflict {
+  outline: 2px dashed var(--cf-error);
+  outline-offset: -2px;
 }
 
 @media (max-width: 768px) {
