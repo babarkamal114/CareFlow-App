@@ -10,21 +10,18 @@ import {
   RecentAuditTrailCard,
   CQCScoreTrendCard,
   DigitalSignaturesPanel,
-  SafeguardingModule,
-
 } from 'sections';
-
 
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08 } },
 };
- 
+
 const item = {
   hidden: { opacity: 0, y: 16 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const } },
 };
- 
+
 export default function CompliancePage() {
   return (
     <div className="w-full p-6 bg-transparent">
@@ -45,12 +42,12 @@ export default function CompliancePage() {
             </p>
           </div>
         </motion.div>
- 
+
         {/* Row 1 — KPI stat cards */}
         <motion.div variants={item}>
           <CQCReadinessStats />
         </motion.div>
- 
+
         {/* Row 2 — CQC Five Questions + Audit Trail | Alerts + Inspection Pack */}
         <motion.div variants={item} className="flex gap-4 items-start">
           <div className="flex flex-col flex-[65] min-w-0 gap-4">
@@ -62,29 +59,22 @@ export default function CompliancePage() {
             <CQCInspectionPack />
           </div>
         </motion.div>
- 
-        {/* Row 3 — CQC Score Trend | Safeguarding (both tall, equal halves) */}
+
+        {/* Row 3 — CQC Score Trend | Digital Signatures (equal halves) */}
         <motion.div variants={item} className="flex gap-4 items-stretch">
           <div className="flex-1 min-w-0">
             <CQCScoreTrendCard />
           </div>
           <div className="flex-1 min-w-0">
-            <SafeguardingModule />
-          </div>
-        </motion.div>
- 
-        {/* Row 4 — Key Regulations | Digital Signatures (both medium, equal halves) */}
-        <motion.div variants={item} className="flex gap-4 items-stretch">
-          <div className="flex-1 min-w-0">
-            <KeyRegulationsCard />
-          </div>
-          <div className="flex-1 min-w-0">
             <DigitalSignaturesPanel />
           </div>
         </motion.div>
- 
+
+        {/* Row 4 — Key Regulations (full width) */}
+        <motion.div variants={item}>
+          <KeyRegulationsCard />
+        </motion.div>
       </motion.div>
     </div>
   );
 }
- 

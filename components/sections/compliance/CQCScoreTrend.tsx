@@ -1,99 +1,64 @@
 'use client';
 
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  type ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent,
+  Card, CardContent, CardHeader, CardTitle, FilterPill,
+} from '@/components/ui';
+import { useCqcReadiness, useScoreTrend } from 'hooks';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
-const data = [
-  { month: 'Oct', overall: 80, responsive: 75 },
-  { month: 'Nov', overall: 82, responsive: 77 },
-  { month: 'Dec', overall: 84, responsive: 79 },
-  { month: 'Jan', overall: 87, responsive: 81 },
-  { month: 'Feb', overall: 91, responsive: 83 },
-  { month: 'Mar', overall: 93, responsive: 84 },
-  { month: 'Apr', overall: 95, responsive: 85 },
-];
+// Colours come from the chart tokens in globals.css, so they follow light / dark mode.
+const chartConfig = {
+  overall: { label: 'Overall', color: 'var(--chart-1)' },
+  responsive: { label: 'Responsive', color: 'var(--chart-3)' },
+} satisfies ChartConfig;
+
+const RANGES = [3, 6, 12];
 
 export function CQCScoreTrendCard() {
-  const overallChange = 15;
-  const bestArea = 'Caring';
-  const bestAreaScore = 92;
-  const focusArea = 'Responsive';
-  const focusAreaScore = 78;
+  const r = useCqcReadiness();
+  const t = useScoreTrend(r.overall, r.questions);
 
   return (
-    <Card className="border-cf-border-light shadow-cf-sm rounded-2xl w-full h-full">
+    <Card className="h-full w-full rounded-2xl border-cf-border-light shadow-cf-sm">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="font-bold">CQC Score Trend</CardTitle>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[var(--cf-success)]" />
-              <span className="text-xs text-cf-ink-60">Overall</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[var(--cf-warning)]" />
-              <span className="text-xs text-cf-ink-60">Responsive</span>
-            </div>
+          <CardTitle className="font-bold text-cf-ink">CQC Score Trend</CardTitle>
+          <div className="flex gap-1.5" role="group" aria-label="Trend range">
+            {RANGES.map((m) => (
+              <FilterPill key={m} label={`${m}M`} active={t.months === m} onClick={() => t.setMonths(m)} />
+            ))}
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-8">
-        <div className="w-full h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis 
-                dataKey="month" 
-                stroke="#9ca3af"
-                style={{ fontSize: '12px' }}
-              />
-              <YAxis 
-                domain={[70, 100]}
-                stroke="#9ca3af"
-                style={{ fontSize: '12px' }}
-              />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="overall"
-                stroke="#16a34a"
-                dot={{ fill: '#16a34a', r: 4 }}
-                strokeWidth={2}
-                isAnimationActive={false}
-              />
-              <Line
-                type="monotone"
-                dataKey="responsive"
-                stroke="#f59e0b"
-                strokeDasharray="5 5"
-                dot={{ fill: '#f59e0b', r: 4 }}
-                strokeWidth={2}
-                isAnimationActive={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
 
-        <div className="border-t border-cf-border pt-6 grid grid-cols-3 gap-6">
+      <CardContent className="space-y-8">
+        <ChartContainer config={chartConfig} className="aspect-auto h-64 w-full">
+          <LineChart data={t.points} margin={{ top: 5, right: 16, left: 0, bottom: 5 }}>
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+            <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+            <YAxis domain={[50, 100]} tickLine={false} axisLine={false} width={32} />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Line type="monotone" dataKey="overall" stroke="var(--color-overall)" strokeWidth={2} dot={{ r: 4 }} isAnimationActive={false} />
+            <Line type="monotone" dataKey="responsive" stroke="var(--color-responsive)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 4 }} isAnimationActive={false} />
+          </LineChart>
+        </ChartContainer>
+
+        <div className="grid grid-cols-3 gap-6 border-t border-cf-border pt-6">
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-cf-ink-60 uppercase">6-Month Change</p>
-            <p className="text-2xl font-bold text-[var(--cf-success)]">+{overallChange} pts</p>
+            <p className="text-xs font-semibold text-cf-ink-60 uppercase">{t.months}-Month Change</p>
+            <p className={`text-2xl font-bold ${t.change >= 0 ? 'text-success' : 'text-error'}`}>{t.change >= 0 ? '+' : ''}{t.change} pts</p>
           </div>
           <div className="space-y-1">
             <p className="text-xs font-semibold text-cf-ink-60 uppercase">Best Area</p>
-            <p className="text-2xl font-bold text-cf-ink">{bestArea}</p>
-            <p className="text-sm text-cf-ink-60">{bestAreaScore}/100</p>
+            <p className="text-2xl font-bold text-cf-ink">{t.best.label}</p>
+            <p className="text-sm text-cf-ink-60">{t.best.score}/100</p>
           </div>
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-[var(--cf-warning)] uppercase">Focus Area</p>
-            <p className="text-2xl font-bold text-[var(--cf-warning)]">{focusArea}</p>
-            <p className="text-sm text-cf-ink-60">{focusAreaScore}/100</p>
+            <p className="text-xs font-semibold text-warning uppercase">Focus Area</p>
+            <p className="text-2xl font-bold text-warning">{t.focus.label}</p>
+            <p className="text-sm text-cf-ink-60">{t.focus.score}/100</p>
           </div>
         </div>
       </CardContent>
