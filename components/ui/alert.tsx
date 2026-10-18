@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "lib"
 
 const alertVariants = cva(
   "group/alert relative flex w-full gap-3 rounded-[10px] border px-4 py-3.5 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-14",
