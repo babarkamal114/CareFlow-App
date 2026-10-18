@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { CheckIcon, InfoIcon, TriangleAlertIcon, XIcon } from "lucide-react"
 
-import { Alert, AlertContent, AlertDescription, AlertIcon, AlertTitle } from "ui-components"
+import { Alert, AlertContent, AlertDescription, AlertIcon, AlertTitle } from @/components/ui
 
 const meta = {
   title: "UI/Alert",

@@ -1,3 +1,16 @@
 export { SidebarLogoSection } from "./sidebar-logo-section";
 export { SidebarNavigationSection } from "./sidebar-nav-section";
-export { SidebarUserSection } from "./sidebar-user-section";
+export { SidebarProfileSection } from "./sidebar-profile-section";
+export { SidebarAgencySection } from "./SideBarAgencySection";
+export { default as DashboardShellActions } from "./DashboardShellActions";
+export { default as DashboardAttentionBoard } from "./DashboardAttentionBoard";
+export { DashboardComplianceDue } from "./DashboardComplianceDueSection";
+export { DashboardCQCBreakdown } from "./DashboardCQCBreakdownSection";
+export { default as DashboardOnShiftSection } from "./DashboardOnShiftSection";
+export { default as DashboardStatSection } from "./DashboardStatSection";
+export { default as DashboardVisitSection } from "./DashboardVisitSection";
+export { DashboardWeeklyActivity } from "./DashboardWeeklyActivitySection";
+export * from './DashboardCQCGaugeSection';
+export * from './DashboardStaffSnapshotSection';
+export * from './DashboardVisitStatusSection';
+export * from './DashboardRevenueSnapshotSection';

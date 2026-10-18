@@ -1,31 +1,35 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 import { Button, Card, CardContent } from "@/components/ui";
-import { OtpBoxes, VerifyEmailHeader } from "ui-components";
-import { useEmailVerification } from "hooks";
+import { OtpBoxes, VerifyEmailHeader } from "@/components/ui";
 
-export function VerifyEmailUI(): React.JSX.Element {
-  const {
-    handleEmailVerification,
-    isError,
-    loading,
-    otp,
-    setOtp,
-    startCountdown,
-    handleResend,
-    canResend,
-    countdown,
-    formatTime,
-    email,
-  } = useEmailVerification();
+interface VerifyEmailUIProps {
+  email: string;
+  otp: string;
+  setOtp: (value: string) => void;
+  handleEmailVerification: () => void;
+  handleResend: () => void;
+  isError?: string | null;
+  loading: boolean;
+  canResend: boolean;
+  countdown: number;
+  formatTime: (seconds: number) => string;
+}
 
-  useEffect(() => {
-    startCountdown(60);
-  }, []);
-
+export function VerifyEmailUI({
+  email,
+  otp,
+  setOtp,
+  handleEmailVerification,
+  handleResend,
+  isError,
+  loading,
+  canResend,
+  countdown,
+  formatTime,
+}: VerifyEmailUIProps): React.JSX.Element {
   return (
     <section className="flex min-h-screen w-full items-center justify-center px-6 py-12">
       <motion.div
@@ -34,9 +38,9 @@ export function VerifyEmailUI(): React.JSX.Element {
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         className="w-full max-w-sm"
       >
-        <Card className="rounded-[28px] border border-border/70 bg-background/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+        <Card className={`rounded-[28px] border border-border/70 bg-background/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur ring-4 ${isError ? 'ring-destructive/20' : 'ring-primary/10'} transition-all duration-150 `}>
           <CardContent className="flex flex-col items-center gap-y-6 p-8">
-            <VerifyEmailHeader email={email!} />
+            <VerifyEmailHeader email={email} />
             <OtpBoxes value={otp} setValue={setOtp} />
 
             {isError && (
@@ -65,13 +69,13 @@ export function VerifyEmailUI(): React.JSX.Element {
                   {canResend ? "00:00" : formatTime(countdown)}
                 </span>
               </p>
-              <button
+              <Button
                 onClick={handleResend}
                 disabled={!canResend}
                 className="mt-1 text-xs text-primary hover:underline disabled:cursor-not-allowed disabled:text-muted-foreground"
               >
                 {canResend ? "Resend code" : "Please wait..."}
-              </button>
+              </Button>
             </div>
           </CardContent>
         </Card>

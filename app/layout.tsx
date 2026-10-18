@@ -14,11 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <body className="flex min-h-full flex-col">
-        
-          <Providers>{children}</Providers>
-        
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className="flex min-h-full flex-col bg-cf-surface text-cf-ink">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

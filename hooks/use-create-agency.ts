@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useCreateAgencyApi } from "@/lib/hooks/use-agency-api";
+import { useCreateAgencyApi } from "lib";
+import { generateRandomSlug, randomSuffix } from "utils";
 
 
 interface AgencyFormData {
@@ -24,7 +25,7 @@ export function useCreateAgency() {
 
   const [formData, setFormData] = useState<AgencyFormData>({
     name: "",
-    slug: 'test-agency',
+    slug: generateRandomSlug({suffix: randomSuffix()}),
     phone: "",
     address: "",
     city: "",
@@ -58,7 +59,7 @@ export function useCreateAgency() {
           toast.success(data.message || "Agency created!");
           await update();
           if (onSuccess) onSuccess();
-          router.push("/");
+          window.location.href = '/'
         },
       }
     );

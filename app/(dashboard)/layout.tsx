@@ -8,8 +8,10 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  if (!session?.user) {
-    redirect("/login");
-  }
+  // TEMP: bypassing auth check to work on dashboard UI without backend running
+  // TODO: remove this before pushing/merging
+  // if (!session?.user) {
+  //   redirect("/login");
+  // }
   return <DashboardShell>{children}</DashboardShell>;
 }
