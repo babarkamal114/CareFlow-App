@@ -370,7 +370,8 @@ export type IncidentType =
   | 'missed-visit' 
   | 'other';
 
-export type IncidentSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+export type IncidentSeverity = "minor" | "moderate" | "severe" | "catastrophic";
 export type IncidentStatus = 'reported' | 'investigating' | 'resolved' | 'closed';
 
 export interface Incident {
@@ -387,7 +388,7 @@ export interface Incident {
   status: IncidentStatus;
   location?: string;
   witnesses?: string[];
-  evidence?: string[]; 
+  evidence?: string[];
   investigationNotes: {
     note: string;
     author: string;
@@ -396,6 +397,24 @@ export interface Incident {
   nextReviewDate?: Date;
   createdAt: Date;
   updatedAt: Date;
+  antecedent?: string;
+  consequence?: string;
+  immediateActions?: string;
+  carePlanFollowed?: boolean | null;
+  carePlanDeviationReason?: string;
+  emergencyServicesCalled?: boolean;
+  emergencyServicesDetails?: string;
+  injuriesObserved?: boolean;
+  injuryDetails?: InjuryDetail[];
+  bodyMapMarkings?: NonNullable<IncidentFormData["bodyMapData"]>["markings"];
+  contributingFactors?: string[];
+  followUpPlan?: string;
+  rootCause?: string;
+  preventiveActions?: string;
+  lessonsLearned?: string;
+  isCqcNotifiable?: boolean;
+  isRiddorReportable?: boolean;
+  isSafeguardingConcern?: boolean;
 }
 
 
@@ -414,3 +433,87 @@ export type CarePlanType = 'personal-care' | 'medication' | 'dementia' | 'nutrit
 export type SortField = keyof StaffMember;
 export type SortDirection = "asc" | "desc";
 export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED' 
+
+export interface IncidentFormData {
+  type: IncidentType | "";
+  severity: IncidentSeverity | "";
+
+  patientId: string;
+  patientName: string;
+  dateTime: string;
+  location: string;
+  reportedBy: string;
+  reportedByName: string;
+
+  antecedent: string;
+  description: string;
+  consequence: string;
+
+  injuriesObserved: boolean;
+  injuryDetails: InjuryDetail[];
+  bodyMapData?: {
+    markings: Array<{
+      id: string;
+      bodyPart: string;
+      markType: "bruise" | "cut" | "abrasion" | "burn" | "other";
+      notes?: string;
+    }>;
+  };
+
+  immediateActions: string;
+  carePlanFollowed: boolean | null;
+  carePlanDeviationReason?: string;
+  emergencyServicesCalled: boolean;
+  emergencyServicesDetails?: string;
+
+  evidence: IncidentEvidence[];
+
+  contributingFactors: string[];
+  followUpPlan: string;
+
+  status: IncidentStatus;
+  assignedTo?: string;
+  rootCause?: string;
+  preventiveActions?: string;
+  lessonsLearned?: string;
+
+  isCqcNotifiable: boolean;
+  isRiddorReportable: boolean;
+  isSafeguardingConcern: boolean;
+}
+
+export type IncidentFormUpdate = <K extends keyof IncidentFormData>(
+  field: K,
+  value: IncidentFormData[K],
+) => void;
+
+export interface IncidentFormStepProps {
+  form: IncidentFormData;
+  update: IncidentFormUpdate;
+  /** Replaces the whole form - used by the array fields (injuries, markings). */
+  replace: (form: IncidentFormData) => void;
+}
+
+export type IncidentMarkType = NonNullable<
+  IncidentFormData["bodyMapData"]
+>["markings"][number]["markType"];
+
+export type InjurySeverity = InjuryDetail["severity"];
+
+
+export interface InjuryDetail {
+  id: string;
+  bodyPart: string;
+  description: string;
+  severity: "none" | "minor" | "moderate" | "severe";
+  photoUrls?: string[];
+}
+
+export interface IncidentEvidence {
+  id: string;
+  type: "photo" | "video" | "document" | "audio";
+  url: string;
+  uploadedAt: string;
+  uploadedBy: string;
+  description?: string;
+}

@@ -1,12 +1,13 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
-import { FileText, Paperclip, Info } from 'lucide-react';
-import { Incident } from '@/types';
-import { IncidentInfoTab } from './incident-info-tab';
-import { IncidentLogsTab } from './incident-logs-tab';
+import { Incident } from 'types';
+import { getIncidentEvidenceCount, getIncidentInjuryCount, INCIDENT_TABS } from 'utils';
+import { IncidentOverviewTab } from './incident-overview-tab';
+import { IncidentInjuriesTab } from './incident-injuries-tab';
+import { IncidentResponseTab } from './incident-response-tab';
+import { IncidentInvestigationTab } from './incident-investigation-tab';
 import { IncidentEvidenceTab } from './incident-evidence-tab';
-
 
 interface IncidentTabsProps {
   selectedTab: string;
@@ -19,34 +20,42 @@ export function IncidentTabs({
   onTabChange,
   incident,
 }: IncidentTabsProps) {
-
-  const evidenceCount = 0;
+  const counts: Record<string, number> = {
+    injuries: getIncidentInjuryCount(incident),
+    evidence: getIncidentEvidenceCount(incident),
+  };
 
   return (
-    <Tabs value={selectedTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="info" className="flex items-center gap-2">
-          <Info className="h-4 w-4" />
-          Info
-        </TabsTrigger>
-        <TabsTrigger value="logs" className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
-          Logs
-        </TabsTrigger>
-        <TabsTrigger value="evidence" className="flex items-center gap-2">
-          <Paperclip className="h-4 w-4" />
-          Evidence ({evidenceCount})
-        </TabsTrigger>
-      </TabsList>
+    <Tabs value={selectedTab} onValueChange={onTabChange} className="h-full w-full">
+      <div className="border-b border-cf-border px-6">
+        <TabsList className="w-auto justify-start rounded-none bg-transparent">
+          {INCIDENT_TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-brand-500"
+            >
+              {tab.label}
+              {counts[tab.value] ? ` (${counts[tab.value]})` : ''}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </div>
 
-      <TabsContent value="info" className="mt-4">
-        <IncidentInfoTab incident={incident} />
+      <TabsContent value="overview" className="p-6">
+        <IncidentOverviewTab incident={incident} />
       </TabsContent>
-      <TabsContent value="logs" className="mt-4">
-        <IncidentLogsTab incident={incident} />
+      <TabsContent value="injuries" className="p-6">
+        <IncidentInjuriesTab incident={incident} />
       </TabsContent>
-      <TabsContent value="evidence" className="mt-4">
-        <IncidentEvidenceTab />
+      <TabsContent value="response" className="p-6">
+        <IncidentResponseTab incident={incident} />
+      </TabsContent>
+      <TabsContent value="investigation" className="p-6">
+        <IncidentInvestigationTab incident={incident} />
+      </TabsContent>
+      <TabsContent value="evidence" className="p-6">
+        <IncidentEvidenceTab incident={incident} />
       </TabsContent>
     </Tabs>
   );

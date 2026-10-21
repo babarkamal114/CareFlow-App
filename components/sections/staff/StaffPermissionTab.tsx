@@ -41,9 +41,9 @@ const StaffPermissionTab = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: permissionData, isLoading, error } = useGetUserPermissionsApi(
-    agencyId!,
-    staff?.userId!,
-    accessToken!
+    agencyId ?? '',
+    staff?.userId ?? '',
+    accessToken ?? ''
   );
 
 
@@ -58,12 +58,6 @@ const StaffPermissionTab = ({
   const hasPermission = (module: string, action: string) => {
     const source = permissionMap.get(`${module.toLowerCase()}:${action}`);
     return source !== undefined && source !== 'block';
-  };
-
-  const isAllGranted = (module: string): boolean => {
-    const moduleData = PERMISSION_MODULES.find((m) => m.id === module);
-    if (!moduleData) return false;
-    return moduleData.actions.every((action) => hasPermission(module, action));
   };
 
   if (isLoading) {

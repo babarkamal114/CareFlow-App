@@ -13,20 +13,36 @@ import {
 import { Checkbox } from "@/components/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { ArrowUpDown, ChevronRight } from "lucide-react";
-import { SortDirection, SortField, StaffTableProps } from "types";
-import { formatUKPhone, getEmployeeStatusLabel, getEmployeeStatusVariant, getRoleBadgeColor, getStatusBadgeColor } from "utils";
+import { SortDirection, SortField, StaffMember, StaffTableProps } from "types";
+import { formatUKPhone, getEmployeeStatusLabel, getEmployeeStatusVariant, getRoleBadgeColor } from "utils";
 import { TableBulkActions, StaffViewDrawer } from "@/components/ui";
 import { Badge, type BadgeProps } from"@/components/ui"
 import { formatRoleName } from "utils";
 import { buildComplianceForStaff, overallComplianceStatus } from "lib";
 import { ComplianceIndicator } from "./ComplianceIndicator";
 
-export function StaffTable({ data, onEdit, onDelete, onView }: StaffTableProps) {
+interface SortableHeaderProps {
+  field: SortField;
+  label: string;
+  active: boolean;
+  onSort: (field: SortField) => void;
+}
+
+function SortableHeader({ field, label, active, onSort }: SortableHeaderProps) {
+  return (
+    <button onClick={() => onSort(field)} className="flex items-center gap-2 font-medium text-cf-ink-60 hover:text-cf-ink transition-colors">
+      {label}
+      <ArrowUpDown className={`h-4 w-4 ${active ? "text-cf-brand-500" : "opacity-40"}`} />
+    </button>
+  );
+}
+
+export function StaffTable({ data, onDelete }: StaffTableProps) {
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [viewingStaff, setViewingStaff] = useState(null);
+  const [viewingStaff, setViewingStaff] = useState<StaffMember | null>(null);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -66,19 +82,12 @@ export function StaffTable({ data, onEdit, onDelete, onView }: StaffTableProps) 
     }
   };
 
-  const handleView = (staff: any) => {
+  const handleView = (staff: StaffMember) => {
     setViewingStaff(staff);
     setDrawerOpen(true);
   };
 
   const getInitials = (name: string) => name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
-
-  const SortableHeader = ({ field, label }: { field: SortField; label: string }) => (
-    <button onClick={() => handleSort(field)} className="flex items-center gap-2 font-medium text-cf-ink-60 hover:text-cf-ink transition-colors">
-      {label}
-      <ArrowUpDown className={`h-4 w-4 ${sortField === field ? "text-cf-brand-500" : "opacity-40"}`} />
-    </button>
-  );
 
   const allSelected = selectedRows.size === sortedData.length && sortedData.length > 0;
   const someSelected = selectedRows.size > 0 && selectedRows.size < sortedData.length;
@@ -98,13 +107,13 @@ export function StaffTable({ data, onEdit, onDelete, onView }: StaffTableProps) 
                     className="border-cf-border"
                   />
                 </TableHead>
-                <TableHead className="text-cf-ink-60"><SortableHeader field="name" label="Employee" /></TableHead>
+                <TableHead className="text-cf-ink-60"><SortableHeader field="name" label="Employee" active={sortField === "name"} onSort={handleSort} /></TableHead>
                 <TableHead className="text-cf-ink-60">Contact Info</TableHead>
-                <TableHead className="text-cf-ink-60"><SortableHeader field="role" label="Role" /></TableHead>
+                <TableHead className="text-cf-ink-60"><SortableHeader field="role" label="Role" active={sortField === "role"} onSort={handleSort} /></TableHead>
                 <TableHead className="text-cf-ink-60">Employment</TableHead>
                 <TableHead className="text-cf-ink-60">Compliance</TableHead>
-                <TableHead className="text-cf-ink-60"><SortableHeader field="status" label="Status" /></TableHead>
-                <TableHead className="text-cf-ink-60"><SortableHeader field="joinDate" label="Join Date" /></TableHead>
+                <TableHead className="text-cf-ink-60"><SortableHeader field="status" label="Status" active={sortField === "status"} onSort={handleSort} /></TableHead>
+                <TableHead className="text-cf-ink-60"><SortableHeader field="joinDate" label="Join Date" active={sortField === "joinDate"} onSort={handleSort} /></TableHead>
                 <TableHead className="w-12 text-cf-ink-60">Actions</TableHead>
               </TableRow>
             </TableHeader>

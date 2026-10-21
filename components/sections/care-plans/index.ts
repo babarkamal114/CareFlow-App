@@ -16,3 +16,4 @@ export { ModuleTypeSelection } from "./create-plan/ModuleTypeSelection";
 export { ModuleDetailsForm as ModuleDetailForm } from "./create-plan/ModuleDetailForm";
 export { ModuleReviewSubmit } from "./create-plan/ModuleReviewSubmit";
 export { PersonalCareForm } from "./create-plan/PersonalCareForm";
+export { CarePlanAiSuggestions } from "./CarePlanAiSuggestions";

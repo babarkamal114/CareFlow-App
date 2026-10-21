@@ -277,13 +277,13 @@ export function PersonalCareForm({ data, onUpdate, onValidate }: PersonalCareFor
               {(data?.skinIntegrity?.preventionMeasures || []).map((measure: string, index: number) => (
                 <Badge key={`measure-${measure}-${index}`} variant="secondary" className="flex items-center gap-1">
                   {measure}
-                  <button
+                  <Button
                     type="button"
                     onClick={() => removePreventionMeasure(index)}
                     className="hover:text-red-600"
                   >
                     <X className="h-3 w-3" />
-                  </button>
+                  </Button>
                 </Badge>
               ))}
             </div>
@@ -319,13 +319,13 @@ export function PersonalCareForm({ data, onUpdate, onValidate }: PersonalCareFor
             {(data?.preferences || []).map((preference: string, index: number) => (
               <Badge key={`pref-${preference}-${index}`} variant="secondary" className="flex items-center gap-1">
                 {preference}
-                <button
+                <Button
                   type="button"
                   onClick={() => removeItem('preferences', index)}
                   className="hover:text-red-600"
                 >
                   <X className="h-3 w-3" />
-                </button>
+                </Button>
               </Badge>
             ))}
           </div>
@@ -360,13 +360,13 @@ export function PersonalCareForm({ data, onUpdate, onValidate }: PersonalCareFor
             {(data?.goals || []).map((goal: string, index: number) => (
               <Badge key={`goal-${goal}-${index}`} variant="secondary" className="flex items-center gap-1">
                 {goal}
-                <button
+                <Button
                   type="button"
                   onClick={() => removeItem('goals', index)}
                   className="hover:text-red-600"
                 >
                   <X className="h-3 w-3" />
-                </button>
+                </Button>
               </Badge>
             ))}
           </div>
