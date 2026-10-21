@@ -132,13 +132,13 @@ export function AttachmentsStep({
                     <DotSeparated parts={getAttachmentMetaParts(attachment)} />
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveAttachment(attachment.id)}
                   className="text-cf-ink-40 hover:text-cf-ink transition-colors flex-shrink-0"
                   aria-label={`Remove ${attachment.name}`}
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

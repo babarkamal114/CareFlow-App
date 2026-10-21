@@ -342,7 +342,8 @@ export type IncidentType =
   | 'missed-visit' 
   | 'other';
 
-export type IncidentSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+export type IncidentSeverity = "minor" | "moderate" | "severe" | "catastrophic";
 export type IncidentStatus = 'reported' | 'investigating' | 'resolved' | 'closed';
 
 export interface Incident {
@@ -359,7 +360,7 @@ export interface Incident {
   status: IncidentStatus;
   location?: string;
   witnesses?: string[];
-  evidence?: string[]; 
+  evidence?: string[];
   investigationNotes: {
     note: string;
     author: string;
@@ -368,6 +369,24 @@ export interface Incident {
   nextReviewDate?: Date;
   createdAt: Date;
   updatedAt: Date;
+  antecedent?: string;
+  consequence?: string;
+  immediateActions?: string;
+  carePlanFollowed?: boolean | null;
+  carePlanDeviationReason?: string;
+  emergencyServicesCalled?: boolean;
+  emergencyServicesDetails?: string;
+  injuriesObserved?: boolean;
+  injuryDetails?: InjuryDetail[];
+  bodyMapMarkings?: NonNullable<IncidentFormData["bodyMapData"]>["markings"];
+  contributingFactors?: string[];
+  followUpPlan?: string;
+  rootCause?: string;
+  preventiveActions?: string;
+  lessonsLearned?: string;
+  isCqcNotifiable?: boolean;
+  isRiddorReportable?: boolean;
+  isSafeguardingConcern?: boolean;
 }
 
 
