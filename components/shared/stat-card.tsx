@@ -20,6 +20,9 @@ function StatCard({
   badgeVariant = "softSuccess",
   children
 }: StatCardProps) {
+  
+  const isDown = trend === "down";
+
   return (
       <MagicCard
       mode="gradient"
@@ -65,11 +68,15 @@ function StatCard({
           <div className="flex items-end gap-2">
             {hasValueBadge && (
               <Badge 
-                variant="softSuccess" 
+                variant={isDown ? "softDanger" : "softSuccess"} 
                 shape="pill"
                 badgeSize={'md'}
               >
-                <ArrowUp className="size-3.5" />
+                {isDown ? (
+                  <ArrowDown className="size-3.5" />
+                ) : (
+                  <ArrowUp className="size-3.5" />
+                )}
                 {valueBadgeValue}
               </Badge>
             )}

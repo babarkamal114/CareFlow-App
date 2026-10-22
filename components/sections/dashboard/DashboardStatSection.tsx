@@ -1,79 +1,111 @@
-'use client'
+"use client";
 
-import React, { use } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+import { Activity, AlertCircle, CalendarDays, CheckCircle2, Clock } from "lucide-react";
+import type { ReactNode } from "react";
+
+import { Progress, ProgressIndicator, ProgressTrack } from "@/components/ui";
 import { StatCard } from "shared";
-import { Users, Calendar, ClipboardList, DollarSign } from "lucide-react";
+import type { DashboardVisitSummary } from "types";
 
-const cards = [
-  {
-    label: "Total Patients",
-    value: "142",
-    Icon: Users,
-    description: "Active patients under care",
-    showScore: false,
-    showTrend: true,
-    trend: "up" as const,
-    hasCqcScore: false,
-    hasValueBadge: true,
-    valueBadgeValue: "12%",
-    badgeVariant: "softSuccess" as const,
-  },
-  {
-    label: "Active Staff",
-    value: "31",
-    Icon: Users,
-    description: "Staff currently active",
-    showScore: false,
-    showTrend: true,
-    trend: "up" as const,
-    hasCqcScore: false,
-    hasValueBadge: true,
-    valueBadgeValue: "8%",
-    badgeVariant: "softInfo" as const,
-  },
-  {
-    label: "Today's Visits",
-    value: "48",
-    Icon: Calendar,
-    description: "Visits scheduled today",
-    showScore: true,
-    score: 92,
-    showTrend: false,
-    hasCqcScore: false,
-    hasValueBadge: false,
-    badgeVariant: "softWarning" as const,
-  },
-  {
-    label: "Revenue",
-    value: "$42,500",
-    Icon: DollarSign,
-    description: "This month's revenue",
-    showScore: true,
-    score: 78,
-    showTrend: false,
-    hasCqcScore: false,
-    hasValueBadge: false,
-    badgeVariant: "softDanger" as const,
-  },
-];
+const gridVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
 
-function DashboardStatSection() {
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+};
+
+function StatItem({ children }: { children: ReactNode }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card, i) => (
-        <motion.div
-          key={card.label}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-          whileHover={{ y: -3 }}
-        >
-          <StatCard {...card} />
-        </motion.div>
-      ))}
-    </div>
+    <motion.div variants={cardVariants} className="h-full [&>*]:h-full">
+      {children}
+    </motion.div>
   );
 }
 
-export default DashboardStatSection;
+interface DashboardStatSectionProps {
+  summary: DashboardVisitSummary;
+  /** 0-100 */
+  completionRate: number;
+  /** Visits that have not started yet */
+  upcoming: number;
+}
+
+/** Today's numbers: scheduled, completed, in progress, late and missed visits. */
+export function DashboardStatSection({ summary, completionRate, upcoming }: DashboardStatSectionProps) {
+  return (
+    <motion.div
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5"
+      variants={gridVariants}
+      initial="hidden"
+      animate="show"
+    >
+      <StatItem>
+        <StatCard
+          label="Visits Today"
+          value={summary.total.toLocaleString("en-GB")}
+          Icon={CalendarDays}
+          description="Total scheduled today"
+        >
+          <p className="text-xs text-cf-ink-60">{upcoming} still to start</p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="Completed"
+          value={summary.completed.toLocaleString("en-GB")}
+          Icon={CheckCircle2}
+          description="Visits finished today"
+        >
+          <Progress value={completionRate} aria-label="Share of today's visits completed" className="gap-0">
+            <ProgressTrack>
+              <ProgressIndicator className="bg-brand-500" />
+            </ProgressTrack>
+          </Progress>
+          <p className="mt-1.5 text-xs text-cf-ink-60">{completionRate}% of today&apos;s visits</p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="In Progress"
+          value={summary.inProgress.toLocaleString("en-GB")}
+          Icon={Activity}
+          description="Carers with a client now"
+        >
+          <p className="text-xs text-cf-ink-60">Carers with a client now</p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="Late"
+          value={summary.late.toLocaleString("en-GB")}
+          Icon={Clock}
+          description="Carers not checked in"
+        >
+          <p className={summary.late > 0 ? "text-xs font-medium text-cf-amber-500" : "text-xs text-brand-600"}>
+            {summary.late > 0 ? "Check carers have arrived" : "Everyone on time"}
+          </p>
+        </StatCard>
+      </StatItem>
+
+      <StatItem>
+        <StatCard
+          label="Missed"
+          value={summary.missed.toLocaleString("en-GB")}
+          Icon={AlertCircle}
+          description="Visits with no check-in"
+        >
+          <p className={summary.missed > 0 ? "text-xs font-medium text-destructive" : "text-xs text-brand-600"}>
+            {summary.missed > 0 ? "Needs follow-up" : "None today"}
+          </p>
+        </StatCard>
+      </StatItem>
+    </motion.div>
+  );
+}
