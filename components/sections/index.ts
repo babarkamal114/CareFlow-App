@@ -22,3 +22,4 @@ export * from './compliance/CQCRecentAuditTrailCard';
 export * from './compliance/CQCScoreTrend';
 export * from './compliance/DigitalSignaturesPanel';
 export * from './compliance/SafeguardingModule';
+export * from './live-monitoring';
