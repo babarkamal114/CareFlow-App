@@ -41,8 +41,8 @@ export function AgencyDetailsStep({
       <div className="space-y-8">
 
         <div className="space-y-2">
-          <h2 className="text-3xl font-bold text-white">Agency Details</h2>
-          <p className="text-base text-white/70">
+          <h2 className="text-3xl font-bold text-black">Agency Details</h2>
+          <p className="text-base text-black/70">
             Tell us about your agency so we can personalize your experience.
           </p>
         </div>
@@ -50,7 +50,7 @@ export function AgencyDetailsStep({
 
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm font-semibold text-white">
+            <Label htmlFor="name" className="text-sm font-semibold text-black">
               Agency Name <span className="text-red-400">*</span>
             </Label>
             <Input
@@ -59,14 +59,14 @@ export function AgencyDetailsStep({
               value={formData.name}
               onChange={(e) => updateField("name", e.target.value)}
               placeholder="e.g., CareFlow London"
-              className="mt-2 border-white/10 bg-white/5 text-white placeholder:text-white/40 focus:border-primary/50 focus:ring-primary/30 focus:bg-white/10"
+              className="mt-2 border-gray-200 bg-white text-black placeholder:text-black/40 focus:border-primary/50 focus:ring-primary/30"
               required
             />
-            <p className="text-xs text-white/60">The name customers will see</p>
+            <p className="text-xs text-black/60">The name customers will see</p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone" className="text-sm font-semibold text-white">
+            <Label htmlFor="phone" className="text-sm font-semibold text-black">
               Phone Number
             </Label>
             <Input
@@ -75,13 +75,13 @@ export function AgencyDetailsStep({
               value={formData.phone || ""}
               onChange={(e) => updateField("phone", e.target.value)}
               placeholder="020 7123 4567"
-              className="mt-2 border-white/10 bg-white/5 text-white placeholder:text-white/40 focus:border-primary/50 focus:ring-primary/30 focus:bg-white/10"
+              className="mt-2 border-gray-200 bg-white text-black placeholder:text-black/40 focus:border-primary/50 focus:ring-primary/30"
             />
-            <p className="text-xs text-white/60">Used for important notifications</p>
+            <p className="text-xs text-black/60">Used for important notifications</p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="address" className="text-sm font-semibold text-white">
+            <Label htmlFor="address" className="text-sm font-semibold text-black">
               Address
             </Label>
             <Input
@@ -90,14 +90,14 @@ export function AgencyDetailsStep({
               value={formData.address || ""}
               onChange={(e) => updateField("address", e.target.value)}
               placeholder="123 High Street"
-              className="mt-2 border-white/10 bg-white/5 text-white placeholder:text-white/40 focus:border-primary/50 focus:ring-primary/30 focus:bg-white/10"
+              className="mt-2 border-gray-200 bg-white text-black placeholder:text-black/40 focus:border-primary/50 focus:ring-primary/30"
             />
           </div>
 
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="city" className="text-sm font-semibold text-white">
+              <Label htmlFor="city" className="text-sm font-semibold text-black">
                 City
               </Label>
               <Input
@@ -106,11 +106,11 @@ export function AgencyDetailsStep({
                 value={formData.city || ""}
                 onChange={(e) => updateField("city", e.target.value)}
                 placeholder="London"
-                className="mt-2 border-white/10 bg-white/5 text-white placeholder:text-white/40 focus:border-primary/50 focus:ring-primary/30 focus:bg-white/10"
+                className="mt-2 border-gray-200 bg-white text-black placeholder:text-black/40 focus:border-primary/50 focus:ring-primary/30"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="postcode" className="text-sm font-semibold text-white">
+              <Label htmlFor="postcode" className="text-sm font-semibold text-black">
                 Postcode
               </Label>
               <Input
@@ -119,7 +119,7 @@ export function AgencyDetailsStep({
                 value={formData.postcode || ""}
                 onChange={(e) => updateField("postcode", e.target.value)}
                 placeholder="SW1A 1AA"
-                className="mt-2 border-white/10 bg-white/5 text-white placeholder:text-white/40 focus:border-primary/50 focus:ring-primary/30 focus:bg-white/10"
+                className="mt-2 border-gray-200 bg-white text-black placeholder:text-black/40 focus:border-primary/50 focus:ring-primary/30"
               />
             </div>
           </div>
@@ -127,18 +127,18 @@ export function AgencyDetailsStep({
       </div>
 
 
-      <div className="flex gap-3 border-t border-white/10 pt-6">
+      <div className="flex gap-3 border-t border-gray-200 pt-6">
         <Button
           type="button"
           variant="outline"
           onClick={onBack}
-          className="border-white/20 bg-white/5 text-white hover:bg-white/10"
+          className="border-gray-200 bg-white text-black hover:bg-gray-50"
         >
           Back
         </Button>
         <Button
           type="submit"
-          className="flex-1 gap-2 bg-primary text-base font-semibold text-white hover:bg-primary/80 active:bg-primary/90 disabled:bg-white/10 disabled:text-white/40"
+          className="flex-1 gap-2 bg-primary text-base font-semibold text-white hover:bg-primary/80 active:bg-primary/90 disabled:bg-gray-200 disabled:text-black/40"
         >
           Next
         </Button>

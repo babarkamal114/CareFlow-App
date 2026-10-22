@@ -12,6 +12,7 @@ export * from './visit-to-event-converter';
 export * from './style-getters';
 export * from './type-color-map';
 export * from './file-format-size'
+export * from './slug-generator'
 export * from './progress-colors'
 export * from './dashboard-notifications'
 export * from './dashboard-helpers'

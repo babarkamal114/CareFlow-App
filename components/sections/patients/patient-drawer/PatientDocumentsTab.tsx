@@ -102,7 +102,7 @@ export function PatientDocumentsTab() {
       <div className="flex items-end gap-2">
         <div className="flex-1 space-y-1">
           <label className="text-xs font-medium text-cf-ink">Document Type</label>
-          <Select value={docType} onValueChange={setDocType}>
+          <Select value={docType} onValueChange={setDocType as any}>
             <SelectTrigger className="border-cf-border h-9">
               <SelectValue placeholder="Select document type" />
             </SelectTrigger>
@@ -165,13 +165,13 @@ export function PatientDocumentsTab() {
                       </div>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleRemove(doc.id)}
                     className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 p-1"
                     aria-label={`Remove ${doc.name}`}
                   >
                     <X className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
               </CardContent>
             </Card>

@@ -40,8 +40,8 @@ export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
           </TableHeader>
           <TableBody>
             {Array.from({ length: rows }).map((_, index) => (
-              <TableRow 
-                key={index} 
+              <TableRow
+                key={index}
                 className="border-b border-cf-border-light hover:bg-transparent"
               >
                 {/* Checkbox */}

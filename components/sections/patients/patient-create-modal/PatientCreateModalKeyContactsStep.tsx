@@ -255,12 +255,12 @@ export function KeyContactsStep({ formData, setFormData, errors, setErrors }: Ke
                     )}
                   </div>
                 </div>
-                <button
+                <Button
                   onClick={() => handleRemoveContact(contact.id)}
                   className="text-cf-ink-40 hover:text-cf-error transition-colors"
                 >
                   <X className="w-4 h-4" />
-                </button>
+                </Button>
               </CardContent>
             </Card>
           ))}

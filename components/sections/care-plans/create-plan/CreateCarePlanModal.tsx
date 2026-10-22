@@ -109,7 +109,7 @@ export function CarePlanCreationModal({
           <ModuleDetailsForm
             type={creationData.type!}
             data={creationData.content}
-            onUpdate={(content) => updateCreationData({ content })}
+            onUpdate={(content) => updateCreationData( content )}
             onNext={handleNext}
             onBack={handleBack}
           />
