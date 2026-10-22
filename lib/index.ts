@@ -6,3 +6,5 @@ export * from "./hooks";
 export * from "./api/client";
 export * from "./mock/staff-mock-data";
 export * from "./mock/staff-compliance-mock";
+export * from "./validations";
+export * from "./mock/staff-profile-mock";

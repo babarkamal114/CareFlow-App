@@ -48,7 +48,7 @@ import {
   TabsTrigger,
   Textarea,
   toast,
-} from @/components/ui
+} from '@/components/ui'
 
 import { GalleryBadgesAvatars } from "./gallery-badges-avatars"
 import { GalleryCards } from "./gallery-cards"

@@ -12,7 +12,7 @@ export * from './schedule';
 export * from './incidents/IncidentHeaderSection';
 export * from './incidents/IncidentStatsSection';
 export * from './incidents/IncidentDetailDrawer';
-export * from './incidents/ReportIncidentModal';
+export * from './incidents/report-incident';
 export * from './compliance/ComplianceAlerts';
 export * from './compliance/CQCInspectionPack';
 export * from './compliance/CQCKeyRegulationCard';
