@@ -1,8 +1,8 @@
 "use client";
 
 import { ReportConfirmDialog, ReportScheduleDialog } from "@/components/ui";
-import { useReportsAccess } from "@/hooks/use-reports-access";
-import { useScheduledReports } from "@/hooks/use-scheduled-reports";
+import { useReportsAccess } from "hooks";
+import { useScheduledReports } from "hooks";
 import { useMemo } from "react";
 import { ReportsActivitySection } from "./ReportsActivitySection";
 import { ReportsBuilderSection } from "./ReportsBuilderSection";

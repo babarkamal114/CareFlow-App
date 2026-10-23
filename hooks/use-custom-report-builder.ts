@@ -3,7 +3,7 @@
 import { toast } from "@/components/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteReportTemplate, getReportDataset, saveReportTemplate } from "lib";
-import { validateBuilderConfig } from "@/lib/validations/reports";
+import { validateBuilderConfig } from "lib";
 import { useMemo, useState } from "react";
 import type { ReportBuilderConfig, ReportDataset, ReportExportFormat, ReportRole, ReportTemplate } from "types";
 import { REPORT_DEFAULT_BUILDER_CONFIG, runCustomReport } from "utils";
