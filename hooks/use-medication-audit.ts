@@ -1,20 +1,21 @@
 "use client";
 
-import { toast } from "@/components/ui";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MEDICATION_MOCK_NOW, generateAuditReport } from "lib";
+import {
+  MEDICATION_MOCK_NOW, useGenerateAuditReportApi, useGetAuditReportsApi, useGetMedicationHistoryApi, useGetMedicationPatientsApi,
+  useGetMedicationsApi,
+} from "lib";
 import { useMemo } from "react";
+import { toast } from "sonner";
 import {
   buildAuditSummary, buildDailyRates, buildMedicationAuditCsv, buildOmissionReasons, buildRefusalPatterns, downloadMedicationFile, findGaps,
 } from "utils";
-import { medicationKeys, useAuditReportsQuery, useHistoryQuery, useMedicationPatientsQuery, useMedicationsQuery } from "./use-medication-queries";
 
 export function useMedicationAudit() {
-  const qc = useQueryClient();
-  const historyQ = useHistoryQuery();
-  const medsQ = useMedicationsQuery();
-  const patientsQ = useMedicationPatientsQuery();
-  const reportsQ = useAuditReportsQuery();
+  const historyQ = useGetMedicationHistoryApi();
+  const medsQ = useGetMedicationsApi();
+  const patientsQ = useGetMedicationPatientsApi();
+  const reportsQ = useGetAuditReportsApi();
+  const generateReport = useGenerateAuditReportApi();
   const now = MEDICATION_MOCK_NOW;
 
   const history = historyQ.data ?? [];
@@ -32,20 +33,19 @@ export function useMedicationAudit() {
     toast.success("MAR audit exported");
   };
 
-  const generateMutation = useMutation({
-    mutationFn: generateAuditReport,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: medicationKeys.reports });
-      exportCsv();
-      toast.success("Audit report generated");
-    },
-    onError: () => toast.error("Could not generate the report."),
-  });
+  const generate = () => {
+    generateReport.mutate(undefined, {
+      onSuccess: () => {
+        exportCsv();
+        toast.success("Audit report generated");
+      },
+    });
+  };
 
   return {
     summary, daily, reasons, patterns, gaps, reports: reportsQ.data ?? [], now,
     isLoading: historyQ.isLoading || medsQ.isLoading || patientsQ.isLoading,
-    generate: () => generateMutation.mutate(), isGenerating: generateMutation.isPending, exportCsv,
-    downloadReport: () => exportCsv(),
+    generate, isGenerating: generateReport.isPending, exportCsv,
+    downloadReport: exportCsv,
   };
 }

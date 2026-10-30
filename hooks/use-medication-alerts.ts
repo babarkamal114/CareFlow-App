@@ -1,16 +1,18 @@
 "use client";
 
-import { MEDICATION_MOCK_NOW, mockInteractionRules } from "lib";
+import {
+  MEDICATION_MOCK_NOW, mockInteractionRules, useGetControlledDataApi, useGetMedicationHistoryApi, useGetPrnRecordsApi,
+} from "lib";
 import { useMemo, useState } from "react";
 import type { MedAlertSeverity } from "types";
 import { buildMedicationAlerts } from "utils";
-import { useControlledQuery, useHistoryQuery, usePrnQuery, useRoundRows } from "./use-medication-queries";
+import { useRoundRows } from "./use-round-rows";
 
 export function useMedicationAlerts() {
   const { rows, patients, medications, isLoading: roundLoading } = useRoundRows();
-  const historyQ = useHistoryQuery();
-  const prnQ = usePrnQuery();
-  const controlledQ = useControlledQuery();
+  const historyQ = useGetMedicationHistoryApi();
+  const prnQ = useGetPrnRecordsApi();
+  const controlledQ = useGetControlledDataApi();
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set());
   const [severity, setSeverity] = useState<MedAlertSeverity | "all">("all");
 

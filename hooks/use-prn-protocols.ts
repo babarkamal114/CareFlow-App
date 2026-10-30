@@ -1,19 +1,22 @@
 "use client";
 
-import { toast } from "@/components/ui";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MEDICATION_CURRENT_USER, MEDICATION_MOCK_NOW, recordPrn, recordPrnFollowUp } from "lib";
+import {
+  MEDICATION_CURRENT_USER, MEDICATION_MOCK_NOW, useGetMedicationPatientsApi, useGetMedicationsApi, useGetPrnRecordsApi,
+  useRecordPrnApi, useRecordPrnFollowUpApi,
+} from "lib";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import type { PrnFollowUpFormData, PrnFormData, PrnRow } from "types";
 import { getPrnFollowUpState, getPrnUsage } from "utils";
-import { medicationKeys, useMedicationPatientsQuery, useMedicationsQuery, usePrnQuery } from "./use-medication-queries";
 
 export function usePrnProtocols() {
-  const qc = useQueryClient();
-  const patientsQ = useMedicationPatientsQuery();
-  const medsQ = useMedicationsQuery();
-  const prnQ = usePrnQuery();
+  const patientsQ = useGetMedicationPatientsApi();
+  const medsQ = useGetMedicationsApi();
+  const prnQ = useGetPrnRecordsApi();
+  const recordPrn = useRecordPrnApi();
+  const recordFollowUp = useRecordPrnFollowUpApi();
   const now = MEDICATION_MOCK_NOW;
+
   const [recordOpen, setRecordOpen] = useState(false);
   const [followUpId, setFollowUpId] = useState<string | null>(null);
 
@@ -36,40 +39,43 @@ export function usePrnProtocols() {
 
   const followUpRow = rows.find((r) => r.record.id === followUpId) ?? null;
 
-  /** Limits the zod schema enforces for the chosen PRN medication. */
   const getLimits = (medicationId: string) => {
     const med = medications.find((m) => m.id === medicationId);
     const usage = getPrnUsage(records, medicationId, now);
     return { minIntervalHours: med?.prnMinIntervalHours ?? 0, maxPer24h: med?.prnMaxPer24h ?? 99, ...usage, now };
   };
 
-  const recordMutation = useMutation({
-    mutationFn: recordPrn,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: medicationKeys.prn });
-      setRecordOpen(false);
-      toast.success("PRN dose recorded — effectiveness check due in 30–60 minutes");
-    },
-    onError: () => toast.error("Could not record the PRN dose."),
-  });
+  const submitPrn = (data: PrnFormData) => {
+    recordPrn.mutate(
+      { data, recordedBy: MEDICATION_CURRENT_USER },
+      {
+        onSuccess: () => {
+          setRecordOpen(false);
+          toast.success("PRN dose recorded — effectiveness check due in 30–60 minutes");
+        },
+      },
+    );
+  };
 
-  const followUpMutation = useMutation({
-    mutationFn: recordPrnFollowUp,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: medicationKeys.prn });
-      setFollowUpId(null);
-      toast.success("Effectiveness check recorded");
-    },
-    onError: () => toast.error("Could not save the check."),
-  });
+  const submitFollowUp = (data: PrnFollowUpFormData) => {
+    if (!followUpId) return;
+    recordFollowUp.mutate(
+      { id: followUpId, data, recordedBy: MEDICATION_CURRENT_USER },
+      {
+        onSuccess: () => {
+          setFollowUpId(null);
+          toast.success("Effectiveness check recorded");
+        },
+      },
+    );
+  };
 
   return {
-    rows, prnMeds, patients, medications, now, isLoading: patientsQ.isLoading || medsQ.isLoading || prnQ.isLoading,
+    rows, prnMeds, patients, medications, now,
+    isLoading: patientsQ.isLoading || medsQ.isLoading || prnQ.isLoading,
     recordOpen, setRecordOpen, getLimits,
-    submitPrn: (data: PrnFormData) => recordMutation.mutate({ data, recordedBy: MEDICATION_CURRENT_USER }),
-    isSavingPrn: recordMutation.isPending,
+    submitPrn, isSavingPrn: recordPrn.isPending,
     followUpRow, openFollowUp: (id: string) => setFollowUpId(id), closeFollowUp: () => setFollowUpId(null),
-    submitFollowUp: (data: PrnFollowUpFormData) => followUpId && followUpMutation.mutate({ id: followUpId, data, recordedBy: MEDICATION_CURRENT_USER }),
-    isSavingFollowUp: followUpMutation.isPending,
+    submitFollowUp, isSavingFollowUp: recordFollowUp.isPending,
   };
 }
