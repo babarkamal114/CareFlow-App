@@ -13,11 +13,6 @@ export function MedicationHeaderSection({ urgentCount, onAdd, onViewAlerts }: Me
         <p className="mt-1 text-sm text-cf-ink-60">Electronic medication administration record (eMAR)</p>
       </div>
       <div className="flex gap-2">
-        <Button variant="outline" onClick={onViewAlerts}>
-          <BellRing />
-          Alerts
-          {urgentCount > 0 && <Badge variant="softDanger" shape="pill" badgeSize="sm">{urgentCount}</Badge>}
-        </Button>
         <Button onClick={onAdd}><Plus />Add medication</Button>
       </div>
     </div>
