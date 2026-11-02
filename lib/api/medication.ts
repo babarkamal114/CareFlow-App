@@ -2,10 +2,12 @@ import type {
   AdministrationStatus, AuditReport, ControlledEntry, ControlledEntryFormData, ControlledStock, HistoryDose, Medication,
   MedicationFormData, MedicationPatient, PrnFollowUpFormData, PrnFormData, PrnRecord, RecordDoseFormData, ScheduledDose,
 } from "types";
+import { buildDosesForMedication, buildHistory, buildTodayDoses } from "../mock/medication-builders";
 import {
-  MEDICATION_MOCK_NOW, buildDosesForMedication, buildHistory, buildTodayDoses, mockAuditReports, mockControlledEntries,
-  mockControlledStock, mockMedicationPatients, mockMedications, mockPrnRecords,
-} from "./medication-mock";
+  MEDICATION_MOCK_NOW, mockAuditReports, mockControlledEntries, mockControlledStock, mockMedicationPatients,
+  mockMedications, mockPrnRecords,
+} from "../mock/medication-mock";
+import { copy, parseLocal, wait } from "../utils/medication";
 
 interface Db {
   medications: Medication[]; doses: ScheduledDose[]; history: HistoryDose[]; prn: PrnRecord[];
@@ -20,13 +22,7 @@ const store = (): Db =>
     reports: structuredClone(mockAuditReports),
   });
 
-const wait = (ms = 200) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-const copy = <T>(value: T): T => structuredClone(value);
 const now = () => new Date(MEDICATION_MOCK_NOW);
-const parseLocal = (s: string) => {
-  const [y, m, d] = s.split("-").map(Number);
-  return new Date(y, m - 1, d);
-};
 
 // ---- Reads ----
 export async function getMedicationPatients(): Promise<MedicationPatient[]> { await wait(); return copy(mockMedicationPatients); }

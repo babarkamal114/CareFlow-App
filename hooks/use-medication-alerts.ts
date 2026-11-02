@@ -3,7 +3,7 @@
 import {
   MEDICATION_MOCK_NOW, mockInteractionRules, useGetControlledDataApi, useGetMedicationHistoryApi, useGetPrnRecordsApi,
 } from "lib";
-import { useMemo, useState } from "react";
+import { useMemo, useState } from "react"
 import type { MedAlertSeverity } from "types";
 import { buildMedicationAlerts } from "utils";
 import { useRoundRows } from "./use-round-rows";
