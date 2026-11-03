@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 import { useState } from "react"
 
-import { BillingToggle, type BillingCycle } from "@/components/subscription/billing-toggle"
+import { BillingToggle } from "@/components/ui"
+import type { BillingCycle } from "lib"
 
 const meta = {
   title: "Subscription/BillingToggle",

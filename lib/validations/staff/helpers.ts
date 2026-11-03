@@ -66,7 +66,7 @@ export function zodToFormErrors(
 
 export function runSchema<TSchema extends z.ZodType>(
   schema: TSchema,
-  data: z.input<TSchema>,
+  data: unknown,
   fallbackKey?: string
 ): StaffFormErrors {
   const result = schema.safeParse(data);
