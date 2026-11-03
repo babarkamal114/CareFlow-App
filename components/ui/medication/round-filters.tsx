@@ -18,7 +18,7 @@ export function MedicationRoundFilters({ filters, patients, onChange, onReset }:
         <InputGroupInput placeholder="Search patient or medication…" value={filters.search} aria-label="Search the round" onChange={(e) => onChange({ ...filters, search: e.target.value })} />
       </InputGroup>
       <MedSelect<RoundFilter> value={filters.status} options={ROUND_FILTER_OPTIONS} onChange={(status) => onChange({ ...filters, status })} className="w-44" />
-      <MedSelect value={filters.patientId} options={patientOptions} onChange={(patientId) => onChange({ ...filters, patientId })} className="w-44" />
+      {/* <MedSelect value={filters.patientId} options={patientOptions} onChange={(patientId) => onChange({ ...filters, patientId })} className="w-44" /> */}
       {active && <Button variant="ghost" size="sm" onClick={onReset}>Clear filters</Button>}
     </div>
   );
