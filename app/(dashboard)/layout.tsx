@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { DashboardShell } from "@/features/layout";
+import { DashboardShell } from "layouts";
 
 export default async function DashboardLayout({
   children,
