@@ -1,37 +1,79 @@
+'use client'
+
 import { toast } from "@/components/ui";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { reviewAiInsight } from "lib";
-import { useMemo, useState } from "react";
-import type { AiInsightKind } from "types";
-import { reportKeys, useAiInsightsQuery } from "./use-reports-queries";
+import { useReviewAiInsightApi } from "lib";
+import { useState } from "react";
+import type { AiInsight, AiInsightKind } from "types";
+import { useAiInsightsQuery } from "./use-reports-queries";
 
-export function useAiInsights() {
-  const qc = useQueryClient();
-  const insightsQ = useAiInsightsQuery();
-  const [kind, setKind] = useState<AiInsightKind | "all">("all");
-  const [showReviewed, setShowReviewed] = useState(false);
+export interface UseAiInsightsReturn {
+    visible: AiInsight[];
+    isLoading: boolean;
+    kind: AiInsightKind | "all";
+    setKind: (kind: AiInsightKind | "all") => void;
+    showReviewed: boolean;
+    setShowReviewed: (show: boolean) => void;
+    openCount: number;
+    reviewedCount: number;
+    countByKind: (kind: AiInsightKind | "all") => number;
+    accept: (id: string) => void;
+    dismiss: (id: string) => void;
+    isReviewing: boolean;
+}
 
-  const all = insightsQ.data ?? [];
-  const visible = useMemo(
-    () => all.filter((i) => (kind === "all" || i.kind === kind) && (showReviewed || i.status === "suggested")),
-    [all, kind, showReviewed],
-  );
+export function useAiInsights(): UseAiInsightsReturn {
+    const [kind, setKind] = useState<AiInsightKind | "all">("all")
+    const [showReviewed, setShowReviewed] = useState(false)
 
-  const review = useMutation({
-    mutationFn: reviewAiInsight,
-    onSuccess: (ins) => {
-      qc.invalidateQueries({ queryKey: reportKeys.insights });
-      qc.invalidateQueries({ queryKey: reportKeys.activity });
-      toast.success(ins.status === "accepted" ? "Accepted — a follow-up task has been created" : "Insight dismissed");
-    },
-    onError: () => toast.error("Could not update the insight."),
-  });
+    const { data, isLoading } = useAiInsightsQuery()
 
-  return {
-    visible, isLoading: insightsQ.isLoading, kind, setKind, showReviewed, setShowReviewed,
-    openCount: all.filter((i) => i.status === "suggested").length, reviewedCount: all.filter((i) => i.status !== "suggested").length,
-    countByKind: (k: AiInsightKind | "all") => all.filter((i) => i.status === "suggested" && (k === "all" || i.kind === k)).length,
-    accept: (id: string) => review.mutate({ id, status: "accepted" }), dismiss: (id: string) => review.mutate({ id, status: "dismissed" }),
-    isReviewing: review.isPending,
-  };
+    // the list refetches by itself after a review succeeds
+    const { mutate: reviewInsight, isPending: isReviewing } = useReviewAiInsightApi({
+        onSuccess: (_response, variables) => {
+            if (variables.status === "accepted") {
+                toast.success("Accepted — a follow-up task has been created")
+            } else {
+                toast.success("Insight dismissed")
+            }
+        },
+        onError: () => toast.error("Could not update the insight.")
+    })
+
+    const all = data ?? []
+    const open = all.filter((insight) => insight.status === "suggested")
+    const reviewed = all.filter((insight) => insight.status !== "suggested")
+
+    // what the screen shows: the chosen kind, open ones only unless "show reviewed" is on
+    const visible = all.filter((insight) => {
+        const kindMatches = kind === "all" || insight.kind === kind
+        const statusMatches = showReviewed || insight.status === "suggested"
+        return kindMatches && statusMatches
+    })
+
+    const countByKind = (k: AiInsightKind | "all") => {
+        return open.filter((insight) => k === "all" || insight.kind === k).length
+    }
+
+    const accept = (id: string) => {
+        reviewInsight({ id, status: "accepted" })
+    }
+
+    const dismiss = (id: string) => {
+        reviewInsight({ id, status: "dismissed" })
+    }
+
+    return {
+        visible,
+        isLoading,
+        kind,
+        setKind,
+        showReviewed,
+        setShowReviewed,
+        openCount: open.length,
+        reviewedCount: reviewed.length,
+        countByKind,
+        accept,
+        dismiss,
+        isReviewing
+    }
 }

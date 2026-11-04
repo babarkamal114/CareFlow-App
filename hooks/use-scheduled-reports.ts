@@ -1,50 +1,128 @@
-"use client";
+'use client'
 
 import { toast } from "@/components/ui";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { REPORTS_MOCK_NOW, deleteReportSchedule, saveReportSchedule, setReportScheduleStatus } from "lib";
+import { REPORTS_MOCK_NOW, useDeleteReportScheduleApi, useSaveReportScheduleApi, useSetReportScheduleStatusApi } from "lib";
 import { useState } from "react";
-import type { ReportSchedule, ReportScheduleFormData } from "types";
-import { reportKeys, useLibraryReportsQuery, useReportSchedulesQuery } from "./use-reports-queries";
+import type { LibraryReport, ReportSchedule, ReportScheduleFormData } from "types";
+import { useLibraryReportsQuery, useReportSchedulesQuery } from "./use-reports-queries";
 
-interface DialogState { open: boolean; reportId: string | null; schedule: ReportSchedule | null }
-const CLOSED: DialogState = { open: false, reportId: null, schedule: null };
+export interface ScheduleDialogState {
+    open: boolean;
+    reportId: string | null;
+    schedule: ReportSchedule | null;
+}
 
-export function useScheduledReports() {
-  const qc = useQueryClient();
-  const schedulesQ = useReportSchedulesQuery();
-  const libraryQ = useLibraryReportsQuery();
-  const [dialog, setDialog] = useState<DialogState>(CLOSED);
-  const [deleteTarget, setDeleteTarget] = useState<ReportSchedule | null>(null);
+export interface UseScheduledReportsReturn {
+    schedules: ReportSchedule[];
+    reports: LibraryReport[];
+    now: Date;
+    isLoading: boolean;
+    reportTitle: (id: string) => string;
 
-  const refresh = () => {
-    qc.invalidateQueries({ queryKey: reportKeys.schedules });
-    qc.invalidateQueries({ queryKey: reportKeys.activity });
-  };
+    dialog: ScheduleDialogState;
+    openCreate: (reportId?: string) => void;
+    openEdit: (schedule: ReportSchedule) => void;
+    closeDialog: () => void;
+    submit: (data: ReportScheduleFormData) => void;
+    isSaving: boolean;
+    toggleStatus: (schedule: ReportSchedule) => void;
 
-  const save = useMutation({
-    mutationFn: saveReportSchedule,
-    onSuccess: (_s, vars) => { refresh(); setDialog(CLOSED); toast.success(vars.id ? "Schedule updated" : "Report scheduled"); },
-    onError: () => toast.error("Could not save the schedule."),
-  });
-  const setStatus = useMutation({
-    mutationFn: setReportScheduleStatus,
-    onSuccess: (_d, vars) => { refresh(); toast.success(vars.status === "paused" ? "Schedule paused" : "Schedule resumed"); },
-  });
-  const remove = useMutation({
-    mutationFn: deleteReportSchedule,
-    onSuccess: () => { refresh(); setDeleteTarget(null); toast.success("Schedule deleted"); },
-    onError: () => toast.error("Could not delete the schedule."),
-  });
+    deleteTarget: ReportSchedule | null;
+    askDelete: (schedule: ReportSchedule | null) => void;
+    confirmDelete: () => void;
+    isDeleting: boolean;
+}
 
-  const reports = libraryQ.data ?? [];
-  return {
-    schedules: schedulesQ.data ?? [], reports, now: REPORTS_MOCK_NOW, isLoading: schedulesQ.isLoading || libraryQ.isLoading,
-    reportTitle: (id: string) => reports.find((r) => r.id === id)?.title ?? id,
-    dialog, openCreate: (reportId?: string) => setDialog({ open: true, reportId: reportId ?? null, schedule: null }),
-    openEdit: (schedule: ReportSchedule) => setDialog({ open: true, reportId: schedule.reportId, schedule }), closeDialog: () => setDialog(CLOSED),
-    submit: (data: ReportScheduleFormData) => save.mutate({ id: dialog.schedule?.id, data }), isSaving: save.isPending,
-    toggleStatus: (s: ReportSchedule) => setStatus.mutate({ id: s.id, status: s.status === "active" ? "paused" : "active" }),
-    deleteTarget, askDelete: setDeleteTarget, confirmDelete: () => deleteTarget && remove.mutate(deleteTarget.id), isDeleting: remove.isPending,
-  };
+export function useScheduledReports(): UseScheduledReportsReturn {
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [dialogReportId, setDialogReportId] = useState<string | null>(null)
+    const [editingSchedule, setEditingSchedule] = useState<ReportSchedule | null>(null)
+    const [deleteTarget, setDeleteTarget] = useState<ReportSchedule | null>(null)
+
+    const schedulesQ = useReportSchedulesQuery()
+    const libraryQ = useLibraryReportsQuery()
+
+    // the list refetches by itself after each of these succeeds
+    const { mutate: saveSchedule, isPending: isSaving } = useSaveReportScheduleApi({
+        onSuccess: (_response, variables) => {
+            closeDialog()
+            toast.success(variables.id ? "Schedule updated" : "Report scheduled")
+        },
+        onError: () => toast.error("Could not save the schedule.")
+    })
+
+    const { mutate: setStatus } = useSetReportScheduleStatusApi({
+        onSuccess: (_response, variables) => {
+            toast.success(variables.status === "paused" ? "Schedule paused" : "Schedule resumed")
+        }
+    })
+
+    const { mutate: deleteSchedule, isPending: isDeleting } = useDeleteReportScheduleApi({
+        onSuccess: () => {
+            setDeleteTarget(null)
+            toast.success("Schedule deleted")
+        },
+        onError: () => toast.error("Could not delete the schedule.")
+    })
+
+    const reports = libraryQ.data ?? []
+    const schedules = schedulesQ.data ?? []
+    const dialog: ScheduleDialogState = { open: dialogOpen, reportId: dialogReportId, schedule: editingSchedule }
+
+    const reportTitle = (id: string) => {
+        return reports.find((report) => report.id === id)?.title ?? id
+    }
+
+    const openCreate = (reportId?: string) => {
+        setDialogReportId(reportId ?? null)
+        setEditingSchedule(null)
+        setDialogOpen(true)
+    }
+
+    const openEdit = (schedule: ReportSchedule) => {
+        setDialogReportId(schedule.reportId)
+        setEditingSchedule(schedule)
+        setDialogOpen(true)
+    }
+
+    function closeDialog() {
+        setDialogOpen(false)
+        setDialogReportId(null)
+        setEditingSchedule(null)
+    }
+
+    const submit = (data: ReportScheduleFormData) => {
+        saveSchedule({ id: editingSchedule?.id, data })
+    }
+
+    const toggleStatus = (schedule: ReportSchedule) => {
+        const nextStatus = schedule.status === "active" ? "paused" : "active"
+        setStatus({ id: schedule.id, status: nextStatus })
+    }
+
+    const confirmDelete = () => {
+        if (!deleteTarget) return
+        deleteSchedule(deleteTarget.id)
+    }
+
+    return {
+        schedules,
+        reports,
+        now: REPORTS_MOCK_NOW,
+        isLoading: schedulesQ.isLoading || libraryQ.isLoading,
+        reportTitle,
+
+        dialog,
+        openCreate,
+        openEdit,
+        closeDialog,
+        submit,
+        isSaving,
+        toggleStatus,
+
+        deleteTarget,
+        askDelete: setDeleteTarget,
+        confirmDelete,
+        isDeleting
+    }
 }

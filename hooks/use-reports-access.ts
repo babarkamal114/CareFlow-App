@@ -1,11 +1,29 @@
-"use client";
+'use client'
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { ReportRole } from "types";
 import { REPORT_TABS, REPORT_ROLE_TABS } from "utils";
 
-export function useReportsAccess() {
-  const [role, setRole] = useState<ReportRole>("owner");
-  const tabs = useMemo(() => REPORT_TABS.filter((t) => REPORT_ROLE_TABS[role].includes(t.id)), [role]);
-  return { role, setRole, tabs, can: (roles: ReportRole[]) => roles.includes(role) };
+export interface UseReportsAccessReturn {
+    role: ReportRole;
+    setRole: (role: ReportRole) => void;
+    tabs: typeof REPORT_TABS;
+    can: (roles: ReportRole[]) => boolean;
+}
+
+export function useReportsAccess(): UseReportsAccessReturn {
+    const [role, setRole] = useState<ReportRole>("owner")
+    const allowedTabIds = REPORT_ROLE_TABS[role]
+    const tabs = REPORT_TABS.filter((tab) => allowedTabIds.includes(tab.id))
+
+    const can = (roles: ReportRole[]) => {
+        return roles.includes(role)
+    }
+
+    return {
+        role,
+        setRole,
+        tabs,
+        can
+    }
 }

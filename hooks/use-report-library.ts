@@ -1,35 +1,65 @@
-"use client";
+'use client'
 
-import { useQueryClient } from "@tanstack/react-query";
 import { getReportDataset } from "lib";
-import { useMemo, useState } from "react";
-import type { LibraryReport, ReportExportFormat, ReportRole } from "types";
+import { useState } from "react";
+import type { LibraryReport, ReportDataset, ReportExportFormat, ReportRole } from "types";
 import { canViewDataset } from "utils";
 import { useReportExport } from "./use-report-export";
-import { reportKeys, useLibraryReportsQuery, useReportDatasetsQuery } from "./use-reports-queries";
+import { useLibraryReportsQuery, useReportDatasetsQuery } from "./use-reports-queries";
 
-export function useReportLibrary(role: ReportRole) {
-  const qc = useQueryClient();
-  const libraryQ = useLibraryReportsQuery();
-  const { exportReport, logRun } = useReportExport();
-  const [runId, setRunId] = useState<string | null>(null);
+export interface UseReportLibraryReturn {
+    reports: LibraryReport[];
+    isLoading: boolean;
+    runReport: LibraryReport | null;
+    runDatasets: ReportDataset[];
+    datasetsLoading: boolean;
+    openRun: (report: LibraryReport) => void;
+    closeRun: () => void;
+    exportRun: (format: ReportExportFormat) => void;
+    exportFromCard: (report: LibraryReport, format: ReportExportFormat) => Promise<void>;
+}
 
-  const reports = useMemo(() => (libraryQ.data ?? []).filter((r) => r.roles.includes(role)), [libraryQ.data, role]);
-  const runReport = reports.find((r) => r.id === runId) ?? null;
-  const { datasets, isLoading: datasetsLoading } = useReportDatasetsQuery(runReport?.datasetIds ?? []);
-  const runDatasets = useMemo(() => datasets.filter((d) => canViewDataset(role, d)), [datasets, role]);
+export function useReportLibrary(role: ReportRole): UseReportLibraryReturn {
+    const [runId, setRunId] = useState<string | null>(null)
 
-  /** Export without opening the report: fetch (or reuse cached) datasets, then export. */
-  const exportFromCard = async (report: LibraryReport, format: ReportExportFormat) => {
-    const all = await Promise.all(report.datasetIds.map((id) => qc.fetchQuery({ queryKey: reportKeys.dataset(id), queryFn: () => getReportDataset(id), staleTime: Infinity })));
-    exportReport(format, report.title, all.filter((d) => canViewDataset(role, d)));
-  };
+    const { data, isLoading } = useLibraryReportsQuery()
+    const { exportReport, logRun } = useReportExport()
 
-  return {
-    reports, isLoading: libraryQ.isLoading, runReport, runDatasets, datasetsLoading,
-    openRun: (r: LibraryReport) => { setRunId(r.id); logRun(r.title); },
-    closeRun: () => setRunId(null),
-    exportRun: (format: ReportExportFormat) => runReport && exportReport(format, runReport.title, runDatasets),
-    exportFromCard,
-  };
+    const reports = (data ?? []).filter((report) => report.roles.includes(role))
+    const runReport = reports.find((report) => report.id === runId) ?? null
+
+    const { datasets, isLoading: datasetsLoading } = useReportDatasetsQuery(runReport?.datasetIds ?? [])
+    const runDatasets = datasets.filter((dataset) => canViewDataset(role, dataset))
+
+    const openRun = (report: LibraryReport) => {
+        setRunId(report.id)
+        logRun(report.title)
+    }
+
+    const closeRun = () => {
+        setRunId(null)
+    }
+
+    const exportRun = (format: ReportExportFormat) => {
+        if (!runReport) return
+        exportReport(format, runReport.title, runDatasets)
+    }
+
+    const exportFromCard = async (report: LibraryReport, format: ReportExportFormat) => {
+        const all = await Promise.all(report.datasetIds.map((id) => getReportDataset(id)))
+        const allowed = all.filter((dataset) => canViewDataset(role, dataset))
+        exportReport(format, report.title, allowed)
+    }
+
+    return {
+        reports,
+        isLoading,
+        runReport,
+        runDatasets,
+        datasetsLoading,
+        openRun,
+        closeRun,
+        exportRun,
+        exportFromCard
+    }
 }
