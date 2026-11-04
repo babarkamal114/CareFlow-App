@@ -9,7 +9,6 @@ export * from './stat-score-ring-check';
 export * from './show-trend';
 export * from './risk-badge';
 export * from './attention-helpers';
-export * from './live-monitoring-data';
 export * from './visit-to-event-converter';
 export * from './style-getters';
 export * from './type-color-map';
@@ -23,4 +22,6 @@ export {
   type VisitNote,
   type VisitNoteTag,
 } from "./care-plan-ai-suggestions";
+
+export * from './live-monitoring'
  
