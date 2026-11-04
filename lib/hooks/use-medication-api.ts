@@ -10,9 +10,7 @@ import {
   mockPrnRecords,
 } from "lib";
 import { useApiMutation, useApiQuery } from "./use-api";
-
-const mockRequest = <T,>(data: T, delay = 500): Promise<T> =>
-  new Promise((resolve) => setTimeout(() => resolve(data), delay));
+import { mockRequest } from "lib";
 
 const KEY = ["medication"] as const;
 const keys = {
