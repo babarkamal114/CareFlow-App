@@ -1,6 +1,6 @@
 "use client";
 
-import { useDashboardWorkspace } from "lib";
+import { useDashboardWorkspace } from "hooks";
 
 import { DashboardAlertFeedSection } from "./DashboardAlertFeedSection";
 import { DashboardComplianceDueSection } from "./DashboardComplianceDueSection";
@@ -13,7 +13,6 @@ import { DashboardStatSection } from "./DashboardStatSection";
 import { DashboardVisitSection } from "./DashboardVisitSection";
 import { DashboardWeeklyActivitySection } from "./DashboardWeeklyActivitySection";
 
-/** Dashboard layout. Gets all its data from useDashboardWorkspace and hands each section its slice. */
 export function DashboardWorkspaceSection() {
   const { visits, alerts, staff, cqc, revenue, activity, compliance } = useDashboardWorkspace();
 
@@ -45,7 +44,9 @@ export function DashboardWorkspaceSection() {
         <div className="flex xl:col-span-2">
           <DashboardLiveMapSection markers={visits.mapMarkers} activeCount={visits.summary.inProgress} />
         </div>
-        <DashboardCqcSection score={cqc.score} trend={cqc.trend} domains={cqc.domains} />
+        {cqc && (
+          <DashboardCqcSection score={cqc.score} trend={cqc.trend} domains={cqc.domains} />
+        )}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
@@ -54,7 +55,13 @@ export function DashboardWorkspaceSection() {
           completed={activity.totals.completed}
           scheduled={activity.totals.scheduled}
         />
-        <DashboardRevenueSection snapshot={revenue.snapshot} change={revenue.change} bars={revenue.bars} />
+        {revenue && (
+        <DashboardRevenueSection
+          snapshot={revenue.snapshot}
+          change={revenue.change}
+          bars={revenue.bars}
+        />
+      )}
         <DashboardComplianceDueSection items={compliance.items} urgentCount={compliance.urgentCount} />
       </div>
     </div>

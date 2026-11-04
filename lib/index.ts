@@ -7,3 +7,4 @@ export * from "./api/client";
 export * from "./mock/staff-mock-data";
 export * from "./mock/staff-compliance-mock";
 export * from './mock/dashboard-mock';
+export * from './utils/mock-request'
