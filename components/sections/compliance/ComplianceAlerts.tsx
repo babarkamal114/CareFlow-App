@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertDetailSheet, AlertRow, Badge, Card, CardContent, CardHeader, CardTitle, ScrollArea } from '@/components/ui';
+import { AlertDetailDrawer, AlertRow, Badge, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { useComplianceAlerts } from 'hooks';
 import { Bell, CheckCircle2 } from 'lucide-react';
 
@@ -28,16 +28,16 @@ export function ComplianceAlerts() {
               <p className="text-xs text-cf-ink-60">No open compliance alerts.</p>
             </div>
           ) : (
-            <ScrollArea className="max-h-[440px] px-4 pb-4">
+            <div className="max-h-[440px] overflow-y-auto overscroll-contain px-4 pb-4">
               <div className="space-y-3">
                 {a.openAlerts.map((alert) => <AlertRow key={alert.id} alert={alert} onSelect={a.select} />)}
               </div>
-            </ScrollArea>
+            </div>
           )}
         </CardContent>
       </Card>
 
-      <AlertDetailSheet alert={a.selected} open={a.open} onOpenChange={a.setOpen} onResolve={a.resolve} onGoTo={a.goTo} />
+      <AlertDetailDrawer alert={a.selected} open={a.open} onOpenChange={a.setOpen} onResolve={a.resolve} onGoTo={a.goTo} />
     </>
   );
 }

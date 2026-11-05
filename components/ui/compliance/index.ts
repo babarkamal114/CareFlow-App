@@ -1,4 +1,4 @@
-export * from "./alert-detail-sheet";
+export * from "./alert-detail-drawer";
 export * from "./alert-row";
 export * from "./all-regulations-dialog";
 export * from "./assign-action-dialog";
