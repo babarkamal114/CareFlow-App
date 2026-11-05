@@ -218,3 +218,25 @@ export interface UseReportLibraryReturn {
     exportRun: (format: ReportExportFormat) => void;
     exportFromCard: (report: LibraryReport, format: ReportExportFormat) => Promise<void>;
 }
+
+export interface UseCustomReportBuilderReturn {
+    config: ReportBuilderConfig;
+    update: <K extends keyof ReportBuilderConfig>(key: K, value: ReportBuilderConfig[K]) => void;
+    sources: { id: string; title: string }[];
+    dataset: ReportDataset | null;
+    isLoadingDataset: boolean;
+    errors: ReportFormErrors;
+    result: ReportBuilderResult | null;
+    chooseSource: (datasetId: string) => void;
+    toggleField: (key: string) => void;
+    moveField: (key: string, dir: -1 | 1) => void;
+    reset: () => void;
+    templates: ReportTemplate[];
+    loadTemplate: (template: ReportTemplate) => void;
+    deleteTemplate: (id: string) => void;
+    saveOpen: boolean;
+    setSaveOpen: (open: boolean) => void;
+    saveTemplate: (name: string) => void;
+    isSaving: boolean;
+    exportPreview: (format: ReportExportFormat) => void;
+}
