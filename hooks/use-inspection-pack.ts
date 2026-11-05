@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { InspectionPackFormData, PackRecord, PackStage } from "types";
 import { buildPackSummary, calcOverallScore, downloadTextFile, sumPackPages } from "utils";
 
-const TICKS = 20; // ~2.4s of simulated work
+const TICKS = 20; 
 const TICK_MS = 120;
 
 export function useInspectionPack() {

@@ -1,6 +1,6 @@
 import type {
   AuditLog,
-  AuditEntity,
+  AuditLogSeed,
   ComplianceAlert,
   CqcQuestionId,
   DocumentationGaps,
@@ -12,25 +12,10 @@ import type {
   SignatureItem,
   TrainingIssues,
 } from "types";
+import { addDays, dateAt, formatDayLongMonth } from "utils";
 
 export const COMPLIANCE_MOCK_TODAY = new Date(2026, 9, 14);
 
-export const daysFromToday = (days: number): Date => {
-  const d = new Date(COMPLIANCE_MOCK_TODAY);
-  d.setDate(d.getDate() + days);
-  return d;
-};
-
-const at = (dayOffset: number, hhmm: string): Date => {
-  const d = daysFromToday(dayOffset);
-  const [h, m] = hhmm.split(":").map(Number);
-  d.setHours(h, m, 0, 0);
-  return d;
-};
-
-const shortDay = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
-
-// ---- CQC readiness: the 8 inputs from Blueprint 3.4.1 ----
 export const mockReadinessFactors: ReadinessFactor[] = [
   { id: "care-plans", label: "Care plan completeness", description: "Patients with current, reviewed and approved care plans", score: 88, weight: 15, questions: ["effective", "caring", "responsive"], detail: "125 of 142 patients have an approved, in-date plan", href: "/care-plans" },
   { id: "risk-assessments", label: "Risk assessment coverage", description: "Assessments that are up to date", score: 95, weight: 12, questions: ["safe", "effective"], detail: "135 of 142 assessments reviewed in the last 12 months", href: "/patients" },
@@ -54,7 +39,6 @@ export const mockDocumentationGaps: DocumentationGaps = { unsignedPlans: 3, miss
 export const mockTrainingIssues: TrainingIssues = { expired: 3, expiringSoon: 5 };
 export const mockIncidentResponse: IncidentResponseStats = { avgResponseHours: 4.2, openInvestigations: 2, target: "<6h" };
 
-// 12 months ending Oct 2026. The last point is replaced by the calculated score in utils (buildScoreTrend).
 export const mockScoreHistory: ScoreHistoryPoint[] = [
   { month: "Nov", overall: 66, responsive: 62 }, { month: "Dec", overall: 68, responsive: 63 },
   { month: "Jan", overall: 70, responsive: 66 }, { month: "Feb", overall: 72, responsive: 68 },
@@ -68,15 +52,14 @@ export const mockScoreHistory: ScoreHistoryPoint[] = [
 export const mockAlerts: ComplianceAlert[] = [
   { id: "al-1", type: "training", title: "Safeguarding training expired", description: "Mark Davis · Expired 3 days ago", assignedTo: "Mark Davis", dueLabel: "3 days ago", severity: "urgent", href: "/staff", resolved: false },
   { id: "al-2", type: "document", title: "3 care plans unsigned", description: "Awaiting RM sign-off", severity: "urgent", href: "/care-plans", resolved: false },
-  { id: "al-3", type: "dbs", title: "DBS expiring — Lucy C.", description: `Expires ${shortDay(daysFromToday(14))} · 14 days`, assignedTo: "Lucy C.", dueLabel: "14 days", severity: "warning", href: "/staff", resolved: false },
+  { id: "al-3", type: "dbs", title: "DBS expiring — Lucy C.", description: `Expires ${formatDayLongMonth(addDays(COMPLIANCE_MOCK_TODAY, 14))} · 14 days`, assignedTo: "Lucy C.", dueLabel: "14 days", severity: "warning", href: "/staff", resolved: false },
   { id: "al-4", type: "mar", title: "4 MAR entries missing", description: "Yesterday's evening round", severity: "warning", href: "/medications", resolved: false },
   { id: "al-5", type: "note", title: "5 notes recorded late", description: "Submitted >2hrs after visit", severity: "warning", href: "/scheduling", resolved: false },
-  { id: "al-6", type: "supervision", title: "Supervisions due — 4 staff", description: `Due by ${shortDay(daysFromToday(16))}`, dueLabel: shortDay(daysFromToday(16)), severity: "info", href: "/staff", resolved: false },
+  { id: "al-6", type: "supervision", title: "Supervisions due — 4 staff", description: `Due by ${formatDayLongMonth(addDays(COMPLIANCE_MOCK_TODAY, 16))}`, dueLabel: formatDayLongMonth(addDays(COMPLIANCE_MOCK_TODAY, 16)), severity: "info", href: "/staff", resolved: false },
 ];
 
 // ---- Audit trail ----
-type LogSeed = [number, string, string, string, string, AuditEntity, string?, string?, string?, string?, string?];
-const LOG_SEEDS: LogSeed[] = [
+const LOG_SEEDS: AuditLogSeed[] = [
   [0, "09:42", "Care plan reviewed", "Margaret Johnson · Personal care v4", "Sarah W.", "Plan", "Margaret Johnson", "Office", "Chrome / Windows", "192.168.1.42", "Reviewed and approved personal care plan v4. No changes required."],
   [0, "09:28", "Visit completed", "Lucy C. checked out · Arthur Wilson", "Lucy C.", "Visit", "Arthur Wilson", "14 Elm St", "Mobile / iOS", "10.0.0.15", "Visit completed on time. Patient in good spirits. Medication given."],
   [0, "09:15", "Medication administered", "Paracetamol 500mg · Robert Ahmed", "Priya P.", "MAR", "Robert Ahmed", "42 Elm St", "Mobile / Android", "10.0.0.22", "Paracetamol 500mg administered as prescribed. Patient tolerated well."],
@@ -97,21 +80,20 @@ const LOG_SEEDS: LogSeed[] = [
 
 export const mockAuditLogs: AuditLog[] = LOG_SEEDS.map(
   ([day, time, action, details, user, entity, patient, location, device, ipAddress, notes], i) => ({
-    id: i + 1, timestamp: at(day, time), action, details, user, entity, patient, location, device, ipAddress, notes,
+    id: i + 1, timestamp: dateAt(COMPLIANCE_MOCK_TODAY, day, time), action, details, user, entity, patient, location, device, ipAddress, notes,
   }),
 );
 
 // ---- Digital signatures ----
 export const mockSignatures: SignatureItem[] = [
-  { id: "sg-1", document: "Personal Care Plan v4", patient: "Margaret Johnson", type: "Care Plan", assignedTo: "Emma C.", dueDate: at(0, "17:00"), status: "signed", signedAt: at(0, "09:42"), signedBy: "Emma C." },
-  { id: "sg-2", document: "Medication Authorisation", patient: "Robert Ahmed", type: "Medication Auth", assignedTo: "Priya P.", dueDate: at(0, "17:00"), status: "pending" },
-  { id: "sg-3", document: "Consent Form — Data Sharing", patient: "Barbara Williams", type: "Consent Form", assignedTo: "Emma C.", dueDate: at(0, "17:00"), status: "signed", signedAt: at(0, "08:30"), signedBy: "Emma C." },
-  { id: "sg-4", document: "Mobility Care Plan v2", patient: "Henry Smith", type: "Care Plan", assignedTo: "Emma C.", dueDate: at(-1, "17:00"), status: "overdue" },
-  { id: "sg-5", document: "End-of-Life Care Plan", patient: "Dorothy Chen", type: "Care Plan", assignedTo: "Sarah W.", dueDate: at(1, "17:00"), status: "pending" },
-  { id: "sg-6", document: "Consent Form — Family Access", patient: "Arthur Wilson", type: "Consent Form", assignedTo: "Emma C.", dueDate: at(4, "17:00"), status: "pending" },
+  { id: "sg-1", document: "Personal Care Plan v4", patient: "Margaret Johnson", type: "Care Plan", assignedTo: "Emma C.", dueDate: dateAt(COMPLIANCE_MOCK_TODAY, 0, "17:00"), status: "signed", signedAt: dateAt(COMPLIANCE_MOCK_TODAY, 0, "09:42"), signedBy: "Emma C." },
+  { id: "sg-2", document: "Medication Authorisation", patient: "Robert Ahmed", type: "Medication Auth", assignedTo: "Priya P.", dueDate: dateAt(COMPLIANCE_MOCK_TODAY, 0, "17:00"), status: "pending" },
+  { id: "sg-3", document: "Consent Form — Data Sharing", patient: "Barbara Williams", type: "Consent Form", assignedTo: "Emma C.", dueDate: dateAt(COMPLIANCE_MOCK_TODAY, 0, "17:00"), status: "signed", signedAt: dateAt(COMPLIANCE_MOCK_TODAY, 0, "08:30"), signedBy: "Emma C." },
+  { id: "sg-4", document: "Mobility Care Plan v2", patient: "Henry Smith", type: "Care Plan", assignedTo: "Emma C.", dueDate: dateAt(COMPLIANCE_MOCK_TODAY, -1, "17:00"), status: "overdue" },
+  { id: "sg-5", document: "End-of-Life Care Plan", patient: "Dorothy Chen", type: "Care Plan", assignedTo: "Sarah W.", dueDate: dateAt(COMPLIANCE_MOCK_TODAY, 1, "17:00"), status: "pending" },
+  { id: "sg-6", document: "Consent Form — Family Access", patient: "Arthur Wilson", type: "Consent Form", assignedTo: "Emma C.", dueDate: dateAt(COMPLIANCE_MOCK_TODAY, 4, "17:00"), status: "pending" },
 ];
 
-// ---- Inspection pack (3.4.4): the six evidence sections from the blueprint ----
 export const mockPackSections: PackSection[] = [
   { id: "staff-files", label: "Staff files", description: "Training records, DBS status and supervision history for every carer", pages: 68 },
   { id: "patient-files", label: "Patient files", description: "Care plans, risk assessments, daily notes and incident reports", pages: 112 },
@@ -122,7 +104,7 @@ export const mockPackSections: PackSection[] = [
 ];
 
 export const mockLastPack: PackRecord = {
-  generatedAt: daysFromToday(-12),
+  generatedAt: addDays(COMPLIANCE_MOCK_TODAY, -12),
   pageCount: 247,
   sections: mockPackSections.map((s) => s.id),
 };

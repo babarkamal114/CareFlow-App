@@ -15,7 +15,6 @@ export function useDigitalSignatures() {
 
   const sign = (data: SignDocumentFormData) => {
     if (!signing) return;
-    // Mock clock: today's mock date with the real time of day.
     const now = new Date();
     const stamp = new Date(COMPLIANCE_MOCK_TODAY);
     stamp.setHours(now.getHours(), now.getMinutes(), 0, 0);

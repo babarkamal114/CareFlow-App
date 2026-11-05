@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ComplianceFormErrors, InspectionPackFormData } from "types";
-import { runSchema } from "./helpers";
+import { runSchema } from "utils";
 
 export const PACK_SECTION_VALUES = [
   "staff-files", "patient-files", "compliance-dashboard", "policies", "complaints", "quality-assurance",

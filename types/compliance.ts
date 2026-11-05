@@ -9,9 +9,9 @@ export interface ReadinessFactor {
   id: ReadinessFactorId;
   label: string;
   description: string;
-  score: number; // 0-100
-  weight: number; // relative weight in the overall score
-  questions: CqcQuestionId[]; // which CQC key questions this factor feeds
+  score: number; 
+  weight: number; 
+  questions: CqcQuestionId[]; 
   detail: string;
   href: string;
 }
@@ -73,7 +73,7 @@ export interface RegulationFilters {
   status: RegStatus | "All";
 }
 
-// ---- Audit trail (3.4.2) ----
+// ---- Audit trail  ----
 export type AuditEntity = "Plan" | "Visit" | "MAR" | "Incident" | "Risk" | "Signature";
 
 export interface AuditLog {
@@ -97,7 +97,7 @@ export interface AuditFilters {
   to: string;
 }
 
-// ---- Digital signatures (3.4.3) ----
+// ---- Digital signatures  ----
 export type SignatureStatus = "signed" | "pending" | "overdue";
 export type SignatureDocType = "Care Plan" | "Consent Form" | "Medication Auth";
 
@@ -113,7 +113,7 @@ export interface SignatureItem {
   signedBy?: string;
 }
 
-// ---- Inspection pack (3.4.4) ----
+// ---- Inspection pack  ----
 export type PackSectionId =
   | "staff-files" | "patient-files" | "compliance-dashboard" | "policies" | "complaints" | "quality-assurance";
 
@@ -125,3 +125,10 @@ export type PackStage = "idle" | "running" | "done";
 export interface SignDocumentFormData { fullName: string; agreed: boolean }
 export interface AssignActionFormData { label: string; owner: string; dueDate: string }
 export interface InspectionPackFormData { sections: PackSectionId[]; patientScope: "all" | "selected" }
+
+// ---- Display ----
+export type Tone = "success" | "warning" | "error" | "info" | "muted";
+
+// ---- Mock data seeds ----
+/** [dayOffset, "HH:mm", action, details, user, entity, patient?, location?, device?, ipAddress?, notes?] */
+export type AuditLogSeed = [number, string, string, string, string, AuditEntity, string?, string?, string?, string?, string?];

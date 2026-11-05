@@ -4,11 +4,10 @@ import {
 } from "lucide-react";
 import type {
   AlertSeverity, AlertType, AuditEntity, CqcQuestionId, RegCategory, RegStatus, ScoreBand, SignatureDocType,
-  SignatureStatus,
+  SignatureStatus, Tone,
 } from "types";
 
 type BadgeVariant = BadgeProps["variant"];
-export type Tone = "success" | "warning" | "error" | "info" | "muted";
 
 export const TONE_BAR: Record<Tone, string> = {
   success: "bg-success", warning: "bg-warning", error: "bg-error", info: "bg-info", muted: "bg-cf-ink-20",
