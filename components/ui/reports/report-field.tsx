@@ -1,7 +1,5 @@
 import { Label } from "@/components/ui";
-import type { ReactNode } from "react";
-
-interface ReportFieldProps { label: string; htmlFor?: string; required?: boolean; error?: string; hint?: string; children: ReactNode }
+import type { ReportFieldProps } from "types";
 
 export function ReportField({ label, htmlFor, required, error, hint, children }: ReportFieldProps) {
   return (

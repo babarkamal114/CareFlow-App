@@ -1,8 +1,7 @@
 "use client";
 
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui";
-
-interface ReportConfirmDialogProps { open: boolean; title: string; description: string; confirmLabel: string; isLoading: boolean; onClose: () => void; onConfirm: () => void }
+import type { ReportConfirmDialogProps } from "types";
 
 export function ReportConfirmDialog({ open, title, description, confirmLabel, isLoading, onClose, onConfirm }: ReportConfirmDialogProps) {
   return (

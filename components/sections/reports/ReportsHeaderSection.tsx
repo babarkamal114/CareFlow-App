@@ -2,9 +2,7 @@
 
 import { Button, ReportRoleSelect } from "@/components/ui";
 import { CalendarClock } from "lucide-react";
-import type { ReportRole } from "types";
-
-interface ReportsHeaderSectionProps { role: ReportRole; onRoleChange: (role: ReportRole) => void; onSchedule: () => void }
+import type { ReportsHeaderSectionProps } from "types";
 
 export function ReportsHeaderSection({ role, onRoleChange, onSchedule }: ReportsHeaderSectionProps) {
   return (

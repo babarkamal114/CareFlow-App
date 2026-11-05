@@ -4,17 +4,13 @@ import { Badge, EmptyState, Tabs, TabsContent, TabsList, TabsTrigger } from "@/c
 import { useAiInsights } from "hooks";
 import { Scale } from "lucide-react";
 import { useState } from "react";
-import type { ReportDomain, ReportRole, ReportTabId } from "types";
-import { REPORT_TABS } from "utils";
+import type { ReportDomain, ReportTabId, ReportsDashboardSectionProps } from "types";
 import { ReportsDomainPanel } from "./ReportsDomainPanel";
 import { ReportsInsightsSection } from "./ReportsInsightsSection";
 import { ReportsSectionHeading } from "./ReportsSectionHeading";
 
 const DOMAINS: ReportDomain[] = ["compliance", "clinical", "workforce", "finance", "operations"];
 
-interface ReportsDashboardSectionProps { role: ReportRole; tabs: typeof REPORT_TABS }
-
-/** Dashboards (Blueprint 5.6 layout, item 2): one tab per area. Tabs a role cannot see are not shown at all. */
 export function ReportsDashboardSection({ role, tabs }: ReportsDashboardSectionProps) {
   const [tab, setTab] = useState<ReportTabId>("compliance");
   const insights = useAiInsights();

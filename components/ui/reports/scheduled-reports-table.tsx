@@ -2,13 +2,8 @@
 
 import { Badge, Button, EmptyState, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { CalendarClock, Pause, Pencil, Play, Trash2 } from "lucide-react";
-import type { ReportSchedule } from "types";
+import type { ScheduledReportsTableProps } from "types";
 import { describeReportSchedule, formatReportRun } from "utils";
-
-interface ScheduledReportsTableProps {
-  schedules: ReportSchedule[]; reportTitle: (id: string) => string;
-  onEdit: (s: ReportSchedule) => void; onToggle: (s: ReportSchedule) => void; onDelete: (s: ReportSchedule) => void;
-}
 
 export function ScheduledReportsTable({ schedules, reportTitle, onEdit, onToggle, onDelete }: ScheduledReportsTableProps) {
   if (schedules.length === 0) return <EmptyState icon={<CalendarClock />} title="No scheduled reports" description="Schedule a report from the library and it will be emailed automatically." />;

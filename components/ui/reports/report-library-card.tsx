@@ -2,11 +2,9 @@
 
 import { Badge, Button, Card, CardContent } from "@/components/ui";
 import { CalendarClock, Play } from "lucide-react";
-import type { LibraryReport, ReportExportFormat } from "types";
-import { REPORT_DOMAIN_BADGE, REPORT_DOMAIN_LABEL } from "utils";
+import type { ReportLibraryCardProps } from "types";
+import { REPORT_DOMAIN_BADGE, REPORT_DOMAIN_LABEL } from "config";
 import { ReportExportMenu } from "./report-export-menu";
-
-interface ReportLibraryCardProps { report: LibraryReport; onRun: (r: LibraryReport) => void; onSchedule: (reportId: string) => void; onExport: (r: LibraryReport, f: ReportExportFormat) => void }
 
 export function ReportLibraryCard({ report, onRun, onSchedule, onExport }: ReportLibraryCardProps) {
   return (

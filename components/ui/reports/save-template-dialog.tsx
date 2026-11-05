@@ -3,10 +3,8 @@
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Input } from "@/components/ui";
 import { validateTemplate } from "lib";
 import { useState } from "react";
-import type { ReportFormErrors } from "types";
+import type { ReportFormErrors, SaveTemplateDialogProps } from "types";
 import { ReportField } from "./report-field";
-
-interface SaveTemplateDialogProps { open: boolean; onOpenChange: (open: boolean) => void; isSaving: boolean; onSubmit: (name: string) => void }
 
 export function SaveTemplateDialog({ open, onOpenChange, ...rest }: SaveTemplateDialogProps) {
   return (

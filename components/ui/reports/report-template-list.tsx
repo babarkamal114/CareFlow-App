@@ -2,9 +2,7 @@
 
 import { Button } from "@/components/ui";
 import { FolderOpen, Trash2 } from "lucide-react";
-import type { ReportTemplate } from "types";
-
-interface ReportTemplateListProps { templates: ReportTemplate[]; onLoad: (t: ReportTemplate) => void; onDelete: (id: string) => void }
+import type { ReportTemplateListProps } from "types";
 
 export function ReportTemplateList({ templates, onLoad, onDelete }: ReportTemplateListProps) {
   if (templates.length === 0) return <p className="py-4 text-center text-sm text-cf-ink-40">No saved templates yet. Build a report and save it to reuse later.</p>;

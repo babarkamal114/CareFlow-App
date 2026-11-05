@@ -1,17 +1,13 @@
 "use client";
 
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Input, Textarea } from "@/components/ui";
-import { parseRecipients, validateSchedule } from "lib";
+import { validateSchedule } from "lib";
 import { useState } from "react";
-import type { LibraryReport, ReportFormErrors, ReportSchedule, ReportScheduleFormData, ReportScheduleFrequency } from "types";
-import { computeReportNextRun, formatReportRun, REPORT_FREQUENCY_OPTIONS, REPORT_WEEKDAY_OPTIONS } from "utils";
+import type { ReportFormErrors, ReportScheduleFormData, ReportScheduleFrequency, ReportScheduleDialogProps } from "types";
+import { computeReportNextRun, formatReportRun, parseRecipients, } from "utils";
+import { REPORT_FREQUENCY_OPTIONS, REPORT_WEEKDAY_OPTIONS } from "config";
 import { ReportField } from "./report-field";
 import { ReportSelect } from "./report-select";
-
-interface ReportScheduleDialogProps {
-  open: boolean; onOpenChange: (open: boolean) => void; reports: LibraryReport[]; initialReportId: string | null;
-  schedule: ReportSchedule | null; now: Date; isSaving: boolean; onSubmit: (data: ReportScheduleFormData) => void;
-}
 
 export function ReportScheduleDialog({ open, onOpenChange, ...rest }: ReportScheduleDialogProps) {
   return (

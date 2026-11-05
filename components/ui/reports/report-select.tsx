@@ -1,17 +1,7 @@
 "use client";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
-
-interface ReportSelectProps<T extends string> {
-  value: T | "";
-  options: { value: T; label: string }[];
-  onChange: (value: T) => void;
-  placeholder?: string;
-  id?: string;
-  invalid?: boolean;
-  disabled?: boolean;
-  className?: string;
-}
+import type { ReportSelectProps } from "types";
 
 export function ReportSelect<T extends string>({ value, options, onChange, placeholder = "Select…", id, invalid, disabled, className = "w-full" }: ReportSelectProps<T>) {
   const selected = options.find((o) => o.value === value);

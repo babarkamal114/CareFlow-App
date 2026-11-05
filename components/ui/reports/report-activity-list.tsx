@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui";
-import type { ReportActivity } from "types";
-import { REPORT_ACTIVITY_LABEL } from "utils";
+import type { ReportActivityListProps } from "types";
+import { REPORT_ACTIVITY_LABEL } from "config";
 
-export function ReportActivityList({ activity }: { activity: ReportActivity[] }) {
+export function ReportActivityList({ activity }: ReportActivityListProps) {
   if (activity.length === 0) return <p className="py-4 text-center text-sm text-cf-ink-40">No report activity yet.</p>;
   return (
     <ul className="divide-y divide-cf-border-light rounded-lg border border-cf-border-light">

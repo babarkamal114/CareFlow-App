@@ -1,12 +1,9 @@
 "use client";
 
 import { Button, Card, CardContent, ScheduledReportsTable, Skeleton } from "@/components/ui";
-import type { useScheduledReports } from "hooks";
 import { Plus } from "lucide-react";
-import type { ReportSchedule } from "types";
+import type { ReportsScheduledSectionProps } from "types";
 import { ReportsSectionHeading } from "./ReportsSectionHeading";
-
-interface ReportsScheduledSectionProps { scheduled: ReturnType<typeof useScheduledReports>; schedules: ReportSchedule[] }
 
 export function ReportsScheduledSection({ scheduled: s, schedules }: ReportsScheduledSectionProps) {
   return (

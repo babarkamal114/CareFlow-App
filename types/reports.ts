@@ -240,3 +240,4 @@ export interface UseCustomReportBuilderReturn {
     isSaving: boolean;
     exportPreview: (format: ReportExportFormat) => void;
 }
+

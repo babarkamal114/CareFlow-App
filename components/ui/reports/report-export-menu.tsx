@@ -2,10 +2,8 @@
 
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui";
 import { ChevronDown, Download } from "lucide-react";
-import type { ReportExportFormat } from "types";
-import { REPORT_EXPORT_FORMAT_LABEL } from "utils";
-
-interface ReportExportMenuProps { onSelect: (format: ReportExportFormat) => void; label?: string; compact?: boolean; disabled?: boolean }
+import type { ReportExportFormat, ReportExportMenuProps } from "types";
+import { REPORT_EXPORT_FORMAT_LABEL } from "config";
 
 const FORMATS = Object.keys(REPORT_EXPORT_FORMAT_LABEL) as ReportExportFormat[];
 

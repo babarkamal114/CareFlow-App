@@ -1,15 +1,11 @@
 "use client";
 
 import { DatePicker } from "@/components/ui";
-import { format } from "date-fns";
-import type { ReportBuilderAggregate, ReportBuilderConfig, ReportChartKind, ReportDataset, ReportFormErrors } from "types";
-import { REPORT_AGGREGATE_OPTIONS, REPORT_CHART_KIND_OPTIONS, parseReportDate } from "utils";
+import type { ReportBuilderAggregate, ReportChartKind, BuilderControlsProps } from "types";
+import { parseReportDate, toIsoDate } from "utils";
+import { REPORT_AGGREGATE_OPTIONS, REPORT_CHART_KIND_OPTIONS } from "config"
 import { ReportField } from "./report-field";
 import { ReportSelect } from "./report-select";
-
-interface BuilderControlsProps { dataset: ReportDataset; config: ReportBuilderConfig; errors: ReportFormErrors; onChange: <K extends keyof ReportBuilderConfig>(key: K, value: ReportBuilderConfig[K]) => void }
-
-const iso = (d: Date | undefined) => (d ? format(d, "yyyy-MM-dd") : "");
 
 export function BuilderControls({ dataset, config, errors, onChange }: BuilderControlsProps) {
   const groupable = [{ value: "none", label: "No grouping" }, ...dataset.columns.filter((c) => c.groupable).map((c) => ({ value: c.key, label: c.label }))];
@@ -28,10 +24,10 @@ export function BuilderControls({ dataset, config, errors, onChange }: BuilderCo
       {hasDate && (
         <>
           <ReportField label="From date" htmlFor="b-from">
-            <DatePicker id="b-from" className="w-full min-w-0" value={parseReportDate(config.from)} onChange={(d) => onChange("from", iso(d))} />
+            <DatePicker id="b-from" className="w-full min-w-0" value={parseReportDate(config.from)} onChange={(d) => onChange("from", toIsoDate(d))} />
           </ReportField>
           <ReportField label="To date" htmlFor="b-to" error={errors.to}>
-            <DatePicker id="b-to" className="w-full min-w-0" value={parseReportDate(config.to)} onChange={(d) => onChange("to", iso(d))} />
+            <DatePicker id="b-to" className="w-full min-w-0" value={parseReportDate(config.to)} onChange={(d) => onChange("to", toIsoDate(d))} />
           </ReportField>
         </>
       )}

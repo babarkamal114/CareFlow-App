@@ -1,5 +1,3 @@
-/** App-wide shared types (branded IDs, pagination, etc.). */
-
 export type PageParams<T extends Record<string, string>> = {
   params: Promise<T>;
 };
@@ -7,3 +5,4 @@ export type PageParams<T extends Record<string, string>> = {
 export * from "./components";
 export * from "./staff-form";
 export * from './reports';
+export * from './report-components'

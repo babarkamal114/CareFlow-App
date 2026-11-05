@@ -4,7 +4,8 @@ import { ReportWidget } from "@/components/ui";
 import { useReportExport } from "hooks";
 import { useReportDatasetsQuery } from "hooks";
 import type { ReportDomain, ReportRole } from "types";
-import { canViewDataset, REPORT_TAB_WIDGETS } from "utils";
+import { canViewDataset} from "utils";
+import {  REPORT_TAB_WIDGETS } from "config";
 
 export function ReportsDomainPanel({ domain, role }: { domain: ReportDomain; role: ReportRole }) {
   const widgets = REPORT_TAB_WIDGETS[domain];

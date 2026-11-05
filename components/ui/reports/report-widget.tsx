@@ -2,13 +2,10 @@
 
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Skeleton } from "@/components/ui";
 import { useState } from "react";
-import type { ReportDataset, ReportExportFormat } from "types";
+import type { ReportWidgetProps } from "types";
 import { ReportDatasetView } from "./report-dataset-view";
 import { ReportExportMenu } from "./report-export-menu";
 
-interface ReportWidgetProps { dataset: ReportDataset | undefined; isLoading: boolean; onExport: (format: ReportExportFormat, dataset: ReportDataset) => void }
-
-/** One dashboard card: title, source, chart / table toggle and a per-widget export. */
 export function ReportWidget({ dataset, isLoading, onExport }: ReportWidgetProps) {
   const [mode, setMode] = useState<"chart" | "table">("chart");
   if (isLoading || !dataset) return <Skeleton className="h-80 rounded-2xl" />;

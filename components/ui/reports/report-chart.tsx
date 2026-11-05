@@ -2,12 +2,9 @@
 
 import { type ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui";
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, XAxis, YAxis } from "recharts";
-import type { ReportChartSpec, ReportColumn, ReportRow } from "types";
-import { REPORT_CHART_COLORS } from "utils";
-
-interface ReportChartProps { columns: ReportColumn[]; rows: ReportRow[]; chart: ReportChartSpec }
-
-const short = (v: unknown) => (String(v).length > 12 ? `${String(v).slice(0, 11)}…` : String(v));
+import type { ReportChartProps } from "types";
+import { truncateLabel } from "utils";
+import { REPORT_CHART_COLORS } from "config";
 
 export function ReportChart({ columns, rows, chart }: ReportChartProps) {
   if (rows.length === 0) return <p className="py-10 text-center text-sm text-cf-ink-40">No data for this selection.</p>;
@@ -34,7 +31,7 @@ export function ReportChart({ columns, rows, chart }: ReportChartProps) {
   const axes = (
     <>
       <CartesianGrid vertical={false} strokeDasharray="3 3" />
-      <XAxis dataKey={chart.xKey} tickLine={false} axisLine={false} tickMargin={8} tickFormatter={short} interval={0} />
+      <XAxis dataKey={chart.xKey} tickLine={false} axisLine={false} tickMargin={8} tickFormatter={truncateLabel} interval={0} />
       <YAxis tickLine={false} axisLine={false} width={44} />
       <ChartTooltip content={<ChartTooltipContent />} />
       {chart.yKeys.length > 1 && <ChartLegend content={<ChartLegendContent />} />}

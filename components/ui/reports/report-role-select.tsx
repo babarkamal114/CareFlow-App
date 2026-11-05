@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReportRole } from "types";
-import { REPORT_ROLE_OPTIONS } from "utils";
+import { REPORT_ROLE_OPTIONS } from "config";
 import { ReportSelect } from "./report-select";
 
 export function ReportRoleSelect({ role, onChange }: { role: ReportRole; onChange: (role: ReportRole) => void }) {

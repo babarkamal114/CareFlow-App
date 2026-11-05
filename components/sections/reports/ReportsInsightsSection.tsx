@@ -4,7 +4,7 @@ import { AiInsightCard, Button, EmptyState, ReportPill, Skeleton } from "@/compo
 import { useAiInsights } from "hooks";
 import { Sparkles } from "lucide-react";
 import type { AiInsightKind } from "types";
-import { REPORT_INSIGHT_KIND_CONFIG } from "utils";
+import { REPORT_INSIGHT_KIND_CONFIG } from "config";
 
 const KINDS = Object.keys(REPORT_INSIGHT_KIND_CONFIG) as AiInsightKind[];
 

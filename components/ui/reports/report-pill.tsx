@@ -1,8 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui";
-
-interface ReportPillProps { label: string; active: boolean; onClick: () => void; count?: number }
+import type { ReportPillProps } from "types";
 
 export function ReportPill({ label, active, onClick, count }: ReportPillProps) {
   return (

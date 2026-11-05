@@ -2,10 +2,8 @@
 
 import { Badge, Button, Card, CardContent } from "@/components/ui";
 import { Check, X } from "lucide-react";
-import type { AiInsight } from "types";
-import { REPORT_INSIGHT_KIND_CONFIG, REPORT_INSIGHT_SEVERITY_BADGE } from "utils";
-
-interface AiInsightCardProps { insight: AiInsight; disabled: boolean; onAccept: (id: string) => void; onDismiss: (id: string) => void }
+import type { AiInsightCardProps } from "types";
+import { REPORT_INSIGHT_KIND_CONFIG, REPORT_INSIGHT_SEVERITY_BADGE } from "config";
 
 export function AiInsightCard({ insight, disabled, onAccept, onDismiss }: AiInsightCardProps) {
   const kind = REPORT_INSIGHT_KIND_CONFIG[insight.kind];

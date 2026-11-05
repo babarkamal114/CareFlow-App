@@ -2,14 +2,9 @@
 
 import { Button, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Skeleton } from "@/components/ui";
 import { CalendarClock } from "lucide-react";
-import type { LibraryReport, ReportDataset, ReportExportFormat } from "types";
+import type { ReportRunDialogProps } from "types";
 import { ReportDatasetView } from "./report-dataset-view";
 import { ReportExportMenu } from "./report-export-menu";
-
-interface ReportRunDialogProps {
-  report: LibraryReport | null; datasets: ReportDataset[]; isLoading: boolean;
-  onClose: () => void; onExport: (f: ReportExportFormat) => void; onSchedule: (reportId: string) => void;
-}
 
 export function ReportRunDialog({ report, datasets, isLoading, onClose, onExport, onSchedule }: ReportRunDialogProps) {
   return (

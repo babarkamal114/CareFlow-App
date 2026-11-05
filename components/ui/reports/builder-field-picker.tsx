@@ -2,9 +2,7 @@
 
 import { Button } from "@/components/ui";
 import { ArrowDown, ArrowUp, Plus, X } from "lucide-react";
-import type { ReportColumn } from "types";
-
-interface BuilderFieldPickerProps { columns: ReportColumn[]; fields: string[]; error?: string; onToggle: (key: string) => void; onMove: (key: string, dir: -1 | 1) => void }
+import type { BuilderFieldPickerProps } from "types";
 
 export function BuilderFieldPicker({ columns, fields, error, onToggle, onMove }: BuilderFieldPickerProps) {
   const label = (key: string) => columns.find((c) => c.key === key)?.label ?? key;

@@ -1,10 +1,9 @@
 "use client";
 
 import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
-import type { ReportColumn, ReportRow } from "types";
-import { formatReportValue, REPORT_STATUS_BADGE } from "utils";
-
-interface ReportTableProps { columns: ReportColumn[]; rows: ReportRow[]; maxHeight?: string }
+import type { ReportTableProps } from "types";
+import { formatReportValue } from "utils";
+import { REPORT_STATUS_BADGE } from "config";
 
 const RIGHT = ["number", "percent", "currency"];
 
