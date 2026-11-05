@@ -3,23 +3,8 @@
 import { toast } from "@/components/ui";
 import { useReviewAiInsightApi } from "lib";
 import { useState } from "react";
-import type { AiInsight, AiInsightKind } from "types";
+import type { AiInsightKind, UseAiInsightsReturn } from "types";
 import { useAiInsightsQuery } from "./use-reports-queries";
-
-export interface UseAiInsightsReturn {
-    visible: AiInsight[];
-    isLoading: boolean;
-    kind: AiInsightKind | "all";
-    setKind: (kind: AiInsightKind | "all") => void;
-    showReviewed: boolean;
-    setShowReviewed: (show: boolean) => void;
-    openCount: number;
-    reviewedCount: number;
-    countByKind: (kind: AiInsightKind | "all") => number;
-    accept: (id: string) => void;
-    dismiss: (id: string) => void;
-    isReviewing: boolean;
-}
 
 export function useAiInsights(): UseAiInsightsReturn {
     const [kind, setKind] = useState<AiInsightKind | "all">("all")
@@ -27,11 +12,10 @@ export function useAiInsights(): UseAiInsightsReturn {
 
     const { data, isLoading } = useAiInsightsQuery()
 
-    // the list refetches by itself after a review succeeds
     const { mutate: reviewInsight, isPending: isReviewing } = useReviewAiInsightApi({
         onSuccess: (_response, variables) => {
             if (variables.status === "accepted") {
-                toast.success("Accepted — a follow-up task has been created")
+                toast.success("Insight accepted")
             } else {
                 toast.success("Insight dismissed")
             }
@@ -43,7 +27,6 @@ export function useAiInsights(): UseAiInsightsReturn {
     const open = all.filter((insight) => insight.status === "suggested")
     const reviewed = all.filter((insight) => insight.status !== "suggested")
 
-    // what the screen shows: the chosen kind, open ones only unless "show reviewed" is on
     const visible = all.filter((insight) => {
         const kindMatches = kind === "all" || insight.kind === kind
         const statusMatches = showReviewed || insight.status === "suggested"

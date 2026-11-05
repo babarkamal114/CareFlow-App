@@ -3,35 +3,8 @@
 import { toast } from "@/components/ui";
 import { REPORTS_MOCK_NOW, useDeleteReportScheduleApi, useSaveReportScheduleApi, useSetReportScheduleStatusApi } from "lib";
 import { useState } from "react";
-import type { LibraryReport, ReportSchedule, ReportScheduleFormData } from "types";
+import type { ReportSchedule, ReportScheduleFormData, ScheduleDialogState, UseScheduledReportsReturn } from "types";
 import { useLibraryReportsQuery, useReportSchedulesQuery } from "./use-reports-queries";
-
-export interface ScheduleDialogState {
-    open: boolean;
-    reportId: string | null;
-    schedule: ReportSchedule | null;
-}
-
-export interface UseScheduledReportsReturn {
-    schedules: ReportSchedule[];
-    reports: LibraryReport[];
-    now: Date;
-    isLoading: boolean;
-    reportTitle: (id: string) => string;
-
-    dialog: ScheduleDialogState;
-    openCreate: (reportId?: string) => void;
-    openEdit: (schedule: ReportSchedule) => void;
-    closeDialog: () => void;
-    submit: (data: ReportScheduleFormData) => void;
-    isSaving: boolean;
-    toggleStatus: (schedule: ReportSchedule) => void;
-
-    deleteTarget: ReportSchedule | null;
-    askDelete: (schedule: ReportSchedule | null) => void;
-    confirmDelete: () => void;
-    isDeleting: boolean;
-}
 
 export function useScheduledReports(): UseScheduledReportsReturn {
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -42,7 +15,6 @@ export function useScheduledReports(): UseScheduledReportsReturn {
     const schedulesQ = useReportSchedulesQuery()
     const libraryQ = useLibraryReportsQuery()
 
-    // the list refetches by itself after each of these succeeds
     const { mutate: saveSchedule, isPending: isSaving } = useSaveReportScheduleApi({
         onSuccess: (_response, variables) => {
             closeDialog()
@@ -54,7 +26,8 @@ export function useScheduledReports(): UseScheduledReportsReturn {
     const { mutate: setStatus } = useSetReportScheduleStatusApi({
         onSuccess: (_response, variables) => {
             toast.success(variables.status === "paused" ? "Schedule paused" : "Schedule resumed")
-        }
+        },
+        onError: () => toast.error("Could not update the schedule.")
     })
 
     const { mutate: deleteSchedule, isPending: isDeleting } = useDeleteReportScheduleApi({

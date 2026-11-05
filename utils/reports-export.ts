@@ -1,5 +1,6 @@
 import type { ReportDataset, ReportExportFormat } from "types";
 import { formatReportValue } from "./reports";
+import { REPORT_PRINT_STYLES } from "config";
 
 const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
 const escHtml = (v: string) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -32,7 +33,7 @@ export function openReportPrintWindow(title: string, datasets: ReportDataset[]):
   if (typeof window === "undefined") return false;
   const w = window.open("", "_blank");
   if (!w) return false;
-  w.document.write(`<html><head><title>${escHtml(title)}</title><style>body{font-family:system-ui,sans-serif;padding:24px;color:#111}table{border-collapse:collapse;width:100%;margin-bottom:24px;font-size:12px}th{background:#f3f4f6;text-align:left}h1{font-size:22px}h2{font-size:16px;margin-bottom:4px}p{margin:0 0 8px;color:#555;font-size:12px}</style></head><body><h1>${escHtml(title)}</h1>${datasets.map(tableHtml).join("")}</body></html>`);
+  w.document.write(`<html><head><title>${escHtml(title)}</title><style>${REPORT_PRINT_STYLES}</style></head><body><h1>${escHtml(title)}</h1>${datasets.map(tableHtml).join("")}</body></html>`);
   w.document.close();
   w.focus();
   w.print();

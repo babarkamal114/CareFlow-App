@@ -1,6 +1,8 @@
+import { z } from "zod";
 import type {
-  ReportBuilderConfig, ReportBuilderResult, ReportColumn, ReportColumnKind, ReportDataset, ReportKpi, ReportRole, ReportRow, ReportScheduleFrequency,
+  ReportBuilderConfig, ReportBuilderResult, ReportColumn, ReportColumnKind, ReportDataset, ReportFormErrors, ReportKpi, ReportRole, ReportRow, ReportScheduleFrequency,
 } from "types";
+import { REPORT_NUMERIC_KINDS, REPORT_WEEKDAYS } from "config";
 
 const gbp0 = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 });
 const gbp2 = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
@@ -66,8 +68,7 @@ export const formatReportRun = (d: Date): string =>
   `${d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}, ${d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`;
 
 // ---- Custom report builder ----
-const NUMERIC: ReportColumnKind[] = ["number", "percent", "currency"];
-export const isReportNumericColumn = (c: ReportColumn): boolean => NUMERIC.includes(c.kind);
+export const isReportNumericColumn = (c: ReportColumn): boolean => REPORT_NUMERIC_KINDS.includes(c.kind);
 
 export function runCustomReport(ds: ReportDataset, config: ReportBuilderConfig): ReportBuilderResult {
   const dateCol = ds.columns.find((c) => c.dateKey);
@@ -113,13 +114,18 @@ export function runCustomReport(ds: ReportDataset, config: ReportBuilderConfig):
   return { columns, rows: out, chart: { kind: chartKind, xKey: x?.key ?? "", yKeys: chartKind === "donut" ? numeric.slice(0, 1).map((c) => c.key) : numeric.slice(0, 3).map((c) => c.key) } };
 }
 
-export const REPORT_DEFAULT_BUILDER_CONFIG: ReportBuilderConfig = { datasetId: "", fields: [], groupBy: "", aggregate: "sum", chart: "bar", from: "", to: "" };
+export function validateBuilderConfig(config: ReportBuilderConfig, columns: ReportColumn[]): ReportFormErrors {
+  const errors: ReportFormErrors = {};
+  if (config.fields.length === 0) errors.fields = "Pick at least one field";
+  if (config.groupBy && !columns.find((c) => c.key === config.groupBy)?.groupable) errors.groupBy = "That field can't be grouped";
+  if (config.from && config.to && new Date(config.to) < new Date(config.from)) errors.to = "End date must be on or after the start date";
+  return errors;
+}
 
-const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th"}`;
 
 export function describeReportSchedule(s: { frequency: ReportScheduleFrequency; time: string; dayOfWeek?: number; dayOfMonth?: number }): string {
-  if (s.frequency === "weekly") return `Weekly on ${WEEKDAYS[(s.dayOfWeek ?? 1) - 1]} at ${s.time}`;
+  if (s.frequency === "weekly") return `Weekly on ${REPORT_WEEKDAYS[(s.dayOfWeek ?? 1) - 1]} at ${s.time}`;
   if (s.frequency === "monthly") return `Monthly on the ${ordinal(s.dayOfMonth ?? 1)} at ${s.time}`;
   return `Daily at ${s.time}`;
 }
@@ -128,3 +134,29 @@ export function parseReportDate(value: string): Date | undefined {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : undefined;
 }
+
+// ---- Form validation helpers (zod) ----
+export const requiredText = (label: string) => z.string().trim().min(1, `${label} is required`);
+
+export function requiredChoice<T extends readonly [string, ...string[]]>(values: T, label: string) {
+  return z.union([z.literal(""), z.enum(values)]).superRefine((v, ctx) => {
+    if (v === "") ctx.addIssue({ code: "custom", message: `${label} is required` });
+  });
+}
+
+export function zodToFormErrors(error: z.ZodError): ReportFormErrors {
+  const errors: ReportFormErrors = {};
+  for (const issue of error.issues) {
+    const key = issue.path.length > 0 ? issue.path.join(".") : "form";
+    if (errors[key] === undefined) errors[key] = issue.message;
+  }
+  return errors;
+}
+
+export function runSchema<T extends z.ZodType>(schema: T, data: z.input<T>): ReportFormErrors {
+  const result = schema.safeParse(data);
+  return result.success ? {} : zodToFormErrors(result.error);
+}
+
+export const parseRecipients = (value: string): string[] =>
+  [...new Set(value.split(/[\s,;]+/).map((s) => s.trim().toLowerCase()).filter(Boolean))];

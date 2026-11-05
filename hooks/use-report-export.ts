@@ -2,13 +2,9 @@
 
 import { toast } from "@/components/ui";
 import { useLogReportActivityApi } from "lib";
-import type { ReportDataset, ReportExportFormat } from "types";
-import { REPORT_EXPORT_FORMAT_LABEL, exportReportDatasets } from "utils";
-
-export interface UseReportExportReturn {
-    exportReport: (format: ReportExportFormat, title: string, datasets: ReportDataset[]) => void;
-    logRun: (title: string) => void;
-}
+import type { ReportDataset, ReportExportFormat, UseReportExportReturn } from "types";
+import { exportReportDatasets } from "utils";
+import { REPORT_EXPORT_FORMAT_LABEL } from "config";
 
 export function useReportExport(): UseReportExportReturn {
     const { mutate: logActivity } = useLogReportActivityApi()

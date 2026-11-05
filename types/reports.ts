@@ -1,3 +1,5 @@
+import {REPORT_TABS} from 'config'
+
 export type ReportFormErrors = Partial<Record<string, string>>;
 
 export type ReportRole = "owner" | "registered-manager" | "coordinator" | "finance-admin";
@@ -104,7 +106,7 @@ export interface ReportActivity {
   detail?: string;
 }
 
-// ---- Forms (zod in lib/validations/reports) ----
+// ---- Forms ----
 export interface ReportScheduleFormData {
   reportId: string;
   frequency: ReportScheduleFrequency | "";
@@ -114,3 +116,105 @@ export interface ReportScheduleFormData {
   recipients: string; 
 }
 export interface ReportTemplateFormData { name: string }
+
+// ---- Mock API request ----
+export interface ReportMutationResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface LogReportActivityVariables {
+  action: ReportActivity["action"];
+  target: string;
+  detail?: string;
+}
+
+export interface SaveReportScheduleVariables {
+  id?: string;
+  data: ReportScheduleFormData;
+}
+
+export interface SetReportScheduleStatusVariables {
+  id: string;
+  status: ReportSchedule["status"];
+}
+
+export interface SaveReportTemplateVariables {
+  name: string;
+  config: ReportBuilderConfig;
+}
+
+export interface ReviewAiInsightVariables {
+  id: string;
+  status: "accepted" | "dismissed";
+}
+
+
+// ---- Use-hooks-types ----
+
+
+export interface ScheduleDialogState {
+    open: boolean;
+    reportId: string | null;
+    schedule: ReportSchedule | null;
+}
+
+export interface UseScheduledReportsReturn {
+    schedules: ReportSchedule[];
+    reports: LibraryReport[];
+    now: Date;
+    isLoading: boolean;
+    reportTitle: (id: string) => string;
+
+    dialog: ScheduleDialogState;
+    openCreate: (reportId?: string) => void;
+    openEdit: (schedule: ReportSchedule) => void;
+    closeDialog: () => void;
+    submit: (data: ReportScheduleFormData) => void;
+    isSaving: boolean;
+    toggleStatus: (schedule: ReportSchedule) => void;
+
+    deleteTarget: ReportSchedule | null;
+    askDelete: (schedule: ReportSchedule | null) => void;
+    confirmDelete: () => void;
+    isDeleting: boolean;
+}
+
+export interface UseReportsAccessReturn {
+    role: ReportRole;
+    setRole: (role: ReportRole) => void;
+    tabs: typeof REPORT_TABS;
+    can: (roles: ReportRole[]) => boolean;
+}
+
+export interface UseReportExportReturn {
+    exportReport: (format: ReportExportFormat, title: string, datasets: ReportDataset[]) => void;
+    logRun: (title: string) => void;
+}
+
+export interface UseAiInsightsReturn {
+    visible: AiInsight[];
+    isLoading: boolean;
+    kind: AiInsightKind | "all";
+    setKind: (kind: AiInsightKind | "all") => void;
+    showReviewed: boolean;
+    setShowReviewed: (show: boolean) => void;
+    openCount: number;
+    reviewedCount: number;
+    countByKind: (kind: AiInsightKind | "all") => number;
+    accept: (id: string) => void;
+    dismiss: (id: string) => void;
+    isReviewing: boolean;
+}
+
+export interface UseReportLibraryReturn {
+    reports: LibraryReport[];
+    isLoading: boolean;
+    runReport: LibraryReport | null;
+    runDatasets: ReportDataset[];
+    datasetsLoading: boolean;
+    openRun: (report: LibraryReport) => void;
+    closeRun: () => void;
+    exportRun: (format: ReportExportFormat) => void;
+    exportFromCard: (report: LibraryReport, format: ReportExportFormat) => Promise<void>;
+}

@@ -6,3 +6,6 @@ export const formatPrice = (price: number | null): string => {
   }
   return `£${pounds.toFixed(2)}`;
 };
+
+export const toOptions = <T extends string>(labels: Record<T, string>) =>
+  (Object.keys(labels) as T[]).map((value) => ({ value, label: labels[value] }));

@@ -1,15 +1,8 @@
 'use client'
 
 import { useState } from "react";
-import type { ReportRole } from "types";
-import { REPORT_TABS, REPORT_ROLE_TABS } from "utils";
-
-export interface UseReportsAccessReturn {
-    role: ReportRole;
-    setRole: (role: ReportRole) => void;
-    tabs: typeof REPORT_TABS;
-    can: (roles: ReportRole[]) => boolean;
-}
+import type { ReportRole, UseReportsAccessReturn } from "types";
+import { REPORT_TABS, REPORT_ROLE_TABS } from "@/config/reports/reports-config";
 
 export function useReportsAccess(): UseReportsAccessReturn {
     const [role, setRole] = useState<ReportRole>("owner")
