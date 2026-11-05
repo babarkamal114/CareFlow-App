@@ -4,7 +4,7 @@ export const mockWorkforceDatasets: ReportDataset[] = [
   {
     id: "training-matrix", domain: "workforce", title: "Training matrix",
     description: "All staff against all mandatory training modules",
-    source: "Blueprint 5.4", roles: ["owner", "registered-manager"],
+     roles: ["owner", "registered-manager"],
     columns: [
       { key: "staff", label: "Staff", kind: "text", groupable: true },
       { key: "safeguarding", label: "Safeguarding", kind: "status" },
@@ -33,7 +33,7 @@ export const mockWorkforceDatasets: ReportDataset[] = [
   {
     id: "staff-compliance", domain: "workforce", title: "Staff compliance status",
     description: "DBS, right to work and supervision — green, amber or red",
-    source: "Blueprint 3.2.4 / 5.4", roles: ["owner", "registered-manager"],
+    roles: ["owner", "registered-manager"],
     columns: [
       { key: "staff", label: "Staff", kind: "text", groupable: true },
       { key: "dbs", label: "DBS", kind: "status", groupable: true },
@@ -60,7 +60,7 @@ export const mockWorkforceDatasets: ReportDataset[] = [
   {
     id: "staff-performance", domain: "workforce", title: "Carer performance",
     description: "Punctuality, completion, note quality and patient feedback",
-    source: "Blueprint 5.4", roles: ["owner", "registered-manager"],
+    roles: ["owner", "registered-manager"],
     columns: [
       { key: "carer", label: "Carer", kind: "text", groupable: true },
       { key: "punctuality", label: "Punctuality", kind: "percent" },
@@ -83,7 +83,7 @@ export const mockWorkforceDatasets: ReportDataset[] = [
   {
     id: "availability", domain: "workforce", title: "Availability and utilisation",
     description: "Weekly hours available against hours booked",
-    source: "Blueprint 5.4", roles: ["owner", "registered-manager"],
+     roles: ["owner", "registered-manager"],
     columns: [
       { key: "carer", label: "Carer", kind: "text", groupable: true },
       { key: "available", label: "Available hrs", kind: "number" },
@@ -103,7 +103,7 @@ export const mockWorkforceDatasets: ReportDataset[] = [
   {
     id: "workforce-turnover", domain: "workforce", title: "Workforce health vs industry",
     description: "Turnover, retention and utilisation against the industry average",
-    source: "Blueprint 10.3", roles: ["owner", "registered-manager"],
+    roles: ["owner", "registered-manager"],
     columns: [
       { key: "measure", label: "Measure", kind: "text", groupable: true },
       { key: "agency", label: "Your agency %", kind: "number" },
@@ -119,7 +119,7 @@ export const mockWorkforceDatasets: ReportDataset[] = [
   {
     id: "carer-costs", domain: "workforce", title: "Carer cost analysis",
     description: "Total cost per carer against revenue generated",
-    source: "Blueprint 3.6.3", roles: ["owner", "finance-admin"],
+   roles: ["owner", "finance-admin"],
     columns: [
       { key: "carer", label: "Carer", kind: "text", groupable: true },
       { key: "pay", label: "Pay", kind: "currency" },

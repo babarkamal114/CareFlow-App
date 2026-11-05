@@ -25,7 +25,6 @@ export interface ReportDataset {
   domain: ReportDomain;
   title: string;
   description: string;
-  source: string; 
   roles: ReportRole[]; 
   columns: ReportColumn[];
   rows: ReportRow[];
@@ -47,7 +46,6 @@ export interface LibraryReport {
   id: string;
   title: string;
   description: string;
-  source: string;
   domain: ReportDomain;
   datasetIds: string[];
   roles: ReportRole[];

@@ -4,7 +4,7 @@ export const mockOperationsDatasets: ReportDataset[] = [
   {
     id: "todays-numbers", domain: "operations", title: "Today's visits",
     description: "Scheduled, completed, in progress, late and missed",
-    source: "Blueprint 5.1", roles: ["owner", "registered-manager", "coordinator"],
+    roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "status", label: "Status", kind: "text", groupable: true },
       { key: "visits", label: "Visits", kind: "number" },
@@ -21,7 +21,7 @@ export const mockOperationsDatasets: ReportDataset[] = [
   {
     id: "on-time-trend", domain: "operations", title: "On-time rate",
     description: "Visits started on time, month by month",
-    source: "Blueprint 10.3", roles: ["owner", "registered-manager", "coordinator"],
+     roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "month", label: "Month", kind: "text", groupable: true },
       { key: "onTime", label: "On time", kind: "percent" },
@@ -38,7 +38,7 @@ export const mockOperationsDatasets: ReportDataset[] = [
   {
     id: "visit-duration", domain: "operations", title: "Visit duration monitoring",
     description: "Visits much shorter or longer than scheduled",
-    source: "Blueprint 3.3.2", roles: ["owner", "registered-manager", "coordinator"],
+    roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "patient", label: "Patient", kind: "text", groupable: true },
       { key: "carer", label: "Carer", kind: "text", groupable: true },
@@ -59,7 +59,7 @@ export const mockOperationsDatasets: ReportDataset[] = [
   {
     id: "capacity-planning", domain: "operations", title: "Capacity planning",
     description: "Hours of care needed against carer hours available this week",
-    source: "Blueprint 3.2.1", roles: ["owner", "registered-manager", "coordinator"],
+     roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "day", label: "Day", kind: "text", groupable: true },
       { key: "needed", label: "Hours needed", kind: "number" },
@@ -79,7 +79,7 @@ export const mockOperationsDatasets: ReportDataset[] = [
   {
     id: "unassigned-visits", domain: "operations", title: "Unassigned visits",
     description: "Visits without a carer, by day",
-    source: "Blueprint 3.2.1", roles: ["owner", "registered-manager", "coordinator"],
+     roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "day", label: "Day", kind: "text", groupable: true },
       { key: "unassigned", label: "Unassigned visits", kind: "number" },
@@ -98,7 +98,7 @@ export const mockOperationsDatasets: ReportDataset[] = [
   {
     id: "geofence-flags", domain: "operations", title: "Check-in flags",
     description: "Check-ins outside the 100m geofence or unusually late",
-    source: "Blueprint 3.3.1 / 3.3.3", roles: ["owner", "registered-manager", "coordinator"],
+     roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "date", label: "Date", kind: "date", dateKey: true },
       { key: "carer", label: "Carer", kind: "text", groupable: true },

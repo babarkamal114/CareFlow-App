@@ -3,8 +3,7 @@ import type { ReportDataset } from "types";
 export const mockClinicalDatasets: ReportDataset[] = [
   {
     id: "mar-audit", domain: "clinical", title: "Medication administration rate",
-    description: "Monthly MAR audit: share of scheduled doses recorded as given",
-    source: "Blueprint 3.1.4 / automation 25", roles: ["owner", "registered-manager"],
+    description: "Monthly MAR audit: share of scheduled doses recorded as given", roles: ["owner", "registered-manager"],
     columns: [
       { key: "month", label: "Month", kind: "text", groupable: true },
       { key: "scheduled", label: "Scheduled", kind: "number" },
@@ -24,7 +23,7 @@ export const mockClinicalDatasets: ReportDataset[] = [
   {
     id: "incidents-by-type", domain: "clinical", title: "Incidents by type",
     description: "Incident trend by category this quarter",
-    source: "Blueprint 3.1.6", roles: ["owner", "registered-manager", "coordinator"],
+    roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "type", label: "Type", kind: "text", groupable: true },
       { key: "count", label: "Incidents", kind: "number" },
@@ -42,7 +41,7 @@ export const mockClinicalDatasets: ReportDataset[] = [
   {
     id: "incidents-by-severity", domain: "clinical", title: "Incidents by severity",
     description: "Minor, moderate, severe and catastrophic",
-    source: "Blueprint 3.1.6", roles: ["owner", "registered-manager", "coordinator"],
+    roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "severity", label: "Severity", kind: "text", groupable: true },
       { key: "count", label: "Incidents", kind: "number" },
@@ -58,7 +57,7 @@ export const mockClinicalDatasets: ReportDataset[] = [
   {
     id: "incidents-by-hour", domain: "clinical", title: "Incidents by time of day",
     description: "Spot patterns such as falls on night shifts",
-    source: "Blueprint 6.9", roles: ["owner", "registered-manager", "coordinator"],
+    roles: ["owner", "registered-manager", "coordinator"],
     columns: [
       { key: "slot", label: "Time of day", kind: "text", groupable: true },
       { key: "count", label: "Incidents", kind: "number" },
@@ -74,7 +73,7 @@ export const mockClinicalDatasets: ReportDataset[] = [
   {
     id: "nutrition-hydration", domain: "clinical", title: "Nutrition and hydration",
     description: "Average meals eaten and fluid intake across all patients",
-    source: "Blueprint 3.1.5 / 8.1.2", roles: ["owner", "registered-manager"],
+    roles: ["owner", "registered-manager"],
     columns: [
       { key: "week", label: "Week", kind: "text", groupable: true },
       { key: "food", label: "Meals eaten", kind: "percent" },
@@ -93,7 +92,7 @@ export const mockClinicalDatasets: ReportDataset[] = [
   {
     id: "patient-outcomes", domain: "clinical", title: "Patient outcomes",
     description: "Progress against measurable care plan goals",
-    source: "Blueprint 5.6 / 3.1.2", roles: ["owner", "registered-manager"],
+     roles: ["owner", "registered-manager"],
     columns: [
       { key: "patient", label: "Patient", kind: "text", groupable: true },
       { key: "goal", label: "Goal", kind: "text" },

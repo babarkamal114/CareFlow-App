@@ -4,7 +4,7 @@ export const mockComplianceDatasets: ReportDataset[] = [
   {
     id: "cqc-questions", domain: "compliance", title: "CQC five key questions",
     description: "Score per key question, calculated from the 8 readiness factors",
-    source: "Blueprint 3.4.1", roles: ["owner", "registered-manager"],
+     roles: ["owner", "registered-manager"],
     columns: [
       { key: "question", label: "Key question", kind: "text", groupable: true },
       { key: "score", label: "Score", kind: "number" },
@@ -22,7 +22,7 @@ export const mockComplianceDatasets: ReportDataset[] = [
   {
     id: "readiness-factors", domain: "compliance", title: "Readiness score factors",
     description: "The 8 weighted factors behind the CQC readiness score",
-    source: "Blueprint 3.4.1", roles: ["owner", "registered-manager"],
+     roles: ["owner", "registered-manager"],
     columns: [
       { key: "factor", label: "Factor", kind: "text", groupable: true },
       { key: "score", label: "Score", kind: "number" },
@@ -43,7 +43,7 @@ export const mockComplianceDatasets: ReportDataset[] = [
   {
     id: "audit-trail", domain: "compliance", title: "Audit trail",
     description: "Who did what, when — searchable by user, patient, date and action",
-    source: "Blueprint 3.4.2", roles: ["owner", "registered-manager"],
+    roles: ["owner", "registered-manager"],
     columns: [
       { key: "date", label: "Date", kind: "date", dateKey: true },
       { key: "user", label: "User", kind: "text", groupable: true },
@@ -70,7 +70,7 @@ export const mockComplianceDatasets: ReportDataset[] = [
   {
     id: "continuity-of-care", domain: "compliance", title: "Continuity of care",
     description: "How often the same carer visits each patient",
-    source: "Blueprint 8.1.3", roles: ["owner", "registered-manager"],
+   roles: ["owner", "registered-manager"],
     columns: [
       { key: "patient", label: "Patient", kind: "text", groupable: true },
       { key: "carers", label: "Different carers", kind: "number" },
@@ -90,7 +90,7 @@ export const mockComplianceDatasets: ReportDataset[] = [
   {
     id: "complaints-log", domain: "compliance", title: "Complaints log",
     description: "Complaints received, investigated and resolved",
-    source: "Blueprint 3.4.4 / 8.1.3", roles: ["owner", "registered-manager"],
+     roles: ["owner", "registered-manager"],
     columns: [
       { key: "ref", label: "Ref", kind: "text" },
       { key: "received", label: "Received", kind: "date", dateKey: true },

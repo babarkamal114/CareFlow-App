@@ -4,7 +4,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "revenue-overview", domain: "finance", title: "Revenue overview",
     description: "Invoiced, collected, outstanding and overdue",
-    source: "Blueprint 5.5", roles: ["owner", "finance-admin"],
+     roles: ["owner", "finance-admin"],
     columns: [
       { key: "measure", label: "Measure", kind: "text", groupable: true },
       { key: "amount", label: "Amount", kind: "currency" },
@@ -20,7 +20,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "revenue-ageing", domain: "finance", title: "Outstanding invoices by age",
     description: "Ageing analysis of unpaid invoices",
-    source: "Blueprint 5.5", roles: ["owner", "finance-admin"],
+     roles: ["owner", "finance-admin"],
     columns: [
       { key: "bucket", label: "Age", kind: "text", groupable: true },
       { key: "amount", label: "Outstanding", kind: "currency" },
@@ -38,7 +38,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "revenue-by-funding", domain: "finance", title: "Revenue by funding source",
     description: "Invoiced and collected by funder",
-    source: "Blueprint 3.6.2", roles: ["owner", "finance-admin"],
+   roles: ["owner", "finance-admin"],
     columns: [
       { key: "source", label: "Funding source", kind: "text", groupable: true },
       { key: "invoiced", label: "Invoiced", kind: "currency" },
@@ -54,7 +54,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "budget-vs-actual", domain: "finance", title: "Budget vs actual",
     description: "Planned against actual hours and revenue",
-    source: "Blueprint 5.5", roles: ["owner", "finance-admin"],
+     roles: ["owner", "finance-admin"],
     columns: [
       { key: "month", label: "Month", kind: "text", groupable: true },
       { key: "plannedHours", label: "Planned hours", kind: "number" },
@@ -73,7 +73,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "cash-flow", domain: "finance", title: "Cash flow projection",
     description: "Expected receipts from outstanding invoices and payment history",
-    source: "Blueprint 5.5", roles: ["owner", "finance-admin"],
+     roles: ["owner", "finance-admin"],
     columns: [
       { key: "week", label: "Week", kind: "text", groupable: true },
       { key: "expected", label: "Expected receipts", kind: "currency" },
@@ -94,7 +94,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "late-paying-funders", domain: "finance", title: "Late-paying funders",
     description: "Which payers consistently pay late",
-    source: "Blueprint 10.3", roles: ["owner", "finance-admin"],
+     roles: ["owner", "finance-admin"],
     columns: [
       { key: "funder", label: "Funder", kind: "text", groupable: true },
       { key: "avgDaysLate", label: "Avg days late", kind: "number" },
@@ -112,7 +112,7 @@ export const mockFinanceDatasets: ReportDataset[] = [
   {
     id: "pnl-monthly", domain: "finance", title: "Monthly P&L",
     description: "Revenue, direct costs and gross margin",
-    source: "Blueprint 3.6.3", roles: ["owner", "finance-admin"],
+     roles: ["owner", "finance-admin"],
     columns: [
       { key: "month", label: "Month", kind: "text", groupable: true },
       { key: "revenue", label: "Revenue", kind: "currency" },
