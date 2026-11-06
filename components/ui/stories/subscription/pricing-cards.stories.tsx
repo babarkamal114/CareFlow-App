@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
-import { PricingCards } from "@/components/subscription/pricing-cards"
+import { PricingCards } from "sections"
 
 const meta = {
   title: "Subscription/PricingCards",

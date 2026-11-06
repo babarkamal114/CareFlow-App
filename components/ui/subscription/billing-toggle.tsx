@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { BillingCycle } from "@/lib/utils/components";
+import type { BillingCycle } from "lib";
 
 
 interface BillingToggleProps {
@@ -12,7 +12,7 @@ interface BillingToggleProps {
 export function BillingToggle({ value, onChange }: BillingToggleProps) {
   return (
     <div className="inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-white p-1">
-      {(["monthly", "annual"] as const).map((cycle) => (
+      {(["monthly", "yearly"] as const).map((cycle) => (
         <button
           key={cycle}
           type="button"
@@ -30,10 +30,10 @@ export function BillingToggle({ value, onChange }: BillingToggleProps) {
           )}
           <span className="relative z-10 flex items-center gap-1.5">
             {cycle === "monthly" ? "Monthly" : "Annual"}
-            {cycle === "annual" && (
+            {cycle === "yearly" && (
               <span
                 className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                  value === "annual" ? "bg-white/20 text-white" : "bg-[#1a6b3c]/10 text-[#1a6b3c]"
+                  value === "yearly" ? "bg-white/20 text-white" : "bg-[#1a6b3c]/10 text-[#1a6b3c]"
                 }`}
               >
                 Save 20%

@@ -1,0 +1,534 @@
+import { LucideIcon } from "lucide-react";
+import type { AttentionType } from "./live-monitoring";
+import type { BadgeProps } from "@/components/ui";
+
+export interface StatCardProps {
+    label : string;
+    Icon : LucideIcon;
+    value : string;
+    description : string;
+    trend? : StatCardTrend;
+    showTrend? : boolean;
+    showScore? : boolean;
+    score?: number;
+    hasCqcScore? : boolean;
+    cqcScore?: number;
+    hasValueBadge?: boolean;
+    valueBadgeValue?: string;
+    children?: React.ReactNode    
+    badgeVariant?: BadgeProps["variant"]; 
+}
+
+export type StatCardTrend = 'up' | 'down' | 'neutral'
+
+export interface PageBreadcrumbProps {
+    previousPage : string;
+    currentPage : string;
+    icon: LucideIcon
+}
+
+export type StaffMember = {
+  id: string;                    
+  userId: string;                
+  name: string;                  
+  email: string;                 
+  phone?: string | null;         
+  profilePicture?: string | null; 
+  role: string;
+  status: EmployeeStatus;        
+  joinDate: Date | string;       
+  invitedBy: string | null;     
+  invitedAt: Date | null;        
+  acceptedAt: Date | null;       
+  createdAt: Date;               
+  updatedAt: Date;               
+  deletedAt: Date | null;       
+  userStatus: string;           
+  emailVerified: boolean;        
+};
+
+export interface StaffTableProps {
+  data: StaffMember[];
+  onEdit?: (staff: StaffMember) => void;
+  onDelete?: (id: string) => void;
+  onView?: (staff: StaffMember) => void;
+}
+
+export interface Role {
+  id: string;
+  name: string;
+  description: string | null;
+  isSystem: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+}
+
+export type PermissionSource = 'role' | 'grant' | 'block';
+
+export interface Permission {
+  module: string;
+  action: string;
+  source: PermissionSource;
+}
+
+export interface GroupedPermission {
+  module: string;
+  displayName: string;
+  icon: string;
+  actions: {
+    action: string;
+    displayName: string;
+    source: 'role' | 'grant' | 'block';
+    isGranted: boolean;
+  }[];
+  granted: number;
+  total: number;
+  isAllGranted: boolean;
+  isPartiallyGranted: boolean;
+}
+
+export interface Patient {
+  id: string;
+  name: string;
+  preferredName?: string;
+  dateOfBirth?: string;
+  nhsNumber?: string;
+  address: string;
+  email: string;
+  phone: string;
+  carer: string;
+  status: 'active' | 'on-hold' | 'new' | 'discharged';
+  dischargeDetails?: any;  
+  nextVisit: string;
+  gpName?: string;
+  gpPhone?: string;
+  gpAddress?: string;
+  nextOfKinName?: string;
+  nextOfKinPhone?: string;
+  nextOfKinRelationship?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  emergencyRelationship?: string;
+  risk: 'low' | 'medium' | 'high';
+  initials: string;
+  avatar?: string;
+  age: number;
+}
+
+export interface Visit {
+  id: string;
+  patientName: string;
+  patientId: string;
+  carerName: string;
+  carerId: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+  type: string;
+  status: string;
+  address: string;
+}
+
+export interface PersonalCareContent {
+  type: 'personal-care';
+  mobilityLevel: 'independent' | 'supervision' | 'assistance' | 'total-dependence';
+  personalHygiene: {
+    bathing: string;
+    toileting: string;
+    dressing: string;
+    grooming: string;
+  };
+  continenceSupport: {
+    status: 'continent' | 'incontinent' | 'managed';
+    plan: string;
+  };
+  skinIntegrity: {
+    pressure_ulcer_risk: 'low' | 'medium' | 'high';
+    preventionMeasures: string[];
+  };
+  preferences: string[];
+  goals: string[];
+  notes: string;
+}
+
+export interface MedicationContent {
+  type: 'medication';
+  medications: {
+    id: string;
+    name: string;
+    dosage: string;
+    frequency: string;
+    timing: string;
+    indication: string;
+    sideEffects: string[];
+  }[];
+  medicationAdherenceLevel: 'excellent' | 'good' | 'fair' | 'poor';
+  administrationMethod: string;
+  interactions: string[];
+  storageRequirements: string;
+  prescriber: string;
+  lastReviewDate: string;
+  nextReviewDate: string;
+  goals: string[];
+  notes: string;
+}
+
+export interface DementiaContent {
+  type: 'dementia';
+  dementiaType: string;
+  stageOfDementia: 'early' | 'middle' | 'late';
+  cognitiveAbilities: {
+    memory: string;
+    communication: string;
+    problemSolving: string;
+    orientation: string;
+  };
+  behavioralChallenges: {
+    behavior: string;
+    trigger: string;
+    strategy: string;
+  }[];
+  calmingStrategies: string[];
+  environmentalModifications: string[];
+  communicationApproach: string;
+  familyInvolvement: string;
+  goals: string[];
+  notes: string;
+}
+
+export interface NutritionContent {
+  type: 'nutrition';
+  MUSTScore: number; 
+  nutritionStatus: 'adequate' | 'at-risk' | 'malnourished';
+  dietaryType: 'normal' | 'modified-texture' | 'pureed' | 'soft' | 'therapeutic';
+  foodPreferences: string[];
+  dislikesAndAllergies: {
+    item: string;
+    type: 'allergy' | 'intolerance' | 'dislike';
+  }[];
+  swallowingDifficulties: boolean;
+  swallowingPlan: string;
+  mealTimes: string;
+  fluidIntake: {
+    recommended: string;
+    method: string;
+  };
+  supplementation: string;
+  appetiteChanges: string;
+  goals: string[];
+  notes: string;
+}
+
+export interface MobilityContent {
+  type: 'mobility';
+  mobilityStatus: 'independent' | 'supervision' | 'assistance' | 'total-dependence';
+  fallRisk: 'low' | 'medium' | 'high';
+  fallRiskFactors: string[];
+  mobilityAids: {
+    aid: string;
+    type: 'walking' | 'balance' | 'transfer' | 'wheelchair';
+  }[];
+  transferNeeds: {
+    type: 'bed-transfer' | 'chair-transfer' | 'toilet-transfer' | 'bath-transfer';
+    assistance: 'supervision' | '1-person' | '2-person' | 'hoist';
+  }[];
+  preventionMeasures: string[];
+  physicalTherapy: string;
+  exercisePlan: string;
+  goals: string[];
+  notes: string;
+}
+
+export interface MentalHealthContent {
+  type: 'mental-health';
+  mentalHealthStatus: string;
+  diagnosedConditions: string[];
+  currentMood: string;
+  stressorsAndTriggers: string[];
+  copingStrategies: string[];
+  supportNetwork: string;
+  socialActivities: string[];
+  hobbiesAndInterests: string[];
+  motivationLevel: 'high' | 'moderate' | 'low';
+  selfCareAbility: string;
+  goals: string[];
+  notes: string;
+}
+
+export interface CarePlanModule {
+  id: string;
+  name: string;
+  type: CarePlanType;
+  status: CarePlanStatus;
+  reviewStatus: CarePlanReviewStatus;
+  version: string;
+  createdDate: string;
+  reviewDate: string;
+  nextReviewDate: string;
+  createdBy: string;
+  lastReviewedBy: string;
+  content: CarePlanModuleContent;
+}
+
+export interface CarePlan {
+  id: string;
+  patientId: string;
+  patientName: string;
+  patientDOB: string;
+  patientAddress: string;
+  nhs_number?: string;
+  keyWorker: string;
+  keyWorkerContact: string;
+  modules: CarePlanModule[];
+  overallStatus: 'draft' | 'in-review' | 'approved';
+  createdDate: string;
+  lastReviewDate: string;
+  nextReviewDate: string;
+  createdBy: string;
+}
+
+export interface CarePlanBlock {
+  id: string;
+  patientName: string;
+  patientId: string;
+  type: CarePlanType;
+  status: CarePlanStatus;
+  reviewStatus: CarePlanReviewStatus;
+  version: string;
+  lastReviewed: Date;
+  nextReviewDate: Date;
+  carer: string;
+  score?: number;
+  moduleCount: number;
+  lastUpdated: Date;
+}
+
+export type CreationStep = 'select-type' | 'fill-details' | 'review-submit';
+
+export interface ModuleCreationData {
+  patientId : string;
+  type: CarePlanType;
+  name: string;
+  content: CarePlanModuleContent; 
+  status: 'draft' | 'in-review' | 'approved';
+  reviewStatus: 'current' | 'overdue' | 'reviewed' | 'needs-change';
+  createdBy: string;
+  version?: string;
+}
+
+export interface PersonalCareCreationData {
+  mobilityLevel: 'independent' | 'supervision' | 'assistance' | 'total-dependence';
+  personalHygiene: {
+    bathing: string;
+    toileting: string;
+    dressing: string;
+    grooming: string;
+  };
+  continenceSupport: {
+    status: 'continent' | 'incontinent' | 'managed';
+    plan: string;
+  };
+  skinIntegrity: {
+    pressure_ulcer_risk: 'low' | 'medium' | 'high';
+    preventionMeasures: string[];
+  };
+  preferences: string[];
+  goals: string[];
+  notes: string;
+}
+
+export interface MedicationCreationData {
+  medications: {
+    id: string;
+    name: string;
+    dosage: string;
+    frequency: string;
+    timing: string;
+    indication: string;
+    sideEffects: string[];
+  }[];
+  medicationAdherenceLevel: 'excellent' | 'good' | 'fair' | 'poor';
+  administrationMethod: string;
+  interactions: string[];
+  storageRequirements: string;
+  prescriber: string;
+  goals: string[];
+  notes: string;
+}
+
+export type IncidentType = 
+  | 'fall' 
+  | 'medication-error' 
+  | 'bruise' 
+  | 'abuse-allegation' 
+  | 'safeguarding' 
+  | 'missed-visit' 
+  | 'other';
+
+
+export type IncidentSeverity = "minor" | "moderate" | "severe" | "catastrophic";
+export type IncidentStatus = 'reported' | 'investigating' | 'resolved' | 'closed';
+export type IncidentMarkType = "bruise" | "cut" | "abrasion" | "burn" | "other";
+export type InjurySeverity = "none" | "minor" | "moderate" | "severe";
+
+export interface InjuryDetail {
+  id: string;
+  bodyPart: string;
+  description: string;
+  severity: InjurySeverity;
+  photoUrls: string[];
+}
+
+export interface IncidentEvidence {
+  id: string;
+  type: "photo" | "video" | "document" | "audio";
+  url: string;
+  uploadedAt: string;
+  uploadedBy: string;
+  description?: string;
+}
+
+export interface IncidentFormData {
+  type: IncidentType | "";
+  severity: IncidentSeverity | "";
+  patientId: string;
+  patientName: string;
+  dateTime: string;
+  location: string;
+  reportedBy: string;
+  reportedByName: string;
+  antecedent: string;
+  description: string;
+  consequence: string;
+  injuriesObserved: boolean;
+  injuryDetails: InjuryDetail[];
+  bodyMapData: { markings: { id: string; bodyPart: string; markType: IncidentMarkType; notes: string }[] };
+  immediateActions: string;
+  carePlanFollowed: boolean | null;
+  carePlanDeviationReason: string;
+  emergencyServicesCalled: boolean;
+  emergencyServicesDetails: string;
+  evidence: IncidentEvidence[];
+  contributingFactors: string[];
+  followUpPlan: string;
+  status: IncidentStatus;
+  assignedTo: string;
+  rootCause: string;
+  preventiveActions: string;
+  lessonsLearned: string;
+  isCqcNotifiable: boolean;
+  isRiddorReportable: boolean;
+  isSafeguardingConcern: boolean;
+}
+
+export type IncidentFormUpdate = <K extends keyof IncidentFormData>(
+  field: K,
+  value: IncidentFormData[K],
+) => void;
+
+export interface IncidentFormStepProps {
+  form: IncidentFormData;
+  update: IncidentFormUpdate;
+  replace: (form: IncidentFormData) => void;
+}
+
+export interface Incident {
+  id: string;
+  patientName: string;
+  patientId: string;
+  type: IncidentType;
+  severity: IncidentSeverity;
+  title: string;
+  description: string;
+  dateTime: Date;
+  reportedBy: string;
+  assignedTo: string;
+  status: IncidentStatus;
+  location?: string;
+  witnesses?: string[];
+  evidence?: string[];
+  investigationNotes: {
+    note: string;
+    author: string;
+    timestamp: Date;
+  }[];
+  nextReviewDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  antecedent?: string;
+  consequence?: string;
+  immediateActions?: string;
+  carePlanFollowed?: boolean | null;
+  carePlanDeviationReason?: string;
+  emergencyServicesCalled?: boolean;
+  emergencyServicesDetails?: string;
+  injuriesObserved?: boolean;
+  injuryDetails?: InjuryDetail[];
+  bodyMapMarkings?: NonNullable<IncidentFormData["bodyMapData"]>["markings"];
+  contributingFactors?: string[];
+  followUpPlan?: string;
+  rootCause?: string;
+  preventiveActions?: string;
+  lessonsLearned?: string;
+  isCqcNotifiable?: boolean;
+  isRiddorReportable?: boolean;
+  isSafeguardingConcern?: boolean;
+}
+
+
+export type CarePlanModuleContent =
+  | PersonalCareContent
+  | MedicationContent
+  | DementiaContent
+  | NutritionContent
+  | MobilityContent
+  | MentalHealthContent;
+
+export type CarePlanReviewStatus = 'current' | 'overdue' | 'reviewed' | 'needs-change';
+export type CarePlanStatus = 'draft' | 'in-review' | 'approved';
+export type CarePlanType = 'personal-care' | 'medication' | 'dementia' | 'nutrition' | 'mobility' | 'mental-health';
+
+export type SortField = keyof StaffMember;
+export type SortDirection = "asc" | "desc";
+export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED' 
+
+export type VisitStatus =
+  | "starting"
+  | "in-progress"
+  | "delayed"
+  | "scheduled"
+  | "completed"
+  | "missed";
+ 
+export interface LiveVisit {
+  id: string;
+  patientName: string;
+  patientInitials: string;
+  careType: string;
+  carerName: string;
+  carerInitials: string;
+  status: VisitStatus;
+  scheduledWindow: string;
+  referenceOffsetMinutes: number;
+  durationMinutes: number;
+}
+ 
+export interface LiveAttentionItem {
+  id: string;
+  type: AttentionType;
+  title: string;
+  description: string;
+  detail: string;
+  time: string;
+}
+ 
+export type CarerLiveStatus = "active" | "travelling" | "break";
+ 
+export interface LiveCarer {
+  id: string;
+  name: string;
+  initials: string;
+  status: CarerLiveStatus;
+  detail: string;
+}
+ 

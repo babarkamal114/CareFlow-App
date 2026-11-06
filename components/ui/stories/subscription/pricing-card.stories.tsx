@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
-import { PricingCard } from "@/components/subscription/pricing-card"
-import { PRICING_PLANS } from "@/components/subscription/data"
+import { PricingCard } from "@/components/ui"
+import { PRICING_PLANS } from "lib"
 
 const meta = {
   title: "Subscription/PricingCard",
@@ -41,7 +41,7 @@ export const Enterprise: Story = {
 export const AnnualBilling: Story = {
   args: {
     plan: PRICING_PLANS[1],
-    cycle: "annual",
+    cycle: "yearly",
     index: 0,
   },
 }
