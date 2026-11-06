@@ -8,9 +8,9 @@ import {
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { CqcQuestionScore } from "types";
-import {
-  buildReadinessCsv, buildScoreTrend, calcOverallScore, calcQuestionScores, downloadTextFile, QUESTION_LABELS,
-} from "utils";
+import { buildReadinessCsv, downloadTextFile } from "app-utils/compliance-export";
+import { buildScoreTrend, calcOverallScore, calcQuestionScores } from "app-utils/compliance";
+import { QUESTION_LABELS } from "app-utils/compliance-display";
 
 export function useCqcReadiness() {
   const router = useRouter();

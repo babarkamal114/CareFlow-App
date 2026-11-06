@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui";
 import type { CqcQuestionScore } from "types";
-import { BAND_CONFIG, getScoreBand, QUESTION_META, TONE_TEXT } from "utils";
+import { BAND_CONFIG, QUESTION_META, TONE_TEXT } from "app-utils/compliance-display";
+import { getScoreBand } from "app-utils/compliance";
 import { StatusProgressBar } from "./status-progress-bar";
 
 export function CqcQuestionRow({ question }: { question: CqcQuestionScore }) {

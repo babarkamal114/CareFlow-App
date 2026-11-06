@@ -14,9 +14,21 @@ import {
   DialogDescription,
 } from "@/components/ui";
 import { X, Plus, Loader2 } from 'lucide-react';
-import { useMedicationForm } from 'hooks';
-import { MEDICATION_DRAFT_NOTE_FIELDS, MEDICATION_DRAFT_OPTIONAL_FIELDS, MEDICATION_DRAFT_REQUIRED_FIELDS, MEDICATION_ROUTE_OPTIONS, MEDICATION_ROW_DETAIL_LINES, MEDICATION_ROW_LEAD_FIELDS, MEDICATION_ROW_NOTE_FIELDS, MEDICATION_TYPE_OPTIONS, getMedicationTypeBadgeVariant, getMedicationTypeLabel, type MedicationDraftFieldDef, type MedicationRowFieldDef } from 'utils';
-import type { MedicationType, PatientMedication } from 'types';
+import { useMedicationForm } from "hooks";
+import {
+  MEDICATION_DRAFT_NOTE_FIELDS,
+  MEDICATION_DRAFT_OPTIONAL_FIELDS,
+  MEDICATION_DRAFT_REQUIRED_FIELDS,
+  MEDICATION_ROUTE_OPTIONS,
+  MEDICATION_ROW_DETAIL_LINES,
+  MEDICATION_ROW_LEAD_FIELDS,
+  MEDICATION_ROW_NOTE_FIELDS,
+  MEDICATION_TYPE_OPTIONS,
+  type MedicationDraftFieldDef,
+  type MedicationRowFieldDef,
+} from "app-utils/patient-medication-form";
+import { getMedicationTypeBadgeVariant, getMedicationTypeLabel } from "app-utils/patient-records";
+import type { MedicationType, PatientMedication } from "types";
 import { CompactInputField, CompactSelectField } from 'sections';
 
 export type Medication = PatientMedication;

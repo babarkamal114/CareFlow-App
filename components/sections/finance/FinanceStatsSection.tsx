@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { StatCard } from "shared";
 import type { RevenueSummary } from "types";
-import { getFinanceStatCards } from "@/components/ui";
+import { getFinanceStatCards } from "ui/finance/finance-stat-card";
 
 interface FinanceStatsSectionProps {
   summary: RevenueSummary;

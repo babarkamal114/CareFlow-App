@@ -3,7 +3,8 @@
 import { Badge, Button, EmptyState, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { Pill } from "lucide-react";
 import type { PrnRow } from "types";
-import { EFFECTIVENESS_BADGE, EFFECTIVENESS_LABEL, formatMedDateTime, getDrugLabel, PRN_FOLLOWUP_CONFIG } from "utils";
+import { EFFECTIVENESS_BADGE, EFFECTIVENESS_LABEL, PRN_FOLLOWUP_CONFIG } from "app-utils/medication-display";
+import { formatMedDateTime, getDrugLabel } from "app-utils/medication";
 
 interface PrnTableProps { rows: PrnRow[]; now: Date; onFollowUp: (id: string) => void }
 

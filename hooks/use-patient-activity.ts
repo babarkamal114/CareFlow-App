@@ -1,9 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  fetchPatientActivity,
-} from "utils";
+import { fetchPatientActivity } from "app-utils/patient-records";
 import type { PatientActivity } from "types";
 
 export function usePatientActivity(patientId: string | undefined) {

@@ -1,18 +1,19 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { Button } from "ui/button";
+import { ConflictWarningList } from "ui/schedule/conflict-warning-list";
 import {
-  Button,
-  ConflictWarningList,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  PreferenceWarningList,
-} from '@/components/ui';
-import { hasErrors, validateEditVisitForm } from 'lib';
+} from "ui/dialog";
+import { PreferenceWarningList } from "ui/schedule/preference-warning-list";
+import { hasErrors } from "lib";
+import { validateEditVisitForm } from "lib";
 import type {
   EditVisitFormData,
   ScheduleContext,
@@ -20,14 +21,9 @@ import type {
   ScheduleVisit,
   VisitIssues,
   VisitTemplate,
-} from 'types';
-import {
-  canPreviewIssues,
-  formDataToVisit,
-  getVisitIssues,
-  hasBlockingConflict,
-  visitToFormData,
-} from 'utils';
+} from "types";
+import { canPreviewIssues, formDataToVisit, visitToFormData } from "app-utils/schedule-forms";
+import { getVisitIssues, hasBlockingConflict } from "app-utils/schedule-conflicts";
 import { ScheduleVisitForm, type VisitFormValues } from './ScheduleVisitForm';
 
 const NO_ISSUES: VisitIssues = { conflicts: [], violations: [] };

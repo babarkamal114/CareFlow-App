@@ -23,8 +23,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui';
-import { STAFF_DRAWER_TABS } from 'utils';
-import type { StaffDrawerTabId } from 'utils';
+import { STAFF_DRAWER_TABS } from "app-utils/staff-drawer";
+import type { StaffDrawerTabId } from "app-utils/staff-drawer";
 
 const TAB_ICONS: Record<StaffDrawerTabId, LucideIcon> = {
   profile: UserRound,

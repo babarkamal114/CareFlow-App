@@ -11,18 +11,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
+import { Button } from "ui/button";
 import { Upload, X } from 'lucide-react';
+import { DEFAULT_PATIENT_DOCUMENT_TYPE, PATIENT_DOCUMENT_ACCEPT, getDocumentTypeLabel } from "app-utils/patient-records";
 import {
-  DEFAULT_PATIENT_DOCUMENT_TYPE,
   PATIENT_ATTACHMENT_ICONS,
   PATIENT_ATTACHMENT_TYPES,
-  PATIENT_DOCUMENT_ACCEPT,
   buildPatientAttachments,
   getAttachmentMetaParts,
-  getDocumentTypeLabel,
   removePatientAttachment,
-  type PatientFormData,
-} from 'utils';
+} from "app-utils/patient-form-fields";
+import type { PatientFormData } from "types";
 import { DotSeparated } from '../DotSeparated';
 
 export const DOCUMENT_TYPES = PATIENT_ATTACHMENT_TYPES;

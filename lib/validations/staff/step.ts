@@ -6,11 +6,7 @@ import { personalStepSchema } from "./personal";
 import { reviewStepSchema } from "./review";
 import { skillsStepSchema } from "./skills";
 import { trainingStepSchema } from "./training";
-import type {
-  StaffFormData,
-  StaffFormErrors,
-  StaffFormStepId,
-} from "types";
+import type { StaffFormData, StaffFormErrors, StaffFormStepId } from "types";
 
 /**
  * Validates a single step of the add-staff form. Each step owns its own

@@ -1,7 +1,8 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
-import { FundingSplitBar, RevenueChart } from "@/components/ui";
+import { FundingSplitBar } from "ui/finance/funding-split-bar";
+import { RevenueChart } from "ui/finance/revenue-chart";
 import type { MonthlyRevenuePoint, RevenueByFunding } from "types";
 
 interface FinanceOverviewSectionProps {

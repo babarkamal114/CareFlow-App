@@ -17,13 +17,13 @@ import {
 } from "@/components/ui";
 import { CreditCard, Download } from "lucide-react";
 import type { Invoice } from "types";
+import { DAY_TYPE_LABEL } from "app-utils/finance-display";
 import {
-  DAY_TYPE_LABEL,
   formatCurrency,
   formatShortDate,
   getInvoiceBalance,
   getInvoiceDisplayStatus,
-} from "utils";
+} from "app-utils/finance";
 import { FundingSourceBadge } from "./funding-source-badge";
 import { InvoiceStatusBadge } from "./invoice-status-badge";
 

@@ -1,24 +1,28 @@
 "use client";
 
+import { ExportMenu, REPORT_EXPORT_OPTIONS } from "ui/finance/export-menu";
+import { PnlSummaryCard } from "ui/finance/pnl-summary-card";
+import { ProfitabilityTable } from "ui/finance/profitability-table";
 import {
-  ExportMenu,
-  PnlSummaryCard,
-  ProfitabilityTable,
-  REPORT_EXPORT_OPTIONS,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui";
+} from "ui/tabs";
 import {
   mockAreaProfitability,
   mockCarerCosts,
   mockPatientProfitability,
   mockPnlMonths,
-} from "lib";
+} from "utils";
 import { useMemo } from "react";
-import { getAreaCost, getCarerTotalCost, getMarginPct, getPatientCost } from "utils";
-import { AREA_COLUMNS, CARER_COLUMNS, PATIENT_COLUMNS } from "@/components/ui";
+import {
+  getAreaCost,
+  getCarerTotalCost,
+  getMarginPct,
+  getPatientCost,
+} from "app-utils/finance";
+import { AREA_COLUMNS, CARER_COLUMNS, PATIENT_COLUMNS } from "ui/finance/finance-report-columns";
 
 const REPORT_TABS = [
   { id: "patients", label: "By patient", hint: "Lowest margin first, so loss-making patients are easy to spot." },

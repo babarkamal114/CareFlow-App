@@ -1,11 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  buildDocumentsFromFiles,
-  fetchPatientDocuments,
-  sortDocumentsNewestFirst,
-} from "utils";
+import { buildDocumentsFromFiles, fetchPatientDocuments, sortDocumentsNewestFirst } from "app-utils/patient-records";
 import type { PatientDocument } from "types";
 
 export function usePatientDocuments(patientId: string | undefined) {

@@ -2,13 +2,9 @@
 
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
-import {
-  EMPLOYMENT_TYPE_LABELS,
-  PAY_RATE_TYPE_LABELS,
-  STAFF_ROLE_LABELS,
-} from 'types';
-import type { ComplianceResult, StaffFormData } from 'types';
-import { formatStaffDate, formatStaffHours, formatStaffPayRate } from 'utils';
+import { EMPLOYMENT_TYPE_LABELS, PAY_RATE_TYPE_LABELS, STAFF_ROLE_LABELS } from "types";
+import type { ComplianceResult, StaffFormData } from "types";
+import { formatStaffDate, formatStaffHours, formatStaffPayRate } from "app-utils/staff-review-format";
 
 export function StaffReviewEmployment({
   data,

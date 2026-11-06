@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { Button } from "ui/button";
 import {
-  AiSuggestionRow,
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  ScheduleSelect,
-} from '@/components/ui';
+} from "ui/dialog";
+import { Input } from "ui/input";
+import { AiSuggestionRow } from "ui/schedule/ai-suggestion-row";
+import { ScheduleSelect } from "ui/schedule/schedule-select";
 import type {
   OptimiseDialogMode,
   ScheduleAssignment,
@@ -20,14 +20,11 @@ import type {
   ScheduleSuggestion,
   ScheduleVisit,
   VisitIssues,
-} from 'types';
-import {
-  addDaysIso,
-  getVisitIssues,
-  runWhatIf,
-  suggestAssignments,
-  toSelectOptions,
-} from 'utils';
+} from "types";
+import { addDaysIso } from "app-utils/schedule-time";
+import { getVisitIssues } from "app-utils/schedule-conflicts";
+import { runWhatIf, suggestAssignments } from "app-utils/schedule-ai";
+import { toSelectOptions } from "app-utils/schedule-labels";
 
 interface ScheduleOptimiseDialogProps {
   open: boolean;

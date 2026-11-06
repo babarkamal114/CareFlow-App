@@ -3,7 +3,7 @@
 import { Badge, Button, Card, ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui';
 import { CircleHelp, Download, Paperclip } from 'lucide-react';
 import { Incident } from 'types';
-import { getEvidenceFileName, getIncidentEvidenceCount } from 'utils';
+import { getEvidenceFileName, getIncidentEvidenceCount } from "app-utils/incident-display";
 
 interface IncidentEvidenceTabProps {
   incident: Incident;

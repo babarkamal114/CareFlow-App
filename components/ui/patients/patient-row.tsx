@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui";
 import type { Patient } from "types";
-import { formatNextVisit } from "utils";
+import { formatNextVisit } from "app-utils/patients";
 import { PatientRiskBadge } from "./patient-risk-badge";
 import { PatientStatusBadge } from "./patient-status-badge";
 

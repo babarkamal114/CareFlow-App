@@ -15,8 +15,15 @@ import {
 } from "@/components/ui";
 import { validateRate } from "lib";
 import { useState } from "react";
-import type { DayType, FinanceFormErrors, RateCardEntry, RateFormData, VisitDuration } from "types";
-import { DAY_TYPE_OPTIONS, formatCurrency, VISIT_DURATIONS } from "utils";
+import type {
+  DayType,
+  FinanceFormErrors,
+  RateCardEntry,
+  RateFormData,
+  VisitDuration,
+} from "types";
+import { DAY_TYPE_OPTIONS, VISIT_DURATIONS } from "app-utils/finance-display";
+import { formatCurrency } from "app-utils/finance";
 import { FinanceSelect } from "./finance-select";
 
 const DURATION_OPTIONS = VISIT_DURATIONS.map((d) => ({ value: String(d), label: `${d} minutes` }));

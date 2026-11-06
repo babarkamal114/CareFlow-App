@@ -11,11 +11,7 @@ import {
 } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { TRAVEL_MODE_LABELS } from "types";
-import type {
-  DrivingSection,
-  StaffFormErrors,
-  TravelMode,
-} from "types";
+import type { DrivingSection, StaffFormErrors, TravelMode } from "types";
 
 export function StaffDrivingFields({
   value,

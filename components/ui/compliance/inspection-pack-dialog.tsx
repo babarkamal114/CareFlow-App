@@ -4,8 +4,14 @@ import { Button, Checkbox, Dialog, DialogContent, DialogDescription, DialogFoote
 import { validateInspectionPack } from "lib";
 import { CheckCircle2, Download } from "lucide-react";
 import { useState } from "react";
-import type { ComplianceFormErrors, InspectionPackFormData, PackSection, PackSectionId, PackStage } from "types";
-import { sumPackPages } from "utils";
+import type {
+  ComplianceFormErrors,
+  InspectionPackFormData,
+  PackSection,
+  PackSectionId,
+  PackStage,
+} from "types";
+import { sumPackPages } from "app-utils/compliance";
 import { ComplianceField } from "./compliance-field";
 import { FilterPill } from "./filter-pill";
 import { StatusProgressBar } from "./status-progress-bar";

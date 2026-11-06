@@ -3,19 +3,19 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Loader2, Sparkles } from 'lucide-react';
+import { Badge } from "ui/badge";
+import { Button } from "ui/button";
 import {
-  Badge,
-  Button,
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-  ScheduleSelect,
-  UnassignedScheduleBlock,
-} from '@/components/ui';
-import type { ScheduleVisit } from 'types';
-import { getVisitUrgency } from 'utils';
+} from "ui/card";
+import { ScheduleSelect } from "ui/schedule/schedule-select";
+import { UnassignedScheduleBlock } from "ui/schedule/unassigned-schedule-block";
+import type { ScheduleVisit } from "types";
+import { getVisitUrgency } from "app-utils/schedule-filters";
 
 const VISIBLE_COUNT = 3;
 

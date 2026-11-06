@@ -12,15 +12,8 @@ import {
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
-import {
-  MANDATORY_TRAINING_MODULES,
-  TRAINING_STATUS_LABELS,
-} from "types";
-import type {
-  StaffFormErrors,
-  TrainingRecord,
-  TrainingStatus,
-} from "types";
+import { MANDATORY_TRAINING_MODULES, TRAINING_STATUS_LABELS } from "types";
+import type { StaffFormErrors, TrainingRecord, TrainingStatus } from "types";
 
 export function StaffTrainingRecordFields({
   record,

@@ -1,8 +1,8 @@
 "use client";
 
 import { Badge, Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui";
-import type { useMedicationAlerts } from "hooks"
-import type { useMedicationProfiles } from "hooks"
+import type { useMedicationAlerts } from "hooks";
+import type { useMedicationProfiles } from "hooks";
 import { BarChart3, BellRing, ClipboardList, Lock, Pill, Stethoscope } from "lucide-react";
 import type { MedTab } from "types";
 import { MedicationAlertsSection } from "./MedicationAlertsSection";

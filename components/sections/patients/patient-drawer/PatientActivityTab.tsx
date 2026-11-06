@@ -1,8 +1,8 @@
 'use client';
 
 import { Activity } from 'lucide-react';
-import { usePatientActivity } from 'hooks';
-import { getActivityDotClass } from 'utils';
+import { usePatientActivity } from "hooks";
+import { getActivityDotClass } from "app-utils/patient-records";
 import { Button } from "@/components/ui";
 
 interface PatientActivityTabProps {

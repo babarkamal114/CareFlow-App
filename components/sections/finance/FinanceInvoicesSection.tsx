@@ -1,15 +1,12 @@
 "use client";
 
-import {
-  ExportMenu,
-  INVOICE_EXPORT_OPTIONS,
-  InvoiceBulkBar,
-  InvoiceFiltersBar,
-  InvoiceTable,
-} from "@/components/ui";
+import { ExportMenu, INVOICE_EXPORT_OPTIONS } from "ui/finance/export-menu";
+import { InvoiceBulkBar } from "ui/finance/invoice-bulk-bar";
+import { InvoiceFiltersBar } from "ui/finance/invoice-filters";
+import { InvoiceTable } from "ui/finance/invoice-table";
 import { useMemo, useState } from "react";
 import type { Invoice, InvoiceFilters } from "types";
-import { filterInvoices } from "utils";
+import { filterInvoices } from "app-utils/finance";
 
 interface FinanceInvoicesSectionProps {
   invoices: Invoice[];

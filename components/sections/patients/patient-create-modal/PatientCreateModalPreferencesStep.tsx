@@ -1,7 +1,7 @@
 'use client';
 
-import { CREATE_PATIENT_PREFERENCES_SECTIONS } from 'utils';
-import type { PatientFormData } from 'types';
+import { CREATE_PATIENT_PREFERENCES_SECTIONS } from "app-utils/patient-create-steps";
+import type { PatientFormData } from "types";
 import { PatientFormSections } from '../PatientFormField';
 
 interface PreferencesStepProps {

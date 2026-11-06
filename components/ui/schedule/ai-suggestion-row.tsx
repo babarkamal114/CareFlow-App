@@ -8,7 +8,8 @@ import type {
   ScheduleVisit,
   VisitIssues,
 } from "types";
-import { formatShortDate, getScoreBadgeVariant } from "utils";
+import { formatShortDate } from "app-utils/schedule-time";
+import { getScoreBadgeVariant } from "app-utils/schedule-labels";
 import { ScheduleSelect } from "./schedule-select";
 import { VisitTypeBadge } from "./visit-status-badge";
 

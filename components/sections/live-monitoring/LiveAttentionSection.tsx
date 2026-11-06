@@ -1,4 +1,5 @@
-import { LiveAttentionPanel, LiveAttentionRow } from "@/components/ui";
+import { LiveAttentionPanel } from "ui/live-monitoring/live-attention-panel";
+import { LiveAttentionRow } from "ui/live-monitoring/live-attention-row";
 import { getAttentionTypeConfig } from "app-utils/attention-helpers";
 import { countHighPriorityItems } from "app-utils/live-monitoring";
 import type { LiveAttentionSectionProps } from "types";

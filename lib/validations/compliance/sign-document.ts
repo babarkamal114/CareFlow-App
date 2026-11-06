@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ComplianceFormErrors, SignDocumentFormData } from "types";
-import { runSchema } from "utils";
+import { runSchema } from "app-utils/compliance";
 
 export const signDocumentSchema = z.object({
   fullName: z

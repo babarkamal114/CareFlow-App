@@ -15,7 +15,7 @@ import {
   TableRow,
 } from '@/components/ui';
 import type { MockStaffProfile } from 'lib';
-import { REFEREE_RELATIONSHIP_LABELS } from 'types';
+import { REFEREE_RELATIONSHIP_LABELS } from "types";
 
 interface StaffVettingTabProps {
   profile: MockStaffProfile;

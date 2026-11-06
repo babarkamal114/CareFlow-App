@@ -31,7 +31,7 @@ import {
 } from 'sections';
 import { getMockStaffProfile, mapRolesToDisplay, useGetAllRolesApi, useGrantUserPermissionsApi } from 'lib';
 import type { StaffMember } from 'types';
-import type { StaffDrawerTabId } from 'utils';
+import type { StaffDrawerTabId } from "app-utils/staff-drawer";
 import { StaffDrawerHeader } from './staff-drawer-header';
 
 const PANEL_CLASS = 'px-4 pb-6 pt-5 sm:px-6';

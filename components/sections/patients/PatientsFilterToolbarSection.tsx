@@ -4,8 +4,8 @@ import { Button } from "@/components/ui";
 import { Download, Search } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 import { Input } from "@/components/ui";
-import { PATIENT_TAB_DEFS } from 'utils';
-import type { PatientTab } from 'types';
+import { PATIENT_TAB_DEFS } from "app-utils/patients-page";
+import type { PatientTab } from "types";
 
 interface PatientsFilterToolbarSectionProps {
   onTabChange: (tab: PatientTab) => void;

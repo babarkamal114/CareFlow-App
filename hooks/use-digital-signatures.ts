@@ -4,7 +4,7 @@ import { toast } from "@/components/ui";
 import { COMPLIANCE_MOCK_TODAY, mockSignatures } from "lib";
 import { useMemo, useState } from "react";
 import type { SignDocumentFormData, SignatureItem } from "types";
-import { countSignatures } from "utils";
+import { countSignatures } from "app-utils/compliance";
 
 export function useDigitalSignatures() {
   const [items, setItems] = useState<SignatureItem[]>(mockSignatures);

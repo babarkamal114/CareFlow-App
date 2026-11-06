@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { MED_TONE_PILL_ACTIVE, type MedTone } from "utils";
+import { MED_TONE_PILL_ACTIVE, type MedTone } from "app-utils/medication-display";
 
 interface MedFilterPillProps { label: string; active: boolean; onClick: () => void; tone?: MedTone; count?: number }
 

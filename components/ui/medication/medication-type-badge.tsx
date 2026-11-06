@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import type { Medication } from "types";
-import { MEDICATION_TYPE_CONFIG } from "utils";
+import { MEDICATION_TYPE_CONFIG } from "app-utils/medication-display";
 
 export function MedicationTypeBadge({ medication }: { medication: Medication }) {
   const cfg = MEDICATION_TYPE_CONFIG[medication.type];

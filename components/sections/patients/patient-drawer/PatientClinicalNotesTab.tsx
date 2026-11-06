@@ -2,8 +2,14 @@
 
 import { Card, CardContent, CardHeader, Button, Badge } from "@/components/ui";
 import { FileClock, Plus, Sparkles } from 'lucide-react';
-import { DAILY_NOTE_DOMAIN_META, formatDailyNoteDate, getDailyNoteCardClass, getDailyNotesSummary, groupDailyNotesByDate } from 'utils';
-import { usePatientNotes } from 'hooks';
+import {
+  DAILY_NOTE_DOMAIN_META,
+  formatDailyNoteDate,
+  getDailyNoteCardClass,
+  getDailyNotesSummary,
+  groupDailyNotesByDate,
+} from "app-utils/patient-daily-notes";
+import { usePatientNotes } from "hooks";
 
 interface PatientClinicalNotesTabProps {
   patientId?: string;

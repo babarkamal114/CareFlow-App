@@ -16,14 +16,9 @@ import {
   CardTitle,
 } from '@/components/ui';
 import { cn } from 'lib';
-import type { ShiftSwapRequest } from 'types';
-import {
-  SHIFT_PERIOD_BADGE_VARIANT,
-  formatShortDate,
-  formatTimeAgo,
-  getInitials,
-  getShiftPeriod,
-} from 'utils';
+import type { ShiftSwapRequest } from "types";
+import { SHIFT_PERIOD_BADGE_VARIANT, getInitials, getShiftPeriod } from "app-utils/schedule-labels";
+import { formatShortDate, formatTimeAgo } from "app-utils/schedule-time";
 
 interface ScheduleCarerVisitSwapsProps {
   swaps: ShiftSwapRequest[];

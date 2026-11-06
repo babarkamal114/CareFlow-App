@@ -4,8 +4,15 @@ import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogH
 import { validateAdministration } from "lib";
 import { ScanLine } from "lucide-react";
 import { useState } from "react";
-import type { AdministrationStatus, MedFormErrors, ReasonCode, RecordDoseFormData, RoundRow } from "types";
-import { formatMedTime, getDrugLabel, isRecentlyChanged, OUTCOME_OPTIONS, REASON_OPTIONS } from "utils";
+import type {
+  AdministrationStatus,
+  MedFormErrors,
+  ReasonCode,
+  RecordDoseFormData,
+  RoundRow,
+} from "types";
+import { formatMedTime, getDrugLabel, isRecentlyChanged } from "app-utils/medication";
+import { OUTCOME_OPTIONS, REASON_OPTIONS } from "app-utils/medication-display";
 import { MedField } from "./med-field";
 import { MedSelect } from "./med-select";
 

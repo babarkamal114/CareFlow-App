@@ -19,8 +19,9 @@ import {
   TableRow,
 } from '@/components/ui';
 import type { MockStaffProfile } from 'lib';
-import { STAFF_DOCUMENT_TYPE_LABELS } from 'types';
-import { formatStaffDate, groupStaffDocuments, hasStaffContract } from 'utils';
+import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
+import { formatStaffDate } from "app-utils/staff-review-format";
+import { groupStaffDocuments, hasStaffContract } from "app-utils/staff-drawer";
 
 interface StaffDocumentsTabProps {
   profile: MockStaffProfile;

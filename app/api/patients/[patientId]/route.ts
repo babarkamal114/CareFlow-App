@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { auth } from "@/auth";
-import { getPatientById } from "@/features/patients/server/get-patient";
+import { getMockPatientById } from "utils";
 
 type RouteContext = { params: Promise<{ patientId: string }> };
 
@@ -15,7 +15,7 @@ export async function GET(
   }
 
   const { patientId } = await context.params;
-  const patient = await getPatientById(patientId);
+  const patient = getMockPatientById(patientId);
   if (!patient) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

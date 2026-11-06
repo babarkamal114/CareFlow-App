@@ -1,4 +1,5 @@
-import { Card, StaffSnapshotRow } from "@/components/ui";
+import { Card } from "ui/card";
+import { StaffSnapshotRow } from "ui/dashboard/staff-snapshot-row";
 import type { DashboardStaffSegment } from "utils";
 
 interface DashboardStaffSnapshotSectionProps {

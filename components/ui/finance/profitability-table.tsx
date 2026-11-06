@@ -2,7 +2,7 @@
 
 import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import type { ReactNode } from "react";
-import { formatCurrency, formatPercent } from "utils";
+import { formatCurrency, formatPercent } from "app-utils/finance";
 
 export interface ProfitabilityColumn<T> {
   key: string;

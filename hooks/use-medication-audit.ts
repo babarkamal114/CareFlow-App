@@ -7,8 +7,13 @@ import {
 import { useMemo } from "react";
 import { toast } from "sonner";
 import {
-  buildAuditSummary, buildDailyRates, buildMedicationAuditCsv, buildOmissionReasons, buildRefusalPatterns, downloadMedicationFile, findGaps,
-} from "utils";
+  buildAuditSummary,
+  buildDailyRates,
+  buildOmissionReasons,
+  buildRefusalPatterns,
+  findGaps,
+} from "app-utils/medication-audit";
+import { buildMedicationAuditCsv, downloadMedicationFile } from "app-utils/medication-export";
 
 export function useMedicationAudit() {
   const historyQ = useGetMedicationHistoryApi();

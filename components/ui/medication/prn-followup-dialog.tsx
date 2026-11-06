@@ -3,8 +3,14 @@
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Textarea } from "@/components/ui";
 import { validatePrnFollowUp } from "lib";
 import { useState } from "react";
-import type { MedFormErrors, PrnEffectiveness, PrnFollowUpFormData, PrnRow } from "types";
-import { EFFECTIVENESS_OPTIONS, formatMedDateTime, getDrugLabel } from "utils";
+import type {
+  MedFormErrors,
+  PrnEffectiveness,
+  PrnFollowUpFormData,
+  PrnRow,
+} from "types";
+import { EFFECTIVENESS_OPTIONS } from "app-utils/medication-display";
+import { formatMedDateTime, getDrugLabel } from "app-utils/medication";
 import { MedField } from "./med-field";
 import { MedSelect } from "./med-select";
 

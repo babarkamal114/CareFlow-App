@@ -1,5 +1,6 @@
-import { LiveCarerRow, LiveCarersPanel } from "@/components/ui";
-import { getCarerStatusLabel, getCarerStatusTone } from "utils";
+import { LiveCarerRow } from "ui/live-monitoring/live-carer-row";
+import { LiveCarersPanel } from "ui/live-monitoring/live-carers-panel";
+import { getCarerStatusLabel, getCarerStatusTone } from "app-utils/live-monitoring";
 import type { LiveCarersSectionProps } from "types";
 
 export function LiveCarersSection({ carers }: LiveCarersSectionProps) {

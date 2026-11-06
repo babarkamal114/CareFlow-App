@@ -7,7 +7,7 @@ import {
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import type { PrnFollowUpFormData, PrnFormData, PrnRow } from "types";
-import { getPrnFollowUpState, getPrnUsage } from "utils";
+import { getPrnFollowUpState, getPrnUsage } from "app-utils/medication";
 
 export function usePrnProtocols() {
   const patientsQ = useGetMedicationPatientsApi();

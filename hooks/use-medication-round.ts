@@ -4,7 +4,8 @@ import { MEDICATION_CURRENT_USER, useRecordDoseApi } from "lib";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import type { RecordDoseFormData, RoundFilters, RoundRow } from "types";
-import { buildMedicationRoundCsv, downloadMedicationFile, filterRoundRows, summarizeRound } from "utils";
+import { buildMedicationRoundCsv, downloadMedicationFile } from "app-utils/medication-export";
+import { filterRoundRows, summarizeRound } from "app-utils/medication";
 import { useRoundRows } from "./use-round-rows";
 
 const INITIAL_FILTERS: RoundFilters = { search: "", status: "all", patientId: "all" };

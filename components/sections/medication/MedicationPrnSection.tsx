@@ -1,7 +1,11 @@
 "use client";
 
-import { Button, PrnFollowUpDialog, PrnRecordDialog, PrnTable, Skeleton } from "@/components/ui";
-import { usePrnProtocols } from "hooks"
+import { Button } from "ui/button";
+import { PrnFollowUpDialog } from "ui/medication/prn-followup-dialog";
+import { PrnRecordDialog } from "ui/medication/prn-record-dialog";
+import { PrnTable } from "ui/medication/prn-table";
+import { Skeleton } from "ui/skeleton";
+import { usePrnProtocols } from "hooks";
 import { Plus } from "lucide-react";
 
 export function MedicationPrnSection() {

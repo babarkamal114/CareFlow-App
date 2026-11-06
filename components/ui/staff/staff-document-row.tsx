@@ -10,10 +10,7 @@ import {
 } from "@/components/ui";
 import { FileText, Trash2 } from "lucide-react";
 import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
-import type {
-  StaffDocument,
-  StaffDocumentType,
-} from "types";
+import type { StaffDocument, StaffDocumentType } from "types";
 import { formatDate } from "utils";
 
 export function StaffDocumentRow({

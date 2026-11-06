@@ -5,7 +5,8 @@ import { KEY_REGULATION_IDS, mockRegulations } from "lib";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { AssignActionFormData, Regulation, RegulationFilters } from "types";
-import { buildRegulationsCsv, countRegulationsByStatus, downloadTextFile, filterRegulations, parseLocalDate } from "utils";
+import { buildRegulationsCsv, downloadTextFile } from "app-utils/compliance-export";
+import { countRegulationsByStatus, filterRegulations, parseLocalDate } from "app-utils/compliance";
 
 const INITIAL_FILTERS: RegulationFilters = { search: "", category: "All", status: "All" };
 

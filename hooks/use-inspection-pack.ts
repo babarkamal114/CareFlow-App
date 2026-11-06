@@ -4,7 +4,8 @@ import { toast } from "@/components/ui";
 import { COMPLIANCE_MOCK_TODAY, mockLastPack, mockPackSections, mockReadinessFactors } from "lib";
 import { useEffect, useRef, useState } from "react";
 import type { InspectionPackFormData, PackRecord, PackStage } from "types";
-import { buildPackSummary, calcOverallScore, downloadTextFile, sumPackPages } from "utils";
+import { buildPackSummary, downloadTextFile } from "app-utils/compliance-export";
+import { calcOverallScore, sumPackPages } from "app-utils/compliance";
 
 const TICKS = 20; 
 const TICK_MS = 120;

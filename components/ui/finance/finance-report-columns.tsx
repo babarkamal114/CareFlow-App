@@ -1,4 +1,4 @@
-import { MarginBadge, MoneyCell, type ProfitabilityColumn } from "@/components/ui";
+import { MarginBadge, MoneyCell, type ProfitabilityColumn } from "ui/finance/profitability-table";
 import type { AreaProfitability, CarerCostRecord, PatientProfitability } from "types";
 import {
   formatCurrency,
@@ -9,7 +9,7 @@ import {
   getMarginPct,
   getPatientCost,
   getPatientProfit,
-} from "utils";
+} from "app-utils/finance";
 
 const money = (value: number) => formatCurrency(value, true);
 const name = (value: string) => <span className="font-medium text-cf-ink">{value}</span>;

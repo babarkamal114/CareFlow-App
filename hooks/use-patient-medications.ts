@@ -1,10 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  fetchPatientMedications,
-  sortControlledFirst,
-} from "utils";
+import { fetchPatientMedications, sortControlledFirst } from "app-utils/patient-records";
 import type { PatientMedication } from "types";
 
 export function usePatientMedications(patientId: string | undefined) {

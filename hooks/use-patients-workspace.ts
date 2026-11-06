@@ -2,22 +2,18 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { MOCK_PATIENTS, MOCK_PATIENT_MEDICATIONS } from "lib";
+import { MOCK_PATIENTS, MOCK_PATIENT_MEDICATIONS } from "utils";
 import type {
   DischargePayload,
   Patient,
   PatientEditData,
-  PatientMedication,
   PatientTab,
 } from "types";
-import {
-  applyDischarge,
-  applyPatientEdit,
-  filterPatientsByTab,
-  getPatientStats,
-  getPatientTabCounts,
-  sortControlledFirst,
-} from "utils";
+import type { PatientMedication } from "types";
+import { applyDischarge } from "app-utils/patient-discharge";
+import { applyPatientEdit } from "app-utils/patient-edit";
+import { filterPatientsByTab, getPatientStats, getPatientTabCounts } from "app-utils/patients";
+import { sortControlledFirst } from "app-utils/patient-records";
 
 type WorkspaceModal = "create" | "edit" | "medications" | null;
 
@@ -34,13 +30,13 @@ function groupMedicationsByPatient(): Record<string, PatientMedication[]> {
 }
 
 /** All state and handlers for the Patients page. Sections stay presentational. */
-export function usePatientsWorkspace() {
+export function usePatientsWorkspace(initialPatientId?: string) {
   const [patients, setPatients] = useState<Patient[]>(MOCK_PATIENTS);
   const [medicationsByPatient, setMedicationsByPatient] = useState(groupMedicationsByPatient);
   const [activeTab, setActiveTab] = useState<PatientTab>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(initialPatientId ?? null);
+  const [drawerOpen, setDrawerOpen] = useState(Boolean(initialPatientId));
   const [modal, setModal] = useState<WorkspaceModal>(null);
 
   const selectedPatient = useMemo(

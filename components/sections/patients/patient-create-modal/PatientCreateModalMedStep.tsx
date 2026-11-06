@@ -3,8 +3,26 @@
 import { useState } from 'react';
 import { Button, Card, CardContent, Badge } from "@/components/ui";
 import { X } from 'lucide-react';
-import { EMPTY_MEDICATION_DRAFT, MEDICATION_DRAFT_NOTE_FIELDS, MEDICATION_DRAFT_OPTIONAL_FIELDS, MEDICATION_ROUTE_OPTIONS, MEDICATION_TYPE_OPTIONS, MEDICATION_WIZARD_REQUIRED_FIELDS, buildMedicationFromDraft, canAddMedicationDraft, getMedicationPrescribedParts, getMedicationSummaryParts, getMedicationTypeBadgeVariant, getMedicationTypeLabel, removeMedicationById, type MedicationDraftFieldDef } from 'utils';
-import type { MedicationDraft, PatientFormData } from 'types';
+import {
+  EMPTY_MEDICATION_DRAFT,
+  getMedicationPrescribedParts,
+  getMedicationTypeBadgeVariant,
+  getMedicationTypeLabel,
+} from "app-utils/patient-records";
+import {
+  MEDICATION_DRAFT_NOTE_FIELDS,
+  MEDICATION_DRAFT_OPTIONAL_FIELDS,
+  MEDICATION_ROUTE_OPTIONS,
+  MEDICATION_TYPE_OPTIONS,
+  MEDICATION_WIZARD_REQUIRED_FIELDS,
+  buildMedicationFromDraft,
+  canAddMedicationDraft,
+  getMedicationSummaryParts,
+  removeMedicationById,
+  type MedicationDraftFieldDef,
+} from "app-utils/patient-medication-form";
+import type { MedicationDraft } from "types";
+import type { PatientFormData } from "types";
 import { CompactInputField, CompactSelectField } from 'sections';
 import { DotSeparated } from '../DotSeparated';
 

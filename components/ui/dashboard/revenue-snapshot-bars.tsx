@@ -1,5 +1,6 @@
 import { Progress, ProgressIndicator, ProgressTrack } from "@/components/ui";
-import { formatCurrency, type DashboardRevenueBar } from "utils";
+import { formatCurrency } from "app-utils/finance";
+import { type DashboardRevenueBar } from "app-utils/dashboard-home-insights";
 
 const BAR_CLASSES: Record<DashboardRevenueBar["key"], string> = {
   thisMonth: "bg-brand-500",

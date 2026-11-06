@@ -3,7 +3,8 @@
 import { Badge, EmptyState, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { BookOpen } from "lucide-react";
 import type { ControlledEntry, Medication, MedicationPatient } from "types";
-import { CONTROLLED_KIND_LABEL, formatMedDateTime, getDrugLabel } from "utils";
+import { CONTROLLED_KIND_LABEL } from "app-utils/medication-display";
+import { formatMedDateTime, getDrugLabel } from "app-utils/medication";
 
 interface ControlledLedgerTableProps { entries: ControlledEntry[]; medications: Medication[]; patients: MedicationPatient[]; now: Date }
 

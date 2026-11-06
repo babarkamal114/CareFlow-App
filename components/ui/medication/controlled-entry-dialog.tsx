@@ -4,7 +4,8 @@ import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogH
 import { validateControlledEntry } from "lib";
 import { useState } from "react";
 import type { ControlledEntryFormData, ControlledItem, MedFormErrors } from "types";
-import { CONTROLLED_ENTRY_OPTIONS, getDrugLabel } from "utils";
+import { CONTROLLED_ENTRY_OPTIONS } from "app-utils/medication-display";
+import { getDrugLabel } from "app-utils/medication";
 import { MedField } from "./med-field";
 import { MedSelect } from "./med-select";
 

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
-import { SelectOption } from 'utils';
+import { SelectOption } from "app-utils/patient-form-fields";
 
 interface CompactInputFieldProps {
   id: string;

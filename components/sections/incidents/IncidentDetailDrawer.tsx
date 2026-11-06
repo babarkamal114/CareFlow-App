@@ -16,13 +16,11 @@ import {
   getSeverityBadgeVariant,
   getSeverityLabel,
   getStatusBadgeVariant,
-  getIncidentFlags,
-  getInitials,
-  INCIDENT_ACTIONS,
-  INCIDENT_TABS,
-  EVIDENCE_ACCEPT_TYPES,
   type IncidentAction,
-} from 'utils';
+} from "app-utils/incidents";
+import { getIncidentFlags } from "app-utils/incident-display";
+import { getInitials } from "app-utils/compliance";
+import { INCIDENT_ACTIONS, INCIDENT_TABS, EVIDENCE_ACCEPT_TYPES } from "app-utils/constants";
 
 interface IncidentDetailDrawerProps {
   incident: Incident | null;

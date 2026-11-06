@@ -1,6 +1,6 @@
 import { Activity, AlertTriangle, UserCheck, Users } from "lucide-react";
 import type { StatCardProps } from "types";
-import type { getLiveMonitoringCounts } from "utils";
+import type { getLiveMonitoringCounts } from "app-utils/live-monitoring";
 
 type LiveCounts = ReturnType<typeof getLiveMonitoringCounts>;
 

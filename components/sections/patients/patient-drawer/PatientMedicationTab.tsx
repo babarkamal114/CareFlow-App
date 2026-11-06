@@ -2,8 +2,13 @@
 
 import { Card, CardContent, Badge } from "@/components/ui";
 import { Pill } from 'lucide-react';
-import type { PatientMedication } from 'types';
-import { getMedicationDetailParts, getMedicationPrescribedParts, getMedicationTypeBadgeVariant, getMedicationTypeLabel } from 'utils';
+import type { PatientMedication } from "types";
+import {
+  getMedicationDetailParts,
+  getMedicationPrescribedParts,
+  getMedicationTypeBadgeVariant,
+  getMedicationTypeLabel,
+} from "app-utils/patient-records";
 import { DotSeparated } from '../DotSeparated';
 
 interface PatientMedicationsTabProps {

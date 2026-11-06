@@ -1,4 +1,5 @@
 export { PatientsWorkspaceSection } from "./PatientsWorkspaceSection";
+export { PatientDetailWorkspace } from "./PatientDetailWorkspace";
 export { PatientsStatsSection } from "./PatientsStatsSection";
 export { PatientsFilterToolbarSection } from "./PatientsFilterToolbarSection";
 export { PatientsPageHeader } from "./PatientsPageHeader";

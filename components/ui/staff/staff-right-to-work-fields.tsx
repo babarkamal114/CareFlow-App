@@ -11,11 +11,7 @@ import {
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
 import { RTW_CHECK_TYPE_LABELS } from "types";
-import type {
-  RtwCheckType,
-  RtwSection,
-  StaffFormErrors,
-} from "types";
+import type { RtwCheckType, RtwSection, StaffFormErrors } from "types";
 
 const DOCUMENT_TYPE_OPTIONS = [
   { value: "passport", label: "Passport" },

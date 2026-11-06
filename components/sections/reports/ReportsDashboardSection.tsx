@@ -4,7 +4,8 @@ import { Badge, EmptyState, Tabs, TabsContent, TabsList, TabsTrigger } from "@/c
 import { useAiInsights } from "hooks";
 import { Scale } from "lucide-react";
 import { useState } from "react";
-import type { ReportDomain, ReportTabId, ReportsDashboardSectionProps } from "types";
+import type { ReportDomain, ReportTabId } from "types";
+import type { ReportsDashboardSectionProps } from "types";
 import { ReportsDomainPanel } from "./ReportsDomainPanel";
 import { ReportsInsightsSection } from "./ReportsInsightsSection";
 import { ReportsSectionHeading } from "./ReportsSectionHeading";

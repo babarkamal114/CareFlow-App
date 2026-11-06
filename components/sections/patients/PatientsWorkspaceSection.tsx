@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from "framer-motion";
-import { PatientsTable } from "@/components/ui";
+import { PatientsTable } from "ui/patients/patients-table";
 import { usePatientsWorkspace } from "hooks";
 import { PatientsFilterToolbarSection } from "./PatientsFilterToolbarSection";
 import { PatientsPageHeader } from "./PatientsPageHeader";
@@ -21,9 +21,17 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
 };
 
+interface PatientsWorkspaceSectionProps {
+  initialPatientId?: string;
+  onDrawerClose?: () => void;
+}
+
 /** The whole Patients page body: header, stats, filters, table, drawer and modals. */
-export function PatientsWorkspaceSection() {
-  const workspace = usePatientsWorkspace();
+export function PatientsWorkspaceSection({
+  initialPatientId,
+  onDrawerClose,
+}: PatientsWorkspaceSectionProps) {
+  const workspace = usePatientsWorkspace(initialPatientId);
   const { selectedPatient } = workspace;
 
   return (
@@ -77,7 +85,10 @@ export function PatientsWorkspaceSection() {
         patient={selectedPatient}
         medications={workspace.selectedMedications}
         open={workspace.drawerOpen}
-        onOpenChange={workspace.setDrawerOpen}
+        onOpenChange={(open) => {
+          workspace.setDrawerOpen(open);
+          if (!open) onDrawerClose?.();
+        }}
         onEditPatient={() => workspace.setEditOpen(true)}
         onUpdateMeds={() => workspace.setMedicationsOpen(true)}
         onDischarge={workspace.dischargePatient}

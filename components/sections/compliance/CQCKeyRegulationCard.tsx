@@ -1,9 +1,17 @@
 'use client';
 
+import { AllRegulationsDialog } from "ui/compliance/all-regulations-dialog";
+import { AssignActionDialog } from "ui/compliance/assign-action-dialog";
+import { Button } from "ui/button";
 import {
-  AllRegulationsDialog, AssignActionDialog, Button, Card, CardContent, CardHeader, CardTitle, RegulationDrawer, RegulationRow,
-} from '@/components/ui';
-import { useKeyRegulations } from 'hooks';
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { RegulationDrawer } from "ui/compliance/regulation-drawer";
+import { RegulationRow } from "ui/compliance/regulation-row";
+import { useKeyRegulations } from "hooks";
 import { COMPLIANCE_OWNERS } from 'lib';
 
 export function KeyRegulationsCard() {

@@ -1,14 +1,13 @@
 'use client';
 
 import { Badge, Card } from '@/components/ui';
+import { formatIncidentDateTime, getIncidentTypeOptionLabel } from "app-utils/incidents";
 import {
-  formatIncidentDateTime,
   getBodyMarkings,
   getFlagsSummary,
-  getIncidentTypeOptionLabel,
   getInjuriesSummary,
   getSeveritySummary,
-} from 'utils';
+} from "app-utils/incident-form";
 import type { IncidentFormData } from 'types';
 
 function SummaryRow({ label, value }: { label: string; value: string }) {

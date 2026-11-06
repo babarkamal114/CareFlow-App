@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { PatientDailyNote } from "types";
-import { MOCK_PATIENT_NOTES } from "lib";
+import { MOCK_PATIENT_NOTES } from "utils";
 
 export function usePatientNotes(patientId: string | undefined) {
   const notes = useMemo<PatientDailyNote[]>(

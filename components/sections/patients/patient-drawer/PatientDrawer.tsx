@@ -1,18 +1,13 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  PatientDrawerHeader,
-  PatientDrawerSkeleton,
-  PatientDrawerTabList,
-  ScrollArea,
-  Tabs,
-  TabsContent,
-} from "@/components/ui";
-import { usePatientDrawer } from 'hooks';
+import { Drawer, DrawerContent, DrawerFooter } from "ui/drawer";
+import { PatientDrawerHeader } from "ui/patients/patient-drawer-header";
+import { PatientDrawerSkeleton } from "ui/patients/patient-drawer-skeleton";
+import { PatientDrawerTabList } from "ui/patients/patient-drawer-tab-list";
+import { ScrollArea } from "ui/scroll-area";
+import { Tabs, TabsContent } from "ui/tabs";
+import { usePatientDrawer } from "hooks";
 import {
   PATIENT_COMMUNICATION_KEYS,
   PATIENT_DRAWER_MAIN_TABS,
@@ -21,8 +16,9 @@ import {
   PATIENT_DRAWER_TABS,
   PATIENT_PREFERENCES_KEYS,
   pickPatientFields,
-} from 'utils';
-import type { DischargePayload, Patient, PatientDrawerTabId, PatientMedication } from 'types';
+} from "app-utils/patient-drawer";
+import type { DischargePayload, Patient, PatientDrawerTabId } from "types";
+import type { PatientMedication } from "types";
 import { PatientDrawerFooter } from '../PatientDrawerFooter';
 import { PatientDischargeModal } from './PatientDischargeModal';
 import { PatientInfoTab } from './PatientInfoTab';

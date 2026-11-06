@@ -2,10 +2,7 @@
 
 import type { PatientFormErrors } from "types";
 import { useCallback, useEffect, useState } from "react";
-import {
-  buildDischargePayload,
-  getInitialDischargeForm,
-} from "utils";
+import { buildDischargePayload, getInitialDischargeForm } from "app-utils/patient-discharge";
 import type { DischargeContacts, DischargeFormState, DischargePayload } from "types";
 import { validateDischargeForm } from "lib";
 

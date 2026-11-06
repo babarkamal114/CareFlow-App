@@ -1,10 +1,14 @@
 "use client";
 
-import { Button, EmptyState, MedAlertRow, MedFilterPill, Skeleton } from "@/components/ui";
-import type { useMedicationAlerts } from "hooks"
+import { Button } from "ui/button";
+import { EmptyState } from "ui/empty-state";
+import { MedAlertRow } from "ui/medication/med-alert-row";
+import { MedFilterPill } from "ui/medication/med-filter-pill";
+import { Skeleton } from "ui/skeleton";
+import type { useMedicationAlerts } from "hooks";
 import { CheckCircle2 } from "lucide-react";
 import type { MedAlert, MedAlertSeverity, MedTab } from "types";
-import { MED_ALERT_SEVERITY_CONFIG } from "utils";
+import { MED_ALERT_SEVERITY_CONFIG } from "app-utils/medication-display";
 
 type Alerts = ReturnType<typeof useMedicationAlerts>;
 const FILTERS: (MedAlertSeverity | "all")[] = ["all", "urgent", "warning", "info"];

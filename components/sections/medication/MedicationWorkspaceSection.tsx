@@ -1,12 +1,13 @@
 "use client";
 
-import { DiscontinueDialog, MedicationFormDialog } from "@/components/ui";
-import { useMedicationAlerts } from "hooks"
-import { useMedicationProfiles } from "hooks"
-import { useRoundRows } from "hooks"
+import { DiscontinueDialog } from "ui/medication/discontinue-dialog";
+import { MedicationFormDialog } from "ui/medication/medication-form-dialog";
+import { useMedicationAlerts } from "hooks";
+import { useMedicationProfiles } from "hooks";
+import { useRoundRows } from "hooks";
 import { useMemo, useState } from "react";
 import type { MedTab } from "types";
-import { summarizeRound } from "utils";
+import { summarizeRound } from "app-utils/medication";
 import { MedicationHeaderSection } from "./MedicationHeaderSection";
 import { MedicationStatsSection } from "./MedicationStatsSection";
 import { MedicationTabsSection } from "./MedicationTabsSection";

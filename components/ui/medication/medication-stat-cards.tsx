@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircle2, MinusCircle, Pill } from "lucide-react";
 import type { StatCardProps } from "types";
-import type { summarizeRound } from "utils";
+import type { summarizeRound } from "app-utils/medication";
 
 type RoundSummary = ReturnType<typeof summarizeRound>;
 const note = (text: string) => <p className="text-xs text-cf-ink-60">{text}</p>;

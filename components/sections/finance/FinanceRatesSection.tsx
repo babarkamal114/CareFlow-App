@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, RateCardGrid } from "@/components/ui";
+import { Button } from "ui/button";
+import { RateCardGrid } from "ui/finance/rate-card-grid";
 import { Plus } from "lucide-react";
 import type { RateCardEntry } from "types";
 

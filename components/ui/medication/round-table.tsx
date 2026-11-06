@@ -3,7 +3,8 @@
 import { Avatar, AvatarFallback, Badge, Button, EmptyState, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { Pill } from "lucide-react";
 import type { RoundRow } from "types";
-import { formatMedTime, getMinutesOverdue, isRecentlyChanged, REASON_LABEL, ROUTE_LABEL } from "utils";
+import { formatMedTime, getMinutesOverdue, isRecentlyChanged } from "app-utils/medication";
+import { REASON_LABEL, ROUTE_LABEL } from "app-utils/medication-display";
 import { DoseStatusBadge } from "./dose-status-badge";
 import { MedicationTypeBadge } from "./medication-type-badge";
 

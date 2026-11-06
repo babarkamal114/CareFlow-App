@@ -5,7 +5,7 @@ import {
   VISIT_STATUS_LABELS,
   VISIT_TYPE_BADGE_VARIANT,
   VISIT_TYPE_LABELS,
-} from "utils";
+} from "app-utils/schedule-labels";
 
 interface VisitStatusBadgeProps {
   status: VisitStatus;

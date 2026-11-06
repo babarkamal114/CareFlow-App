@@ -1,10 +1,19 @@
 'use client';
 
+import { Button } from "ui/button";
 import {
-  Button, Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle, CqcQuestionRow, ImprovementList,
-  ReadinessDrilldownDialog, Separator,
-} from '@/components/ui';
-import { useCqcReadiness } from 'hooks';
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { CqcQuestionRow } from "ui/compliance/cqc-question-row";
+import { ImprovementList } from "ui/compliance/improvement-list";
+import { ReadinessDrilldownDialog } from "ui/compliance/readiness-drilldown-dialog";
+import { Separator } from "ui/separator";
+import { useCqcReadiness } from "hooks";
 
 export function CQCReadinessCard() {
   const r = useCqcReadiness();

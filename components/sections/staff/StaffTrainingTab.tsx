@@ -23,12 +23,9 @@ import {
   TableRow,
 } from '@/components/ui';
 import type { MockStaffProfile } from 'lib';
-import { TRAINING_STATUS_LABELS } from 'types';
-import {
-  formatStaffDate,
-  getStaffTrainingProgress,
-  getStaffTrainingTone,
-} from 'utils';
+import { TRAINING_STATUS_LABELS } from "types";
+import { formatStaffDate } from "app-utils/staff-review-format";
+import { getStaffTrainingProgress, getStaffTrainingTone } from "app-utils/staff-drawer";
 
 interface StaffTrainingTabProps {
   profile: MockStaffProfile;

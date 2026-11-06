@@ -1,7 +1,8 @@
 import { Badge } from "@/components/ui";
 import { AlertTriangle } from "lucide-react";
 import type { CqcQuestionScore } from "types";
-import { BAND_CONFIG, getScoreBand, TONE_TEXT } from "utils";
+import { BAND_CONFIG, TONE_TEXT } from "app-utils/compliance-display";
+import { getScoreBand } from "app-utils/compliance";
 
 /** "Areas needing improvement": every CQC question that is not rated Good, with its suggested actions. */
 export function ImprovementList({ questions }: { questions: CqcQuestionScore[] }) {

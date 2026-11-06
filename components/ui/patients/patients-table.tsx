@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui";
 import type { Patient } from "types";
-import { PATIENTS_TABLE_COLUMNS } from "utils";
+import { PATIENTS_TABLE_COLUMNS } from "app-utils/patients-page";
 import { PatientEmptyState } from "./patient-empty-state";
 import { PatientRow } from "./patient-row";
 import { PatientTableSkeleton } from "./patient-table-skeleton";

@@ -1,7 +1,12 @@
 import { Badge } from "@/components/ui";
 import { Calendar, ChevronRight, User } from "lucide-react";
 import type { ComplianceAlert } from "types";
-import { ALERT_SEVERITY_CONFIG, ALERT_TYPE_ICON, TONE_PANEL, TONE_TEXT } from "utils";
+import {
+  ALERT_SEVERITY_CONFIG,
+  ALERT_TYPE_ICON,
+  TONE_PANEL,
+  TONE_TEXT,
+} from "app-utils/compliance-display";
 
 interface AlertRowProps {
   alert: ComplianceAlert;

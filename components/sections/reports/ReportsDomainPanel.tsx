@@ -1,10 +1,10 @@
 "use client";
 
-import { ReportWidget } from "@/components/ui";
+import { ReportWidget } from "ui/reports/report-widget";
 import { useReportExport } from "hooks";
 import { useReportDatasetsQuery } from "hooks";
 import type { ReportDomain, ReportRole } from "types";
-import { canViewDataset} from "utils";
+import { canViewDataset } from "app-utils/reports";
 import {  REPORT_TAB_WIDGETS } from "config";
 
 export function ReportsDomainPanel({ domain, role }: { domain: ReportDomain; role: ReportRole }) {

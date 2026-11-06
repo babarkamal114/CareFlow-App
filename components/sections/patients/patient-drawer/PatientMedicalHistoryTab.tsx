@@ -3,8 +3,16 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { AlertTriangle, Heart, Activity } from 'lucide-react';
-import { capitalise, formatPatientDateGB, getAllergyBadgeVariant, getConditionBadgeVariant, sortAllergies, sortConditions, sortHospitalisations } from 'utils';
-import type { PatientAllergy, PatientCondition, PatientHospitalisation } from 'types';
+import {
+  capitalise,
+  getAllergyBadgeVariant,
+  getConditionBadgeVariant,
+  sortAllergies,
+  sortConditions,
+  sortHospitalisations,
+} from "app-utils/patient-profile";
+import { formatPatientDateGB } from "app-utils/patient-records";
+import type { PatientAllergy, PatientCondition, PatientHospitalisation } from "types";
 
 interface PatientMedicalHistoryTabProps {
   conditions: PatientCondition[];

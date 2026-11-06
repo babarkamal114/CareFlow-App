@@ -1,5 +1,5 @@
 import type { Tone } from "types";
-import { TONE_BAR } from "utils";
+import { TONE_BAR } from "app-utils/compliance-display";
 
 interface StatusProgressBarProps {
   value: number;

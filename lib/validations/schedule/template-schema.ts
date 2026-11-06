@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  VISIT_TYPES,
-  type ScheduleFormErrors,
-  type VisitTemplateFormData,
-} from "types";
+import { VISIT_TYPES, type ScheduleFormErrors, type VisitTemplateFormData } from "types";
 import {
   requiredChoice,
   requiredNumberInRange,

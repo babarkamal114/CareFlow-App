@@ -6,9 +6,9 @@ import { validateAuditDateRange } from "lib";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { AuditFilters, AuditLog } from "types";
-import {
-  AUDIT_ENTITY_HREF, buildAuditCsv, buildAuditEntryText, downloadTextFile, filterAuditLogs,
-} from "utils";
+import { AUDIT_ENTITY_HREF } from "app-utils/compliance-display";
+import { buildAuditCsv, buildAuditEntryText, downloadTextFile } from "app-utils/compliance-export";
+import { filterAuditLogs } from "app-utils/compliance";
 
 const INITIAL_FILTERS: AuditFilters = { search: "", entity: "All", from: "", to: "" };
 export const AUDIT_PAGE_SIZE = 10;

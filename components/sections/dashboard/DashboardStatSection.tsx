@@ -1,10 +1,12 @@
 // components/sections/dashboard/DashboardStatSection.tsx
-'use client'
+"use client";
 
-import React, { use } from "react";
-import { motion } from "framer-motion";
+import type { ReactNode } from "react";
+import { motion, type Variants } from "framer-motion";
+import { Activity, AlertCircle, CalendarDays, CheckCircle2, Clock } from "lucide-react";
+import { Progress, ProgressIndicator, ProgressTrack } from "ui/progress";
 import { StatCard } from "shared";
-import { Users, Calendar, ClipboardList, DollarSign } from "lucide-react";
+import type { DashboardVisitSummary } from "types";
 
 const gridVariants: Variants = {
   hidden: {},

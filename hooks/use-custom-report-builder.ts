@@ -4,9 +4,15 @@ import { toast } from "@/components/ui";
 import { useDeleteReportTemplateApi, useSaveReportTemplateApi } from "lib";
 import { useEffect, useState } from "react";
 import type {
-    ReportBuilderConfig, ReportDataset, ReportExportFormat, ReportFormErrors, ReportRole, ReportTemplate, UseCustomReportBuilderReturn,
+  ReportBuilderConfig,
+  ReportDataset,
+  ReportExportFormat,
+  ReportFormErrors,
+  ReportRole,
+  ReportTemplate,
+  UseCustomReportBuilderReturn,
 } from "types";
-import { runCustomReport, validateBuilderConfig } from "utils";
+import { runCustomReport, validateBuilderConfig } from "app-utils/reports";
 import { REPORT_DEFAULT_BUILDER_CONFIG } from "config";
 import { useReportExport } from "./use-report-export";
 import { useReportCatalogQuery, useReportDatasetQuery, useReportTemplatesQuery } from "./use-reports-queries";

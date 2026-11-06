@@ -11,11 +11,7 @@ import {
   StaffRightToWorkFields,
 } from "@/components/ui";
 import { EMPTY_REFeree } from "types";
-import type {
-  Referee,
-  StaffFormData,
-  StaffFormErrors,
-} from "types";
+import type { Referee, StaffFormData, StaffFormErrors } from "types";
 
 interface Props {
   data: StaffFormData;

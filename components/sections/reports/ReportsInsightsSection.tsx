@@ -1,6 +1,10 @@
 "use client";
 
-import { AiInsightCard, Button, EmptyState, ReportPill, Skeleton } from "@/components/ui";
+import { Button } from "ui/button";
+import { EmptyState } from "ui/empty-state";
+import { Skeleton } from "ui/skeleton";
+import { AiInsightCard } from "ui/reports/ai-insight-card";
+import { ReportPill } from "ui/reports/report-pill";
 import { useAiInsights } from "hooks";
 import { Sparkles } from "lucide-react";
 import type { AiInsightKind } from "types";

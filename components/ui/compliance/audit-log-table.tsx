@@ -3,7 +3,8 @@
 import { Avatar, AvatarFallback, Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { ChevronRight } from "lucide-react";
 import type { AuditLog } from "types";
-import { AUDIT_ENTITY_BADGE, formatAuditTime, getInitials } from "utils";
+import { AUDIT_ENTITY_BADGE } from "app-utils/compliance-display";
+import { formatAuditTime, getInitials } from "app-utils/compliance";
 
 interface AuditLogTableProps {
   logs: AuditLog[];

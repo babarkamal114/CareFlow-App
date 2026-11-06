@@ -1,10 +1,13 @@
 "use client";
 
-import {
-  AdministrationRateChart, AuditGapList, AuditReportList, Button, Card, CardContent, CardHeader, CardTitle, OmissionReasonsChart,
-  RefusalPatternsTable, Skeleton,
-} from "@/components/ui";
-import { useMedicationAudit } from "hooks"
+import { Button } from "ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "ui/card";
+import { Skeleton } from "ui/skeleton";
+import { AdministrationRateChart } from "ui/medication/administration-rate-chart";
+import { AuditReportList } from "ui/medication/audit-report-list";
+import { OmissionReasonsChart } from "ui/medication/omission-reasons-chart";
+import { AuditGapList, RefusalPatternsTable } from "ui/medication/refusal-patterns-table";
+import { useMedicationAudit } from "hooks";
 import { Download, FilePlus } from "lucide-react";
 
 const CARD = "rounded-2xl border-cf-border-light shadow-cf-sm";

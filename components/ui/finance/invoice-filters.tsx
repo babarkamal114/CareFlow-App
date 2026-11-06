@@ -3,7 +3,7 @@
 import { Button, InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui";
 import { Search } from "lucide-react";
 import type { FundingSource, InvoiceFilters, InvoiceStatus } from "types";
-import { FUNDING_SOURCE_OPTIONS, INVOICE_STATUS_OPTIONS } from "utils";
+import { FUNDING_SOURCE_OPTIONS, INVOICE_STATUS_OPTIONS } from "app-utils/finance-display";
 import { FinanceSelect } from "./finance-select";
 
 const STATUS_OPTIONS: { value: InvoiceStatus | "all"; label: string }[] = [

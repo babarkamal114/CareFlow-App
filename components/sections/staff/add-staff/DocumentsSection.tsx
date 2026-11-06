@@ -8,11 +8,7 @@ import {
   StaffFormSectionLabel,
 } from "@/components/ui";
 import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
-import type {
-  StaffDocumentType,
-  StaffFormData,
-  StaffFormErrors,
-} from "types";
+import type { StaffDocumentType, StaffFormData, StaffFormErrors } from "types";
 
 interface Props {
   data: StaffFormData;

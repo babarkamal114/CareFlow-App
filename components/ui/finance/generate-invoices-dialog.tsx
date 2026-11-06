@@ -17,8 +17,13 @@ import {
 import { validateGenerateInvoices } from "lib";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
-import type { BillingPeriodType, FinanceFormErrors, FundingSource, GenerateInvoicesFormData } from "types";
-import { FUNDING_SOURCE_OPTIONS, PERIOD_TYPE_OPTIONS } from "utils";
+import type {
+  BillingPeriodType,
+  FinanceFormErrors,
+  FundingSource,
+  GenerateInvoicesFormData,
+} from "types";
+import { FUNDING_SOURCE_OPTIONS, PERIOD_TYPE_OPTIONS } from "app-utils/finance-display";
 import { FinanceSelect } from "./finance-select";
 
 const PERIOD_DAYS: Record<BillingPeriodType, number> = { weekly: 7, fortnightly: 14, monthly: 30 };

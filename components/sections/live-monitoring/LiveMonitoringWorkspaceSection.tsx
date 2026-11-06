@@ -1,8 +1,8 @@
 "use client";
 
-import { LiveMonitoringHeader } from "@/components/ui";
+import { LiveMonitoringHeader } from "ui/live-monitoring/live-monitoring-header";
 import { useLiveMonitoring } from "hooks";
-import { getLiveMonitoringCounts, getLiveUpdatedLabel } from "utils";
+import { getLiveMonitoringCounts, getLiveUpdatedLabel } from "app-utils/live-monitoring";
 import { LiveMonitoringStats } from "./LiveMonitoringStats";
 import { LiveActivitySection } from "./LiveActivitySection";
 import { LiveAttentionSection } from "./LiveAttentionSection";

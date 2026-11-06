@@ -11,7 +11,7 @@ import {
 } from "@/components/ui";
 import { cn } from "lib";
 import type { CapacityDay } from "types";
-import { getCapacityStatus } from "utils";
+import { getCapacityStatus } from "app-utils/schedule-capacity";
 
 const chartConfig = {
   neededHours: { label: "Hours needed", color: "var(--chart-1)" },

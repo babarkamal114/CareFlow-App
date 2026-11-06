@@ -1,6 +1,7 @@
 import { AlertTriangle, Clock, FileText, PoundSterling } from "lucide-react";
-import type { RevenueSummary, StatCardProps } from "types";
-import { formatCurrency, formatPercent, getCollectionRate } from "utils";
+import type { RevenueSummary } from "types";
+import type { StatCardProps } from "types";
+import { formatCurrency, formatPercent, getCollectionRate } from "app-utils/finance";
 
 const note = (text: string) => <p className="text-xs text-cf-ink-60">{text}</p>;
 

@@ -20,14 +20,12 @@ import {
   addBodyMarking,
   addInjuryDetail,
   getBodyMarkings,
-  INJURY_SEVERITY_OPTIONS,
-  INCIDENT_BODY_PARTS,
-  INCIDENT_MARK_TYPES,
   removeBodyMarking,
   removeInjuryDetail,
   updateBodyMarking,
   updateInjuryDetail,
-} from 'utils';
+} from "app-utils/incident-form";
+import { INJURY_SEVERITY_OPTIONS, INCIDENT_BODY_PARTS, INCIDENT_MARK_TYPES } from "app-utils/constants";
 import type {
   IncidentFormStepProps,
   IncidentMarkType,

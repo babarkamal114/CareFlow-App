@@ -3,13 +3,13 @@
 import { motion } from 'framer-motion';
 import { Calendar, CheckCircle, Clock, UserX, XCircle } from 'lucide-react';
 import { StatCard } from 'shared';
-import type { ScheduleVisit } from 'types';
+import type { ScheduleVisit } from "types";
 import {
   countUnassignedByWindow,
   countVisitsByStatus,
   getUnassignedVisits,
   getVisitsForDate,
-} from 'utils';
+} from "app-utils/schedule-filters";
 
 interface ScheduleStatCardsSectionProps {
   visits: ScheduleVisit[];

@@ -11,9 +11,9 @@ import {
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
 import { StaffFormStatusBadge } from './staff-form-status-badge';
-import { COMPLIANCE_STATUS_LABELS } from 'types';
-import type { ComplianceBreakdown, ComplianceResult } from 'types';
-import { getStaffComplianceTone } from 'utils';
+import { COMPLIANCE_STATUS_LABELS } from "types";
+import type { ComplianceBreakdown, ComplianceResult } from "types";
+import { getStaffComplianceTone } from "app-utils/staff-drawer";
 
 const ALERT_VARIANT = {
   success: 'success',

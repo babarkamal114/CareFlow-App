@@ -1,6 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, ReportActivityList, Skeleton } from "@/components/ui";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { ReportActivityList } from "ui/reports/report-activity-list";
+import { Skeleton } from "ui/skeleton";
 import { useReportActivityQuery } from "hooks";
 import { ReportsSectionHeading } from "./ReportsSectionHeading";
 

@@ -13,20 +13,17 @@ import type {
   VisitFormData,
   VisitTemplate,
   VisitTemplateFormData,
-} from 'types';
+} from "types";
+import { UNASSIGNED_RESOURCE_ID } from "app-utils/visit-to-event-converter";
 import {
-  UNASSIGNED_RESOURCE_ID,
   createScheduleId,
-  detectVisitConflicts,
   expandRecurringRule,
   formDataToVisit,
-  formatShortDate,
-  hasBlockingConflict,
   recurringFormToRule,
   templateFormToTemplate,
-  toHHmm,
-  toIsoDate,
-} from 'utils';
+} from "app-utils/schedule-forms";
+import { detectVisitConflicts, hasBlockingConflict } from "app-utils/schedule-conflicts";
+import { formatShortDate, toHHmm, toIsoDate } from "app-utils/schedule-time";
 
 /** Stands in for the network round trip so buttons show their loading state. */
 function simulateRequest(): Promise<void> {

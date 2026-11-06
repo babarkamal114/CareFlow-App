@@ -4,7 +4,8 @@ import { Avatar, AvatarFallback, Badge, Button, Sheet, SheetContent, SheetHeader
 import { Clock, Download, FileText, Monitor, Tag, User } from "lucide-react";
 import type { ElementType } from "react";
 import type { AuditLog } from "types";
-import { AUDIT_ENTITY_BADGE, formatStamp, getInitials } from "utils";
+import { AUDIT_ENTITY_BADGE } from "app-utils/compliance-display";
+import { formatStamp, getInitials } from "app-utils/compliance";
 
 interface AuditLogDrawerProps {
   log: AuditLog | null;

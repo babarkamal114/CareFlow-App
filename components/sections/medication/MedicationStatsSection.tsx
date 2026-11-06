@@ -3,8 +3,8 @@
 import { Skeleton } from "@/components/ui";
 import { motion } from "framer-motion";
 import { StatCard } from "shared";
-import type { summarizeRound } from "utils";
-import { getMedicationStatCards } from "@/components/ui";
+import type { summarizeRound } from "app-utils/medication";
+import { getMedicationStatCards } from "ui/medication/medication-stat-cards";
 
 interface MedicationStatsSectionProps { summary: ReturnType<typeof summarizeRound>; escalationCount: number; isLoading: boolean }
 

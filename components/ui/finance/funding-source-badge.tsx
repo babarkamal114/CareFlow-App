@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import type { FundingSource } from "types";
-import { FUNDING_SOURCE_LABEL, FUNDING_SOURCE_VARIANT } from "utils";
+import { FUNDING_SOURCE_LABEL, FUNDING_SOURCE_VARIANT } from "app-utils/finance-display";
 
 export function FundingSourceBadge({ source }: { source: FundingSource }) {
   return (

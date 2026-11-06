@@ -1,18 +1,19 @@
 'use client';
 
 import { TrendingDown, TrendingUp } from 'lucide-react';
+import { Badge } from "ui/badge";
+import { CapacityChart } from "ui/schedule/capacity-chart";
 import {
-  Badge,
-  CapacityChart,
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui';
+} from "ui/card";
 import { cn } from 'lib';
-import type { CapacityDay } from 'types';
-import { CAPACITY_STATUS_BADGE_VARIANT, CAPACITY_STATUS_LABELS, summariseCapacity } from 'utils';
+import type { CapacityDay } from "types";
+import { CAPACITY_STATUS_BADGE_VARIANT, CAPACITY_STATUS_LABELS } from "app-utils/schedule-labels";
+import { summariseCapacity } from "app-utils/schedule-capacity";
 
 interface ScheduleCapacitySectionProps {
   days: CapacityDay[];

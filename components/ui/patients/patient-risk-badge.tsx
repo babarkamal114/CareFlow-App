@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import type { PatientRisk } from "types";
-import { getRiskLevelBadge } from "utils";
+import { getRiskLevelBadge } from "app-utils/patient-profile";
 
 interface PatientRiskBadgeProps {
   risk: PatientRisk;

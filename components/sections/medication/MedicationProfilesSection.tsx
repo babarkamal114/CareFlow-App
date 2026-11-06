@@ -1,7 +1,10 @@
 "use client";
 
-import { EmptyState, InputGroup, InputGroupAddon, InputGroupInput, MedicationProfileCard, Skeleton } from "@/components/ui";
-import type { useMedicationProfiles } from "hooks"
+import { EmptyState } from "ui/empty-state";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "ui/input-group";
+import { MedicationProfileCard } from "ui/medication/medication-profile-card";
+import { Skeleton } from "ui/skeleton";
+import type { useMedicationProfiles } from "hooks";
 import { Pill, Search } from "lucide-react";
 
 type Profiles = ReturnType<typeof useMedicationProfiles>;

@@ -7,7 +7,7 @@ import {
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import type { Medication, MedicationFormData } from "types";
-import { groupMedicationsByPatient } from "utils";
+import { groupMedicationsByPatient } from "app-utils/medication";
 
 interface FormState { open: boolean; patientId: string | null; medication: Medication | null }
 const CLOSED: FormState = { open: false, patientId: null, medication: null };

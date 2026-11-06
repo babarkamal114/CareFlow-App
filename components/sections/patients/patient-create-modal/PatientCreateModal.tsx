@@ -9,10 +9,18 @@ import {
   DialogDescription,
   ScrollArea
 } from "@/components/ui"
-import { useCarers } from 'hooks';
-import { STEP_LABELS, TOTAL_STEPS, buildNewPatient, createEmptyPatientForm, getStepKey } from 'utils';
-import { validatePatientStep } from 'lib';
-import type { Patient, PatientFormData, PatientFormErrors, PatientMedication, PatientStepKey } from 'types';
+import { useCarers } from "hooks";
+import {
+  STEP_LABELS,
+  TOTAL_STEPS,
+  buildNewPatient,
+  createEmptyPatientForm,
+  getStepKey,
+} from "app-utils/patient-create";
+import { validatePatientStep } from "lib";
+import type { Patient, PatientFormErrors } from "types";
+import type { PatientFormData, PatientStepKey } from "types";
+import type { PatientMedication } from "types";
 import { CreatePatientModalProgress } from './PatientCreateModalProgress';
 import { CreatePatientModalFooter } from './PatientCreateModalFooter';
 import { AttachmentsStep } from './PatientCreateModalDocStep';

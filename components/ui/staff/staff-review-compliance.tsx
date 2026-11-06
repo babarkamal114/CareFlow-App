@@ -4,9 +4,15 @@ import { CheckCircle2 } from 'lucide-react';
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
 import { StaffFormStatusBadge } from './staff-form-status-badge';
-import { DBS_PATH_LABELS, DBS_STATUS_LABELS, RTW_CHECK_TYPE_LABELS, TRAVEL_MODE_LABELS } from 'types';
-import type { ComplianceResult, StaffFormData } from 'types';
-import { formatStaffDate, getStaffDbsTone } from 'utils';
+import {
+  DBS_PATH_LABELS,
+  DBS_STATUS_LABELS,
+  RTW_CHECK_TYPE_LABELS,
+  TRAVEL_MODE_LABELS,
+} from "types";
+import type { ComplianceResult, StaffFormData } from "types";
+import { formatStaffDate } from "app-utils/staff-review-format";
+import { getStaffDbsTone } from "app-utils/staff-drawer";
 
 export function StaffReviewCompliance({
   data,

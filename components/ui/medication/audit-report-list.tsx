@@ -3,7 +3,7 @@
 import { Badge, Button } from "@/components/ui";
 import { Download, FileText } from "lucide-react";
 import type { AuditReport } from "types";
-import { formatMedDate } from "utils";
+import { formatMedDate } from "app-utils/medication";
 
 interface AuditReportListProps { reports: AuditReport[]; onDownload: () => void }
 

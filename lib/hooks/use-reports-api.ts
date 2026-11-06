@@ -1,6 +1,11 @@
 import { useQueries, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
 import type {
-  LogReportActivityVariables, ReportDataset, ReportMutationResponse, ReviewAiInsightVariables, SaveReportScheduleVariables, SaveReportTemplateVariables,
+  LogReportActivityVariables,
+  ReportDataset,
+  ReportMutationResponse,
+  ReviewAiInsightVariables,
+  SaveReportScheduleVariables,
+  SaveReportTemplateVariables,
   SetReportScheduleStatusVariables,
 } from "types";
 import {

@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { AlertTriangle, GripVertical } from "lucide-react";
 import { Badge, Button } from "@/components/ui";
 import type { ScheduleVisit, VisitUrgency } from "types";
-import { URGENCY_BADGE_VARIANT, URGENCY_LABELS, formatShortDate } from "utils";
+import { URGENCY_BADGE_VARIANT, URGENCY_LABELS } from "app-utils/schedule-labels";
+import { formatShortDate } from "app-utils/schedule-time";
 import { VisitTypeBadge } from "./visit-status-badge";
 
 interface UnassignedScheduleBlockProps {

@@ -2,7 +2,7 @@
 
 import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import type { ReportTableProps } from "types";
-import { formatReportValue } from "utils";
+import { formatReportValue } from "app-utils/reports";
 import { REPORT_STATUS_BADGE } from "config";
 
 const RIGHT = ["number", "percent", "currency"];

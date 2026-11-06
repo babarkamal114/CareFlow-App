@@ -2,21 +2,22 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Repeat } from 'lucide-react';
+import { Badge } from "ui/badge";
+import { Button } from "ui/button";
+import { DatePicker } from "ui/date-picker";
 import {
-  Badge,
-  Button,
-  DatePicker,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  ScheduleSelect,
-} from '@/components/ui';
-import { hasErrors, validateRecurringVisitForm } from 'lib';
-import { SCHEDULE_DAYS } from 'types';
+} from "ui/dialog";
+import { Input } from "ui/input";
+import { ScheduleSelect } from "ui/schedule/schedule-select";
+import { hasErrors } from "lib";
+import { validateRecurringVisitForm } from "lib";
+import { SCHEDULE_DAYS } from "types";
 import type {
   RecurringFrequency,
   RecurringVisitFormData,
@@ -24,22 +25,17 @@ import type {
   ScheduleFormErrors,
   VisitTemplate,
   VisitType,
-} from 'types';
+} from "types";
 import {
   DAY_SHORT_LABELS,
   RECURRING_FREQUENCY_OPTIONS,
   VISIT_DURATION_MINUTES,
   VISIT_TYPE_OPTIONS,
-  createRecurringFormData,
-  detectVisitConflicts,
-  expandRecurringRule,
-  formatDurationLabel,
-  hasBlockingConflict,
-  parseIsoDate,
-  recurringFormToRule,
-  toIsoDate,
   toSelectOptions,
-} from 'utils';
+} from "app-utils/schedule-labels";
+import { createRecurringFormData, expandRecurringRule, recurringFormToRule } from "app-utils/schedule-forms";
+import { detectVisitConflicts, hasBlockingConflict } from "app-utils/schedule-conflicts";
+import { formatDurationLabel, parseIsoDate, toIsoDate } from "app-utils/schedule-time";
 import { FormField } from './ScheduleVisitForm';
 
 const NO_VALUE = 'none';

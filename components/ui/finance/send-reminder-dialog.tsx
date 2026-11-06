@@ -11,7 +11,7 @@ import {
 } from "@/components/ui";
 import { Send } from "lucide-react";
 import type { Invoice } from "types";
-import { formatCurrency, getDaysOverdue, getInvoiceBalance } from "utils";
+import { formatCurrency, getDaysOverdue, getInvoiceBalance } from "app-utils/finance";
 
 interface SendReminderDialogProps {
   open: boolean;

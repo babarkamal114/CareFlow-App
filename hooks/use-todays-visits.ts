@@ -1,11 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type {
-  TodaysVisitsResponse,
-  VisitDTO,
-  DashboardVisitStatus,
-} from "types";
+import type { TodaysVisitsResponse, VisitDTO, DashboardVisitStatus } from "types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_DASHBOARD === "true";

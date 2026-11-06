@@ -7,7 +7,8 @@ import {
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import type { ControlledEntryFormData, ControlledItem } from "types";
-import { buildControlledLedgerCsv, downloadMedicationFile, getStockDiscrepancy } from "utils";
+import { buildControlledLedgerCsv, downloadMedicationFile } from "app-utils/medication-export";
+import { getStockDiscrepancy } from "app-utils/medication";
 
 export function useControlledDrugs() {
   const controlledQ = useGetControlledDataApi();

@@ -1,4 +1,5 @@
-import { Card, WeeklyActivityChart, WeeklyActivityLegend } from "@/components/ui";
+import { Card } from "ui/card";
+import { WeeklyActivityChart, WeeklyActivityLegend } from "ui/dashboard/weekly-activity-chart";
 import type { DashboardActivityPoint } from "types";
 
 interface DashboardWeeklyActivitySectionProps {

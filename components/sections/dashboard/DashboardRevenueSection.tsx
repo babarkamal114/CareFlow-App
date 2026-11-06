@@ -1,15 +1,13 @@
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 
-import { Badge, Card, RevenueSnapshotBars } from "@/components/ui";
+import { Badge } from "ui/badge";
+import { Card } from "ui/card";
+import { RevenueSnapshotBars } from "ui/dashboard/revenue-snapshot-bars";
 import type { BadgeProps } from "@/components/ui";
 import type { DashboardRevenueSnapshot } from "types";
-import {
-  formatCurrency,
-  pluralize,
-  type DashboardRevenueBar,
-  type DashboardRevenueChange,
-  type DashboardTrendDirection,
-} from "utils";
+import { formatCurrency } from "app-utils/finance";
+import { pluralize } from "app-utils/dashboard-helpers";
+import { type DashboardRevenueBar, type DashboardRevenueChange, type DashboardTrendDirection } from "app-utils/dashboard-home-insights";
 
 const CHANGE_ICON = { up: ArrowUp, down: ArrowDown, neutral: Minus } as const;
 

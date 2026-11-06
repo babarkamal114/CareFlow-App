@@ -1,7 +1,15 @@
 'use client';
 
-import { Badge, Card, CardContent, CardHeader, CardTitle, SignatureRow, SignDocumentDialog } from '@/components/ui';
-import { useDigitalSignatures } from 'hooks';
+import { Badge } from "ui/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { SignatureRow } from "ui/compliance/signature-row";
+import { SignDocumentDialog } from "ui/compliance/sign-document-dialog";
+import { useDigitalSignatures } from "hooks";
 import { PenLine } from 'lucide-react';
 
 export function DigitalSignaturesPanel() {

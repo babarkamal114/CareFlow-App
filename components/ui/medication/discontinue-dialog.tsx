@@ -2,7 +2,7 @@
 
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui";
 import type { Medication } from "types";
-import { getDrugLabel } from "utils";
+import { getDrugLabel } from "app-utils/medication";
 
 interface DiscontinueDialogProps { medication: Medication | null; isLoading: boolean; onClose: () => void; onConfirm: () => void }
 

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { ReportFormErrors, ReportScheduleFormData } from "types";
 import { REPORT_EMAIL_REGEX, REPORT_FREQUENCY_VALUES, REPORT_MAX_RECIPIENTS, REPORT_TIME_REGEX } from "config";
-import { parseRecipients, requiredChoice, reportRequiredText, reportRunSchema } from "utils";
+import { parseRecipients, requiredChoice, reportRequiredText, reportRunSchema } from "app-utils/reports";
 
 export const scheduleSchema = z
   .object({

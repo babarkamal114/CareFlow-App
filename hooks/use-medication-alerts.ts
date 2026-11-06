@@ -5,7 +5,7 @@ import {
 } from "lib";
 import { useMemo, useState } from "react"
 import type { MedAlertSeverity } from "types";
-import { buildMedicationAlerts } from "utils";
+import { buildMedicationAlerts } from "app-utils/medication-audit";
 import { useRoundRows } from "./use-round-rows";
 
 export function useMedicationAlerts() {

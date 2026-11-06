@@ -5,7 +5,8 @@ import { Calendar, dayjsLocalizer, NavigateAction, View } from 'react-big-calend
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import dayjs from 'dayjs';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dayStyleGetter, eventStyleGetter } from 'utils';
+import { eventStyleGetter } from "app-utils/style-getters";
+import { createDayStyleGetter } from "app-utils/style-getters";
 import {
   Select,
   SelectContent,
@@ -180,6 +181,10 @@ function CalendarWrapper({
   isAiScheduling,
 }: CalendarWrapperProps) {
   const [internalFilters, setInternalFilters] = useState<ScheduleFilters>(defaultFilters);
+  const dayStyleGetter = useMemo(
+    () => createDayStyleGetter(dayjs().format('YYYY-MM-DD')),
+    [],
+  );
   const filters = controlledFilters ?? internalFilters;
 
   const updateFilter = (key: keyof ScheduleFilters, value: string) => {

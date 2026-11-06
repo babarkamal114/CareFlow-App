@@ -12,8 +12,13 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { FileText, Upload, X, FolderOpen } from 'lucide-react';
-import { usePatientDocuments } from 'hooks';
-import { DEFAULT_PATIENT_DOCUMENT_TYPE, PATIENT_DOCUMENT_ACCEPT, PATIENT_DOCUMENT_TYPES, getDocumentMetaParts } from 'utils';
+import { usePatientDocuments } from "hooks";
+import {
+  DEFAULT_PATIENT_DOCUMENT_TYPE,
+  PATIENT_DOCUMENT_ACCEPT,
+  PATIENT_DOCUMENT_TYPES,
+  getDocumentMetaParts,
+} from "app-utils/patient-records";
 import { DotSeparated } from '../DotSeparated';
 
 interface PatientDocumentsTabProps {

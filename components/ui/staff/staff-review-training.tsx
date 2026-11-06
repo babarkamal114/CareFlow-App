@@ -2,9 +2,9 @@
 
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
-import { TRAINING_STATUS_LABELS } from 'types';
-import type { StaffFormData } from 'types';
-import { formatStaffDate, formatStaffList } from 'utils';
+import { TRAINING_STATUS_LABELS } from "types";
+import type { StaffFormData } from "types";
+import { formatStaffDate, formatStaffList } from "app-utils/staff-review-format";
 
 export function StaffReviewTraining({
   data,

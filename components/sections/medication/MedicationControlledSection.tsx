@@ -1,7 +1,17 @@
 "use client";
 
-import { Button, Card, CardContent, CardHeader, CardTitle, ControlledEntryDialog, ControlledLedgerTable, ControlledStockCard, Skeleton } from "@/components/ui";
-import { useControlledDrugs} from "hooks"
+import { Button } from "ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { ControlledEntryDialog } from "ui/medication/controlled-entry-dialog";
+import { ControlledLedgerTable } from "ui/medication/controlled-ledger-table";
+import { ControlledStockCard } from "ui/medication/controlled-stock-card";
+import { Skeleton } from "ui/skeleton";
+import { useControlledDrugs } from "hooks";
 import { Download } from "lucide-react";
 
 export function MedicationControlledSection() {

@@ -1,6 +1,7 @@
 import { Badge, Button } from "@/components/ui";
 import type { SignatureItem } from "types";
-import { formatDueLabel, formatStamp, SIGNATURE_STATUS_CONFIG, SIGNATURE_TYPE_STYLE, TONE_TEXT } from "utils";
+import { formatDueLabel, formatStamp } from "app-utils/compliance";
+import { SIGNATURE_STATUS_CONFIG, SIGNATURE_TYPE_STYLE, TONE_TEXT } from "app-utils/compliance-display";
 
 interface SignatureRowProps {
   item: SignatureItem;

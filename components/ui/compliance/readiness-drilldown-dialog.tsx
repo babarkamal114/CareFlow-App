@@ -6,7 +6,8 @@ import {
 } from "@/components/ui";
 import { Download } from "lucide-react";
 import type { ReadinessFactor } from "types";
-import { BAND_CONFIG, getScoreBand, QUESTION_META } from "utils";
+import { BAND_CONFIG, QUESTION_META } from "app-utils/compliance-display";
+import { getScoreBand } from "app-utils/compliance";
 import { StatusProgressBar } from "./status-progress-bar";
 
 interface ReadinessDrilldownDialogProps {

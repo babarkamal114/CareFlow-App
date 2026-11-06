@@ -1,6 +1,7 @@
 "use client";
 
-import { Skeleton, getLiveMonitoringStatCards } from "@/components/ui";
+import { Skeleton } from "ui/skeleton";
+import { getLiveMonitoringStatCards } from "ui/live-monitoring/live-monitoring-stat-cards";
 import { motion } from "framer-motion";
 import { StatCard } from "shared";
 import type { LiveMonitoringStatsProps } from "types";

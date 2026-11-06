@@ -19,9 +19,15 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { AlertTriangle } from 'lucide-react';
-import { useDischargeForm } from 'hooks';
-import { DISCHARGE_FINAL_VISIT_FIELDS, DISCHARGE_NOTIFY_OPTIONS, DISCHARGE_REASONS, DISCHARGE_REASON_LABELS, getDischargeNotifyLabel } from 'utils';
-import type { DischargeContacts, DischargePayload, DischargeReason } from 'types';
+import { useDischargeForm } from "hooks";
+import {
+  DISCHARGE_FINAL_VISIT_FIELDS,
+  DISCHARGE_NOTIFY_OPTIONS,
+  DISCHARGE_REASONS,
+  DISCHARGE_REASON_LABELS,
+  getDischargeNotifyLabel,
+} from "app-utils/patient-discharge";
+import type { DischargeContacts, DischargePayload, DischargeReason } from "types";
 
 interface PatientDischargeModalProps extends DischargeContacts {
   open: boolean;

@@ -15,7 +15,7 @@ export function ReportLibraryCard({ report, onRun, onSchedule, onExport }: Repor
           <Badge variant={REPORT_DOMAIN_BADGE[report.domain]} shape="pill" badgeSize="sm">{REPORT_DOMAIN_LABEL[report.domain]}</Badge>
         </div>
         <p className="flex-1 text-sm text-cf-ink-60">{report.description}</p>
-        <p className="text-xs text-cf-ink-40">{report.datasetIds.length} {report.datasetIds.length === 1 ? "section" : "sections"} · {report.source}</p>
+        <p className="text-xs text-cf-ink-40">{report.datasetIds.length} {report.datasetIds.length === 1 ? "section" : "sections"}</p>
         <div className="flex items-center gap-2">
           <Button size="sm" className="flex-1" onClick={() => onRun(report)}><Play />Run</Button>
           <Button size="sm" variant="outline" onClick={() => onSchedule(report.id)}><CalendarClock />Schedule</Button>

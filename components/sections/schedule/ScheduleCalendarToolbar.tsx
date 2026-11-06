@@ -10,16 +10,16 @@ import {
   UserMinus,
   UserX,
 } from 'lucide-react';
+import { Badge } from "ui/badge";
+import { Button } from "ui/button";
 import {
-  Badge,
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  ScheduleFilterBar,
-} from '@/components/ui';
-import type { ScheduleFilters } from 'types';
+} from "ui/dropdown-menu";
+import { ScheduleFilterBar } from "ui/schedule/schedule-filter-bar";
+import type { ScheduleFilters } from "types";
 
 interface ScheduleCalendarToolbarProps {
   filters: ScheduleFilters;

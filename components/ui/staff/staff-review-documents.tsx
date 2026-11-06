@@ -2,9 +2,9 @@
 
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
-import { STAFF_DOCUMENT_TYPE_LABELS } from 'types';
-import type { StaffFormData } from 'types';
-import { formatStaffDate } from 'utils';
+import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
+import type { StaffFormData } from "types";
+import { formatStaffDate } from "app-utils/staff-review-format";
 
 export function StaffReviewDocuments({
   data,

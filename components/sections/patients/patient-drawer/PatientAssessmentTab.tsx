@@ -2,9 +2,16 @@
 
 import { Card, CardContent, CardHeader, CardTitle, Badge, BadgeProps } from "@/components/ui";
 import { Clock, User, Shield } from 'lucide-react';
-import { getRiskBadgeVariant, formatPatientDateGB, getInterventionPreview, groupRiskAssessments, RISK_ASSESSMENT_TYPE_META, RISK_LEVEL_BORDER_CLASS } from 'utils';
-import type { PatientRiskAssessment } from 'types';
-import { usePatientRiskAssessments } from 'hooks';
+import { getRiskBadgeVariant } from "app-utils/risk-badge";
+import { formatPatientDateGB } from "app-utils/patient-records";
+import {
+  getInterventionPreview,
+  groupRiskAssessments,
+  RISK_ASSESSMENT_TYPE_META,
+  RISK_LEVEL_BORDER_CLASS,
+} from "app-utils/patient-risk-assessments";
+import type { PatientRiskAssessment } from "types";
+import { usePatientRiskAssessments } from "hooks";
 
 interface PatientRiskAssessmentsTabProps {
   patientId?: string;

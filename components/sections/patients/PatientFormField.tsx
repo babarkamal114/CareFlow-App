@@ -11,8 +11,8 @@ import {
   SelectValue,
   Textarea,
 } from "@/components/ui";
-import { PatientFieldDef, PatientFieldSection } from 'utils';
-import type { PatientFormErrors } from 'types';
+import { PatientFieldDef, PatientFieldSection } from "app-utils/patient-form-fields";
+import type { PatientFormErrors } from "types";
 
 type FieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 

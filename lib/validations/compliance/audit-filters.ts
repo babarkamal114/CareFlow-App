@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { ComplianceFormErrors } from "types";
-import { runSchema } from "utils";
+import { runSchema } from "app-utils/compliance";
 
 export const auditDateRangeSchema = z
   .object({ from: z.string(), to: z.string() })

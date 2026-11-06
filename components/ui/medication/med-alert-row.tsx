@@ -2,7 +2,12 @@
 
 import { Badge, Button } from "@/components/ui";
 import type { MedAlert } from "types";
-import { ALERT_ACTION_LABEL, ALERT_KIND_LABEL, MED_ALERT_SEVERITY_CONFIG, MED_TONE_PANEL } from "utils";
+import {
+  ALERT_ACTION_LABEL,
+  ALERT_KIND_LABEL,
+  MED_ALERT_SEVERITY_CONFIG,
+  MED_TONE_PANEL,
+} from "app-utils/medication-display";
 
 interface MedAlertRowProps { alert: MedAlert; patientName: string; onAction: (alert: MedAlert) => void; onAcknowledge: (id: string) => void }
 

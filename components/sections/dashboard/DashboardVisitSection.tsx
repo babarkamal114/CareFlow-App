@@ -1,6 +1,6 @@
 "use client";
 
-import { VisitsTable } from "@/components/ui";
+import { VisitsTable } from "ui/dashboard/visits-table";
 import type { DashboardVisit, DashboardVisitFilter } from "types";
 
 interface DashboardVisitSectionProps {

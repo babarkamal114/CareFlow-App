@@ -1,10 +1,21 @@
 'use client';
 
 import {
-  type ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent,
-  Card, CardContent, CardHeader, CardTitle, FilterPill,
-} from '@/components/ui';
-import { useCqcReadiness, useScoreTrend } from 'hooks';
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "ui/chart";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { FilterPill } from "ui/compliance/filter-pill";
+import { useCqcReadiness, useScoreTrend } from "hooks";
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 // Colours come from the chart tokens in globals.css, so they follow light / dark mode.

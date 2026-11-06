@@ -2,7 +2,8 @@
 
 import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import { AlertTriangle } from "lucide-react";
-import { formatMedDateTime, type AuditGap, type RefusalPattern } from "utils";
+import { formatMedDateTime } from "app-utils/medication";
+import { type AuditGap, type RefusalPattern } from "app-utils/medication-audit";
 
 export function RefusalPatternsTable({ patterns, now }: { patterns: RefusalPattern[]; now: Date }) {
   if (patterns.length === 0) return <p className="py-6 text-center text-sm text-cf-ink-40">No repeated refusals.</p>;

@@ -2,8 +2,18 @@
 
 import { Button, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui";
 import { Download, Search } from "lucide-react";
-import type { RegCategory, Regulation, RegulationFilters, RegStatus } from "types";
-import { REG_CATEGORIES, REG_STATUS_PILL_TONE, REG_STATUSES, TONE_BAR } from "utils";
+import type {
+  RegCategory,
+  Regulation,
+  RegulationFilters,
+  RegStatus,
+} from "types";
+import {
+  REG_CATEGORIES,
+  REG_STATUS_PILL_TONE,
+  REG_STATUSES,
+  TONE_BAR,
+} from "app-utils/compliance-display";
 import { FilterPill } from "./filter-pill";
 import { RegulationRow } from "./regulation-row";
 

@@ -1,6 +1,7 @@
 import { AlertTriangle, CalendarCheck, Pill, PoundSterling, ShieldCheck } from "lucide-react";
-import type { ReportKpi, StatCardProps } from "types";
-import { formatKpiValue, getKpiChange } from "utils";
+import type { ReportKpi } from "types";
+import type { StatCardProps } from "types";
+import { formatKpiValue, getKpiChange } from "app-utils/reports";
 
 const ICONS: Record<string, StatCardProps["Icon"]> = { readiness: ShieldCheck, "on-time": CalendarCheck, incidents: AlertTriangle, mar: Pill, revenue: PoundSterling };
 

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { StatCard } from 'shared';
 import { Incident } from 'types';
-import { getIncidentStatCards } from 'utils';
+import { getIncidentStatCards } from "app-utils/incidents";
 
 interface IncidentStatsSectionProps {
   incidents: Incident[];

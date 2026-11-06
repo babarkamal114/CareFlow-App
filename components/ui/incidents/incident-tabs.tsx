@@ -2,7 +2,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
 import { Incident } from 'types';
-import { getIncidentEvidenceCount, getIncidentInjuryCount, INCIDENT_TABS } from 'utils';
+import { getIncidentEvidenceCount, getIncidentInjuryCount } from "app-utils/incident-display";
+import { INCIDENT_TABS } from "app-utils/constants";
 import { IncidentOverviewTab } from './incident-overview-tab';
 import { IncidentInjuriesTab } from './incident-injuries-tab';
 import { IncidentResponseTab } from './incident-response-tab';

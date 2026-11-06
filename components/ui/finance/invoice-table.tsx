@@ -24,7 +24,7 @@ import {
   getDaysOverdue,
   getInvoiceBalance,
   getInvoiceDisplayStatus,
-} from "utils";
+} from "app-utils/finance";
 import { FundingSourceBadge } from "./funding-source-badge";
 import { InvoiceStatusBadge } from "./invoice-status-badge";
 

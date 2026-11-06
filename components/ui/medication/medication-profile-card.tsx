@@ -3,7 +3,9 @@
 import { Avatar, AvatarFallback, Badge, Button, Card, CardContent, CardHeader } from "@/components/ui";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { InteractionRule, Medication, ProfileGroup } from "types";
-import { findRegimeInteractions, formatMedDate, FREQUENCY_LABEL, isRecentlyChanged, ROUTE_LABEL } from "utils";
+import { findRegimeInteractions } from "app-utils/medication-audit";
+import { formatMedDate, isRecentlyChanged } from "app-utils/medication";
+import { FREQUENCY_LABEL, ROUTE_LABEL } from "app-utils/medication-display";
 import { InteractionWarnings } from "./interaction-warnings";
 import { MedicationTypeBadge } from "./medication-type-badge";
 

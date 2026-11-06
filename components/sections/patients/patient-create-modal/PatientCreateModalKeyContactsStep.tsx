@@ -3,8 +3,19 @@
 import { useState } from 'react';
 import { Label, Button, Card, CardContent, Checkbox } from "@/components/ui";
 import { X, Plus, User, Phone, Mail, AlertCircle } from 'lucide-react';
-import { CONTACT_DRAFT_FIELDS, CONTACT_FLAGS, CONTACT_TYPE_LABELS, CONTACT_TYPE_OPTIONS, EMPTY_CONTACT_DRAFT, addPatientContact, canAddPatientContact, removePatientContact, type ContactDraft } from 'utils';
-import type { PatientContact, PatientFormData, PatientFormErrors } from 'types';
+import {
+  CONTACT_DRAFT_FIELDS,
+  CONTACT_FLAGS,
+  CONTACT_TYPE_LABELS,
+  CONTACT_TYPE_OPTIONS,
+  EMPTY_CONTACT_DRAFT,
+  addPatientContact,
+  canAddPatientContact,
+  removePatientContact,
+  type ContactDraft,
+} from "app-utils/patient-create-steps";
+import type { PatientContact, PatientFormData } from "types";
+import type { PatientFormErrors } from "types";
 import { CompactInputField, CompactSelectField } from 'sections';
 
 interface KeyContactsStepProps {

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import type { DoseState } from "types";
-import { DOSE_STATE_CONFIG } from "utils";
+import { DOSE_STATE_CONFIG } from "app-utils/medication-display";
 
 export function DoseStatusBadge({ state }: { state: DoseState }) {
   const cfg = DOSE_STATE_CONFIG[state];

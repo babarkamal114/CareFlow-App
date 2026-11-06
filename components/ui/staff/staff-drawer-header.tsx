@@ -14,16 +14,12 @@ import {
   DrawerTitle,
   Separator,
 } from '@/components/ui';
-import { COMPLIANCE_STATUS_LABELS, EMPLOYMENT_TYPE_LABELS } from 'types';
-import type { ComplianceResult, EmploymentType, StaffMember } from 'types';
-import {
-  formatDate,
-  formatTime,
-  getRoleBadgeColor,
-  getRoleDisplayName,
-  getStaffComplianceTone,
-  getStatusBadgeColor,
-} from 'utils';
+import { COMPLIANCE_STATUS_LABELS, EMPLOYMENT_TYPE_LABELS } from "types";
+import type { ComplianceResult, EmploymentType } from "types";
+import type { StaffMember } from "types";
+import { formatDate, formatTime } from "app-utils/date-utils";
+import { getRoleBadgeColor, getRoleDisplayName, getStatusBadgeColor } from "app-utils/staff-table-utils";
+import { getStaffComplianceTone } from "app-utils/staff-drawer";
 import { StaffDrawerActions } from './staff-drawer-actions';
 
 const COMPLIANCE_TONE = {

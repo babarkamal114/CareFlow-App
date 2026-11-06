@@ -1,9 +1,17 @@
 'use client';
 
+import { AuditFiltersBar } from "ui/compliance/audit-filters";
+import { AuditLogDrawer } from "ui/compliance/audit-log-drawer";
+import { AuditLogTable } from "ui/compliance/audit-log-table";
+import { Button } from "ui/button";
 import {
-  AuditFiltersBar, AuditLogDrawer, AuditLogTable, Button, Card, CardContent, CardHeader, CardTitle, FullAuditLogDialog,
-} from '@/components/ui';
-import { useAuditTrail } from 'hooks';
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { FullAuditLogDialog } from "ui/compliance/full-audit-log-dialog";
+import { useAuditTrail } from "hooks";
 import { Download } from 'lucide-react';
 
 export function RecentAuditTrailCard() {

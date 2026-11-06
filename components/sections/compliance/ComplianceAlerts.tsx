@@ -1,7 +1,15 @@
 'use client';
 
-import { AlertDetailDrawer, AlertRow, Badge, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import { useComplianceAlerts } from 'hooks';
+import { AlertDetailDrawer } from "ui/compliance/alert-detail-drawer";
+import { AlertRow } from "ui/compliance/alert-row";
+import { Badge } from "ui/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { useComplianceAlerts } from "hooks";
 import { Bell, CheckCircle2 } from 'lucide-react';
 
 export function ComplianceAlerts() {

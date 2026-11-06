@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui";
 import type { Tone } from "types";
-import { TONE_PILL_ACTIVE } from "utils";
+import { TONE_PILL_ACTIVE } from "app-utils/compliance-display";
 
 interface FilterPillProps {
   label: string;

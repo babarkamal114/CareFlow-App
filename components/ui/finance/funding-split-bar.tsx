@@ -1,5 +1,6 @@
 import type { FundingSource, RevenueByFunding } from "types";
-import { formatCurrency, formatPercent, FUNDING_SOURCE_LABEL } from "utils";
+import { formatCurrency, formatPercent } from "app-utils/finance";
+import { FUNDING_SOURCE_LABEL } from "app-utils/finance-display";
 
 const SEGMENT_CLASS: Record<FundingSource, string> = {
   "local-authority": "bg-chart-1",

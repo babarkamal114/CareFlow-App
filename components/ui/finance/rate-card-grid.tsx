@@ -2,7 +2,8 @@
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui";
 import type { RateCardEntry } from "types";
-import { DAY_TYPE_LABEL, DAY_TYPES, formatCurrency, VISIT_DURATIONS } from "utils";
+import { DAY_TYPE_LABEL, DAY_TYPES, VISIT_DURATIONS } from "app-utils/finance-display";
+import { formatCurrency } from "app-utils/finance";
 
 interface RateCardGridProps {
   rates: RateCardEntry[];

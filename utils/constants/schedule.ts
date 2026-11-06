@@ -1,0 +1,3 @@
+export const SCHEDULE_MOCK_TODAY = "2024-03-18";
+
+export const SCHEDULE_MOCK_NOW = "2024-03-18T09:00:00";

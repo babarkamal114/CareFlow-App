@@ -1,4 +1,6 @@
-import { Card, CqcBreakdownBars, CqcReadinessGauge } from "@/components/ui";
+import { Card } from "ui/card";
+import { CqcBreakdownBars } from "ui/dashboard/cqc-breakdown-bars";
+import { CqcReadinessGauge } from "ui/dashboard/cqc-readiness-gauge";
 import type { DashboardCqcDomain } from "types";
 import type { DashboardCqcTrend } from "utils";
 

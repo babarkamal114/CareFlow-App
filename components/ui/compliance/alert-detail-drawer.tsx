@@ -12,7 +12,7 @@ import {
 } from "@/components/ui";
 import { CheckCircle2, ExternalLink } from "lucide-react";
 import type { ComplianceAlert } from "types";
-import { ALERT_SEVERITY_CONFIG, ALERT_TYPE_LABEL } from "utils";
+import { ALERT_SEVERITY_CONFIG, ALERT_TYPE_LABEL } from "app-utils/compliance-display";
 
 interface AlertDetailDrawerProps {
   alert: ComplianceAlert | null;

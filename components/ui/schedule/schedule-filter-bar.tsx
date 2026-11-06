@@ -4,14 +4,13 @@ import { useMemo } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui";
 import type { ScheduleFilters } from "types";
+import { DEFAULT_SCHEDULE_FILTERS, hasActiveFilters } from "app-utils/schedule-filters";
 import {
-  DEFAULT_SCHEDULE_FILTERS,
   SCHEDULE_AREA_OPTIONS,
   VISIT_STATUS_OPTIONS,
-  hasActiveFilters,
   toSelectOptions,
   withAllOption,
-} from "utils";
+} from "app-utils/schedule-labels";
 import { ScheduleSelect } from "./schedule-select";
 
 interface ScheduleFilterBarProps {

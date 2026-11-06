@@ -1,6 +1,7 @@
 "use client";
 
-import { ReportConfirmDialog, ReportScheduleDialog } from "@/components/ui";
+import { ReportConfirmDialog } from "ui/reports/report-confirm-dialog";
+import { ReportScheduleDialog } from "ui/reports/report-schedule-dialog";
 import { useReportsAccess } from "hooks";
 import { useScheduledReports } from "hooks";
 import { useMemo } from "react";

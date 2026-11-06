@@ -1,5 +1,6 @@
 import { AlertCircle, FileText, GraduationCap, Shield } from "lucide-react";
-import type { DocumentationGaps, IncidentResponseStats, StatCardProps, TrainingIssues } from "types";
+import type { DocumentationGaps, IncidentResponseStats, TrainingIssues } from "types";
+import type { StatCardProps } from "types";
 
 interface ComplianceStatInput {
   overall: number;

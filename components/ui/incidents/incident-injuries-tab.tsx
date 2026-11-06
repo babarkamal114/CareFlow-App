@@ -15,7 +15,7 @@ import {
   getIncidentInjuryCount,
   getInjurySeverityLabel,
   getInjurySeverityVariant,
-} from 'utils';
+} from "app-utils/incident-display";
 
 interface IncidentInjuriesTabProps {
   incident: Incident;

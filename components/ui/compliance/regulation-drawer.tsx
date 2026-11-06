@@ -5,7 +5,8 @@ import {
 } from "@/components/ui";
 import { AlertTriangle, ArrowUpRight, CheckCircle2, FileText, Users, XCircle } from "lucide-react";
 import type { Regulation } from "types";
-import { CATEGORY_STYLE, getEvidenceCount, REG_STATUS_CONFIG, TONE_TEXT } from "utils";
+import { CATEGORY_STYLE, REG_STATUS_CONFIG, TONE_TEXT } from "app-utils/compliance-display";
+import { getEvidenceCount } from "app-utils/compliance";
 import { StatusProgressBar } from "./status-progress-bar";
 
 interface RegulationDrawerProps {

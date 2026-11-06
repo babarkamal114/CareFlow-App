@@ -1,20 +1,19 @@
 'use client';
 
 import { Calendar, Clock, Edit, FileText, MapPin, User, UserPlus } from 'lucide-react';
+import { Button } from "ui/button";
+import { ConflictWarningList } from "ui/schedule/conflict-warning-list";
 import {
-  Button,
-  ConflictWarningList,
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  PreferenceWarningList,
-  VisitStatusBadge,
-  VisitTypeBadge,
-} from '@/components/ui';
-import type { ScheduleVisit, VisitIssues } from 'types';
-import { formatLongDate } from 'utils';
+} from "ui/dialog";
+import { PreferenceWarningList } from "ui/schedule/preference-warning-list";
+import { VisitStatusBadge, VisitTypeBadge } from "ui/schedule/visit-status-badge";
+import type { ScheduleVisit, VisitIssues } from "types";
+import { formatLongDate } from "app-utils/schedule-time";
 
 interface DetailTileProps {
   icon: React.ReactNode;

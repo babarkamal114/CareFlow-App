@@ -22,7 +22,7 @@
       "@/*": ["./*"],
       "@/app/*": ["./app/*"],
       "config": ["./config"],
-      "app-utils/*": ["./utils/*"],
+      "app-utils/*": ["./utils/helpers/*"],
       "features": ["./features"],
       "server": ["./server"],
       "stores": ["./stores"],
@@ -34,7 +34,7 @@
       "types": ["./types"],
       "hooks": ["./hooks"],
       "lib": ["./lib"],
-      "utils": ["./utils"],
+      "utils": ["./utils/index.ts"],
       "components": ["./components"],
       "ui/*": ["./components/ui/*"],
       "shared": ["./components/shared"]

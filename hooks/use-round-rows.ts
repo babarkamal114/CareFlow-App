@@ -2,7 +2,7 @@
 
 import { MEDICATION_MOCK_NOW, useGetMedicationPatientsApi, useGetMedicationsApi, useGetRoundDosesApi } from "lib";
 import { useMemo } from "react";
-import { buildRoundRows } from "utils";
+import { buildRoundRows } from "app-utils/medication";
 
 export function useRoundRows() {
   const patientsQ = useGetMedicationPatientsApi();

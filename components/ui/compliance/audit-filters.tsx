@@ -4,7 +4,8 @@ import { Button, DatePicker, InputGroup, InputGroupAddon, InputGroupInput } from
 import { format } from "date-fns";
 import { Search } from "lucide-react";
 import type { AuditEntity, AuditFilters, ComplianceFormErrors } from "types";
-import { AUDIT_ENTITIES, parseLocalDate } from "utils";
+import { AUDIT_ENTITIES } from "app-utils/compliance-display";
+import { parseLocalDate } from "app-utils/compliance";
 import { FilterPill } from "./filter-pill";
 
 interface AuditFiltersBarProps {

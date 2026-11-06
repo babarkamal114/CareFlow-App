@@ -9,7 +9,7 @@ import {
 } from "@/components/ui";
 import { cn } from "lib";
 import type { VisitConflict, VisitConflictType } from "types";
-import { CONFLICT_TYPE_LABELS } from "utils";
+import { CONFLICT_TYPE_LABELS } from "app-utils/schedule-labels";
 
 const CONFLICT_ICONS: Record<VisitConflictType, LucideIcon> = {
   "double-booking": CalendarX,

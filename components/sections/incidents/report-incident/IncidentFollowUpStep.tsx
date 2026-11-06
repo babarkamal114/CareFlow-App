@@ -17,13 +17,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui';
-import {
-  CONTRIBUTING_FACTOR_OPTIONS,
-  createIncidentEvidenceItem,
-  INCIDENT_EVIDENCE_TYPES,
-  removeEvidenceItem,
-  toggleContributingFactor,
-} from 'utils';
+import { CONTRIBUTING_FACTOR_OPTIONS, INCIDENT_EVIDENCE_TYPES } from "app-utils/constants";
+import { createIncidentEvidenceItem, removeEvidenceItem, toggleContributingFactor } from "app-utils/incident-form";
 import type { IncidentEvidence, IncidentFormStepProps } from 'types';
 
 export function IncidentFollowUpStep({ form, update }: IncidentFormStepProps) {

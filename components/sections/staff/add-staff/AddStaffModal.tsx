@@ -11,13 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui";
-import {
-  computeCompliance,
-  hasErrors,
-  mapRolesToDisplay,
-  useGetAllRolesApi,
-  validateStep,
-} from "lib";
+import { computeCompliance } from "lib";
+import { hasErrors } from "lib";
+import { mapRolesToDisplay, useGetAllRolesApi } from "lib";
+import { validateStep } from "lib";
 import { StaffFormStepDots, StaffFormStepRail } from "@/components/ui";
 import { ComplianceSection } from "./ComplianceSection";
 import { DocumentsSection } from "./DocumentsSection";
@@ -26,11 +23,7 @@ import { PersonalSection } from "./PersonalSection";
 import { ReviewSection } from "./ReviewSection";
 import { SkillsAvailabilitySection } from "./SkillsAvailabilitySection";
 import { TrainingSection } from "./TrainingSection";
-import {
-  INITIAL_STAFF_FORM_DATA,
-  STAFF_FORM_STEPS,
-  STEP_TOTAL,
-} from "types";
+import { INITIAL_STAFF_FORM_DATA, STAFF_FORM_STEPS, STEP_TOTAL } from "types";
 import type {
   ComplianceResult,
   StaffFormData,

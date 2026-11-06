@@ -13,11 +13,7 @@ import {
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { REFEREE_RELATIONSHIP_LABELS } from "types";
-import type {
-  Referee,
-  RefereeRelationship,
-  StaffFormErrors,
-} from "types";
+import type { Referee, RefereeRelationship, StaffFormErrors } from "types";
 
 export function StaffRefereeFields({
   referee,

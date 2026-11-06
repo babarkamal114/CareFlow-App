@@ -1,8 +1,5 @@
 import { Skeleton, TableCell, TableRow } from "@/components/ui";
-import {
-  PATIENTS_TABLE_SKELETON_CELLS,
-  PATIENTS_TABLE_SKELETON_ROWS,
-} from "utils";
+import { PATIENTS_TABLE_SKELETON_CELLS, PATIENTS_TABLE_SKELETON_ROWS } from "app-utils/patients-page";
 
 /** Loading rows for the patients table. Place inside <TableBody>. */
 export function PatientTableSkeleton() {

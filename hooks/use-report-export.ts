@@ -3,7 +3,7 @@
 import { toast } from "@/components/ui";
 import { useLogReportActivityApi } from "lib";
 import type { ReportDataset, ReportExportFormat, UseReportExportReturn } from "types";
-import { exportReportDatasets } from "utils";
+import { exportReportDatasets } from "app-utils/reports-export";
 import { REPORT_EXPORT_FORMAT_LABEL } from "config";
 
 export function useReportExport(): UseReportExportReturn {

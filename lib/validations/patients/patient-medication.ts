@@ -1,9 +1,6 @@
 import { z } from "zod";
-import type {
-  MedicationDraft,
-  PatientFormErrors,
-  PatientMedication,
-} from "types";
+import type { MedicationDraft, PatientMedication } from "types";
+import type { PatientFormErrors } from "types";
 import {
   requiredChoice,
   requiredText,

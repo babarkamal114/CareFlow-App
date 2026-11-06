@@ -1,24 +1,24 @@
 'use client';
 
+import { Checkbox } from "ui/checkbox";
+import { Input } from "ui/input";
+import { Label } from "ui/label";
 import {
-  Input,
-  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea,
-  Checkbox
-} from "@/components/ui"
+} from "ui/select";
+import { Textarea } from "ui/textarea";
 import {
-  AIDS,
   COMMUNICATION_SELECTS,
   CONSENT_OPTIONS,
   POA_FIELDS,
   getSelectValue,
-} from 'utils';
-import type { PatientFormData } from 'utils';
+} from "app-utils/patient-form-fields";
+import { AIDS } from "app-utils/patient-profile";
+import type { PatientFormData } from "types";
 
 interface CommunicationStepProps {
   formData: PatientFormData;

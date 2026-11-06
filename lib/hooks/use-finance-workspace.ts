@@ -3,12 +3,12 @@
 import { toast } from "@/components/ui";
 import { parseISO } from "date-fns";
 import {
-  FINANCE_MOCK_TODAY,
   mockInvoices,
   mockPayments,
   mockRateCard,
   mockRevenueTrend,
-} from "lib";
+} from "utils";
+import { FINANCE_MOCK_TODAY } from "utils";
 import { useMemo, useState } from "react";
 import type {
   GenerateInvoicesFormData,
@@ -26,7 +26,7 @@ import {
   getRevenueByFunding,
   round2,
   summarizeRevenue,
-} from "utils";
+} from "app-utils/finance";
 
 interface OverlayState {
   id: string | null;

@@ -8,7 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 import { MoreHorizontal } from 'lucide-react';
-import { PATIENT_DRAWER_FOOTER_ACTIONS, PATIENT_DRAWER_FOOTER_MENU_ACTIONS, PATIENT_DRAWER_FOOTER_DISCHARGE_ACTION, type PatientDrawerFooterHandlers } from 'utils';
+import {
+  PATIENT_DRAWER_FOOTER_ACTIONS,
+  PATIENT_DRAWER_FOOTER_MENU_ACTIONS,
+  PATIENT_DRAWER_FOOTER_DISCHARGE_ACTION,
+  type PatientDrawerFooterHandlers,
+} from "app-utils/patients-page";
 
 type PatientDrawerFooterProps = PatientDrawerFooterHandlers;
 

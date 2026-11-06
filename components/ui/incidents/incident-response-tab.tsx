@@ -11,7 +11,7 @@ import {
 } from '@/components/ui';
 import { CircleHelp, PhoneCall, Siren } from 'lucide-react';
 import { Incident } from 'types';
-import { getCarePlanFollowedLabel, getCarePlanFollowedVariant } from 'utils';
+import { getCarePlanFollowedLabel, getCarePlanFollowedVariant } from "app-utils/incident-display";
 
 interface IncidentResponseTabProps {
   incident: Incident;

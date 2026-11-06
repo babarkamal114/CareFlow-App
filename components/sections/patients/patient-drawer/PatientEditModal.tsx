@@ -11,9 +11,9 @@ import {
   DialogDescription,
 } from "@/components/ui"
 import { Loader2 } from 'lucide-react';
-import { EDIT_PATIENT_SECTIONS, buildEditPatientForm } from 'utils';
-import { validateEditPatientForm } from 'lib';
-import type { PatientEditData, PatientFormErrors } from 'types';
+import { EDIT_PATIENT_SECTIONS, buildEditPatientForm } from "app-utils/patient-edit";
+import { validateEditPatientForm } from "lib";
+import type { PatientEditData, PatientFormErrors } from "types";
 import { PatientFormSections } from '../PatientFormField';
 
 interface EditPatientModalProps {

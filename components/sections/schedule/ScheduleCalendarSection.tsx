@@ -22,7 +22,7 @@ import type {
   ScheduleCalendarResource,
   ScheduleView,
   VisitIssues,
-} from 'types';
+} from "types";
 import { createDayStyleGetter, eventStyleGetter } from 'utils';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';

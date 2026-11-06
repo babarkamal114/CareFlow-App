@@ -13,11 +13,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui';
-import {
-  INCIDENT_TYPE_OPTIONS,
-  INCIDENT_SEVERITY_OPTIONS,
-  mockPatients,
-} from 'utils';
+import { INCIDENT_TYPE_OPTIONS, INCIDENT_SEVERITY_OPTIONS } from "app-utils/constants";
+import { mockPatients } from "app-utils/data";
 import type { IncidentFormStepProps, IncidentSeverity, IncidentType } from 'types';
 
 export function IncidentDetailsStep({ form, update }: IncidentFormStepProps) {

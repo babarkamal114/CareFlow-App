@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { PatientFormData, PatientFormErrors, PatientStepKey } from "types";
+import type { PatientFormData, PatientStepKey } from "types";
+import type { PatientFormErrors } from "types";
 import { requiredText, runSchema } from "./helpers";
 import {
   dateOfBirthField,

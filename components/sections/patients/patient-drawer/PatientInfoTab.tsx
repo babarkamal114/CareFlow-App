@@ -3,7 +3,22 @@
 import type { ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Badge } from "@/components/ui";
 import { ShieldCheck, ShieldQuestion } from 'lucide-react';
-import { CONSENT_ITEMS, RISK_DOMAIN_LABELS, getEmergencyContactRows, getGpInfoRows, getNextOfKinRows, getPatientStatusBadge, getPersonalInfoRows, getRiskLevelBadge, hasGpDetails, type PatientInfoData, type PatientInfoRowData, formatNextVisit } from 'utils';
+import {
+  CONSENT_ITEMS,
+  RISK_DOMAIN_LABELS,
+  getPatientStatusBadge,
+  getRiskLevelBadge,
+  hasGpDetails,
+  type PatientInfoData,
+} from "app-utils/patient-profile";
+import {
+  getEmergencyContactRows,
+  getGpInfoRows,
+  getNextOfKinRows,
+  getPersonalInfoRows,
+  type PatientInfoRowData,
+} from "app-utils/patient-drawer";
+import { formatNextVisit } from "app-utils/patients";
 
 interface PatientInfoTabProps {
   patient: PatientInfoData;

@@ -12,14 +12,9 @@ import {
   DialogTitle,
   Progress,
 } from '@/components/ui';
-import {
-  buildIncidentPayload,
-  canAdvanceIncidentStep,
-  getDefaultIncidentFormData,
-  getIncidentStepCount,
-  getIncidentStepProgress,
-  INCIDENT_REPORT_STEPS,
-} from 'utils';
+import { buildIncidentPayload, getDefaultIncidentFormData } from "app-utils/incidents";
+import { canAdvanceIncidentStep, getIncidentStepCount, getIncidentStepProgress } from "app-utils/incident-form";
+import { INCIDENT_REPORT_STEPS } from "app-utils/constants";
 import type {
   Incident,
   IncidentFormData,

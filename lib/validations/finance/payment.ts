@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { FinanceFormErrors, RecordPaymentFormData } from "types";
-import { formatCurrency } from "utils";
+import { formatCurrency } from "app-utils/finance";
 import { requiredChoice, requiredIsoDate, requiredText, runSchema } from "../staff/helpers";
 import { MAX_PAYMENT_REFERENCE_LENGTH, PAYMENT_METHOD_VALUES } from "./constants";
 

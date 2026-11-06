@@ -2,9 +2,9 @@
 
 import { Card, CardContent, Badge, Checkbox } from "@/components/ui";
 import { AlertCircle } from 'lucide-react';
-import { getCarerName, toggleCarer } from 'utils';
-import type { Carer, PatientFormErrors } from 'types';
-import type { PatientFormData } from 'types';
+import { getCarerName, toggleCarer } from "app-utils/carers";
+import type { Carer, PatientFormErrors } from "types";
+import type { PatientFormData } from "types";
 
 interface AssignCarersStepProps {
   formData: PatientFormData;

@@ -3,15 +3,14 @@
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import {
-  SCHEDULE_MOCK_NOW,
-  SCHEDULE_MOCK_TODAY,
   scheduleMockCapacity,
   scheduleMockCarers,
   scheduleMockPatients,
   scheduleMockSwaps,
   scheduleMockTemplates,
   scheduleMockVisits,
-} from 'lib';
+} from "utils";
+import { SCHEDULE_MOCK_NOW, SCHEDULE_MOCK_TODAY } from "utils";
 import type {
   OptimiseDialogMode,
   ScheduleCalendarEvent,
@@ -23,18 +22,11 @@ import type {
   ShiftSwapRequest,
   VisitFormData,
   VisitTemplate,
-} from 'types';
-import {
-  DEFAULT_SCHEDULE_FILTERS,
-  UNASSIGNED_RESOURCE_ID,
-  convertVisitToEvent,
-  filterVisits,
-  getAllVisitIssues,
-  getUnassignedVisits,
-  parseIsoDate,
-  toHHmm,
-  toIsoDate,
-} from 'utils';
+} from "types";
+import { DEFAULT_SCHEDULE_FILTERS, filterVisits, getUnassignedVisits } from "app-utils/schedule-filters";
+import { UNASSIGNED_RESOURCE_ID, convertVisitToEvent } from "app-utils/visit-to-event-converter";
+import { getAllVisitIssues } from "app-utils/schedule-conflicts";
+import { parseIsoDate, toHHmm, toIsoDate } from "app-utils/schedule-time";
 import { useScheduleVisitActions } from './use-schedule-visit-actions';
 
 export type ScheduleModalName = 'detail' | 'add' | 'edit' | 'recurring' | 'templates' | 'optimise';

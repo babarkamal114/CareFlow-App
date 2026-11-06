@@ -1,6 +1,9 @@
 "use client";
 
-import { Button, Card, CardContent, ScheduledReportsTable, Skeleton } from "@/components/ui";
+import { Button } from "ui/button";
+import { Card, CardContent } from "ui/card";
+import { ScheduledReportsTable } from "ui/reports/scheduled-reports-table";
+import { Skeleton } from "ui/skeleton";
 import { Plus } from "lucide-react";
 import type { ReportsScheduledSectionProps } from "types";
 import { ReportsSectionHeading } from "./ReportsSectionHeading";

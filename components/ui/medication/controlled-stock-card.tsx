@@ -3,7 +3,7 @@
 import { Badge, Button, Card, CardContent } from "@/components/ui";
 import { AlertTriangle, ClipboardCheck } from "lucide-react";
 import type { ControlledItem } from "types";
-import { formatMedDateTime, getDrugLabel } from "utils";
+import { formatMedDateTime, getDrugLabel } from "app-utils/medication";
 
 interface ControlledStockCardProps { item: ControlledItem; now: Date; onRecord: (medicationId: string) => void }
 

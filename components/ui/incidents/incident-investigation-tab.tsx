@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button, Card, ScrollArea, Textarea } from '@/components/ui';
 import { User } from 'lucide-react';
 import { Incident } from 'types';
-import { canSubmitNote, formatNoteTimestamp } from 'utils';
+import { canSubmitNote, formatNoteTimestamp } from "app-utils/incidents";
 
 interface IncidentInvestigationTabProps {
   incident: Incident;

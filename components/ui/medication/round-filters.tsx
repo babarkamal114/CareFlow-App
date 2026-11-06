@@ -3,7 +3,7 @@
 import { Button, InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui";
 import { Search } from "lucide-react";
 import type { MedicationPatient, RoundFilter, RoundFilters } from "types";
-import { ROUND_FILTER_OPTIONS } from "utils";
+import { ROUND_FILTER_OPTIONS } from "app-utils/medication-display";
 import { MedSelect } from "./med-select";
 
 interface MedicationRoundFiltersProps { filters: RoundFilters; patients: MedicationPatient[]; onChange: (next: RoundFilters) => void; onReset: () => void }

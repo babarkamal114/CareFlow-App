@@ -1,12 +1,10 @@
 "use client";
 
-import {
-  GenerateInvoicesDialog,
-  InvoiceDetailSheet,
-  RateFormDialog,
-  RecordPaymentDialog,
-  SendReminderDialog,
-} from "@/components/ui";
+import { GenerateInvoicesDialog } from "ui/finance/generate-invoices-dialog";
+import { InvoiceDetailSheet } from "ui/finance/invoice-detail-sheet";
+import { RateFormDialog } from "ui/finance/rate-form-dialog";
+import { RecordPaymentDialog } from "ui/finance/record-payment-dialog";
+import { SendReminderDialog } from "ui/finance/send-reminder-dialog";
 import { useFinanceWorkspace } from "lib";
 import { FinanceHeaderSection } from "./FinanceHeaderSection";
 import { FinanceStatsSection } from "./FinanceStatsSection";

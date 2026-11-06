@@ -15,7 +15,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui';
-import { INCIDENT_STATUS_OPTIONS } from 'utils';
+import { INCIDENT_STATUS_OPTIONS } from "app-utils/constants";
 import type { IncidentFormStepProps, IncidentStatus } from 'types';
 import { IncidentReviewSummaryCard } from './IncidentReviewSummaryCard';
 

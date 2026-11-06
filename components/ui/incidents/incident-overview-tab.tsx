@@ -12,14 +12,12 @@ import { CircleHelp, ShieldAlert } from 'lucide-react';
 import { Incident } from 'types';
 import {
   getIncidentDetailFields,
-  getIncidentFlags,
   getIncidentStatusHistory,
   getSeverityBadgeVariant,
   getSeverityLabel,
   getStatusBadgeVariant,
-  getWitnessNames,
-  isIncidentFlagged,
-} from 'utils';
+} from "app-utils/incidents";
+import { getIncidentFlags, getWitnessNames, isIncidentFlagged } from "app-utils/incident-display";
 
 interface IncidentOverviewTabProps {
   incident: Incident;

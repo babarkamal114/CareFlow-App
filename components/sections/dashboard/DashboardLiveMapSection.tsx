@@ -1,4 +1,6 @@
-import { Badge, Card, LiveMapPanel } from "@/components/ui";
+import { Badge } from "ui/badge";
+import { Card } from "ui/card";
+import { LiveMapPanel } from "ui/dashboard/live-map-panel";
 import type { DashboardMapMarker } from "utils";
 
 interface DashboardLiveMapSectionProps {

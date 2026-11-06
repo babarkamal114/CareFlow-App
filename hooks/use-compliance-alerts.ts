@@ -5,7 +5,7 @@ import { mockAlerts } from "lib";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { ComplianceAlert } from "types";
-import { getOpenAlerts } from "utils";
+import { getOpenAlerts } from "app-utils/compliance";
 
 export function useComplianceAlerts() {
   const router = useRouter();

@@ -3,7 +3,7 @@
 import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui";
 import { Download, FileText } from "lucide-react";
 import type { PackRecord, PackSection } from "types";
-import { formatLongDate } from "utils";
+import { formatLongDate } from "app-utils/compliance";
 
 interface PackPreviewDialogProps {
   open: boolean;

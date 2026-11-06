@@ -13,11 +13,7 @@ import {
   StaffReviewTraining,
   StaffSchedulingNotice,
 } from "@/components/ui";
-import type {
-  ComplianceResult,
-  StaffFormData,
-  StaffFormErrors,
-} from "types";
+import type { ComplianceResult, StaffFormData, StaffFormErrors } from "types";
 
 interface Props {
   data: StaffFormData;

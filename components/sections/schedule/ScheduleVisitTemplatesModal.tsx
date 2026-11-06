@@ -2,26 +2,29 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Trash2 } from 'lucide-react';
+import { Button } from "ui/button";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  Input,
-  ScheduleSelect,
-  Textarea,
-  VisitTypeBadge,
-} from '@/components/ui';
-import { hasErrors, validateVisitTemplateForm } from 'lib';
-import type { ScheduleFormErrors, VisitTemplate, VisitTemplateFormData, VisitType } from 'types';
-import {
-  VISIT_DURATION_MINUTES,
-  VISIT_TYPE_OPTIONS,
-  createTemplateFormData,
-  formatDurationLabel,
-} from 'utils';
+} from "ui/dialog";
+import { Input } from "ui/input";
+import { ScheduleSelect } from "ui/schedule/schedule-select";
+import { Textarea } from "ui/textarea";
+import { VisitTypeBadge } from "ui/schedule/visit-status-badge";
+import { hasErrors } from "lib";
+import { validateVisitTemplateForm } from "lib";
+import type {
+  ScheduleFormErrors,
+  VisitTemplate,
+  VisitTemplateFormData,
+  VisitType,
+} from "types";
+import { VISIT_DURATION_MINUTES, VISIT_TYPE_OPTIONS } from "app-utils/schedule-labels";
+import { createTemplateFormData } from "app-utils/schedule-forms";
+import { formatDurationLabel } from "app-utils/schedule-time";
 import { FormField } from './ScheduleVisitForm';
 
 const DURATION_OPTIONS = VISIT_DURATION_MINUTES.map((m) => ({

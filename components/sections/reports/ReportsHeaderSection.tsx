@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, ReportRoleSelect } from "@/components/ui";
+import { Button } from "ui/button";
+import { ReportRoleSelect } from "ui/reports/report-role-select";
 import { CalendarClock } from "lucide-react";
 import type { ReportsHeaderSectionProps } from "types";
 

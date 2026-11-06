@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import type { PatientStatus } from "types";
-import { getPatientStatusBadge } from "utils";
+import { getPatientStatusBadge } from "app-utils/patient-profile";
 
 interface PatientStatusBadgeProps {
   status: PatientStatus;

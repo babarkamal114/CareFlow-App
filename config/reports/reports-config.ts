@@ -1,8 +1,18 @@
 import type { BadgeProps } from "@/components/ui";
 import { Activity, HeartPulse, PoundSterling, Scale, ShieldCheck, Sparkles, Users } from "lucide-react";
 import type {
-  AiInsight, AiInsightKind, ReportBuilderAggregate, ReportBuilderConfig, ReportActivity, ReportChartKind, ReportColumnKind, ReportDomain,
-  ReportExportFormat, ReportRole, ReportTabId, ReportScheduleFrequency,
+  AiInsight,
+  AiInsightKind,
+  ReportBuilderAggregate,
+  ReportBuilderConfig,
+  ReportActivity,
+  ReportChartKind,
+  ReportColumnKind,
+  ReportDomain,
+  ReportExportFormat,
+  ReportRole,
+  ReportTabId,
+  ReportScheduleFrequency,
 } from "types";
 import { toOptions } from "utils"; 
 

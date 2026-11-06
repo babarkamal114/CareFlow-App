@@ -3,8 +3,13 @@
 import { toast } from "@/components/ui";
 import { getReportDataset } from "lib";
 import { useState } from "react";
-import type { LibraryReport, ReportExportFormat, ReportRole, UseReportLibraryReturn } from "types";
-import { canViewDataset } from "utils";
+import type {
+  LibraryReport,
+  ReportExportFormat,
+  ReportRole,
+  UseReportLibraryReturn,
+} from "types";
+import { canViewDataset } from "app-utils/reports";
 import { useReportExport } from "./use-report-export";
 import { useLibraryReportsQuery, useReportDatasetsQuery } from "./use-reports-queries";
 

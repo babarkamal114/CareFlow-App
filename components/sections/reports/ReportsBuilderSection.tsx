@@ -1,9 +1,22 @@
 "use client";
 
+import { BuilderControls } from "ui/reports/builder-controls";
+import { BuilderFieldPicker } from "ui/reports/builder-field-picker";
+import { Button } from "ui/button";
 import {
-  BuilderControls, BuilderFieldPicker, Button, Card, CardContent, CardHeader, CardTitle, EmptyState, ReportDatasetView, ReportExportMenu, ReportField,
-  ReportSelect, ReportTemplateList, SaveTemplateDialog, Skeleton,
-} from "@/components/ui";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { EmptyState } from "ui/empty-state";
+import { ReportDatasetView } from "ui/reports/report-dataset-view";
+import { ReportExportMenu } from "ui/reports/report-export-menu";
+import { ReportField } from "ui/reports/report-field";
+import { ReportSelect } from "ui/reports/report-select";
+import { ReportTemplateList } from "ui/reports/report-template-list";
+import { SaveTemplateDialog } from "ui/reports/save-template-dialog";
+import { Skeleton } from "ui/skeleton";
 import { useCustomReportBuilder } from "hooks";
 import { RotateCcw, Save, Wrench } from "lucide-react";
 import type { ReportRole } from "types";

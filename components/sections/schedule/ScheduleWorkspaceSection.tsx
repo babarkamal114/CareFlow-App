@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useScheduleWorkspace } from 'hooks';
+import { useScheduleWorkspace } from "hooks";
 import { ScheduleAddVisitModal } from './ScheduleAddVisitModal';
 import { ScheduleCalendarSection } from './ScheduleCalendarSection';
 import { ScheduleCalendarToolbar } from './ScheduleCalendarToolbar';

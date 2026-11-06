@@ -19,7 +19,8 @@ import { validateRecordPayment } from "lib";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
 import type { FinanceFormErrors, Invoice, RecordPaymentFormData } from "types";
-import { formatCurrency, getInvoiceBalance, PAYMENT_METHOD_OPTIONS } from "utils";
+import { formatCurrency, getInvoiceBalance } from "app-utils/finance";
+import { PAYMENT_METHOD_OPTIONS } from "app-utils/finance-display";
 import { FinanceSelect } from "./finance-select";
 
 interface RecordPaymentDialogProps {

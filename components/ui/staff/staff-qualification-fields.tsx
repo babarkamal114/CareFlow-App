@@ -4,10 +4,7 @@ import { Button, Input } from "@/components/ui";
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
-import type {
-  Qualification,
-  StaffFormErrors,
-} from "types";
+import type { Qualification, StaffFormErrors } from "types";
 
 export function StaffQualificationFields({
   qualification,

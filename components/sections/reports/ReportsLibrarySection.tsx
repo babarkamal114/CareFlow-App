@@ -1,6 +1,9 @@
 "use client";
 
-import { EmptyState, ReportLibraryCard, ReportRunDialog, Skeleton } from "@/components/ui";
+import { EmptyState } from "ui/empty-state";
+import { ReportLibraryCard } from "ui/reports/report-library-card";
+import { ReportRunDialog } from "ui/reports/report-run-dialog";
+import { Skeleton } from "ui/skeleton";
 import { useReportLibrary } from "hooks";
 import { FileText } from "lucide-react";
 import type { ReportRole } from "types";

@@ -3,6 +3,7 @@
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Skeleton } from "@/components/ui";
 import { useState } from "react";
 import type { ReportWidgetProps } from "types";
+import { REPORT_DOMAIN_LABEL } from "@/config/reports/reports-config";
 import { ReportDatasetView } from "./report-dataset-view";
 import { ReportExportMenu } from "./report-export-menu";
 
@@ -30,7 +31,7 @@ export function ReportWidget({ dataset, isLoading, onExport }: ReportWidgetProps
             <ReportExportMenu compact onSelect={(f) => onExport(f, dataset)} />
           </div>
         </div>
-        <Badge variant="pastel-neutral" shape="pill" badgeSize="sm" className="mt-1 w-fit">{dataset.source}</Badge>
+        <Badge variant="pastel-neutral" shape="pill" badgeSize="sm" className="mt-1 w-fit">{REPORT_DOMAIN_LABEL[dataset.domain]}</Badge>
       </CardHeader>
       <CardContent>
         <ReportDatasetView columns={dataset.columns} rows={dataset.rows} chart={dataset.chart} mode={mode} />

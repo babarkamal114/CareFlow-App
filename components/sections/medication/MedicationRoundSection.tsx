@@ -1,7 +1,11 @@
 "use client";
 
-import { Button, MedicationRoundFilters, MedicationRoundTable, RecordDoseDialog, Skeleton } from "@/components/ui";
-import { useMedicationRound } from "hooks"
+import { Button } from "ui/button";
+import { MedicationRoundFilters } from "ui/medication/round-filters";
+import { MedicationRoundTable } from "ui/medication/round-table";
+import { RecordDoseDialog } from "ui/medication/record-dose-dialog";
+import { Skeleton } from "ui/skeleton";
+import { useMedicationRound } from "hooks";
 import { Download } from "lucide-react";
 
 export function MedicationRoundSection() {

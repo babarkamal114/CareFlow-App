@@ -2,10 +2,7 @@
 
 import { Checkbox, Input } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
-import type {
-  InterimCertificate,
-  StaffFormErrors,
-} from "types";
+import type { InterimCertificate, StaffFormErrors } from "types";
 
 export const EMPTY_INTERIM_CERTIFICATE: InterimCertificate = {
   certificateNumber: "",

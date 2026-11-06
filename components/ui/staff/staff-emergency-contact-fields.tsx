@@ -2,10 +2,7 @@
 
 import { Input } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
-import type {
-  EmergencyContact,
-  StaffFormErrors,
-} from "types";
+import type { EmergencyContact, StaffFormErrors } from "types";
 
 export function StaffEmergencyContactFields({
   contact,

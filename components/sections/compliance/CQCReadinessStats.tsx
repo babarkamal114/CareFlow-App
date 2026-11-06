@@ -1,7 +1,7 @@
 'use client';
 
 import { StatCard } from 'shared';
-import { useCqcReadiness } from 'hooks';
+import { useCqcReadiness } from "hooks";
 import { getComplianceStatCards } from '../../ui/compliance/compliance-stat-cards';
 
 export function CQCReadinessStats() {

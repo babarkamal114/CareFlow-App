@@ -14,7 +14,13 @@ import {
   TableRow,
 } from "@/components/ui";
 import type { PnlMonth } from "types";
-import { formatCurrency, getMarginPct, getPnlDirectCosts, getPnlGrossMargin, getPnlMarginPct } from "utils";
+import {
+  formatCurrency,
+  getMarginPct,
+  getPnlDirectCosts,
+  getPnlGrossMargin,
+  getPnlMarginPct,
+} from "app-utils/finance";
 import { MarginBadge } from "./profitability-table";
 
 export function PnlSummaryCard({ months }: { months: PnlMonth[] }) {

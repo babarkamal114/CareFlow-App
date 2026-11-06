@@ -1,7 +1,12 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Button, DatePicker, Input, Label, ScheduleSelect, Textarea } from '@/components/ui';
+import { Button } from "ui/button";
+import { DatePicker } from "ui/date-picker";
+import { Input } from "ui/input";
+import { Label } from "ui/label";
+import { ScheduleSelect } from "ui/schedule/schedule-select";
+import { Textarea } from "ui/textarea";
 import { cn } from 'lib';
 import type {
   ScheduleCarer,
@@ -10,17 +15,15 @@ import type {
   VisitFormData,
   VisitStatus,
   VisitTemplate,
-} from 'types';
+} from "types";
 import {
   VISIT_DURATION_MINUTES,
   VISIT_STATUS_OPTIONS,
   VISIT_TYPE_OPTIONS,
-  applyTemplateToForm,
-  formatDurationLabel,
-  parseIsoDate,
-  toIsoDate,
   toSelectOptions,
-} from 'utils';
+} from "app-utils/schedule-labels";
+import { applyTemplateToForm } from "app-utils/schedule-forms";
+import { formatDurationLabel, parseIsoDate, toIsoDate } from "app-utils/schedule-time";
 
 const NO_CARER = 'none';
 

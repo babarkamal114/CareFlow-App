@@ -12,11 +12,7 @@ import {
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { DAY_LABELS, DAY_OF_WEEK_OPTIONS } from "types";
-import type {
-  AvailabilitySlot,
-  DayOfWeek,
-  StaffFormErrors,
-} from "types";
+import type { AvailabilitySlot, DayOfWeek, StaffFormErrors } from "types";
 
 export function StaffAvailabilitySlotFields({
   slot,

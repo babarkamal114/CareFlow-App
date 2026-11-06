@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui";
 import type { InvoiceStatus } from "types";
-import { INVOICE_STATUS_LABEL, INVOICE_STATUS_VARIANT } from "utils";
+import { INVOICE_STATUS_LABEL, INVOICE_STATUS_VARIANT } from "app-utils/finance-display";
 
 export function InvoiceStatusBadge({ status }: { status: InvoiceStatus }) {
   return (

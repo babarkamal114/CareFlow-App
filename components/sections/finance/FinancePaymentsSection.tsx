@@ -1,20 +1,21 @@
 "use client";
 
+import { Button } from "ui/button";
+import { EmptyState } from "ui/empty-state";
+import { FundingSourceBadge } from "ui/finance/funding-source-badge";
 import {
-  Button,
-  EmptyState,
-  FundingSourceBadge,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
+} from "ui/table";
 import { BellRing, CheckCircle2, CreditCard } from "lucide-react";
 import { useMemo } from "react";
 import type { Invoice, Payment } from "types";
-import { formatCurrency, formatShortDate, getInvoiceBalance, PAYMENT_METHOD_LABEL } from "utils";
+import { formatCurrency, formatShortDate, getInvoiceBalance } from "app-utils/finance";
+import { PAYMENT_METHOD_LABEL } from "app-utils/finance-display";
 
 interface FinancePaymentsSectionProps {
   payments: Payment[];

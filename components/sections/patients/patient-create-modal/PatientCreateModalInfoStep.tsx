@@ -1,7 +1,8 @@
 'use client';
 
-import { CREATE_PATIENT_INFO_SECTIONS } from 'utils';
-import type { PatientFormData, PatientFormErrors } from 'types';
+import { CREATE_PATIENT_INFO_SECTIONS } from "app-utils/patient-form-fields";
+import type { PatientFormData } from "types";
+import type { PatientFormErrors } from "types";
 import { PatientFormSections } from '../PatientFormField';
 
 interface PatientInfoStepProps {

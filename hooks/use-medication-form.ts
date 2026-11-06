@@ -2,11 +2,7 @@
 
 import type { PatientFormErrors } from "types";
 import { useEffect, useMemo, useState } from "react";
-import {
-  EMPTY_MEDICATION_DRAFT,
-  getIncompleteMedicationIds,
-  haveMedicationsChanged,
-} from "utils";
+import { EMPTY_MEDICATION_DRAFT, getIncompleteMedicationIds, haveMedicationsChanged } from "app-utils/patient-records";
 import type { MedicationDraft, PatientMedication } from "types";
 import { validateMedicationDraft } from "lib";
 

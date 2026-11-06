@@ -1,9 +1,18 @@
 'use client';
 
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, InspectionPackDialog, PackPreviewDialog } from '@/components/ui';
-import { useInspectionPack } from 'hooks';
+import { Badge } from "ui/badge";
+import { Button } from "ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "ui/card";
+import { InspectionPackDialog } from "ui/compliance/inspection-pack-dialog";
+import { PackPreviewDialog } from "ui/compliance/pack-preview-dialog";
+import { useInspectionPack } from "hooks";
 import { Clock, Download, Eye, Shield } from 'lucide-react';
-import { formatLongDate } from 'utils';
+import { formatLongDate } from "app-utils/compliance";
 
 export function CQCInspectionPack() {
   const p = useInspectionPack();

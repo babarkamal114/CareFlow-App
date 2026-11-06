@@ -1,0 +1,1 @@
+export const PATIENTS_MOCK_TODAY = "2026-10-12";

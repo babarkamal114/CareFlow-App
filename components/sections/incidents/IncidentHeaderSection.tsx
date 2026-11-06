@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui';
 import { Plus } from 'lucide-react';
-import { INCIDENTS_PAGE_TITLE, INCIDENTS_PAGE_SUBTITLE } from 'utils';
+import { INCIDENTS_PAGE_TITLE, INCIDENTS_PAGE_SUBTITLE } from "app-utils/constants";
 
 interface IncidentHeaderSectionProps {
   onReportIncident: () => void;
