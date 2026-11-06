@@ -21,4 +21,7 @@ export * from './compliance/CQCReadinessStats';
 export * from './compliance/CQCRecentAuditTrailCard';
 export * from './compliance/CQCScoreTrend';
 export * from './compliance/DigitalSignaturesPanel';
-export * from './compliance/SafeguardingModule';
+export * from './compliance';
+export * from './finance';
+export * from './reports';
+export * from './medication';

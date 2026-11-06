@@ -21,7 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@/app/*": ["./app/*"],
-      "config": ["./config/*"],
+      "config": ["./config"],
       "features": ["./features"],
       "server": ["./server"],
       "stores": ["./stores"],

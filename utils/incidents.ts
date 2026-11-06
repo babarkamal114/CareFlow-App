@@ -122,7 +122,7 @@ export function formatNoteTimestamp(date: Date): string {
   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
 
-export function getInitials(name: string): string {
+export function getIncidentInitials(name: string): string {
   return name
     .split(" ")
     .filter(Boolean)

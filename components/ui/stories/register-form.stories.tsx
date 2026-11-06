@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { RegisterForm } from "@/app/(auth)/register/register-form";
+import { RegisterForm } from "@/components/ui";
 
-/**
- * RegisterForm is a pure controlled component — useRouter and signIn
- * are injected via onSubmit / onNhsClick props. No router context needed.
- */
 const meta = {
   title: "Auth/RegisterForm",
   component: RegisterForm,
@@ -32,32 +28,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Default — all fields empty and ready to fill in. */
-export const Default: Story = {
-  args: {
-    onSubmit: async () => {
-      await new Promise((r) => setTimeout(r, 1000));
-      return { error: null };
-    },
-    onNhsClick: () => alert("NHS Identity clicked"),
-  },
-};
-
-/** onSubmit returns a server error message shown inline. */
-export const WithServerError: Story = {
-  args: {
-    onSubmit: async () => {
-      await new Promise((r) => setTimeout(r, 600));
-      return { error: "An account with this email already exists." };
-    },
-    onNhsClick: () => {},
-  },
-};
-
-/** Loading — spinner stays visible because onSubmit never resolves. */
-export const Loading: Story = {
-  args: {
-    onSubmit: () => new Promise(() => {}),
-    onNhsClick: () => {},
-  },
-};
+export const Default: Story = {};
