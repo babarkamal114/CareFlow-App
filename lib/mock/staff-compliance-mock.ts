@@ -1,7 +1,3 @@
-// lib/mock/staff-compliance-mock.ts
-// TEMP mock data matching blueprint sections 3.2.4 (Staff Management) and 5.4 (Staff Management dashboard).
-// Keyed by staff.id so it can be joined against mockStaffMembers without touching the core StaffMember type.
-
 export type ComplianceStatus = "clear" | "expiring" | "expired";
 
 export const TRAINING_MODULES = [

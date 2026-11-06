@@ -1,55 +1,21 @@
-export const eventStyleGetter = (event: any) => {
-  const visit = event.resource;
-  
-  let backgroundColor = '#3b82f6';
-  let borderColor = '#1e40af';
+import type { ScheduleCalendarEvent } from "types";
 
-  if (visit.type === 'medication') {
-    backgroundColor = '#10b981';
-    borderColor = '#059669';
-  } else if (visit.type === 'check-up') {
-    backgroundColor = '#a855f7';
-    borderColor = '#7e22ce';
-  } else if (visit.type === 'therapy') {
-    backgroundColor = '#f97316';
-    borderColor = '#ea580c';
-  }
-
-  if (visit.status === 'completed') {
-    backgroundColor = '#6b7280';
-    borderColor = '#4b5563';
-  } else if (visit.status === 'cancelled') {
-    backgroundColor = '#ef4444';
-    borderColor = '#dc2626';
-  }
-
-  return {
-    style: {
-      backgroundColor,
-      borderColor,
-      borderRadius: '8px',
-      opacity: 0.95,
-      color: 'white',
-      border: `2px solid ${borderColor}`,
-      display: 'block',
-      fontWeight: 'bold',
-      fontSize: '12px',
-    },
-  };
+/**
+ * Calendar styling is class-based so colours come from the design tokens in
+ * calendar.css, never from inline hex values. Classes emitted:
+ *   event-{visit type}, status-{visit status}, event-unassigned
+ */
+export const eventStyleGetter = (event: ScheduleCalendarEvent) => {
+  const { type, status, carerId } = event.resource;
+  const classes = [`event-${type}`, `status-${status}`];
+  if (carerId === null) classes.push("event-unassigned");
+  return { className: classes.join(" ") };
 };
 
-export const dayStyleGetter = (date: Date) => {
-  const today = new Date();
-  const isToday =
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear();
-
-  if (isToday) {
-    return {
-      className: 'rbc-today',
-    };
-  }
-
-  return {};
+/** Highlights the given ISO date. Takes it as a parameter so mock data can use a fixed "today". */
+export const createDayStyleGetter = (todayIso: string) => (date: Date) => {
+  const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+    date.getDate()
+  ).padStart(2, "0")}`;
+  return iso === todayIso ? { className: "rbc-today" } : {};
 };
