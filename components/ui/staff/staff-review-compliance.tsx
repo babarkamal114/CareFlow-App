@@ -18,6 +18,7 @@ export function StaffReviewCompliance({
   onEdit?: () => void;
 }) {
   const { rightToWork, dbs, driving } = data;
+  const dbsTone = dbs.status ? getStaffDbsTone(dbs.status) : undefined;
   const referencesReceived = data.referees.filter(
     (referee) => referee.referenceReceived
   ).length;
@@ -59,7 +60,17 @@ export function StaffReviewCompliance({
         label="DBS Status"
         value={
           dbs.status ? (
-            <StaffFormStatusBadge status={getStaffDbsTone(dbs.status)}>
+            <StaffFormStatusBadge
+              status={
+                dbsTone === 'danger'
+                  ? 'red'
+                  : dbsTone === 'success'
+                    ? 'green'
+                    : dbsTone === 'warning'
+                      ? 'amber'
+                      : 'neutral'
+              }
+            >
               {DBS_STATUS_LABELS[dbs.status]}
             </StaffFormStatusBadge>
           ) : undefined

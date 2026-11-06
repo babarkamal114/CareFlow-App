@@ -23,3 +23,5 @@ export * from './compliance/CQCScoreTrend';
 export * from './compliance/DigitalSignaturesPanel';
 export * from './compliance/SafeguardingModule';
 export * from './finance';
+export * from './reports';
+export * from './medication';

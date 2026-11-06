@@ -44,10 +44,10 @@ export function StaffProfileTab({ staff, profile }: StaffProfileTabProps) {
         <CardContent className="space-y-2">
           <div className="flex items-center justify-between gap-3">
             <Progress value={completeness} className="flex-1">
-              <ProgressTrack trackSize="lg">
+              <ProgressTrack >
                 <ProgressIndicator />
               </ProgressTrack>
-              <ProgressValue>{completeness}%</ProgressValue>
+              <ProgressValue>{(formattedValue) => `${formattedValue}%`}</ProgressValue>
             </Progress>
             <Badge
               variant={completeness === 100 ? 'softSuccess' : 'softWarning'}
