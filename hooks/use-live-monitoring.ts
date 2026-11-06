@@ -1,28 +1,19 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import {
-  useGetLiveMonitoringApi,
-  mockLiveVisits,
-  mockLiveAttentionItems,
-  mockLiveCarersOnShift,
-} from "lib";
+import { useGetLiveMonitoringApi } from "lib";
 import { useLiveClock } from "./use-live-clock";
 
 export function useLiveMonitoring() {
-  const session = useSession();
-  const accessToken = session.data?.accessToken;
-
-  const { data, isLoading, error, refetch } = useGetLiveMonitoringApi(accessToken);
+  const { data, isLoading, error, refetch } = useGetLiveMonitoringApi();
   const { now, mountedAt, secondsSinceRefresh, refresh: resetClock } = useLiveClock();
 
-  const visits = data?.visits ?? mockLiveVisits;
-  const attentionItems = data?.attentionItems ?? mockLiveAttentionItems;
-  const carers = data?.carers ?? mockLiveCarersOnShift;
+  const visits = data?.visits ?? [];
+  const attentionItems = data?.attentionItems ?? [];
+  const carers = data?.carers ?? [];
 
   const refresh = () => {
     resetClock();
-    if (accessToken) refetch();
+    refetch();
   };
 
   return {
