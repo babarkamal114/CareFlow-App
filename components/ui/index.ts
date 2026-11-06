@@ -83,6 +83,8 @@ export * from "./incidents/incident-response-tab"
 export * from "./incidents/incident-investigation-tab"
 export * from "./incidents/incident-evidence-tab"
 export * from "./compliance"
+export * from "./dashboard"
+export * from "./live-monitoring"
 export * from "./finance"
 export * from './reports';
 export * from './medication'

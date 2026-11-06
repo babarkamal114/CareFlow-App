@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import type { AttentionType } from "utils";
+import type { AttentionType } from "./live-monitoring";
 import type { BadgeProps } from "@/components/ui";
 
 export interface StatCardProps {
@@ -368,6 +368,69 @@ export type IncidentType =
 
 export type IncidentSeverity = "minor" | "moderate" | "severe" | "catastrophic";
 export type IncidentStatus = 'reported' | 'investigating' | 'resolved' | 'closed';
+export type IncidentMarkType = "bruise" | "cut" | "abrasion" | "burn" | "other";
+export type InjurySeverity = "none" | "minor" | "moderate" | "severe";
+
+export interface InjuryDetail {
+  id: string;
+  bodyPart: string;
+  description: string;
+  severity: InjurySeverity;
+  photoUrls: string[];
+}
+
+export interface IncidentEvidence {
+  id: string;
+  type: "photo" | "video" | "document" | "audio";
+  url: string;
+  uploadedAt: string;
+  uploadedBy: string;
+  description?: string;
+}
+
+export interface IncidentFormData {
+  type: IncidentType | "";
+  severity: IncidentSeverity | "";
+  patientId: string;
+  patientName: string;
+  dateTime: string;
+  location: string;
+  reportedBy: string;
+  reportedByName: string;
+  antecedent: string;
+  description: string;
+  consequence: string;
+  injuriesObserved: boolean;
+  injuryDetails: InjuryDetail[];
+  bodyMapData: { markings: { id: string; bodyPart: string; markType: IncidentMarkType; notes: string }[] };
+  immediateActions: string;
+  carePlanFollowed: boolean | null;
+  carePlanDeviationReason: string;
+  emergencyServicesCalled: boolean;
+  emergencyServicesDetails: string;
+  evidence: IncidentEvidence[];
+  contributingFactors: string[];
+  followUpPlan: string;
+  status: IncidentStatus;
+  assignedTo: string;
+  rootCause: string;
+  preventiveActions: string;
+  lessonsLearned: string;
+  isCqcNotifiable: boolean;
+  isRiddorReportable: boolean;
+  isSafeguardingConcern: boolean;
+}
+
+export type IncidentFormUpdate = <K extends keyof IncidentFormData>(
+  field: K,
+  value: IncidentFormData[K],
+) => void;
+
+export interface IncidentFormStepProps {
+  form: IncidentFormData;
+  update: IncidentFormUpdate;
+  replace: (form: IncidentFormData) => void;
+}
 
 export interface Incident {
   id: string;

@@ -13,6 +13,22 @@ export interface DashboardVisit {
   minutesLate?: number;
 }
 
+export type TodaysVisitsResponse = {
+  visits: VisitDTO[];
+  total: number;
+  statusCounts: Record<DashboardVisitStatus, number>;
+};
+
+export interface VisitDTO {
+  id: string;
+  patientName: string;
+  carerName: string;
+  careTypes: string[];
+  startTime: string;
+  endTime: string;
+  status: DashboardVisitStatus;
+}
+
 /** Whole-day totals for the agency (the table below only lists a sample of visits). */
 export interface DashboardVisitSummary {
   total: number;

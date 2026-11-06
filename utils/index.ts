@@ -4,6 +4,21 @@ export * from './roles-formatter';
 export * from './date-utils';
 export * from './permission-constants';
 export * from './dashboard-nav-filter';
+export {
+  formatRelativeTime,
+  parseLocalDay,
+  daysFromToday,
+  pluralize,
+  isoMinutesAgo,
+  isoDateInDays,
+  isoTodayAt,
+  getNextTheme,
+  getThemeToggleLabel,
+} from './dashboard-helpers';
+export type { ThemeName } from './dashboard-helpers';
+export * from './dashboard-home';
+export * from './dashboard-home-insights';
+export * from './dashboard-notifications';
 export * from './staff-table-utils';
 export * from './stat-score-ring-check';
 export * from './show-trend';
@@ -32,3 +47,4 @@ export * from './medication'
 export * from './medication-audit'
 export * from './medication-display'
 export * from './medication-export'
+export * from './live-monitoring'

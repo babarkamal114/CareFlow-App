@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import type {
   TodaysVisitsResponse,
   VisitDTO,
-  VisitStatus,
-} from "utils";
+  DashboardVisitStatus,
+} from "types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_DASHBOARD === "true";
@@ -28,12 +28,12 @@ const MOCK_VISITS: VisitDTO[] = [
 
 const MOCK_COUNTS = { scheduled: 18, completed: 20, "in-progress": 6, late: 3, missed: 1 };
 
-function getMockResponse(status?: VisitStatus): TodaysVisitsResponse {
+function getMockResponse(status?: DashboardVisitStatus): TodaysVisitsResponse {
   const visits = status ? MOCK_VISITS.filter((v) => v.status === status) : MOCK_VISITS;
   return { visits, total: visits.length, statusCounts: MOCK_COUNTS };
 }
 
-export function useTodaysVisits(status?: VisitStatus) {
+export function useTodaysVisits(status?: DashboardVisitStatus) {
   const [data, setData] = useState<TodaysVisitsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,6 +1,9 @@
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 
-import { AlertFeedItem, Badge, Card, EmptyState } from "@/components/ui";
+import { AlertFeedItem } from "ui/dashboard/alert-feed-item";
+import { Badge } from "ui/badge";
+import { Card } from "ui/card";
+import { EmptyState } from "ui/empty-state";
 import type { DashboardAlert } from "types";
 
 interface DashboardAlertFeedSectionProps {
