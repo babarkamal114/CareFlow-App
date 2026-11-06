@@ -275,12 +275,12 @@ export function MedicalHistoryStep({ formData, setFormData }: MedicalHistoryStep
                       <span>Reaction: {allergy.reaction}</span>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleRemoveAllergy(allergy.id)}
                     className="text-cf-ink-40 hover:text-cf-error transition-colors"
                   >
                     <X className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -356,12 +356,12 @@ export function MedicalHistoryStep({ formData, setFormData }: MedicalHistoryStep
                       <span>{hospitalisation.outcome}</span>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleRemoveHospitalisation(hospitalisation.id)}
                     className="text-cf-ink-40 hover:text-cf-error transition-colors"
                   >
                     <X className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </CardContent>
               </Card>
             ))}

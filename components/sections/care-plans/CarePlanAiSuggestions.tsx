@@ -4,11 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, Button, Badge } from '@/components/ui';
 import { Sparkles, X, ArrowRight } from 'lucide-react';
-import {
-  generateCarePlanSuggestions,
-  mockVisitNotes,
-  type CarePlanSuggestion,
-} from 'utils';
+import { CarePlanSuggestion, generateCarePlanSuggestions, mockVisitNotes } from 'utils';
+
 
 interface CarePlanAiSuggestionsProps {
   patientNames: Record<string, string>;

@@ -1,96 +1,70 @@
 'use client';
 
-import { Card, Button, ScrollArea } from '@/components/ui';
-import { Download, Paperclip, Image, File, FileText } from 'lucide-react';
-import { formatFileSize } from 'utils';
+import { Badge, Button, Card, ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui';
+import { CircleHelp, Download, Paperclip } from 'lucide-react';
+import { Incident } from 'types';
+import { getEvidenceFileName, getIncidentEvidenceCount } from 'utils';
 
-
-interface Evidence {
-  id: string;
-  name: string;
-  type: 'image' | 'document' | 'audio' | 'video';
-  url: string;
-  uploadedBy: string;
-  uploadedAt: Date;
-  size: number;
+interface IncidentEvidenceTabProps {
+  incident: Incident;
 }
 
-const mockEvidence: Evidence[] = [
-  {
-    id: '1',
-    name: 'incident-photo-1.jpg',
-    type: 'image',
-    url: '/images/incident-1.jpg',
-    uploadedBy: 'Sarah Johnson',
-    uploadedAt: new Date('2024-03-15T14:30:00'),
-    size: 2450000,
-  },
-  {
-    id: '2',
-    name: 'witness-statement.pdf',
-    type: 'document',
-    url: '/documents/witness-statement.pdf',
-    uploadedBy: 'Michael Chen',
-    uploadedAt: new Date('2024-03-16T09:15:00'),
-    size: 450000,
-  },
-];
-
-const getFileIcon = (type: Evidence['type']) => {
-  switch (type) {
-    case 'image':
-      return <Image className="h-4 w-4" />;
-    case 'document':
-      return <File className="h-4 w-4" />;
-    case 'audio':
-      return <FileText className="h-4 w-4" />;
-    case 'video':
-      return <FileText className="h-4 w-4" />;
-    default:
-      return <Paperclip className="h-4 w-4" />;
-  }
-};
-
-export function IncidentEvidenceTab() {
-  const evidence = mockEvidence;
+export function IncidentEvidenceTab({ incident }: IncidentEvidenceTabProps) {
+  const evidence = incident.evidence ?? [];
 
   return (
-    <ScrollArea className="pr-4">
-      <div className="space-y-4">
+    <ScrollArea className="h-[calc(100vh-260px)] pr-4">
+      <div className="space-y-4 pb-4">
+        <Card className="border-cf-border p-4">
+          <div className="flex items-center gap-1.5">
+            <p className="text-sm font-semibold text-cf-ink">
+              Evidence ({getIncidentEvidenceCount(incident)})
+            </p>
+            <Tooltip>
+              <TooltipTrigger className="cursor-help text-cf-ink-40 hover:text-cf-ink">
+                <CircleHelp className="size-3.5" />
+              </TooltipTrigger>
+              <TooltipContent>
+                Files attached at the point of reporting, plus anything added
+                during the investigation - photos of the scene or injuries,
+                body maps, GP letters and witness statements.
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </Card>
+
         {evidence.length === 0 ? (
           <Card className="border-cf-border p-8 text-center">
-            <Paperclip className="h-12 w-12 text-cf-ink-40 mx-auto mb-3" />
+            <Paperclip className="mx-auto mb-3 size-10 text-cf-ink-40" />
             <p className="text-cf-ink-60">No evidence uploaded yet</p>
-            <p className="text-xs text-cf-ink-40 mt-1">
-              Upload photos, documents, audio, or video evidence
+            <p className="mt-1 text-xs text-cf-ink-40">
+              Use Actions &gt; Add Evidence to attach photos, documents, audio
+              or video
             </p>
           </Card>
         ) : (
-          evidence.map((item) => (
-            <Card key={item.id} className="border-cf-border p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-cf-surface-muted flex items-center justify-center">
-                    {getFileIcon(item.type)}
+          evidence.map((url) => (
+            <Card key={url} className="border-cf-border p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-cf-surface-muted">
+                    <Paperclip className="size-4 text-cf-ink-60" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-cf-ink">{item.name}</p>
-                    <div className="flex items-center gap-3 mt-1">
-                      <p className="text-xs text-cf-ink-60">
-                        {formatFileSize(item.size)}
-                      </p>
-                      <p className="text-xs text-cf-ink-60">
-                        Uploaded by {item.uploadedBy}
-                      </p>
-                      <p className="text-xs text-cf-ink-60">
-                        {item.uploadedAt.toLocaleDateString()}
-                      </p>
-                    </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-cf-ink">
+                      {getEvidenceFileName(url)}
+                    </p>
+                    <p className="truncate text-xs text-cf-ink-60">{url}</p>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                  <Download className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Badge variant="softInfo" shape="pill" badgeSize="sm">
+                    Evidence
+                  </Badge>
+                  <Button variant="ghost" size="sm" className="size-8 p-0" aria-label={`Download ${getEvidenceFileName(url)}`}>
+                    <Download className="size-4" />
+                  </Button>
+                </div>
               </div>
             </Card>
           ))

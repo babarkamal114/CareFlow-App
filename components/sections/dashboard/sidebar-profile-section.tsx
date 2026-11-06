@@ -13,9 +13,10 @@ import {
 } from "@/components/ui";
 import { useAuthTokens } from "hooks";
 import { useLogoutMutation } from "lib";
-import { ChevronsUpDown, LogOut, Settings, User } from "lucide-react";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { PROFILE_MENU_ITEMS } from "utils";
 
 export interface SidebarProfileSectionProps {
   name: string;
@@ -73,22 +74,17 @@ export function SidebarProfileSection({
           <p className="truncate text-sm font-medium leading-none">{name}</p>
           <p className="mt-1 truncate text-xs text-muted-foreground">{role}</p>
         </div>
-        <Button
-          variant="ghost"
-          className="h-8 w-full justify-start gap-2 px-2 text-sm font-normal"
-          onClick={() => router.push("/profile")}
-        >
-          <User className="h-4 w-4" />
-          Profile
-        </Button>
-        <Button
-          variant="ghost"
-          className="h-8 w-full justify-start gap-2 px-2 text-sm font-normal"
-          onClick={() => router.push("/settings")}
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </Button>
+        {PROFILE_MENU_ITEMS.map(({ key, label, href, Icon }) => (
+          <Button
+            key={key}
+            variant="ghost"
+            className="h-8 w-full justify-start gap-2 px-2 text-sm font-normal"
+            onClick={() => router.push(href)}
+          >
+            <Icon className="h-4 w-4" />
+            {label}
+          </Button>
+        ))}
         <Button
           variant="ghost"
           className="h-8 w-full justify-start gap-2 px-2 text-sm font-normal text-red-600 hover:bg-red-50 hover:text-red-600"

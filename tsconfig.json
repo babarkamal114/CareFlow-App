@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./*"],
       "@/app/*": ["./app/*"],
-      "config": ["./config/*"],
+      "config": ["./config"],
+      "app-utils/*": ["./utils/*"],
       "features": ["./features"],
       "server": ["./server"],
       "stores": ["./stores"],
@@ -35,6 +36,7 @@
       "lib": ["./lib"],
       "utils": ["./utils"],
       "components": ["./components"],
+      "ui/*": ["./components/ui/*"],
       "shared": ["./components/shared"]
     }
   },

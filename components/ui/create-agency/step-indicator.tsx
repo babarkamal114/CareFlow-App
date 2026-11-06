@@ -23,10 +23,10 @@ export function StepIndicator({
         <div
           className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-all duration-200 ${
             isCompleted
-              ? " text-white"
+              ? "bg-cf-brand-500 text-white"
               : isActive
-                ? "bg-emerald-700 text-white "
-                : "bg-emerald-600 text-white border border-emerald-500"
+                ? "bg-emerald-700 text-white"
+                : "bg-gray-100 text-gray-600 border border-gray-300"
           }`}
         >
           {isCompleted ? (
@@ -48,8 +48,8 @@ export function StepIndicator({
             isCompleted
               ? "bg-cf-brand-500 text-white"
               : isActive
-                ? "bg-emerald-700 text-white "
-                : "bg-emerald-600 text-white border border-emerald-500"
+                ? "bg-emerald-700 text-white"
+                : "bg-gray-100 text-gray-600 border border-gray-300"
           }`}
         >
           {isCompleted ? (
@@ -64,13 +64,14 @@ export function StepIndicator({
       <div className="flex flex-col pt-1">
         <span
           className={`text-sm font-medium transition-colors duration-200 ${
-            isCompleted || isActive ? "text-white" : "text-white/30"
+            isCompleted || isActive ? "text-black" : "text-black/40"
           }`}
         >
           {label}
         </span>
+
         {isActive && (
-          <span className="mt-1 text-xs text-white/60">
+          <span className="mt-1 text-xs text-black/60">
             Current step
           </span>
         )}

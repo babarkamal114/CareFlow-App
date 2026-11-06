@@ -443,12 +443,12 @@ export function EditMedicationModal({
                           placeholder="Special instructions (optional)"
                         />
                       </div>
-                      <button
+                      <Button
                         onClick={() => handleRemoveMedication(med.id)}
                         className="text-cf-ink-40 hover:text-cf-error transition-colors flex-shrink-0 mt-1"
                       >
                         <X className="w-4 h-4" />
-                      </button>
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>

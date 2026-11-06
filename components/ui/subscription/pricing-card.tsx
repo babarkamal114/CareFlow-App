@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Check } from "lucide-react";
+import { BuildingIcon, Check, HeartHandshakeIcon, UserIcon, UsersIcon, HeadsetIcon, SparklesIcon } from "lucide-react";
 import type { PricingPlan, BillingCycle, PricingCardProps } from "lib";
 import { formatPrice } from "utils";
 import { useCreateCheckoutApi } from "lib";
@@ -78,7 +78,7 @@ export function PricingCard({ plan, cycle, index, onSelect }: PricingCardProps) 
                 {formatPrice(price)}
               </span>
               <span className={`text-sm ${plan.highlighted ? "text-white/60" : "text-zinc-400"}`}>
-                {cycle === "monthly" ? "/mo" : "/year"}
+                {cycle === "monthly" ? "per month" : "per year"}
               </span>
             </motion.div>
           </AnimatePresence>
@@ -89,27 +89,52 @@ export function PricingCard({ plan, cycle, index, onSelect }: PricingCardProps) 
         )}
       </div>
 
-      <div className={`mt-4 space-y-1 border-t pt-4 text-sm ${plan.highlighted ? "border-white/15 text-white/80" : "border-zinc-100 text-zinc-600"}`}>
-        <p>{plan.agencies} Agency</p>
-        <p>{plan.caregivers} Care Givers</p>
-        <p>{plan.serviceUsers} Service Users</p>
-        <p>{plan.familyMembers} Family Members</p>
+      <div className={`mt-4 space-y-3 border-t pt-4 text-sm ${plan.highlighted ? "border-white/15 text-white/80" : "border-zinc-100 text-zinc-600"}`}>
+        <div className="flex items-center gap-2">
+          <BuildingIcon className="h-5 w-5 shrink-0" />
+          <div>
+            <h1 className="font-semibold">{plan.agencies} Agency</h1>
+            <p className="text-xs opacity-80">Manage and connect with your agencies.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <UsersIcon className="h-5 w-5 shrink-0" />
+          <div>
+            <h1 className="font-semibold">{plan.caregivers} Care Givers</h1>
+            <p className="text-xs opacity-80">Coordinate caregivers under your agency.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <UserIcon className="h-5 w-5 shrink-0" />
+          <div>
+            <h1 className="font-semibold">{plan.serviceUsers} Service Users</h1>
+            <p className="text-xs opacity-80">Track and support your service users.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <HeartHandshakeIcon className="h-5 w-5 shrink-0" />
+          <div>
+            <h1 className="font-semibold">{plan.familyMembers} Family Members</h1>
+            <p className="text-xs opacity-80">Keep family members informed and involved.</p>
+          </div>
+        </div>
+
+       
+        <div className="flex items-center gap-2">
+          <HeadsetIcon className="h-5 w-5 shrink-0" />
+          <div>
+            <h1 className="font-semibold">24/7 Support</h1>
+            <p className="text-xs opacity-80">Real help whenever you need it, day or night.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <SparklesIcon className="h-5 w-5 shrink-0" />
+          <div>
+            <h1 className="font-semibold">AI included</h1>
+            <p className="text-xs opacity-80">Built-in AI tools in every plan, no add-ons.</p>
+          </div>
+        </div>
       </div>
-      
-      <ul className="mt-5 flex-1 space-y-2.5">
-        {plan.features.map((f, fi) => (
-          <motion.li
-            key={f.label}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.15 + index * 0.08 + fi * 0.05, duration: 0.3 }}
-            className={`flex items-start gap-2 text-sm ${plan.highlighted ? "text-white/90" : "text-zinc-700"}`}
-          >
-            <Check className={`mt-0.5 h-4 w-4 shrink-0 ${plan.highlighted ? "text-white/70" : "text-[#1a6b3c]"}`} />
-            {f.label}
-          </motion.li>
-        ))}
-      </ul>
 
       <motion.button
         type="button"
