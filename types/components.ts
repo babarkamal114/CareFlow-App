@@ -1,6 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { ReactNode } from "react";
-
+import type { AttentionType } from "./live-monitoring";
 import type { BadgeProps } from "@/components/ui";
 
 export interface StatCardProps {
@@ -29,23 +28,23 @@ export interface PageBreadcrumbProps {
 }
 
 export type StaffMember = {
-  id: string;                    // agency_memberships.id
-  userId: string;                // agency_memberships.userId
-  name: string;                  // users.fullName
-  email: string;                 // users.email
-  phone?: string | null;         // users.phone
-  profilePicture?: string | null; // users.picture
+  id: string;                    
+  userId: string;                
+  name: string;                  
+  email: string;                 
+  phone?: string | null;         
+  profilePicture?: string | null; 
   role: string;
-  status: EmployeeStatus;        // agency_memberships.status
-  joinDate: Date | string;       // agency_memberships.acceptedAt or createdAt
-  invitedBy: string | null;      // agency_memberships.invitedBy
-  invitedAt: Date | null;        // agency_memberships.invitedAt
-  acceptedAt: Date | null;       // agency_memberships.acceptedAt
-  createdAt: Date;               // agency_memberships.createdAt
-  updatedAt: Date;               // agency_memberships.updatedAt
-  deletedAt: Date | null;        // agency_memberships.deletedAt
-  userStatus: string;            // users.status
-  emailVerified: boolean;        // users.emailVerified
+  status: EmployeeStatus;        
+  joinDate: Date | string;       
+  invitedBy: string | null;     
+  invitedAt: Date | null;        
+  acceptedAt: Date | null;       
+  createdAt: Date;               
+  updatedAt: Date;               
+  deletedAt: Date | null;       
+  userStatus: string;           
+  emailVerified: boolean;        
 };
 
 export interface StaffTableProps {
@@ -171,7 +170,7 @@ export interface DementiaContent {
 
 export interface NutritionContent {
   type: 'nutrition';
-  MUSTScore: number; // Malnutrition Universal Screening Tool
+  MUSTScore: number; 
   nutritionStatus: 'adequate' | 'at-risk' | 'malnourished';
   dietaryType: 'normal' | 'modified-texture' | 'pureed' | 'soft' | 'therapeutic';
   foodPreferences: string[];
@@ -260,9 +259,6 @@ export interface CarePlan {
   createdBy: string;
 }
 
-
-
-
 export interface CarePlanBlock {
   id: string;
   patientName: string;
@@ -285,14 +281,13 @@ export interface ModuleCreationData {
   patientId : string;
   type: CarePlanType;
   name: string;
-  content: CarePlanModuleContent; // Will be typed based on module type
+  content: CarePlanModuleContent; 
   status: 'draft' | 'in-review' | 'approved';
   reviewStatus: 'current' | 'overdue' | 'reviewed' | 'needs-change';
   createdBy: string;
   version?: string;
 }
 
-// Module-specific creation data types
 export interface PersonalCareCreationData {
   mobilityLevel: 'independent' | 'supervision' | 'assistance' | 'total-dependence';
   personalHygiene: {
@@ -345,6 +340,69 @@ export type IncidentType =
 
 export type IncidentSeverity = "minor" | "moderate" | "severe" | "catastrophic";
 export type IncidentStatus = 'reported' | 'investigating' | 'resolved' | 'closed';
+export type IncidentMarkType = "bruise" | "cut" | "abrasion" | "burn" | "other";
+export type InjurySeverity = "none" | "minor" | "moderate" | "severe";
+
+export interface InjuryDetail {
+  id: string;
+  bodyPart: string;
+  description: string;
+  severity: InjurySeverity;
+  photoUrls: string[];
+}
+
+export interface IncidentEvidence {
+  id: string;
+  type: "photo" | "video" | "document" | "audio";
+  url: string;
+  uploadedAt: string;
+  uploadedBy: string;
+  description?: string;
+}
+
+export interface IncidentFormData {
+  type: IncidentType | "";
+  severity: IncidentSeverity | "";
+  patientId: string;
+  patientName: string;
+  dateTime: string;
+  location: string;
+  reportedBy: string;
+  reportedByName: string;
+  antecedent: string;
+  description: string;
+  consequence: string;
+  injuriesObserved: boolean;
+  injuryDetails: InjuryDetail[];
+  bodyMapData: { markings: { id: string; bodyPart: string; markType: IncidentMarkType; notes: string }[] };
+  immediateActions: string;
+  carePlanFollowed: boolean | null;
+  carePlanDeviationReason: string;
+  emergencyServicesCalled: boolean;
+  emergencyServicesDetails: string;
+  evidence: IncidentEvidence[];
+  contributingFactors: string[];
+  followUpPlan: string;
+  status: IncidentStatus;
+  assignedTo: string;
+  rootCause: string;
+  preventiveActions: string;
+  lessonsLearned: string;
+  isCqcNotifiable: boolean;
+  isRiddorReportable: boolean;
+  isSafeguardingConcern: boolean;
+}
+
+export type IncidentFormUpdate = <K extends keyof IncidentFormData>(
+  field: K,
+  value: IncidentFormData[K],
+) => void;
+
+export interface IncidentFormStepProps {
+  form: IncidentFormData;
+  update: IncidentFormUpdate;
+  replace: (form: IncidentFormData) => void;
+}
 
 export interface Incident {
   id: string;
