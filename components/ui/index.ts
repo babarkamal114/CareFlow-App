@@ -85,5 +85,6 @@ export * from "./incidents/incident-evidence-tab"
 export * from "./compliance"
 export * from "./compliance/safeguarding-notification-chain"
 export * from "./compliance/safeguarding-concern-row"
+export * from "./finance"
 export * from './reports';
 export * from './medication'

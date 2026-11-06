@@ -7,6 +7,8 @@ export * from "./api/client";
 export * from "./mock/staff-mock-data";
 export * from "./mock/staff-compliance-mock";
 export * from "./mock/staff-profile-mock";
+export * from './mock/finance-mock'
+export * from './hooks/use-finance-workspace';
 export * from './mock/reports-mock'
 export * from './mock/reports-clinical-mock'
 export * from './mock/reports-compliance-mock'
