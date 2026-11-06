@@ -4,7 +4,7 @@ import { Button, EmptyState, MedAlertRow, MedFilterPill, Skeleton } from "@/comp
 import type { useMedicationAlerts } from "hooks"
 import { CheckCircle2 } from "lucide-react";
 import type { MedAlert, MedAlertSeverity, MedTab } from "types";
-import { ALERT_SEVERITY_CONFIG } from "utils";
+import { MED_ALERT_SEVERITY_CONFIG } from "utils";
 
 type Alerts = ReturnType<typeof useMedicationAlerts>;
 const FILTERS: (MedAlertSeverity | "all")[] = ["all", "urgent", "warning", "info"];
@@ -21,8 +21,8 @@ export function MedicationAlertsSection({ alerts: a, onGoToTab }: MedicationAler
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter alerts">
           {FILTERS.map((f) => (
-            <MedFilterPill key={f} label={f === "all" ? "All" : ALERT_SEVERITY_CONFIG[f].label} count={count(f)} active={a.severity === f}
-              tone={f === "all" ? "success" : ALERT_SEVERITY_CONFIG[f].tone} onClick={() => a.setSeverity(f)} />
+            <MedFilterPill key={f} label={f === "all" ? "All" : MED_ALERT_SEVERITY_CONFIG[f].label} count={count(f)} active={a.severity === f}
+              tone={f === "all" ? "success" : MED_ALERT_SEVERITY_CONFIG[f].tone} onClick={() => a.setSeverity(f)} />
           ))}
         </div>
         {a.acknowledgedCount > 0 && <Button variant="ghost" size="sm" onClick={a.restoreAcknowledged}>Show {a.acknowledgedCount} acknowledged</Button>}

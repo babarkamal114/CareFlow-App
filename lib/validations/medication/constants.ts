@@ -6,4 +6,4 @@ export const FREQUENCY_VALUES = ["once-daily", "twice-daily", "three-daily", "fo
 export const EFFECTIVENESS_VALUES = ["effective", "partial", "not-effective"] as const;
 export const CONTROLLED_ENTRY_KIND_VALUES = ["receipt", "disposal", "stock-check"] as const;
 
-export const TIME_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/;
+export const MEDICATION_TIME_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/;

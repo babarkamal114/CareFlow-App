@@ -71,7 +71,7 @@ export const CONTROLLED_KIND_LABEL: Record<ControlledEntryKind, string> = {
   administration: "Administered", receipt: "Stock received", disposal: "Disposed / returned", "stock-check": "Stock check",
 };
 export const ROUND_FILTER_LABEL: Record<RoundFilter, string> = { all: "All doses", attention: "Needs attention", upcoming: "Upcoming", done: "Recorded" };
-export const ALERT_SEVERITY_CONFIG: Record<MedAlertSeverity, { label: string; badge: BadgeVariant; tone: MedTone }> = {
+export const MED_ALERT_SEVERITY_CONFIG: Record<MedAlertSeverity, { label: string; badge: BadgeVariant; tone: MedTone }> = {
   urgent: { label: "Urgent", badge: "pastel-danger", tone: "error" },
   warning: { label: "Warning", badge: "pastel-warning", tone: "warning" },
   info: { label: "Info", badge: "pastel-info", tone: "info" },

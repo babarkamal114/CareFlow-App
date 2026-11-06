@@ -1,11 +1,11 @@
 import { z } from "zod";
 import type { ReportFormErrors, ReportScheduleFormData } from "types";
 import { REPORT_EMAIL_REGEX, REPORT_FREQUENCY_VALUES, REPORT_MAX_RECIPIENTS, REPORT_TIME_REGEX } from "config";
-import { parseRecipients, requiredChoice, requiredText, runSchema } from "utils";
+import { parseRecipients, requiredChoice, reportRequiredText, reportRunSchema } from "utils";
 
 export const scheduleSchema = z
   .object({
-    reportId: requiredText("Report"),
+    reportId: reportRequiredText("Report"),
     frequency: requiredChoice(REPORT_FREQUENCY_VALUES, "Frequency"),
     time: z.string().regex(REPORT_TIME_REGEX, "Enter the time as HH:MM"),
     dayOfWeek: z.union([z.literal(""), z.number()]),
@@ -25,4 +25,4 @@ export const scheduleSchema = z
     }
   });
 
-export const validateSchedule = (data: ReportScheduleFormData): ReportFormErrors => runSchema(scheduleSchema, data);
+export const validateSchedule = (data: ReportScheduleFormData): ReportFormErrors => reportRunSchema(scheduleSchema, data);

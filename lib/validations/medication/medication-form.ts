@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { MedFormErrors, MedicationFormData } from "types";
-import { FREQUENCY_VALUES, MEDICATION_TYPE_VALUES, ROUTE_VALUES, TIME_REGEX } from "./constants";
+import { FREQUENCY_VALUES, MEDICATION_TIME_REGEX, MEDICATION_TYPE_VALUES, ROUTE_VALUES } from "./constants";
 import { requiredChoice, requiredIsoDate, requiredText, runSchema } from "./helpers";
 
 const optionalNumber = z.union([z.literal(""), z.number()]);
@@ -29,7 +29,7 @@ export const medicationFormSchema = z
 
     if (!isPrn) {
       if (d.times.length === 0) add("times", "Add at least one administration time");
-      else if (d.times.some((t) => !TIME_REGEX.test(t))) add("times", "Enter every time as HH:MM");
+      else if (d.times.some((t) => !MEDICATION_TIME_REGEX.test(t))) add("times", "Enter every time as HH:MM");
       else if (new Set(d.times).size !== d.times.length) add("times", "Each time must be different");
     }
     if (d.type === "short-course") {

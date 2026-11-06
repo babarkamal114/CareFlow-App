@@ -1,4 +1,5 @@
-import { TONE_BAR, type Tone } from "utils";
+import type { Tone } from "types";
+import { TONE_BAR } from "utils";
 
 interface StatusProgressBarProps {
   value: number;

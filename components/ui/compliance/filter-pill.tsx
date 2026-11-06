@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { TONE_PILL_ACTIVE, type Tone } from "utils";
+import type { Tone } from "types";
+import { TONE_PILL_ACTIVE } from "utils";
 
 interface FilterPillProps {
   label: string;

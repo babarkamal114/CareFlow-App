@@ -136,7 +136,7 @@ export function parseReportDate(value: string): Date | undefined {
 }
 
 // ---- Form validation helpers (zod) ----
-export const requiredText = (label: string) => z.string().trim().min(1, `${label} is required`);
+export const reportRequiredText = (label: string) => z.string().trim().min(1, `${label} is required`);
 
 export function requiredChoice<T extends readonly [string, ...string[]]>(values: T, label: string) {
   return z.union([z.literal(""), z.enum(values)]).superRefine((v, ctx) => {
@@ -144,7 +144,7 @@ export function requiredChoice<T extends readonly [string, ...string[]]>(values:
   });
 }
 
-export function zodToFormErrors(error: z.ZodError): ReportFormErrors {
+export function reportZodToFormErrors(error: z.ZodError): ReportFormErrors {
   const errors: ReportFormErrors = {};
   for (const issue of error.issues) {
     const key = issue.path.length > 0 ? issue.path.join(".") : "form";
@@ -153,9 +153,9 @@ export function zodToFormErrors(error: z.ZodError): ReportFormErrors {
   return errors;
 }
 
-export function runSchema<T extends z.ZodType>(schema: T, data: z.input<T>): ReportFormErrors {
+export function reportRunSchema<T extends z.ZodType>(schema: T, data: z.input<T>): ReportFormErrors {
   const result = schema.safeParse(data);
-  return result.success ? {} : zodToFormErrors(result.error);
+  return result.success ? {} : reportZodToFormErrors(result.error);
 }
 
 export const parseRecipients = (value: string): string[] =>

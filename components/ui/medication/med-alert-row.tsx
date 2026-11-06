@@ -2,12 +2,12 @@
 
 import { Badge, Button } from "@/components/ui";
 import type { MedAlert } from "types";
-import { ALERT_ACTION_LABEL, ALERT_KIND_LABEL, ALERT_SEVERITY_CONFIG, MED_TONE_PANEL } from "utils";
+import { ALERT_ACTION_LABEL, ALERT_KIND_LABEL, MED_ALERT_SEVERITY_CONFIG, MED_TONE_PANEL } from "utils";
 
 interface MedAlertRowProps { alert: MedAlert; patientName: string; onAction: (alert: MedAlert) => void; onAcknowledge: (id: string) => void }
 
 export function MedAlertRow({ alert, patientName, onAction, onAcknowledge }: MedAlertRowProps) {
-  const sev = ALERT_SEVERITY_CONFIG[alert.severity];
+  const sev = MED_ALERT_SEVERITY_CONFIG[alert.severity];
   return (
     <div className={`rounded-xl border p-4 ${MED_TONE_PANEL[sev.tone]}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
