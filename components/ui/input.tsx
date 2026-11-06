@@ -7,7 +7,6 @@ import { cn } from "lib"
 
 type InputProps = Omit<React.ComponentProps<typeof InputPrimitive>, "size"> &
   VariantProps<typeof inputVariants> & {
-    /** When set, overrides automatic `state` from `aria-invalid` */
     state?: VariantProps<typeof inputVariants>["state"]
   }
 

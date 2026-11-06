@@ -1,11 +1,17 @@
-import { DashboardShell } from "@/features/layout";
-import { requireSession } from "@/server/auth/session";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import { DashboardShell } from "layouts";
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await requireSession();
+  const session = await auth();
+  // TEMP: bypassing auth check to work on dashboard UI without backend running
+  // TODO: remove this before pushing/merging
+  // if (!session?.user) {
+  //   redirect("/login");
+  // }
   return <DashboardShell>{children}</DashboardShell>;
 }

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { PatientDetailPanel, patientKeys } from "@/features/patients";
 import { getPatientById } from "@/features/patients/server/get-patient";
-import { getQueryClient } from "@/lib/get-query-client";
+import { getQueryClient } from "lib";
 
 type PageProps = { params: Promise<{ patientId: string }> };
 

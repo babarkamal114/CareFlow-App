@@ -1,0 +1,16 @@
+if command -v npm >/dev/null 2>&1; then
+  npm run check:banned-patterns
+  npm run check:file-length
+  npm run check:barrel-imports
+  npm run check:barrel-completeness
+elif command -v bun >/dev/null 2>&1; then
+  bun run check:banned-patterns
+  bun run check:file-length
+  bun run check:barrel-imports
+  bun run check:barrel-completeness
+elif command -v pnpm >/dev/null 2>&1; then
+  pnpm run check:banned-patterns
+  pnpm run check:file-length
+  pnpm run check:barrel-imports
+  pnpm run check:barrel-completeness
+fi
