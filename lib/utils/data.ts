@@ -3,6 +3,7 @@ import type { PricingPlan } from "./components";
 export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "starter",
+    planId: "starter",
     name: "Starter",
     tagline: "Small care agencies getting started",
     monthlyPrice: 49,
@@ -21,6 +22,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   },
   {
     id: "professional",
+    planId: "professional",
     name: "Professional",
     tagline: "Growing agencies with multiple locations",
     monthlyPrice: 99,
@@ -41,6 +43,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   },
   {
     id: "enterprise",
+    planId: "enterprise",
     name: "Enterprise",
     tagline: "Large care networks and national chains",
     monthlyPrice: null,
