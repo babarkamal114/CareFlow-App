@@ -1,6 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { ReactNode } from "react";
-
+import type { AttentionType } from "utils";
 import type { BadgeProps } from "@/components/ui";
 
 export interface StatCardProps {
@@ -42,9 +41,9 @@ export type StaffMember = {
   invitedAt: Date | null;        
   acceptedAt: Date | null;       
   createdAt: Date;               
-  updatedAt: Date;             
-  deletedAt: Date | null;        
-  userStatus: string;            
+  updatedAt: Date;               
+  deletedAt: Date | null;       
+  userStatus: string;           
   emailVerified: boolean;        
 };
 
@@ -199,7 +198,7 @@ export interface DementiaContent {
 
 export interface NutritionContent {
   type: 'nutrition';
-  MUSTScore: number; // Malnutrition Universal Screening Tool
+  MUSTScore: number; 
   nutritionStatus: 'adequate' | 'at-risk' | 'malnourished';
   dietaryType: 'normal' | 'modified-texture' | 'pureed' | 'soft' | 'therapeutic';
   foodPreferences: string[];
@@ -288,9 +287,6 @@ export interface CarePlan {
   createdBy: string;
 }
 
-
-
-
 export interface CarePlanBlock {
   id: string;
   patientName: string;
@@ -313,7 +309,7 @@ export interface ModuleCreationData {
   patientId : string;
   type: CarePlanType;
   name: string;
-  content: CarePlanModuleContent; // Will be typed based on module type
+  content: CarePlanModuleContent; 
   status: 'draft' | 'in-review' | 'approved';
   reviewStatus: 'current' | 'overdue' | 'reviewed' | 'needs-change';
   createdBy: string;
@@ -433,86 +429,43 @@ export type SortField = keyof StaffMember;
 export type SortDirection = "asc" | "desc";
 export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED' 
 
-export interface IncidentFormData {
-  type: IncidentType | "";
-  severity: IncidentSeverity | "";
-
-  patientId: string;
+export type VisitStatus =
+  | "starting"
+  | "in-progress"
+  | "delayed"
+  | "scheduled"
+  | "completed"
+  | "missed";
+ 
+export interface LiveVisit {
+  id: string;
   patientName: string;
-  dateTime: string;
-  location: string;
-  reportedBy: string;
-  reportedByName: string;
-
-  antecedent: string;
-  description: string;
-  consequence: string;
-
-  injuriesObserved: boolean;
-  injuryDetails: InjuryDetail[];
-  bodyMapData?: {
-    markings: Array<{
-      id: string;
-      bodyPart: string;
-      markType: "bruise" | "cut" | "abrasion" | "burn" | "other";
-      notes?: string;
-    }>;
-  };
-
-  immediateActions: string;
-  carePlanFollowed: boolean | null;
-  carePlanDeviationReason?: string;
-  emergencyServicesCalled: boolean;
-  emergencyServicesDetails?: string;
-
-  evidence: IncidentEvidence[];
-
-  contributingFactors: string[];
-  followUpPlan: string;
-
-  status: IncidentStatus;
-  assignedTo?: string;
-  rootCause?: string;
-  preventiveActions?: string;
-  lessonsLearned?: string;
-
-  isCqcNotifiable: boolean;
-  isRiddorReportable: boolean;
-  isSafeguardingConcern: boolean;
+  patientInitials: string;
+  careType: string;
+  carerName: string;
+  carerInitials: string;
+  status: VisitStatus;
+  scheduledWindow: string;
+  referenceOffsetMinutes: number;
+  durationMinutes: number;
 }
-
-export type IncidentFormUpdate = <K extends keyof IncidentFormData>(
-  field: K,
-  value: IncidentFormData[K],
-) => void;
-
-export interface IncidentFormStepProps {
-  form: IncidentFormData;
-  update: IncidentFormUpdate;
-  /** Replaces the whole form - used by the array fields (injuries, markings). */
-  replace: (form: IncidentFormData) => void;
-}
-
-export type IncidentMarkType = NonNullable<
-  IncidentFormData["bodyMapData"]
->["markings"][number]["markType"];
-
-export type InjurySeverity = InjuryDetail["severity"];
-
-
-export interface InjuryDetail {
+ 
+export interface LiveAttentionItem {
   id: string;
-  bodyPart: string;
+  type: AttentionType;
+  title: string;
   description: string;
-  severity: "none" | "minor" | "moderate" | "severe";
-  photoUrls?: string[];
+  detail: string;
+  time: string;
 }
-
-export interface IncidentEvidence {
+ 
+export type CarerLiveStatus = "active" | "travelling" | "break";
+ 
+export interface LiveCarer {
   id: string;
-  type: "photo" | "video" | "document" | "audio";
-  url: string;
-  uploadedAt: string;
-  uploadedBy: string;
-  description?: string;
+  name: string;
+  initials: string;
+  status: CarerLiveStatus;
+  detail: string;
 }
+ 
