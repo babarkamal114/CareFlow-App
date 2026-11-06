@@ -1,0 +1,227 @@
+import type {
+  AdministrationRecord, AuditReport, ControlledEntry, ControlledStock, HistoryDose, Medication, MedicationPatient,
+  PrnRecord, ScheduledDose,
+} from "types";
+
+// ---- Mock clock: the "now" that every date below is relative to ----
+export const MEDICATION_MOCK_NOW = new Date(2026, 9, 19, 12, 20);
+export const MEDICATION_CURRENT_USER = "Emma C.";
+
+// ---- Patients ----
+const patients: MedicationPatient[] = [
+  { id: "p-1", name: "Margaret Johnson", initials: "MJ", allergies: ["Penicillin"] },
+  { id: "p-2", name: "Robert Ahmed", initials: "RA", allergies: [] },
+  { id: "p-3", name: "Edna Morris", initials: "EM", allergies: ["Aspirin"] },
+  { id: "p-4", name: "Dorothy Chen", initials: "DC", allergies: ["Sulfonamides"] },
+  { id: "p-5", name: "Henry Smith", initials: "HS", allergies: [] },
+  { id: "p-6", name: "Arthur Wilson", initials: "AW", allergies: ["Latex"] },
+  { id: "p-7", name: "Barbara Williams", initials: "BW", allergies: [] },
+  { id: "p-8", name: "Patricia Smith", initials: "PS", allergies: ["Codeine"] },
+];
+
+// ---- Medications ----
+const start = new Date(2026, 0, 12);
+
+const medications: Medication[] = [
+  { id: "med-1", patientId: "p-1", drugName: "Levothyroxine", strength: "75mcg", route: "oral", type: "regular", frequency: "once-daily", times: ["08:00"], prescriber: "Dr Patel", indication: "Underactive thyroid", instructions: "Give 30 minutes before breakfast", startDate: start, barcode: "5012340000001", active: true },
+  { id: "med-2", patientId: "p-1", drugName: "Co-codamol", strength: "30/500mg", route: "oral", type: "prn", frequency: "as-required", times: [], prescriber: "Dr Patel", indication: "Hip pain", prnMinIntervalHours: 4, prnMaxPer24h: 4, startDate: start, barcode: "5012340000002", active: true },
+  { id: "med-3", patientId: "p-2", drugName: "Metformin", strength: "500mg", route: "oral", type: "regular", frequency: "twice-daily", times: ["08:00", "18:00"], prescriber: "Dr Okafor", indication: "Type 2 diabetes", instructions: "Give with food", startDate: start, barcode: "5012340000003", active: true },
+  { id: "med-4", patientId: "p-2", drugName: "Warfarin", strength: "Per INR (1–5mg)", route: "oral", type: "variable-dose", frequency: "once-daily", times: ["21:00"], prescriber: "Anticoagulant clinic", indication: "Atrial fibrillation", changedAt: new Date(2026, 9, 16, 10, 0), changeNote: "Dose changed after INR 3.4 — now 3mg", startDate: start, barcode: "5012340000004", active: true },
+  { id: "med-5", patientId: "p-2", drugName: "Aspirin", strength: "75mg", route: "oral", type: "regular", frequency: "once-daily", times: ["08:00"], prescriber: "Dr Okafor", indication: "Cardiac protection", startDate: start, barcode: "5012340000005", active: true },
+  { id: "med-6", patientId: "p-2", drugName: "Paracetamol", strength: "500mg", route: "oral", type: "prn", frequency: "as-required", times: [], prescriber: "Dr Okafor", indication: "Headache / pain", prnMinIntervalHours: 4, prnMaxPer24h: 4, startDate: start, barcode: "5012340000006", active: true },
+  { id: "med-7", patientId: "p-3", drugName: "Oxycodone", strength: "5mg capsules", route: "oral", type: "controlled", frequency: "twice-daily", times: ["08:00", "20:00"], prescriber: "Dr Patel", indication: "Cancer pain", schedule: "2", startDate: start, barcode: "5012340000007", active: true },
+  { id: "med-8", patientId: "p-3", drugName: "Lactulose", strength: "15ml", route: "oral", type: "regular", frequency: "twice-daily", times: ["08:00", "12:00"], prescriber: "Dr Patel", indication: "Constipation", startDate: start, barcode: "5012340000008", active: true },
+  { id: "med-9", patientId: "p-4", drugName: "Ramipril", strength: "5mg", route: "oral", type: "regular", frequency: "once-daily", times: ["08:00"], prescriber: "Dr Singh", indication: "Hypertension", changedAt: new Date(2026, 9, 17, 9, 0), changeNote: "Dose increased from 2.5mg to 5mg by GP", startDate: start, barcode: "5012340000009", active: true },
+  { id: "med-10", patientId: "p-4", drugName: "Morphine sulfate MR", strength: "10mg tablets", route: "oral", type: "controlled", frequency: "twice-daily", times: ["08:00", "20:00"], prescriber: "Dr Singh", indication: "Chronic pain", schedule: "2", startDate: start, barcode: "5012340000010", active: true },
+  { id: "med-11", patientId: "p-4", drugName: "Trimethoprim", strength: "200mg", route: "oral", type: "short-course", frequency: "twice-daily", times: ["08:00", "20:00"], prescriber: "Dr Singh", indication: "Urinary tract infection", startDate: new Date(2026, 9, 16, 0, 0), endDate: new Date(2026, 9, 20, 0, 0), barcode: "5012340000011", active: true },
+  { id: "med-12", patientId: "p-5", drugName: "Tramadol", strength: "50mg capsules", route: "oral", type: "controlled", frequency: "twice-daily", times: ["08:00", "20:00"], prescriber: "Dr Okafor", indication: "Osteoarthritis pain", schedule: "3", startDate: start, barcode: "5012340000012", active: true },
+  { id: "med-13", patientId: "p-5", drugName: "Atorvastatin", strength: "20mg", route: "oral", type: "regular", frequency: "once-daily", times: ["20:00"], prescriber: "Dr Okafor", indication: "High cholesterol", startDate: start, barcode: "5012340000013", active: true },
+  { id: "med-14", patientId: "p-6", drugName: "NovoRapid insulin", strength: "100u/ml (per glucose)", route: "injection", type: "variable-dose", frequency: "with-meals", times: ["08:00", "12:30", "18:00"], prescriber: "Diabetes nurse", indication: "Type 1 diabetes", startDate: start, barcode: "5012340000014", active: true },
+  { id: "med-15", patientId: "p-6", drugName: "Glucogel", strength: "40% gel", route: "oral", type: "prn", frequency: "as-required", times: [], prescriber: "Diabetes nurse", indication: "Hypoglycaemia", prnMinIntervalHours: 0.25, prnMaxPer24h: 3, startDate: start, barcode: "5012340000015", active: true },
+  { id: "med-16", patientId: "p-7", drugName: "Sertraline", strength: "50mg", route: "oral", type: "regular", frequency: "once-daily", times: ["08:00"], prescriber: "Dr Singh", indication: "Low mood", startDate: start, barcode: "5012340000016", active: true },
+  { id: "med-17", patientId: "p-7", drugName: "Senna", strength: "7.5mg", route: "oral", type: "regular", frequency: "once-daily", times: ["20:00"], prescriber: "Dr Singh", indication: "Constipation", startDate: start, barcode: "5012340000017", active: true },
+  { id: "med-18", patientId: "p-8", drugName: "Furosemide", strength: "40mg", route: "oral", type: "regular", frequency: "once-daily", times: ["08:00"], prescriber: "Dr Patel", indication: "Heart failure", startDate: start, barcode: "5012340000018", active: true },
+  { id: "med-19", patientId: "p-8", drugName: "Adcal-D3", strength: "1 tablet", route: "oral", type: "regular", frequency: "twice-daily", times: ["08:00", "12:00"], prescriber: "Dr Patel", indication: "Osteoporosis", startDate: start, barcode: "5012340000019", active: true },
+];
+
+// ---- Today's round (mock "now" is 12:20, so the morning is recorded and the rest is still to do) ----
+const given: AdministrationRecord = { status: "administered", recordedBy: "Sarah W.", recordedAt: new Date(2026, 9, 19, 8, 8), barcodeVerified: true };
+const givenWitnessed: AdministrationRecord = { ...given, witness: "Priya P." };
+
+const doses: ScheduledDose[] = [
+  // 08:00 — recorded
+  { id: "dose-med-1-0800", medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 19, 8, 0), record: given },
+  { id: "dose-med-3-0800", medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 19, 8, 0), record: { ...given, status: "refused", reasonCode: "nausea", note: "Says it upsets her stomach" } },
+  { id: "dose-med-5-0800", medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 19, 8, 0), record: given },
+  { id: "dose-med-7-0800", medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 19, 8, 0), record: givenWitnessed },
+  { id: "dose-med-8-0800", medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 19, 8, 0), record: given },
+  { id: "dose-med-9-0800", medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 19, 8, 0), record: { ...given, status: "omitted", reasonCode: "gp-instruction", note: "BP low this morning — GP advised to hold" } },
+  { id: "dose-med-10-0800", medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 19, 8, 0), record: givenWitnessed },
+  { id: "dose-med-11-0800", medicationId: "med-11", patientId: "p-4", scheduledAt: new Date(2026, 9, 19, 8, 0), record: given },
+  { id: "dose-med-12-0800", medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 19, 8, 0), record: givenWitnessed },
+  { id: "dose-med-14-0800", medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 19, 8, 0), record: { ...given, doseGiven: "6 units" } },
+  { id: "dose-med-19-0800", medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 19, 8, 0), record: given },
+  // 08:00 — still not recorded (these show as missed)
+  { id: "dose-med-16-0800", medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 19, 8, 0), record: null },
+  { id: "dose-med-18-0800", medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 19, 8, 0), record: null },
+  // later today — not recorded yet
+  { id: "dose-med-8-1200", medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 19, 12, 0), record: null },
+  { id: "dose-med-19-1200", medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 19, 12, 0), record: null },
+  { id: "dose-med-14-1230", medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 19, 12, 30), record: null },
+  { id: "dose-med-3-1800", medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 19, 18, 0), record: null },
+  { id: "dose-med-14-1800", medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 19, 18, 0), record: null },
+  { id: "dose-med-7-2000", medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 19, 20, 0), record: null },
+  { id: "dose-med-10-2000", medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 19, 20, 0), record: null },
+  { id: "dose-med-11-2000", medicationId: "med-11", patientId: "p-4", scheduledAt: new Date(2026, 9, 19, 20, 0), record: null },
+  { id: "dose-med-12-2000", medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 19, 20, 0), record: null },
+  { id: "dose-med-13-2000", medicationId: "med-13", patientId: "p-5", scheduledAt: new Date(2026, 9, 19, 20, 0), record: null },
+  { id: "dose-med-17-2000", medicationId: "med-17", patientId: "p-7", scheduledAt: new Date(2026, 9, 19, 20, 0), record: null },
+  { id: "dose-med-4-2100", medicationId: "med-4", patientId: "p-2", scheduledAt: new Date(2026, 9, 19, 21, 0), record: null },
+];
+
+// ---- History (a small sample for the audit tab; add more rows if you want fuller charts) ----
+const history: HistoryDose[] = [
+  // yesterday: four doses with nothing recorded (the "4 missing MAR entries")
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 18, 18, 0), status: "gap" },
+  { medicationId: "med-13", patientId: "p-5", scheduledAt: new Date(2026, 9, 18, 20, 0), status: "gap" },
+  { medicationId: "med-17", patientId: "p-7", scheduledAt: new Date(2026, 9, 18, 20, 0), status: "gap" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 18, 12, 0), status: "gap" },
+  // Metformin refused in the evening on four days (shows as a refusal pattern)
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 17, 18, 0), status: "refused", reasonCode: "nausea" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 16, 18, 0), status: "refused", reasonCode: "nausea" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 14, 18, 0), status: "refused", reasonCode: "nausea" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 13, 18, 0), status: "refused", reasonCode: "nausea" },
+  // a few omissions / unavailable
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "omitted", reasonCode: "gp-instruction" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "omitted", reasonCode: "patient-asleep" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "not-available", reasonCode: "no-stock" },
+  { medicationId: "med-17", patientId: "p-7", scheduledAt: new Date(2026, 9, 15, 20, 0), status: "refused", reasonCode: "patient-unwell" },
+  // two evening / lunchtime doses that were given as normal
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 18, 20, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 17, 12, 0), status: "administered" },
+  // every other 08:00 dose in the last week was given as normal
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 18, 8, 0), status: "administered" },
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 17, 8, 0), status: "administered" },
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 16, 8, 0), status: "administered" },
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 15, 8, 0), status: "administered" },
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 14, 8, 0), status: "administered" },
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 13, 8, 0), status: "administered" },
+  { medicationId: "med-1", patientId: "p-1", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-3", patientId: "p-2", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-5", patientId: "p-2", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-7", patientId: "p-3", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-8", patientId: "p-3", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-9", patientId: "p-4", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-10", patientId: "p-4", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-12", patientId: "p-5", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-14", patientId: "p-6", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-16", patientId: "p-7", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-18", patientId: "p-8", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+  { medicationId: "med-19", patientId: "p-8", scheduledAt: new Date(2026, 9, 12, 8, 0), status: "administered" },
+];
+
+// ---- PRN ----
+const prn: PrnRecord[] = [
+  { id: "prn-1", medicationId: "med-6", patientId: "p-2", administeredAt: new Date(2026, 9, 19, 11, 40), reason: "Headache", doseGiven: "500mg", recordedBy: "Priya P." },
+  { id: "prn-2", medicationId: "med-2", patientId: "p-1", administeredAt: new Date(2026, 9, 19, 10, 30), reason: "Hip pain", doseGiven: "1 tablet", recordedBy: "Sarah W." },
+  { id: "prn-3", medicationId: "med-6", patientId: "p-2", administeredAt: new Date(2026, 9, 18, 15, 10), reason: "Back pain", doseGiven: "500mg", recordedBy: "Priya P.",
+    followUp: { checkedAt: new Date(2026, 9, 18, 15, 55), effectiveness: "effective", note: "Settled within 40 minutes", recordedBy: "Priya P." } },
+  { id: "prn-4", medicationId: "med-15", patientId: "p-6", administeredAt: new Date(2026, 9, 17, 7, 50), reason: "Low glucose 3.4 mmol/L", doseGiven: "1 tube", recordedBy: "Sarah W.",
+    followUp: { checkedAt: new Date(2026, 9, 17, 8, 30), effectiveness: "effective", note: "Glucose back to 6.1", recordedBy: "Sarah W." } },
+  { id: "prn-5", medicationId: "med-2", patientId: "p-1", administeredAt: new Date(2026, 9, 18, 20, 15), reason: "Hip pain", doseGiven: "1 tablet", recordedBy: "Lucy C.",
+    followUp: { checkedAt: new Date(2026, 9, 18, 21, 0), effectiveness: "partial", note: "Eased but still uncomfortable", recordedBy: "Lucy C." } },
+];
+
+// ---- Controlled drugs ----
+const stock: ControlledStock[] = [
+  { medicationId: "med-7", balance: 42, unit: "capsules", lastCheckedAt: new Date(2026, 9, 18, 20, 30), lastCheckedBy: "Sarah W.", lastPhysicalCount: 42 },
+  { medicationId: "med-10", balance: 28, unit: "tablets", lastCheckedAt: new Date(2026, 9, 19, 7, 55), lastCheckedBy: "Priya P.", lastPhysicalCount: 27 },
+  { medicationId: "med-12", balance: 56, unit: "capsules", lastCheckedAt: new Date(2026, 9, 18, 20, 30), lastCheckedBy: "Sarah W.", lastPhysicalCount: 56 },
+];
+
+const entries: ControlledEntry[] = [
+  { id: "ce-1", medicationId: "med-7", patientId: "p-3", kind: "receipt", quantity: 56, balanceAfter: 56, recordedBy: "Emma C.", witness: "Sarah W.", at: new Date(2026, 9, 12, 10, 15), note: "Delivered by pharmacy" },
+  { id: "ce-2", medicationId: "med-10", patientId: "p-4", kind: "receipt", quantity: 56, balanceAfter: 56, recordedBy: "Emma C.", witness: "Sarah W.", at: new Date(2026, 9, 12, 10, 20), note: "Delivered by pharmacy" },
+  { id: "ce-3", medicationId: "med-12", patientId: "p-5", kind: "receipt", quantity: 56, balanceAfter: 56, recordedBy: "Emma C.", witness: "Sarah W.", at: new Date(2026, 9, 12, 10, 25), note: "Delivered by pharmacy" },
+  { id: "ce-4", medicationId: "med-7", patientId: "p-3", kind: "stock-check", quantity: 43, balanceAfter: 43, recordedBy: "Sarah W.", witness: "Priya P.", at: new Date(2026, 9, 18, 20, 30) },
+  { id: "ce-5", medicationId: "med-10", patientId: "p-4", kind: "stock-check", quantity: 28, balanceAfter: 29, recordedBy: "Priya P.", witness: "Sarah W.", at: new Date(2026, 9, 19, 7, 55), note: "Counted 28 against 29 recorded — 1 tablet unaccounted for, under review" },
+  { id: "ce-6", medicationId: "med-7", patientId: "p-3", kind: "administration", quantity: 1, balanceAfter: 42, recordedBy: "Sarah W.", witness: "Priya P.", at: new Date(2026, 9, 19, 8, 8) },
+  { id: "ce-7", medicationId: "med-10", patientId: "p-4", kind: "administration", quantity: 1, balanceAfter: 28, recordedBy: "Sarah W.", witness: "Priya P.", at: new Date(2026, 9, 19, 8, 8) },
+  { id: "ce-8", medicationId: "med-12", patientId: "p-5", kind: "administration", quantity: 1, balanceAfter: 56, recordedBy: "Sarah W.", witness: "Priya P.", at: new Date(2026, 9, 19, 8, 8) },
+];
+
+// ---- Monthly audit reports ----
+const reports: AuditReport[] = [
+  { id: "rep-3", period: "September 2026", generatedAt: new Date(2026, 9, 1, 6, 0), administrationRate: 94.6, scheduled: 884, generatedBy: "auto" },
+  { id: "rep-2", period: "August 2026", generatedAt: new Date(2026, 8, 1, 6, 0), administrationRate: 93.8, scheduled: 852, generatedBy: "auto" },
+  { id: "rep-1", period: "July 2026", generatedAt: new Date(2026, 7, 1, 6, 0), administrationRate: 92.1, scheduled: 870, generatedBy: "auto" },
+];
+
+// What the hooks return. Nothing is calculated or changed: it is just fixed data.
+export {
+  patients as mockMedicationPatients, medications as mockMedications, doses as mockDoses, history as mockHistory,
+  prn as mockPrnRecords, stock as mockControlledStock, entries as mockControlledEntries, reports as mockAuditReports,
+};

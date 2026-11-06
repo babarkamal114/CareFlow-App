@@ -6,3 +6,4 @@ export * from "./components";
 export * from "./staff-form";
 export * from './reports';
 export * from './report-components'
+export * from './medication';
