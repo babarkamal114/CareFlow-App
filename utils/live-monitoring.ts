@@ -9,6 +9,7 @@ import type {
   LiveMonitoringCounts,
   LiveVisit,
   VisitStatus,
+  LiveActivityFilter
 } from "types";
 import { getPriority } from "./attention-helpers";
 
@@ -128,3 +129,13 @@ export function getLiveMonitoringCounts(
     highPriorityAlerts: countHighPriorityItems(items),
   };
 }
+
+export const LIVE_ACTIVITY_FILTERS: LiveActivityFilter[] = [
+  { key: "all", label: "All" },
+  { key: "in-progress", label: "In Progress" },
+  { key: "delayed", label: "Delayed" },
+  { key: "starting", label: "Starting Soon" },
+  { key: "scheduled", label: "Scheduled" },
+  { key: "completed", label: "Completed" },
+  { key: "missed", label: "Missed" },
+];
