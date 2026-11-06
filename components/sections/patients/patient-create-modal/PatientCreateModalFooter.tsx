@@ -35,7 +35,7 @@ export function CreatePatientModalFooter({
           <div
             key={i}
             className={`w-2 h-2 rounded-full transition-colors ${
-              i + 1 === currentStep ? 'bg-cf-primary' : 'bg-cf-border'
+              i + 1 === currentStep ? 'bg-primary' : 'bg-cf-border'
             }`}
           />
         ))}

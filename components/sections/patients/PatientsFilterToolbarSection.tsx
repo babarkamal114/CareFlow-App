@@ -1,54 +1,42 @@
-// components/sections/patients/PatientsFilterToolbarSection.tsx
 'use client';
 
 import { Button } from "@/components/ui";
 import { Download, Search } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui";
 import { Input } from "@/components/ui";
-
-type PatientTab = 'active' | 'on-hold' | 'high-risk' | 'review-date' | 'new' | 'all';
+import { PATIENT_TAB_DEFS } from 'utils';
+import type { PatientTab } from 'types';
 
 interface PatientsFilterToolbarSectionProps {
   onTabChange: (tab: PatientTab) => void;
-  onFilterClick: () => void;
   onExportClick: () => void;
   activeTab: PatientTab;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  tabCounts: Record<PatientTab, number>;
 }
-
-const tabs: Array<{ id: PatientTab; label: string; count?: number }> = [
-  { id: 'all', label: 'All' },
-  { id: 'active', label: 'Active', count: 45 },
-  { id: 'on-hold', label: 'On Hold', count: 8 },
-  { id: 'high-risk', label: 'High Risk', count: 12 },
-  { id: 'review-date', label: 'Review Date', count: 5 },
-  { id: 'new', label: 'New', count: 3 },
-];
 
 export function PatientsFilterToolbarSection({
   onTabChange,
-  onFilterClick,
   onExportClick,
   activeTab,
   searchQuery,
   onSearchChange,
+  tabCounts,
 }: PatientsFilterToolbarSectionProps) {
   return (
-    <div className="">
+    <div className="mb-4">
       <div className="flex items-center justify-between gap-6">
         <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as PatientTab)} className="flex-1">
           <TabsList className="bg-cf-surface-muted">
-            {tabs.map((tab) => (
+            {PATIENT_TAB_DEFS.map((tab) => (
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="data-[state=active]:bg-cf-surface data-[state=active]:text-cf-ink data-[state=active]:shadow-none text-xs"
+                className="data-active:bg-cf-surface data-active:text-cf-ink data-active:shadow-none text-xs"
               >
                 {tab.label}
-                {tab.count !== undefined && (
-                  <span className="ml-1.5 text-[10px] opacity-70">({tab.count})</span>
-                )}
+                <span className="ml-1.5 text-[10px] opacity-70">({tabCounts[tab.id]})</span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -62,15 +50,10 @@ export function PatientsFilterToolbarSection({
               placeholder="Search patients..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="h-8 w-full border-cf-border bg-cf-surface-muted pl-8 text-sm text-cf-ink placeholder:text-cf-ink-40 focus:border-cf-brand-300"
+              className="h-8 w-full border-cf-border bg-cf-surface-muted pl-8 text-sm text-cf-ink placeholder:text-cf-ink-40 focus-visible:border-brand-300"
             />
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onExportClick}
-            
-          >
+          <Button variant="ghost" size="sm" onClick={onExportClick}>
             <Download className="h-4 w-4" />
             <span className="text-xs">Export</span>
           </Button>

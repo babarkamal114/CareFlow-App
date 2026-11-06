@@ -87,34 +87,6 @@ export interface GroupedPermission {
   isPartiallyGranted: boolean;
 }
 
-export interface Patient {
-  id: string;
-  name: string;
-  preferredName?: string;
-  dateOfBirth?: string;
-  nhsNumber?: string;
-  address: string;
-  email: string;
-  phone: string;
-  carer: string;
-  status: 'active' | 'on-hold' | 'new' | 'discharged';
-  dischargeDetails?: any;  
-  nextVisit: string;
-  gpName?: string;
-  gpPhone?: string;
-  gpAddress?: string;
-  nextOfKinName?: string;
-  nextOfKinPhone?: string;
-  nextOfKinRelationship?: string;
-  emergencyContact?: string;
-  emergencyPhone?: string;
-  emergencyRelationship?: string;
-  risk: 'low' | 'medium' | 'high';
-  initials: string;
-  avatar?: string;
-  age: number;
-}
-
 export interface Visit {
   id: string;
   patientName: string;
@@ -490,45 +462,4 @@ export type CarePlanType = 'personal-care' | 'medication' | 'dementia' | 'nutrit
 
 export type SortField = keyof StaffMember;
 export type SortDirection = "asc" | "desc";
-export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED' 
-
-export type VisitStatus =
-  | "starting"
-  | "in-progress"
-  | "delayed"
-  | "scheduled"
-  | "completed"
-  | "missed";
- 
-export interface LiveVisit {
-  id: string;
-  patientName: string;
-  patientInitials: string;
-  careType: string;
-  carerName: string;
-  carerInitials: string;
-  status: VisitStatus;
-  scheduledWindow: string;
-  referenceOffsetMinutes: number;
-  durationMinutes: number;
-}
- 
-export interface LiveAttentionItem {
-  id: string;
-  type: AttentionType;
-  title: string;
-  description: string;
-  detail: string;
-  time: string;
-}
- 
-export type CarerLiveStatus = "active" | "travelling" | "break";
- 
-export interface LiveCarer {
-  id: string;
-  name: string;
-  initials: string;
-  status: CarerLiveStatus;
-  detail: string;
-}
- 
+export type EmployeeStatus = 'ACTIVE' | 'SUSPENDED' | 'ON_LEAVE' | 'TERMINATED'
