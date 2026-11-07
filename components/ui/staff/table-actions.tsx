@@ -9,14 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui";
 import { MoreHorizontal, Eye, Edit2, Mail, MessageSquare, Trash2 } from "lucide-react";
-import { StaffMember } from "types";
-
-interface TableActionsProps {
-  staff: StaffMember;
-  onView?: (staff: StaffMember) => void;
-  onEdit?: (staff: StaffMember) => void;
-  onDelete?: (id: string) => void;
-}
+import type { TableActionsProps } from "types";
 
 export function TableActions({ staff, onView, onEdit, onDelete }: TableActionsProps) {
   return (

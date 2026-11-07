@@ -1,12 +1,11 @@
 "use client";
 
 import { Separator } from "@/components/ui";
+import type { StaffFormSectionLabelProps } from "types";
 
 export function StaffFormSectionLabel({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: StaffFormSectionLabelProps) {
   return (
     <div className="space-y-2 pt-1">
       <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">

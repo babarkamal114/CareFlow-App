@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { X } from "lucide-react";
 import { cn } from "lib";
 import { Button } from "../button";
+import type { StaffFormFileUploadProps } from "types";
+import { useFileDrop } from "hooks";
 
 export function StaffFormFileUpload({
   id,
@@ -15,24 +16,9 @@ export function StaffFormFileUpload({
   accept = ".pdf,.jpg,.jpeg,.png",
   onSelect,
   onClear,
-}: {
-  id: string;
-  fileName?: string;
-  url?: string;
-  label?: string;
-  hint?: string;
-  error?: string;
-  accept?: string;
-  onSelect: (file: File) => void;
-  onClear?: () => void;
-}) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleFiles = (files: FileList | null) => {
-    const file = files?.[0];
-    if (file) onSelect(file);
-  };
+}: StaffFormFileUploadProps) {
+  const { inputRef, isDragging, handleDragOver, handleDragLeave, handleDrop, handleInputChange } =
+    useFileDrop(onSelect);
 
   if (url) {
     return (
@@ -68,16 +54,9 @@ export function StaffFormFileUpload({
   return (
     <div className="space-y-1.5">
       <div
-        onDragOver={(event) => {
-          event.preventDefault();
-          setIsDragging(true);
-        }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setIsDragging(false);
-          handleFiles(event.dataTransfer.files);
-        }}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         className={cn(
           "rounded-lg border border-dashed px-4 py-3 text-sm transition-colors",
           isDragging
@@ -98,10 +77,7 @@ export function StaffFormFileUpload({
             type="file"
             className="sr-only"
             accept={accept}
-            onChange={(event) => {
-              handleFiles(event.target.files);
-              event.target.value = "";
-            }}
+            onChange={handleInputChange}
           />
         </label>
         {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}

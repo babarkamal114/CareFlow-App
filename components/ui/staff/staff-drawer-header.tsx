@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { CircleCheck, CircleSlash, MailWarning, ShieldAlert } from 'lucide-react';
+import { MailWarning } from 'lucide-react';
 import {
   Avatar,
   AvatarFallback,
@@ -15,43 +15,13 @@ import {
   Separator,
 } from '@/components/ui';
 import { COMPLIANCE_STATUS_LABELS, EMPLOYMENT_TYPE_LABELS } from "types";
-import type { ComplianceResult, EmploymentType } from "types";
-import type { StaffMember } from "types";
-import { formatDate, formatTime } from "app-utils/date-utils";
-import { getRoleBadgeColor, getRoleDisplayName, getStatusBadgeColor } from "app-utils/staff-table-utils";
-import { getStaffComplianceTone } from "app-utils/staff-drawer";
+import type { StaffDrawerHeaderProps } from "types";
+import { formatDate, formatTime } from "utils";
+import { getRoleBadgeColor, getRoleDisplayName, getStatusBadgeColor } from "utils";
+import { getStaffComplianceTone } from "utils";
 import { StaffDrawerActions } from './staff-drawer-actions';
-
-const COMPLIANCE_TONE = {
-  success: 'solidSuccess',
-  warning: 'solidWarning',
-  danger: 'solidDanger',
-} as const;
-
-const COMPLIANCE_ICON = {
-  success: CircleCheck,
-  warning: ShieldAlert,
-  danger: CircleSlash,
-} as const;
-
-const STATUS_DOT_TONE = {
-  ACTIVE: 'brand',
-  SUSPENDED: 'red',
-  TERMINATED: 'red',
-} as const;
-
-function getStatusDotTone(status: string) {
-  return STATUS_DOT_TONE[status as keyof typeof STATUS_DOT_TONE] ?? 'amber';
-}
-
-interface StaffDrawerHeaderProps {
-  staff: StaffMember;
-  employmentType?: EmploymentType | '';
-  compliance: ComplianceResult;
-  onEmail: () => void;
-  onSms: () => void;
-  onClose: () => void;
-}
+import { COMPLIANCE_ICON, COMPLIANCE_TONE } from 'utils';
+import { getStatusDotTone } from 'utils';
 
 export function StaffDrawerHeader({
   staff,

@@ -1,20 +1,14 @@
 "use client";
 
 import { Badge } from "@/components/ui";
+import type { StaffFormStatusBadgeProps } from "types";
+import { STAFF_STATUS_BADGE_VARIANT } from "utils";
 
 export function StaffFormStatusBadge({
   status,
   children,
-}: {
-  status: "green" | "amber" | "red" | "neutral";
-  children: React.ReactNode;
-}) {
-  const variant = {
-    green: "softSuccess",
-    amber: "softWarning",
-    red: "softDanger",
-    neutral: "softMuted",
-  }[status] as "softSuccess" | "softWarning" | "softDanger" | "softMuted";
+}: StaffFormStatusBadgeProps) {
+  const variant = STAFF_STATUS_BADGE_VARIANT[status];
 
   return <Badge variant={variant}>{children}</Badge>;
 }

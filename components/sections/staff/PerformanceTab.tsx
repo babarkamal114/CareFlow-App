@@ -1,18 +1,9 @@
 'use client';
 
-import type { StaffMember } from 'types';
 import { buildPerformanceForStaff } from 'lib';
 import { Star } from 'lucide-react';
-
-interface PerformanceTabProps {
-  staffMembers: StaffMember[];
-}
-
-function metricColor(pct: number) {
-  if (pct >= 90) return "text-green-700";
-  if (pct >= 75) return "text-amber-700";
-  return "text-red-700";
-}
+import type { PerformanceTabProps } from 'types';
+import { metricColor } from 'utils';
 
 function ScoreStars({ score }: { score: number }) {
   return (

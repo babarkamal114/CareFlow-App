@@ -1,11 +1,7 @@
 'use client';
 
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
-
-interface PermissionsAlertsProps {
-  error: string | null;
-  success: boolean;
-}
+import type { PermissionsAlertsProps } from "types";
 
 export function PermissionsAlerts({ error, success }: PermissionsAlertsProps) {
   return (

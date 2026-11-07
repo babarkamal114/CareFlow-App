@@ -2,17 +2,14 @@
 
 import { Input } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
-import type { EmergencyContact, StaffFormErrors } from "types";
+import type { EmergencyContact } from "types";
+import type { StaffEmergencyContactFieldsProps } from "types";
 
 export function StaffEmergencyContactFields({
   contact,
   errors,
   onChange,
-}: {
-  contact: EmergencyContact;
-  errors: StaffFormErrors;
-  onChange: (contact: EmergencyContact) => void;
-}) {
+}: StaffEmergencyContactFieldsProps) {
   const set =
     (key: keyof EmergencyContact) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {

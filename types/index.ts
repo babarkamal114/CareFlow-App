@@ -14,7 +14,8 @@ export * from "./patients";
 export * from "./report-components";
 export * from "./reports";
 export * from "./schedule";
-export * from "./staff-form";
+export * from "./staff";
+export * from './staff-component-types'
 
 export type {
   StatCardProps,

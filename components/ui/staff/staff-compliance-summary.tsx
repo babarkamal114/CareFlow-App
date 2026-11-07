@@ -1,6 +1,5 @@
 'use client';
 
-import { CircleCheck, CircleSlash, ShieldAlert } from 'lucide-react';
 import {
   Alert,
   AlertContent,
@@ -12,52 +11,19 @@ import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
 import { StaffFormStatusBadge } from './staff-form-status-badge';
 import { COMPLIANCE_STATUS_LABELS } from "types";
-import type { ComplianceBreakdown, ComplianceResult } from "types";
-import { getStaffComplianceTone } from "app-utils/staff-drawer";
-
-const ALERT_VARIANT = {
-  success: 'success',
-  warning: 'warning',
-  danger: 'error',
-} as const;
-
-const ALERT_ICON = {
-  success: CircleCheck,
-  warning: ShieldAlert,
-  danger: CircleSlash,
-} as const;
-
-const CHECKLIST_LABELS: Record<keyof ComplianceBreakdown, string> = {
-  rightToWork: 'Right to work verified',
-  dbs: 'DBS on record',
-  dbsClear: 'DBS cleared',
-  driving: 'Driving / travel details',
-  training: 'Mandatory training complete',
-  references: 'Two references received',
-  documents: 'Signed contract uploaded',
-};
-
-const CHECKLIST_ORDER: (keyof ComplianceBreakdown)[] = [
-  'rightToWork',
-  'dbs',
-  'dbsClear',
-  'driving',
-  'training',
-  'references',
-  'documents',
-];
+import { getStaffComplianceTone } from "utils";
+import type { StaffComplianceSummaryProps } from "types";
+import { COMPLIANCE_ICON, COMPLIANCE_ALERT_VARIANT, CHECKLIST_LABELS, CHECKLIST_ORDER } from "utils";
 
 export function StaffComplianceSummary({
   compliance,
-}: {
-  compliance: ComplianceResult;
-}) {
+}: StaffComplianceSummaryProps) {
   const tone = getStaffComplianceTone(compliance.complianceStatus);
-  const AlertIconComponent = ALERT_ICON[tone];
+  const AlertIconComponent = COMPLIANCE_ICON[tone];
 
   return (
     <div className="space-y-4">
-      <Alert variant={ALERT_VARIANT[tone]}>
+      <Alert variant={COMPLIANCE_ALERT_VARIANT[tone]}>
         <AlertIcon>
           <AlertIconComponent />
         </AlertIcon>

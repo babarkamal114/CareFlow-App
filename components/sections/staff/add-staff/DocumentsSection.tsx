@@ -7,24 +7,11 @@ import {
   StaffFormFileUpload,
   StaffFormSectionLabel,
 } from "@/components/ui";
-import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
-import type { StaffDocumentType, StaffFormData, StaffFormErrors } from "types";
+import { STAFF_DOCUMENT_TYPE_LABELS, StaffFormSectionProps } from "types";
+import type { StaffFormData } from "types";
+import {DOCUMENT_TYPE_GUIDE} from 'utils'
 
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  onChange: (data: StaffFormData) => void;
-}
-
-const DOCUMENT_TYPE_GUIDE: { type: StaffDocumentType; hint: string }[] = [
-  { type: "contract", hint: "Required — the signed employment contract." },
-  { type: "passport", hint: "Photo ID used for the right to work check." },
-  { type: "dbs_certificate", hint: "The enhanced DBS certificate." },
-  { type: "training_cert", hint: "Any mandatory training certificates." },
-  { type: "other", hint: "Anything else relevant to this appointment." },
-];
-
-export function DocumentsSection({ data, errors, onChange }: Props) {
+export function DocumentsSection({ data, errors, onChange }: StaffFormSectionProps) {
   const addDocument = (file: File) => {
     onChange({
       ...data,

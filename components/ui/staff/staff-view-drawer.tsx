@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { Check, KeyRound, Mail, MoreVertical, RotateCcw } from 'lucide-react';
 import {
   Badge,
@@ -29,74 +27,33 @@ import {
   StaffTrainingTab,
   StaffVettingTab,
 } from 'sections';
-import { getMockStaffProfile, mapRolesToDisplay, useGetAllRolesApi, useGrantUserPermissionsApi } from 'lib';
-import type { StaffMember } from 'types';
-import type { StaffDrawerTabId } from "app-utils/staff-drawer";
+import { PANEL_CLASS, PRIMARY_TABS, OVERFLOW_TABS, TAB_LABELS } from 'utils';
+import { useStaffViewDrawer } from 'hooks';
+import type { StaffViewDrawerProps } from 'types';
 import { StaffDrawerHeader } from './staff-drawer-header';
-
-const PANEL_CLASS = 'px-4 pb-6 pt-5 sm:px-6';
-
-// 4 visible tabs — the rest live under the 3-dot menu
-const PRIMARY_TABS: StaffDrawerTabId[] = ['profile', 'employment', 'vetting', 'training'];
-const OVERFLOW_TABS: StaffDrawerTabId[] = ['availability', 'documents', 'permissions', 'activity'];
-
-const TAB_LABELS: Record<StaffDrawerTabId, string> = {
-  profile: 'Profile',
-  employment: 'Employment',
-  vetting: 'Vetting',
-  training: 'Training',
-  availability: 'Availability',
-  documents: 'Documents',
-  permissions: 'Permissions',
-  activity: 'Activity',
-};
-
-interface StaffViewDrawerProps {
-  staff: StaffMember | null;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+import type {StaffDrawerTabId} from 'utils'
 
 export function StaffViewDrawer({ staff, open, onOpenChange }: StaffViewDrawerProps) {
-  const [activeTab, setActiveTab] = useState<StaffDrawerTabId>('profile');
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const { data: session } = useSession();
-
-  const agencyId = session?.user.agencyId;
-  const accessToken = session?.accessToken;
-
-  const { mutate: grantPermissions, isPending, isSuccess } =
-    useGrantUserPermissionsApi(staff?.userId ?? '');
-
-  const { data: rolesData } = useGetAllRolesApi();
-  const roles = useMemo(() => mapRolesToDisplay(rolesData?.roles), [rolesData]);
-
-  const profile = useMemo(
-    () => (staff ? getMockStaffProfile(staff) : null),
-    [staff]
-  );
-
-  const managerId = profile?.data.managerId;
-  const managerRole = roles.find((role) => role.id === managerId);
-  const managerName = managerRole?.displayName ?? managerRole?.name;
+  const {
+    activeTab,
+    setActiveTab,
+    editModalOpen,
+    setEditModalOpen,
+    agencyId,
+    accessToken,
+    profile,
+    managerName,
+    counts,
+    isOverflowActive,
+    isSavingPermissions,
+    isPermissionsSuccess,
+    handleSavePermissions,
+    handleEmail,
+  } = useStaffViewDrawer(staff);
 
   if (!staff || !profile) return null;
 
   const { data } = profile;
-
-  const handleSavePermissions = async (permissions: {
-    permissions: Record<string, string[]>;
-  }) => {
-    if (!accessToken || !agencyId) return;
-    grantPermissions({ accessToken, agencyId, permissions: permissions.permissions });
-  };
-
-  const counts = {
-    documents: data.documents.length,
-    training: data.mandatoryTraining.length,
-  } as Partial<Record<StaffDrawerTabId, number>>;
-
-  const isOverflowActive = OVERFLOW_TABS.includes(activeTab);
 
   return (
     <TooltipProvider>
@@ -106,9 +63,7 @@ export function StaffViewDrawer({ staff, open, onOpenChange }: StaffViewDrawerPr
             staff={staff}
             employmentType={data.employmentType}
             compliance={profile.compliance}
-            onEmail={() => {
-              if (staff.email) window.location.href = `mailto:${staff.email}`;
-            }}
+            onEmail={handleEmail}
             onSms={() => undefined}
             onClose={() => onOpenChange(false)}
           />
@@ -217,8 +172,8 @@ export function StaffViewDrawer({ staff, open, onOpenChange }: StaffViewDrawerPr
                   accessToken={accessToken ?? ''}
                   agencyId={agencyId ?? ''}
                   onSavePermissions={handleSavePermissions}
-                  isSavingPermissions={isPending}
-                  isSuccess={isSuccess}
+                  isSavingPermissions={isSavingPermissions}
+                  isSuccess={isPermissionsSuccess}
                 />
               </TabsContent>
               <TabsContent value="activity" className={PANEL_CLASS}>

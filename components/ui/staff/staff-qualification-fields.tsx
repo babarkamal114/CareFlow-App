@@ -4,7 +4,8 @@ import { Button, Input } from "@/components/ui";
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
-import type { Qualification, StaffFormErrors } from "types";
+import type { Qualification } from "types";
+import type { StaffQualificationFieldsProps } from "types";
 
 export function StaffQualificationFields({
   qualification,
@@ -12,13 +13,7 @@ export function StaffQualificationFields({
   errors,
   onChange,
   onRemove,
-}: {
-  qualification: Qualification;
-  index: number;
-  errors: StaffFormErrors;
-  onChange: (qualification: Qualification) => void;
-  onRemove: () => void;
-}) {
+}: StaffQualificationFieldsProps) {
   const set = <K extends keyof Qualification>(
     key: K,
     next: Qualification[K]

@@ -1,6 +1,5 @@
 import { DialogHeader, DialogTitle } from "@/components/ui";
 import { StaffMember } from "types";
-import { ALL_MODULES } from "utils";
 import { Shield } from "lucide-react";
 
 function PermissionsHeader({

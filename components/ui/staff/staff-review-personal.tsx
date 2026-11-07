@@ -2,16 +2,13 @@
 
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
-import { formatStaffAddress, formatStaffDate } from "app-utils/staff-review-format";
-import type { StaffFormData } from "types";
+import { formatStaffAddress, formatStaffDate } from "utils";
+import type { StaffReviewPersonalProps } from "types";
 
 export function StaffReviewPersonal({
   data,
   onEdit,
-}: {
-  data: StaffFormData;
-  onEdit?: () => void;
-}) {
+}: StaffReviewPersonalProps) {
   const emergencyContact = data.emergencyContact;
 
   return (

@@ -13,16 +13,7 @@ import {
   StaffReviewTraining,
   StaffSchedulingNotice,
 } from "@/components/ui";
-import type { ComplianceResult, StaffFormData, StaffFormErrors } from "types";
-
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  compliance: ComplianceResult;
-  managerName?: string;
-  onEdit: (stepNumber: number) => void;
-  onConfirmChange: (confirmed: boolean) => void;
-}
+import type { ReviewSectionProps } from "types";
 
 export function ReviewSection({
   data,
@@ -31,7 +22,7 @@ export function ReviewSection({
   managerName,
   onEdit,
   onConfirmChange,
-}: Props) {
+}: ReviewSectionProps) {
   return (
     <div className="space-y-6">
       <StaffFormErrorBanner errors={errors} />

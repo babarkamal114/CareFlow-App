@@ -18,14 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui';
-import type { MockStaffProfile } from 'lib';
-import { formatStaffHours } from "app-utils/staff-review-format";
-import { getStaffSlotHours, getStaffWeeklyHours, sortStaffAvailability } from "app-utils/staff-drawer";
-import { DAY_LABELS } from "types";
-
-interface StaffAvailabilityTabProps {
-  profile: MockStaffProfile;
-}
+import { formatStaffHours } from "utils";
+import { getStaffSlotHours, getStaffWeeklyHours, sortStaffAvailability } from "utils";
+import { DAY_LABELS, StaffAvailabilityTabProps } from "types";
 
 export function StaffAvailabilityTab({ profile }: StaffAvailabilityTabProps) {
   const { languages, skills, workAreaPostcode, availability, contractedHoursPerWeek } =

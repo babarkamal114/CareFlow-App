@@ -1,14 +1,12 @@
 "use client";
 
 import { cn } from "lib";
+import type { StaffFormStepDotsProps } from "types";
 
 export function StaffFormStepDots({
   current,
   total,
-}: {
-  current: number;
-  total: number;
-}) {
+}: StaffFormStepDotsProps) {
   return (
     <div className="flex items-center gap-1.5">
       {Array.from({ length: total }, (_, index) => index + 1).map((n) => (

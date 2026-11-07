@@ -2,26 +2,14 @@
 
 import { Checkbox, Input } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
-import type { InterimCertificate, StaffFormErrors } from "types";
-
-export const EMPTY_INTERIM_CERTIFICATE: InterimCertificate = {
-  certificateNumber: "",
-  issueDate: "",
-  updateServiceConsent: false,
-  originalSeenInPerson: false,
-  statusCheckResult: "current",
-  statusCheckDate: "",
-};
+import type { InterimCertificate } from "types";
+import type { StaffInterimCertificateFieldsProps } from "types";
 
 export function StaffInterimCertificateFields({
   value,
   errors,
   onChange,
-}: {
-  value: InterimCertificate;
-  errors: StaffFormErrors;
-  onChange: (value: InterimCertificate) => void;
-}) {
+}: StaffInterimCertificateFieldsProps) {
   const set = <K extends keyof InterimCertificate>(
     key: K,
     next: InterimCertificate[K]

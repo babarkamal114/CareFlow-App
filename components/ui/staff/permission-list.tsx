@@ -2,16 +2,9 @@
 
 import { ALL_MODULES } from "utils";
 import { PermissionRow } from "./permission-row";
+import type { PermissionsListProps } from "types";
 
 
-
-interface PermissionsListProps {
-  permissions: Record<string, string[]>;
-  expandedModules: Set<string>;
-  onToggleModule: (id: string) => void;
-  onTogglePermission: (moduleId: string, action: string) => void;
-  onToggleAllModule: (id: string) => void;
-}
 
 export function PermissionsList({
   permissions,

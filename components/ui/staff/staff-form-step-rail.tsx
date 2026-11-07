@@ -1,18 +1,14 @@
 "use client";
 
 import { cn } from "lib";
-import type { StaffFormStep } from "types";
 import { Button } from "../button";
+import type { StaffFormStepRailProps } from "types";
 
 export function StaffFormStepRail({
   steps,
   current,
   onSelect,
-}: {
-  steps: StaffFormStep[];
-  current: number;
-  onSelect: (index: number) => void;
-}) {
+}: StaffFormStepRailProps) {
   return (
     <nav aria-label="Add staff progress" className="space-y-1">
       {steps.map((step, index) => {

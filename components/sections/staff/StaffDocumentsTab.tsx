@@ -18,14 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui';
-import type { MockStaffProfile } from 'lib';
-import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
-import { formatStaffDate } from "app-utils/staff-review-format";
-import { groupStaffDocuments, hasStaffContract } from "app-utils/staff-drawer";
-
-interface StaffDocumentsTabProps {
-  profile: MockStaffProfile;
-}
+import { STAFF_DOCUMENT_TYPE_LABELS, StaffDocumentsTabProps } from "types";
+import { formatStaffDate } from "utils";
+import { groupStaffDocuments, hasStaffContract } from "utils";
 
 export function StaffDocumentsTab({ profile }: StaffDocumentsTabProps) {
   const { documents } = profile.data;

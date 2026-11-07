@@ -12,24 +12,16 @@ import {
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
 import { StaffInterimCertificateFields } from "./staff-interim-certificate-fields";
-import { EMPTY_INTERIM_CERTIFICATE } from "./staff-interim-certificate-fields";
+import { EMPTY_INTERIM_CERTIFICATE } from "utils";
 import { DBS_PATH_LABELS, DBS_STATUS_LABELS } from "types";
-import type {
-  DbsPath,
-  DbsSection,
-  DbsStatus,
-  StaffFormErrors,
-} from "types";
+import type { DbsPath, DbsSection, DbsStatus } from "types";
+import type { StaffDbsFieldsProps } from "types";
 
 export function StaffDbsFields({
   value,
   errors,
   onChange,
-}: {
-  value: DbsSection;
-  errors: StaffFormErrors;
-  onChange: (value: DbsSection) => void;
-}) {
+}: StaffDbsFieldsProps) {
   const set = <K extends keyof DbsSection>(key: K, next: DbsSection[K]) => {
     onChange({ ...value, [key]: next });
   };

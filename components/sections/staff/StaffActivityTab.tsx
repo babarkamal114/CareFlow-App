@@ -1,25 +1,12 @@
 'use client';
 
 import { motion, type Variants } from 'framer-motion';
-import { UserPlus2, Mail, CheckCircle2, RotateCw, Trash2, Clock, LucideIcon } from 'lucide-react';
+import { UserPlus2, Mail, CheckCircle2, RotateCw, Trash2, Clock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui";
-import { StaffMember } from 'types';
 import { formatTime } from 'utils';
+import type { StaffActivityItem, StaffActivityTabProps, StaffActivityTone } from 'types';
 
-interface StaffActivityTabProps {
-  staff: StaffMember;
-}
-
-type Tone = 'default' | 'success' | 'info' | 'danger';
-
-interface Activity {
-  action: string;
-  timestamp: Date | string | null | undefined;
-  icon: LucideIcon;
-  tone: Tone;
-}
-
-const toneClasses: Record<Tone, string> = {
+const toneClasses: Record<StaffActivityTone, string> = {
   default: 'bg-cf-surface-muted text-cf-ink-60',
   success: 'bg-emerald-50 text-emerald-600',
   info: 'bg-cf-blue-50 text-[#2258A6]',
@@ -41,7 +28,7 @@ const item: Variants = {
 };
 
 export function StaffActivityTab({ staff }: StaffActivityTabProps) {
-  const activities: Activity[] = [
+  const activities: StaffActivityItem[] = [
     { action: 'Account Created', timestamp: staff.createdAt, icon: UserPlus2, tone: 'default' },
   ];
 

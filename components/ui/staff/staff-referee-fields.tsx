@@ -13,7 +13,8 @@ import {
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { REFEREE_RELATIONSHIP_LABELS } from "types";
-import type { Referee, RefereeRelationship, StaffFormErrors } from "types";
+import type { Referee, RefereeRelationship } from "types";
+import type { StaffRefereeFieldsProps } from "types";
 
 export function StaffRefereeFields({
   referee,
@@ -21,13 +22,7 @@ export function StaffRefereeFields({
   errors,
   onChange,
   onRemove,
-}: {
-  referee: Referee;
-  index: number;
-  errors: StaffFormErrors;
-  onChange: (referee: Referee) => void;
-  onRemove: () => void;
-}) {
+}: StaffRefereeFieldsProps) {
   const set = <K extends keyof Referee>(key: K, next: Referee[K]) => {
     onChange({ ...referee, [key]: next });
   };

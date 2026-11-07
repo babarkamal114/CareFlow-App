@@ -2,15 +2,8 @@
 
 import { Mail, MessageSquare, X } from 'lucide-react';
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui';
-
-interface StaffDrawerActionsProps {
-  onEmail: () => void;
-  onSms: () => void;
-  onClose: () => void;
-}
-
-const ACTION_BUTTON =
-  'text-cf-ink-60 transition-transform duration-200 hover:scale-105 active:scale-95';
+import type { StaffDrawerActionsProps } from "types";
+import { DRAWER_ACTION_BUTTON } from "utils";
 
 export function StaffDrawerActions({ onEmail, onSms, onClose }: StaffDrawerActionsProps) {
   return (
@@ -22,7 +15,7 @@ export function StaffDrawerActions({ onEmail, onSms, onClose }: StaffDrawerActio
               variant="ghost"
               size="icon-sm"
               aria-label="Send email"
-              className={ACTION_BUTTON}
+              className={DRAWER_ACTION_BUTTON}
               onClick={onEmail}
             >
               <Mail className="size-4" />
@@ -39,7 +32,7 @@ export function StaffDrawerActions({ onEmail, onSms, onClose }: StaffDrawerActio
               variant="ghost"
               size="icon-sm"
               aria-label="Send SMS"
-              className={ACTION_BUTTON}
+              className={DRAWER_ACTION_BUTTON}
               onClick={onSms}
             >
               <MessageSquare className="size-4" />
@@ -56,7 +49,7 @@ export function StaffDrawerActions({ onEmail, onSms, onClose }: StaffDrawerActio
               variant="ghost"
               size="icon-sm"
               aria-label="Close drawer"
-              className={ACTION_BUTTON}
+              className={DRAWER_ACTION_BUTTON}
               onClick={onClose}
             >
               <X className="size-4" />

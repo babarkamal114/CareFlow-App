@@ -8,21 +8,13 @@ import {
   StaffTrainingRecordFields,
 } from "@/components/ui";
 import { Plus } from "lucide-react";
-import { createStaffRecordId, MANDATORY_TRAINING_MODULES } from "types";
+import { createStaffRecordId, MANDATORY_TRAINING_MODULES, StaffFormSectionProps } from "types";
 import type {
   Qualification,
-  StaffFormData,
-  StaffFormErrors,
   TrainingRecord,
 } from "types";
 
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  onChange: (data: StaffFormData) => void;
-}
-
-export function TrainingSection({ data, errors, onChange }: Props) {
+export function TrainingSection({ data, errors, onChange }: StaffFormSectionProps) {
   const addQualification = () => {
     onChange({
       ...data,

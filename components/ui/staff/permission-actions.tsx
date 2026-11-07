@@ -2,15 +2,8 @@
 
 import { cn } from "lib";
 import { ACTION_DISPLAY_NAMES, SORTED_ACTIONS } from "utils";
-import { Button } from "../button";
-
-interface PermissionActionsProps {
-  module: { id: string; label: string; actions: string[] };
-  current: string[];
-  isAll: boolean;
-  onTogglePermission: (moduleId: string, action: string) => void;
-  onToggleAllModule: (id: string) => void;
-}
+import { Button } from "@/components/ui";
+import type { PermissionActionsProps } from "types";
 
 export function PermissionActions({
   module,

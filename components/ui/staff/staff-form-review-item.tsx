@@ -1,12 +1,12 @@
 "use client";
 
+
+import type { StaffFormReviewItemProps } from "types";
+
 export function StaffFormReviewItem({
   label,
   value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) {
+}: StaffFormReviewItemProps) {
   return (
     <div className="flex items-start justify-between gap-3 py-1.5">
       <span className="w-44 shrink-0 text-sm text-muted-foreground">{label}</span>
