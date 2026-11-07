@@ -1,11 +1,7 @@
 'use client';
 
-import type { StaffMember } from 'types';
+import type { AvailabilityTabProps } from 'types';
 import { buildAvailabilityForStaff } from 'lib';
-
-interface AvailabilityTabProps {
-  staffMembers: StaffMember[];
-}
 
 export function AvailabilityTab({ staffMembers }: AvailabilityTabProps) {
   return (

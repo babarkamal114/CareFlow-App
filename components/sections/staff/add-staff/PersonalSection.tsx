@@ -9,15 +9,9 @@ import {
   StaffFormFileUpload,
   StaffFormSectionLabel,
 } from "@/components/ui";
-import type { StaffFormData, StaffFormErrors } from "types";
+import type { StaffFormData, StaffFormSectionProps } from "types";
 
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  onChange: (data: StaffFormData) => void;
-}
-
-export function PersonalSection({ data, errors, onChange }: Props) {
+export function PersonalSection({ data, errors, onChange }: StaffFormSectionProps) {
   const setField = <K extends keyof StaffFormData>(key: K, value: StaffFormData[K]) => {
     onChange({ ...data, [key]: value });
   };

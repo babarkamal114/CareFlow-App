@@ -1,15 +1,14 @@
 "use client";
 
+
+import type { StaffFormErrorBannerProps } from "types";
+import { getErrorMessages } from "utils";
+
 export function StaffFormErrorBanner({
   errors,
   title = "Please fix the following before continuing",
-}: {
-  errors: Record<string, string | undefined>;
-  title?: string;
-}) {
-  const messages = Object.values(errors).filter(
-    (message): message is string => Boolean(message)
-  );
+}: StaffFormErrorBannerProps) {
+  const messages = getErrorMessages(errors);
 
   if (messages.length === 0) return null;
 

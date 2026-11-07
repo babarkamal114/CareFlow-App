@@ -3,12 +3,8 @@
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui";
-import { StaffMember } from 'types';
 import { formatDate, formatTime } from 'utils';
-
-interface StaffDetailsTabProps {
-  staff: StaffMember;
-}
+import type { StaffDetailsTabProps } from 'types';
 
 const container = {
   hidden: {},
@@ -24,8 +20,6 @@ const item = {
   },
 };
 
-// Label-left / value-right row, matching the reference layout —
-// thin divider between rows, no leading icon.
 function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-cf-border py-3 last:border-b-0">

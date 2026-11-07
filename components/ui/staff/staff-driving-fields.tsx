@@ -11,17 +11,14 @@ import {
 } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { TRAVEL_MODE_LABELS } from "types";
-import type { DrivingSection, StaffFormErrors, TravelMode } from "types";
+import type { DrivingSection, TravelMode } from "types";
+import type { StaffDrivingFieldsProps } from "types";
 
 export function StaffDrivingFields({
   value,
   errors,
   onChange,
-}: {
-  value: DrivingSection;
-  errors: StaffFormErrors;
-  onChange: (value: DrivingSection) => void;
-}) {
+}: StaffDrivingFieldsProps) {
   const set = <K extends keyof DrivingSection>(
     key: K,
     next: DrivingSection[K]

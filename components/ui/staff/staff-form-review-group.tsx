@@ -1,18 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui';
+import type { StaffFormReviewGroupProps } from "types";
 
 export function StaffFormReviewGroup({
   title,
   stepNumber,
   onEdit,
   children,
-}: {
-  title: string;
-  stepNumber?: number;
-  onEdit?: () => void;
-  children: React.ReactNode;
-}) {
+}: StaffFormReviewGroupProps) {
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between gap-3">

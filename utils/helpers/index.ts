@@ -18,7 +18,6 @@ export type { ThemeName } from "./dashboard-helpers";
 export * from "./dashboard-home";
 export * from "./dashboard-home-insights";
 export * from "./dashboard-notifications";
-export * from "./staff-table-utils";
 export * from "./stat-score-ring-check";
 export * from "./show-trend";
 export * from "./risk-badge";
@@ -29,6 +28,7 @@ export * from "./file-format-size";
 export * from "./slug-generator";
 export * from "./progress-colors";
 export * from "./staff-profile";
+export * from './staff-components'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,

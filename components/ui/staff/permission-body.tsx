@@ -2,18 +2,7 @@
 
 import { PermissionsAlerts } from "./permission-alets";
 import { PermissionsList } from "./permission-list";
-
-
-
-interface PermissionsBodyProps {
-  permissions: Record<string, string[]>;
-  expandedModules: Set<string>;
-  onToggleModule: (id: string) => void;
-  onTogglePermission: (moduleId: string, action: string) => void;
-  onToggleAllModule: (id: string) => void;
-  error: string | null;
-  success: boolean;
-}
+import type { PermissionsBodyProps } from "types";
 
 export function PermissionsBody({
   permissions,

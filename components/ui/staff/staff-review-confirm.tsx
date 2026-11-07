@@ -10,16 +10,13 @@ import {
   Checkbox,
   Label,
 } from '@/components/ui';
+import type { StaffConfirmGateProps, StaffSchedulingNoticeProps } from "types";
 
 export function StaffConfirmGate({
   confirmed,
   error,
   onChange,
-}: {
-  confirmed: boolean;
-  error?: string;
-  onChange: (confirmed: boolean) => void;
-}) {
+}: StaffConfirmGateProps) {
   return (
     <div className="space-y-1.5">
       <div className="flex items-start gap-3 rounded-lg border border-border bg-cf-surface-inset px-4 py-3">
@@ -42,9 +39,7 @@ export function StaffConfirmGate({
 
 export function StaffSchedulingNotice({
   canBeScheduled,
-}: {
-  canBeScheduled: boolean;
-}) {
+}: StaffSchedulingNoticeProps) {
   if (canBeScheduled) return null;
 
   return (

@@ -10,8 +10,8 @@ import {
   StaffReviewEmployment,
 } from '@/components/ui';
 import type { MockStaffProfile } from 'lib';
-import { formatStaffDate, formatStaffHours } from "app-utils/staff-review-format";
-import { getStaffSupervisionDeadline } from "app-utils/staff-drawer";
+import { formatStaffDate, formatStaffHours } from "utils";
+import { getStaffSupervisionDeadline } from "utils";
 
 interface StaffEmploymentTabProps {
   profile: MockStaffProfile;

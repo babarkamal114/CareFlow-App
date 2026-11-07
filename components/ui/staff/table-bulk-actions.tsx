@@ -1,12 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui";
-
-interface TableBulkActionsProps {
-  selectedCount: number;
-  onClear: () => void;
-  onDelete: () => void;
-}
+import type { TableBulkActionsProps } from "types";
 
 export function TableBulkActions({ selectedCount, onClear, onDelete }: TableBulkActionsProps) {
   if (selectedCount === 0) return null;

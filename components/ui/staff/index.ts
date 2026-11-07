@@ -1,5 +1,5 @@
 export * from "./staff-view-drawer";
-export * from "./permission-actionts"
+export * from "./permission-actions"
 export * from "./permission-alets"
 export * from "./permission-body"
 export * from "./permission-list"

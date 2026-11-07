@@ -2,17 +2,14 @@
 
 import { Input } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
-import type { Address, StaffFormErrors } from "types";
+import type { Address } from "types";
+import type { StaffAddressFieldsProps } from "types";
 
 export function StaffAddressFields({
   address,
   errors,
   onChange,
-}: {
-  address: Address;
-  errors: StaffFormErrors;
-  onChange: (address: Address) => void;
-}) {
+}: StaffAddressFieldsProps) {
   const set =
     (key: keyof Address) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {

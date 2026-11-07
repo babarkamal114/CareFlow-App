@@ -7,8 +7,9 @@ import {
   TableRow,
 } from "@/components/ui";
 import { Skeleton } from "@/components/ui";
+import type { StaffTableSkeletonProps } from "types";
 
-export function StaffTableSkeleton({ rows = 5 }: { rows?: number }) {
+export function StaffTableSkeleton({ rows = 5 }: StaffTableSkeletonProps) {
   return (
     <div className="w-full h-full rounded-lg border border-cf-border bg-cf-surface">
       <div className="overflow-x-auto">

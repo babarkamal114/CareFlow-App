@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { X } from "lucide-react";
 import { cn } from "lib";
 import { Button } from "../button";
+import type { StaffFormTagInputProps } from "types";
+import { useTagInput } from "hooks";
 
 export function StaffFormTagInput({
   id,
@@ -12,32 +13,9 @@ export function StaffFormTagInput({
   placeholder,
   error,
   onChange,
-}: {
-  id: string;
-  values: string[];
-  suggestions?: readonly string[];
-  placeholder?: string;
-  error?: string;
-  onChange: (values: string[]) => void;
-}) {
-  const [draft, setDraft] = useState("");
-
-  const addValue = (raw: string) => {
-    const value = raw.trim();
-    if (!value) return;
-    const exists = values.some(
-      (existing) => existing.toLowerCase() === value.toLowerCase()
-    );
-    if (!exists) onChange([...values, value]);
-    setDraft("");
-  };
-
-  const availableSuggestions = suggestions.filter(
-    (suggestion) =>
-      !values.some(
-        (existing) => existing.toLowerCase() === suggestion.toLowerCase()
-      )
-  );
+}: StaffFormTagInputProps) {
+  const { draft, setDraft, addValue, removeValue, handleBlur, handleKeyDown, availableSuggestions } =
+    useTagInput(values, suggestions, onChange);
 
   return (
     <div className="space-y-1.5">
@@ -56,9 +34,7 @@ export function StaffFormTagInput({
             <Button
               type="button"
               aria-label={`Remove ${value}`}
-              onClick={() =>
-                onChange(values.filter((item) => item !== value))
-              }
+              onClick={() => removeValue(value)}
               className="transition-colors hover:text-destructive"
             >
               <X className="h-3 w-3" />
@@ -70,16 +46,8 @@ export function StaffFormTagInput({
           value={draft}
           placeholder={values.length === 0 ? placeholder : undefined}
           onChange={(event) => setDraft(event.target.value)}
-          onBlur={() => addValue(draft)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === ",") {
-              event.preventDefault();
-              addValue(draft);
-            }
-            if (event.key === "Backspace" && draft === "" && values.length > 0) {
-              onChange(values.slice(0, -1));
-            }
-          }}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
           className="min-w-[8rem] flex-1 bg-transparent py-1 text-sm text-cf-ink outline-none placeholder:text-cf-ink-40"
         />
       </div>

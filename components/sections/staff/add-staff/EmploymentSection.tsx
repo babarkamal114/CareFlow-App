@@ -7,27 +7,20 @@ import {
   StaffFormFieldRow,
   StaffFormSectionLabel,
 } from "@/components/ui";
-import type { StaffFormErrors } from "types";
 import {
   EMPLOYMENT_TYPE_LABELS,
   PAY_RATE_TYPE_LABELS,
   STAFF_ROLE_LABELS,
   STAFF_ROLE_OPTIONS,
+  StaffFormSectionProps,
 } from "types";
 import type {
   EmploymentType,
   PayRateType,
-  StaffFormData,
   StaffRole,
 } from "types";
 
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  onChange: (data: StaffFormData) => void;
-}
-
-export function EmploymentSection({ data, errors, onChange }: Props) {
+export function EmploymentSection({ data, errors, onChange }: StaffFormSectionProps) {
   const { data: rolesData, isLoading: rolesLoading } = useGetAllRolesApi();
   const roles = mapRolesToDisplay(rolesData?.roles);
 

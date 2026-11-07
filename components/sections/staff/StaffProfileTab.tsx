@@ -17,9 +17,9 @@ import {
 } from '@/components/ui';
 import type { MockStaffProfile } from 'lib';
 import type { StaffMember } from 'types';
-import { formatStaffDate } from "app-utils/staff-review-format";
-import { formatTime } from "app-utils/date-utils";
-import { getStaffProfileCompleteness } from "app-utils/staff-drawer";
+import { formatStaffDate } from "utils";
+import { formatTime } from "utils";
+import { getStaffProfileCompleteness } from "utils";
 
 interface StaffProfileTabProps {
   staff: StaffMember;

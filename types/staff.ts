@@ -492,3 +492,9 @@ export const INITIAL_STAFF_FORM_DATA: StaffFormData = {
 
   confirmed: false,
 };
+
+
+export interface AddStaffPayload {
+  data: StaffFormData;
+  compliance: ComplianceResult;
+}

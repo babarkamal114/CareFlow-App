@@ -10,18 +10,15 @@ import {
 } from "@/components/ui";
 import { FileText, Trash2 } from "lucide-react";
 import { STAFF_DOCUMENT_TYPE_LABELS } from "types";
-import type { StaffDocument, StaffDocumentType } from "types";
+import type { StaffDocumentType } from "types";
 import { formatDate } from "utils";
+import type { StaffDocumentRowProps } from "types";
 
 export function StaffDocumentRow({
   document,
   onTypeChange,
   onRemove,
-}: {
-  document: StaffDocument;
-  onTypeChange: (type: StaffDocumentType) => void;
-  onRemove: () => void;
-}) {
+}: StaffDocumentRowProps) {
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-cf-border bg-cf-surface-inset/40 p-4 sm:flex-row sm:items-end">
       <div className="min-w-0 flex-1 space-y-1">

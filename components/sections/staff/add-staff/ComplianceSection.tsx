@@ -10,16 +10,10 @@ import {
   StaffRefereeFields,
   StaffRightToWorkFields,
 } from "@/components/ui";
-import { EMPTY_REFeree } from "types";
-import type { Referee, StaffFormData, StaffFormErrors } from "types";
+import { EMPTY_REFeree, StaffFormSectionProps } from "types";
+import type { Referee } from "types";
 
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  onChange: (data: StaffFormData) => void;
-}
-
-export function ComplianceSection({ data, errors, onChange }: Props) {
+export function ComplianceSection({ data, errors, onChange }: StaffFormSectionProps) {
   const addReferee = () => {
     onChange({ ...data, referees: [...data.referees, { ...EMPTY_REFeree }] });
   };

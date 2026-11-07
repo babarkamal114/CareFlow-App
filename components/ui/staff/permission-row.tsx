@@ -3,17 +3,10 @@
 import { ChevronRight } from 'lucide-react';
 import { Badge, Button } from "@/components/ui";
 import { cn } from "lib";
-import { PermissionActions } from './permission-actionts';
+import { PermissionActions } from './permission-actions';
+import type { PermissionRowProps } from "types";
+import { getModuleGrantSummary } from "utils";
 
-
-interface PermissionRowProps {
-  module: { id: string; label: string; actions: string[] };
-  permissions: Record<string, string[]>;
-  isExpanded: boolean;
-  onToggleModule: (id: string) => void;
-  onTogglePermission: (moduleId: string, action: string) => void;
-  onToggleAllModule: (id: string) => void;
-}
 
 export function PermissionRow({
   module,
@@ -23,11 +16,7 @@ export function PermissionRow({
   onTogglePermission,
   onToggleAllModule,
 }: PermissionRowProps) {
-  const current = permissions[module.id] || [];
-  const isAll = module.actions.every((a) => current.includes(a));
-  const hasAny = current.length > 0;
-  const granted = current.length;
-  const total = module.actions.length;
+  const { current, isAll, hasAny, granted, total } = getModuleGrantSummary(module, permissions);
 
   return (
     <div className="border border-cf-border rounded-lg overflow-hidden">

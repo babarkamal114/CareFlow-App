@@ -10,24 +10,16 @@ import {
   RTW_CHECK_TYPE_LABELS,
   TRAVEL_MODE_LABELS,
 } from "types";
-import type { ComplianceResult, StaffFormData } from "types";
-import { formatStaffDate } from "app-utils/staff-review-format";
-import { getStaffDbsTone } from "app-utils/staff-drawer";
-
+import { formatStaffDate, getStaffDbsTone, countReceivedReferences } from "utils";
+import type { StaffReviewComplianceProps } from "types";
 export function StaffReviewCompliance({
   data,
   compliance,
   onEdit,
-}: {
-  data: StaffFormData;
-  compliance: ComplianceResult;
-  onEdit?: () => void;
-}) {
+}: StaffReviewComplianceProps) {
   const { rightToWork, dbs, driving } = data;
   const dbsTone = dbs.status ? getStaffDbsTone(dbs.status) : undefined;
-  const referencesReceived = data.referees.filter(
-    (referee) => referee.referenceReceived
-  ).length;
+  const referencesReceived = countReceivedReferences(data.referees);
 
   return (
     <StaffFormReviewGroup title="Compliance & Vetting" stepNumber={3} onEdit={onEdit}>

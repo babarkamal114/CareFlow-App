@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import {
   Button,
@@ -11,10 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui";
-import { computeCompliance } from "lib";
-import { hasErrors } from "lib";
-import { mapRolesToDisplay, useGetAllRolesApi } from "lib";
-import { validateStep } from "lib";
 import { StaffFormStepDots, StaffFormStepRail } from "@/components/ui";
 import { ComplianceSection } from "./ComplianceSection";
 import { DocumentsSection } from "./DocumentsSection";
@@ -23,122 +18,30 @@ import { PersonalSection } from "./PersonalSection";
 import { ReviewSection } from "./ReviewSection";
 import { SkillsAvailabilitySection } from "./SkillsAvailabilitySection";
 import { TrainingSection } from "./TrainingSection";
-import { INITIAL_STAFF_FORM_DATA, STAFF_FORM_STEPS, STEP_TOTAL } from "types";
-import type {
-  ComplianceResult,
-  StaffFormData,
-  StaffFormErrors,
-  StaffFormStepId,
-} from "types";
+import { STAFF_FORM_STEPS, STEP_TOTAL } from "types";
+import { useAddStaffForm } from "hooks";
 
-interface AddStaffPayload {
-  data: StaffFormData;
-  compliance: ComplianceResult;
-}
 
-function cloneInitialData(): StaffFormData {
-  return {
-    ...INITIAL_STAFF_FORM_DATA,
-    address: { ...INITIAL_STAFF_FORM_DATA.address },
-    emergencyContact: { ...INITIAL_STAFF_FORM_DATA.emergencyContact },
-    rightToWork: { ...INITIAL_STAFF_FORM_DATA.rightToWork },
-    dbs: { ...INITIAL_STAFF_FORM_DATA.dbs },
-    driving: { ...INITIAL_STAFF_FORM_DATA.driving },
-    referees: [],
-    qualifications: [],
-    mandatoryTraining: [],
-    languages: [],
-    skills: [],
-    availability: [],
-    documents: [],
-  };
-}
 
 export function AddStaffModal() {
-  const [open, setOpen] = useState(false);
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<StaffFormData>(cloneInitialData);
-  const [touchedSteps, setTouchedSteps] = useState<StaffFormStepId[]>([]);
-
-  const { data: rolesData } = useGetAllRolesApi();
-  const roles = useMemo(() => mapRolesToDisplay(rolesData?.roles), [rolesData]);
-
-  const compliance = useMemo(() => computeCompliance(formData), [formData]);
-
-  const currentStepId = STAFF_FORM_STEPS[step - 1].id;
-
-  const errors: StaffFormErrors = useMemo(
-    () => validateStep(currentStepId, formData),
-    [currentStepId, formData]
-  );
-
-  const showErrors = touchedSteps.includes(currentStepId);
-
-  const visibleErrors = showErrors ? errors : {};
-
-  const managerName =
-    roles.find((role) => role.id === formData.managerId)?.displayName ??
-    roles.find((role) => role.id === formData.managerId)?.name;
-
-  const goToStep = (nextStep: number) => {
-    setStep(Math.min(Math.max(nextStep, 1), STEP_TOTAL));
-  };
-
-  const handleNext = () => {
-    if (hasErrors(errors)) {
-      setTouchedSteps((previous) =>
-        previous.includes(currentStepId)
-          ? previous
-          : [...previous, currentStepId]
-      );
-      return;
-    }
-
-    setTouchedSteps((previous) =>
-      previous.filter((id) => id !== currentStepId)
-    );
-    goToStep(step + 1);
-  };
-
-  const handleBack = () => {
-    goToStep(step - 1);
-  };
-
-  const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
-    if (!isOpen) {
-   
-      setTimeout(() => {
-        setStep(1);
-        setFormData(cloneInitialData());
-        setTouchedSteps([]);
-      }, 200);
-    }
-  };
-
-  const handleSubmit = () => {
-    if (!formData.confirmed) {
-      setTouchedSteps((previous) =>
-        previous.includes("review") ? previous : [...previous, "review"]
-      );
-      return;
-    }
-
-    const payload: AddStaffPayload = {
-      data: {
-        ...formData,
-        complianceStatus: compliance.complianceStatus,
-        canBeScheduled: compliance.canBeScheduled,
-        firstSupervisionDate: compliance.firstSupervisionDate,
-      },
-      compliance,
-    };
-
- 
-    console.log("Create staff →", payload);
-
-    handleOpenChange(false);
-  };
+  const {
+    open,
+    step,
+    currentStepId,
+    formData,
+    setFormData,
+    compliance,
+    visibleErrors,
+    errorCount,
+    showErrorSummary,
+    managerName,
+    goToStep,
+    handleNext,
+    handleBack,
+    handleOpenChange,
+    handleConfirmChange,
+    handleSubmit,
+  } = useAddStaffForm();
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -228,9 +131,7 @@ export function AddStaffModal() {
                 compliance={compliance}
                 managerName={managerName}
                 onEdit={goToStep}
-                onConfirmChange={(confirmed) =>
-                  setFormData((previous) => ({ ...previous, confirmed }))
-                }
+                onConfirmChange={handleConfirmChange}
               />
             )}
           </div>
@@ -247,10 +148,10 @@ export function AddStaffModal() {
           </Button>
 
           <div className="flex items-center gap-3">
-            {currentStepId !== "review" && showErrors && hasErrors(errors) && (
+            {showErrorSummary && (
               <span className="text-xs text-destructive">
-                {Object.keys(errors).length} field
-                {Object.keys(errors).length === 1 ? "" : "s"} need attention
+                {errorCount} field
+                {errorCount === 1 ? "" : "s"} need attention
               </span>
             )}
 

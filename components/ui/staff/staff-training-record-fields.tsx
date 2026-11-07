@@ -13,7 +13,8 @@ import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
 import { MANDATORY_TRAINING_MODULES, TRAINING_STATUS_LABELS } from "types";
-import type { StaffFormErrors, TrainingRecord, TrainingStatus } from "types";
+import type { TrainingRecord, TrainingStatus } from "types";
+import type { StaffTrainingRecordFieldsProps } from "types";
 
 export function StaffTrainingRecordFields({
   record,
@@ -21,13 +22,7 @@ export function StaffTrainingRecordFields({
   errors,
   onChange,
   onRemove,
-}: {
-  record: TrainingRecord;
-  index: number;
-  errors: StaffFormErrors;
-  onChange: (record: TrainingRecord) => void;
-  onRemove: () => void;
-}) {
+}: StaffTrainingRecordFieldsProps) {
   const set = <K extends keyof TrainingRecord>(
     key: K,
     next: TrainingRecord[K]

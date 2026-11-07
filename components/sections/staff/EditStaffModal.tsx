@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -13,16 +12,10 @@ import {
 } from "@/components/ui";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
-import { StaffMember } from "types";
 import { Loader2, AlertCircle, CheckCircle2, User, Mail, Phone } from 'lucide-react';
 import { getRoleBadgeColor, getRoleDisplayName, getStatusBadgeColor } from 'utils';
-
-interface EditStaffModalProps {
-  staff: StaffMember;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave?: (data: Partial<StaffMember>) => Promise<void>;
-}
+import type { EditStaffModalProps } from "types";
+import { useEditStaffForm } from "hooks";
 
 export function EditStaffModal({
   staff,
@@ -30,65 +23,8 @@ export function EditStaffModal({
   onOpenChange,
   onSave,
 }: EditStaffModalProps) {
-  const [formData, setFormData] = useState({
-    name: staff.name,
-    email: staff.email,
-    phone: staff.phone || '',
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setError(null);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      if (!formData.name.trim()) throw new Error('Name is required');
-      if (!formData.email.trim()) throw new Error('Email is required');
-
-      if (onSave) {
-        await onSave({
-          id: staff.id,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
-        });
-      } else {
-        const response = await fetch(`/api/staff/${staff.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone || null,
-          }),
-        });
-        if (!response.ok) throw new Error('Failed to update staff member');
-      }
-
-      setSuccess(true);
-      setTimeout(() => {
-        onOpenChange(false);
-        setSuccess(false);
-      }, 1200);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const initials = formData.name
-    ? formData.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
-    : '?';
+  const { formData, isLoading, error, success, initials, handleChange, handleSubmit } =
+    useEditStaffForm({ staff, onSave, onOpenChange });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

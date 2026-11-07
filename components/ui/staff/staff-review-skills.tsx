@@ -3,16 +3,13 @@
 import { StaffFormReviewGroup } from './staff-form-review-group';
 import { StaffFormReviewItem } from './staff-form-review-item';
 import { DAY_SHORT_LABELS } from "types";
-import type { StaffFormData } from "types";
-import { formatStaffList } from "app-utils/staff-review-format";
+import { formatStaffList } from "utils";
+import type { StaffReviewSkillsProps } from "types";
 
 export function StaffReviewSkills({
   data,
   onEdit,
-}: {
-  data: StaffFormData;
-  onEdit?: () => void;
-}) {
+}: StaffReviewSkillsProps) {
   const { languages, skills, workAreaPostcode, availability } = data;
 
   return (

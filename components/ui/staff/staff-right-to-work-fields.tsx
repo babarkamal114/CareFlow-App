@@ -10,27 +10,16 @@ import {
 } from "@/components/ui";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { StaffFormFileUpload } from "./staff-form-file-upload";
-import { RTW_CHECK_TYPE_LABELS } from "types";
-import type { RtwCheckType, RtwSection, StaffFormErrors } from "types";
-
-const DOCUMENT_TYPE_OPTIONS = [
-  { value: "passport", label: "Passport" },
-  { value: "share_code", label: "Share Code" },
-  { value: "biometric_residence", label: "Biometric Residence Permit" },
-  { value: "birth_certificate", label: "UK Birth Certificate" },
-  { value: "immigration_document", label: "Immigration Document" },
-  { value: "other", label: "Other" },
-];
+import { RTW_CHECK_TYPE_LABELS, } from "types";
+import type { RtwCheckType, RtwSection } from "types";
+import type { StaffRightToWorkFieldsProps } from "types";
+import { RTW_DOCUMENT_TYPE_OPTIONS } from "utils";
 
 export function StaffRightToWorkFields({
   value,
   errors,
   onChange,
-}: {
-  value: RtwSection;
-  errors: StaffFormErrors;
-  onChange: (value: RtwSection) => void;
-}) {
+}: StaffRightToWorkFieldsProps) {
   const set = <K extends keyof RtwSection>(key: K, next: RtwSection[K]) => {
     onChange({ ...value, [key]: next });
   };
@@ -119,7 +108,7 @@ export function StaffRightToWorkFields({
             <SelectValue placeholder="Select document seen" />
           </SelectTrigger>
           <SelectContent className="border-cf-border bg-cf-surface">
-            {DOCUMENT_TYPE_OPTIONS.map((option) => (
+            {RTW_DOCUMENT_TYPE_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>

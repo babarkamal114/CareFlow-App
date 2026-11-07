@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Button,
   Table,
@@ -13,20 +12,15 @@ import {
 import { Checkbox } from "@/components/ui";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 import { ArrowUpDown, ChevronRight } from "lucide-react";
-import { SortDirection, SortField, StaffMember, StaffTableProps } from "types";
+import type { SortableHeaderProps, StaffTableProps } from "types";
 import { formatUKPhone, getEmployeeStatusLabel, getEmployeeStatusVariant, getRoleBadgeColor } from "utils";
 import { TableBulkActions, StaffViewDrawer } from "@/components/ui";
 import { Badge, type BadgeProps } from"@/components/ui"
 import { formatRoleName } from "utils";
 import { buildComplianceForStaff, overallComplianceStatus } from "lib";
 import { ComplianceIndicator } from "./ComplianceIndicator";
-
-interface SortableHeaderProps {
-  field: SortField;
-  label: string;
-  active: boolean;
-  onSort: (field: SortField) => void;
-}
+import { useStaffTable } from "hooks";
+import { getInitials } from "utils";
 
 function SortableHeader({ field, label, active, onSort }: SortableHeaderProps) {
   return (
@@ -38,59 +32,22 @@ function SortableHeader({ field, label, active, onSort }: SortableHeaderProps) {
 }
 
 export function StaffTable({ data, onDelete }: StaffTableProps) {
-  const [sortField, setSortField] = useState<SortField>("name");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [viewingStaff, setViewingStaff] = useState<StaffMember | null>(null);
-
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const sortedData = [...data].sort((a, b) => {
-    const aValue = a[sortField];
-    const bValue = b[sortField];
-    if (typeof aValue === "string" && typeof bValue === "string") {
-      return sortDirection === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-    }
-    return 0;
-  });
-
-  const handleSelectRow = (id: string, checked: boolean) => {
-    setSelectedRows((prev) => {
-      const next = new Set(prev);
-      if (checked) {
-        next.add(id);
-      } else {
-        next.delete(id);
-      }
-      return next;
-    });
-  };
-
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedRows(new Set(sortedData.map((s) => s.id)));
-    } else {
-      setSelectedRows(new Set());
-    }
-  };
-
-  const handleView = (staff: StaffMember) => {
-    setViewingStaff(staff);
-    setDrawerOpen(true);
-  };
-
-  const getInitials = (name: string) => name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
-
-  const allSelected = selectedRows.size === sortedData.length && sortedData.length > 0;
-  const someSelected = selectedRows.size > 0 && selectedRows.size < sortedData.length;
+  const {
+    sortField,
+    sortedData,
+    selectedRows,
+    allSelected,
+    someSelected,
+    drawerOpen,
+    setDrawerOpen,
+    viewingStaff,
+    handleSort,
+    handleSelectRow,
+    handleSelectAll,
+    handleView,
+    clearSelection,
+    handleDeleteSelected,
+  } = useStaffTable(data, onDelete);
 
   return (
     <>
@@ -198,8 +155,8 @@ export function StaffTable({ data, onDelete }: StaffTableProps) {
         </div>
         <TableBulkActions 
           selectedCount={selectedRows.size} 
-          onClear={() => setSelectedRows(new Set())} 
-          onDelete={() => { selectedRows.forEach((id) => onDelete?.(id)); setSelectedRows(new Set()); }} 
+          onClear={clearSelection} 
+          onDelete={handleDeleteSelected} 
         />
       </div>
 

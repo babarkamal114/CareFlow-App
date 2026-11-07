@@ -12,7 +12,8 @@ import {
 import { Trash2 } from "lucide-react";
 import { StaffFormFieldRow } from "./staff-form-field-row";
 import { DAY_LABELS, DAY_OF_WEEK_OPTIONS } from "types";
-import type { AvailabilitySlot, DayOfWeek, StaffFormErrors } from "types";
+import type { AvailabilitySlot, DayOfWeek } from "types";
+import type { StaffAvailabilitySlotFieldsProps } from "types";
 
 export function StaffAvailabilitySlotFields({
   slot,
@@ -20,13 +21,7 @@ export function StaffAvailabilitySlotFields({
   errors,
   onChange,
   onRemove,
-}: {
-  slot: AvailabilitySlot;
-  index: number;
-  errors: StaffFormErrors;
-  onChange: (slot: AvailabilitySlot) => void;
-  onRemove: () => void;
-}) {
+}: StaffAvailabilitySlotFieldsProps) {
   const set = <K extends keyof AvailabilitySlot>(
     key: K,
     next: AvailabilitySlot[K]

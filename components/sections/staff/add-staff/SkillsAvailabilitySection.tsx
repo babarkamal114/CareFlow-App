@@ -9,22 +9,16 @@ import {
   StaffFormSectionLabel,
   StaffFormTagInput,
 } from "@/components/ui";
-import type { StaffFormErrors } from "types";
 import {
   createStaffRecordId,
   DAY_OF_WEEK_OPTIONS,
   LANGUAGE_SUGGESTIONS,
   SKILL_SUGGESTIONS,
+  StaffFormSectionProps,
 } from "types";
-import type { AvailabilitySlot, StaffFormData } from "types";
+import type { AvailabilitySlot } from "types";
 
-interface Props {
-  data: StaffFormData;
-  errors: StaffFormErrors;
-  onChange: (data: StaffFormData) => void;
-}
-
-export function SkillsAvailabilitySection({ data, errors, onChange }: Props) {
+export function SkillsAvailabilitySection({ data, errors, onChange }: StaffFormSectionProps) {
   const addSlot = () => {
     const used = new Set(data.availability.map((slot) => slot.day));
     const nextDay = DAY_OF_WEEK_OPTIONS.find((day) => !used.has(day));
