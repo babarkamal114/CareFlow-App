@@ -25,7 +25,7 @@ function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="size-8 rounded-lg border border-cf-border text-cf-ink-60 hover:bg-cf-surface-muted hover:text-cf-ink"
+      className="size-9 rounded-lg border border-cf-border text-cf-ink-60 hover:bg-cf-surface-muted hover:text-cf-ink md:size-8"
       onClick={() => setTheme(getNextTheme(isDark))}
       aria-label={getThemeToggleLabel(isDark)}
       disabled={!mounted}
@@ -45,18 +45,18 @@ function NotificationsBell() {
           <Button
             variant="ghost"
             size="icon"
-            className="relative size-8 rounded-lg border border-cf-border text-cf-ink-60 hover:bg-cf-surface-muted hover:text-cf-ink"
+            className="relative size-9 rounded-lg border border-cf-border text-cf-ink-60 hover:bg-cf-surface-muted hover:text-cf-ink md:size-8"
           >
             <Bell className="size-4" />
             {unreadCount > 0 && (
-              <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-red-500" />
+              <span className="absolute right-2 top-2 size-2 rounded-full bg-red-500 md:right-1.5 md:top-1.5" />
             )}
             <span className="sr-only">{srLabel}</span>
           </Button>
         }
       />
       <PopoverContent
-        className="w-80 border-cf-border bg-cf-surface p-0"
+        className="w-[min(20rem,calc(100vw-2rem))] border-cf-border bg-cf-surface p-0"
         align="end"
       >
         <div className="border-b border-cf-border px-4 py-3">
@@ -95,7 +95,7 @@ function NotificationsBell() {
 
 function DashboardShellActions() {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-2 md:gap-1.5">
       <ThemeToggle />
       <NotificationsBell />
     </div>

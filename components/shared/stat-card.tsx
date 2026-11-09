@@ -33,7 +33,7 @@ function StatCard({
       gradientTo="var(--cf-brand-400)"
       className="w-full rounded-xl cf-glass-panel"
     >
-      <div className="flex flex-col gap-4 py-4 px-4">
+      <div className="flex flex-col gap-3 p-3 sm:gap-4 sm:p-4">
         <div className="flex items-center justify-between">
           <Badge variant={badgeVariant} badgeSize={'icon'}>
             <Icon className="size-4" />
@@ -62,8 +62,8 @@ function StatCard({
         <h1 className="text-xs text-cf-ink-40 font-semibold tracking-wider">
           {label.toUpperCase()}
         </h1>
-        <div className="flex items-end gap-2">
-          <h1 className="text-4xl font-bold text-cf-ink leading-none">{value}</h1>
+        <div className="flex flex-wrap items-end gap-x-2 gap-y-1">
+          <h1 className="text-3xl font-bold text-cf-ink leading-none sm:text-4xl">{value}</h1>
 
           <div className="flex items-end gap-2">
             {hasValueBadge && (

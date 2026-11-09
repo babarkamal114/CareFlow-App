@@ -1,4 +1,3 @@
-// components/sections/dashboard/DashboardStatSection.tsx
 "use client";
 
 import type { ReactNode } from "react";
@@ -18,9 +17,9 @@ const cardVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
 };
 
-function StatItem({ children }: { children: ReactNode }) {
+function StatItem({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <motion.div variants={cardVariants} className="h-full [&>*]:h-full">
+    <motion.div variants={cardVariants} className={`h-full min-w-0 [&>*]:h-full ${className}`}>
       {children}
     </motion.div>
   );
@@ -28,22 +27,19 @@ function StatItem({ children }: { children: ReactNode }) {
 
 interface DashboardStatSectionProps {
   summary: DashboardVisitSummary;
-  /** 0-100 */
   completionRate: number;
-  /** Visits that have not started yet */
   upcoming: number;
 }
 
-/** Today's numbers: scheduled, completed, in progress, late and missed visits. */
 export function DashboardStatSection({ summary, completionRate, upcoming }: DashboardStatSectionProps) {
   return (
     <motion.div
-      className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5"
+      className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-5"
       variants={gridVariants}
       initial="hidden"
       animate="show"
     >
-      <StatItem>
+      <StatItem className="col-span-2 lg:col-span-1">
         <StatCard
           label="Visits Today"
           value={summary.total.toLocaleString("en-GB")}

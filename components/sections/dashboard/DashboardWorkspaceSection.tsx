@@ -17,7 +17,7 @@ export function DashboardWorkspaceSection() {
   const { visits, alerts, staff, cqc, revenue, activity, compliance } = useDashboardWorkspace();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       <DashboardHeader />
 
       <DashboardStatSection
@@ -25,12 +25,11 @@ export function DashboardWorkspaceSection() {
         completionRate={visits.completionRate}
         upcoming={visits.upcoming}
       />
-
-      <div className="grid gap-4 xl:grid-cols-3">
-        <div className="flex xl:col-span-2">
+      <div className="grid gap-3 sm:gap-4 xl:grid-cols-3">
+        <div className="flex min-w-0 xl:col-span-2 [&>*]:w-full [&>*]:min-w-0">
           <DashboardVisitSection visits={visits.rows} filter={visits.filter} onFilterChange={visits.setFilter} />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-3 sm:gap-4">
           <DashboardAlertFeedSection
             items={alerts.items}
             countLabel={alerts.countLabel}
@@ -40,16 +39,15 @@ export function DashboardWorkspaceSection() {
         </div>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-3">
-        <div className="flex xl:col-span-2">
+      <div className="grid gap-3 sm:gap-4 xl:grid-cols-3">
+        <div className="flex min-w-0 xl:col-span-2 [&>*]:w-full [&>*]:min-w-0">
           <DashboardLiveMapSection markers={visits.mapMarkers} activeCount={visits.summary.inProgress} />
         </div>
         {cqc && (
           <DashboardCqcSection score={cqc.score} trend={cqc.trend} domains={cqc.domains} />
         )}
       </div>
-
-      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 lg:grid-cols-2 xl:grid-cols-3">
         <DashboardWeeklyActivitySection
           points={activity.points}
           completed={activity.totals.completed}
@@ -62,7 +60,9 @@ export function DashboardWorkspaceSection() {
           bars={revenue.bars}
         />
       )}
-        <DashboardComplianceDueSection items={compliance.items} urgentCount={compliance.urgentCount} />
+        <div className="min-w-0 lg:col-span-2 xl:col-span-1 [&>*]:h-full">
+          <DashboardComplianceDueSection items={compliance.items} urgentCount={compliance.urgentCount} />
+        </div>
       </div>
     </div>
   );

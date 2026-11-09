@@ -76,29 +76,23 @@ export function DashboardShell({
       <SidebarRail />
     </Sidebar>
 
-    <SidebarInset className="overflow-hidden bg-transparent">
+    <SidebarInset className="min-w-0 overflow-hidden bg-transparent">
       <main className="flex h-svh flex-col bg-transparent overflow-y-auto">
-        {/* Non-sticky, transparent — scrolls away with the page instead
-            of pinning as a solid white bar. Search input replaces the
-            empty space, matching the reference navbar. */}
-        <header className="flex h-16 shrink-0 items-center gap-4 px-4 md:px-6">
-          <SidebarTrigger className="size-8 shrink-0 rounded-lg border border-cf-border/40 bg-transparent text-cf-ink-60 shadow-none hover:bg-cf-surface-muted/50 hover:text-cf-ink" />
-
-          <div className="relative w-full max-w-sm">
+        <header className="flex h-16 shrink-0 items-center gap-2 px-3 sm:gap-4 sm:px-4 md:px-6">
+          <SidebarTrigger className="size-9 shrink-0 rounded-lg border border-cf-border/40 bg-transparent text-cf-ink-60 shadow-none hover:bg-cf-surface-muted/50 hover:text-cf-ink md:size-8" />
+          <div className="relative min-w-0 flex-1 sm:max-w-sm">
             <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-cf-ink-40" />
             <input
               type="search"
               placeholder="Search patients, staff, visits..."
-              className="h-9 w-full rounded-full border border-cf-border/60 bg-cf-surface/70 pl-9 pr-3 text-sm text-cf-ink placeholder:text-cf-ink-40 outline-none transition-colors focus:border-brand-300 focus:bg-cf-surface"
+              className="h-9 w-full truncate rounded-full border border-cf-border/60 bg-cf-surface/70 pl-9 pr-3 text-base text-cf-ink placeholder:text-cf-ink-40 outline-none transition-colors focus:border-brand-300 focus:bg-cf-surface sm:text-sm"
             />
           </div>
-
-          <div className="ml-auto">
+          <div className="ml-auto shrink-0">
             <DashboardShellActions />
           </div>
         </header>
-
-        <div className="min-h-0 flex-1 bg-transparent p-4 md:p-6">
+        <div className="min-h-0 min-w-0 flex-1 bg-transparent p-3 sm:p-4 md:p-6">
           {children}
         </div>
       </main>
