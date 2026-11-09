@@ -21,7 +21,7 @@ export function RecentAuditTrailCard() {
     <>
       <Card className="h-full w-full rounded-2xl border-cf-border-light shadow-cf-sm">
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <CardTitle className="font-bold text-cf-ink">Recent Audit Trail</CardTitle>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={a.exportCsv}><Download />Export</Button>
@@ -34,7 +34,9 @@ export function RecentAuditTrailCard() {
         </CardHeader>
 
         <CardContent>
-          <AuditLogTable logs={a.recent} asOf={a.asOf} onSelect={a.openEntry} />
+          <div className="w-full overflow-x-auto">
+            <AuditLogTable logs={a.recent} asOf={a.asOf} onSelect={a.openEntry} />
+          </div>
         </CardContent>
       </Card>
 

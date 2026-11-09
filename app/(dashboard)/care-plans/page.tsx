@@ -124,16 +124,12 @@ function Page() {
     };
 
     return (
-        <div className="w-full p-6 bg-transparent">
-            {/* One white rounded panel holding the heading and everything
-                below it — same structure as Dashboard/Staff/Patients/
-                Scheduling. No overflow here: the shell's <main> is the
-                only scroll container, avoiding a second scrollbar. */}
+        <div className="w-full min-w-0 p-0 md:p-6 bg-transparent">
             <motion.div
                 initial="hidden"
                 animate="show"
                 variants={container}
-                className="rounded-2xl bg-cf-surface shadow-cf-md p-6 space-y-4"
+                className="min-w-0 rounded-2xl bg-cf-surface shadow-cf-md p-3 space-y-3 sm:p-4 sm:space-y-4 md:p-6"
             >
                 <motion.div variants={item}>
                     <CarePlanHeader onCreateNew={handleAddNewPlan} />
@@ -151,15 +147,8 @@ function Page() {
                         searchQuery={searchQuery}
                     />
                 </motion.div>
-
-                {/* items-start: without this, flex's default align-items:stretch
-                    forces the left column to match the Review Queue's height.
-                    One consistent two-column layout: left column stacks the
-                    card grid + suggestions, right column is the Review Queue —
-                    rather than switching to a full-width row that ignores the
-                    column split established above it. */}
-                <motion.div variants={item} className='flex w-full gap-x-4 items-start'>
-                    <div className="flex flex-col gap-y-4 flex-1 min-w-0">
+                <motion.div variants={item} className='flex w-full flex-col gap-4 xl:flex-row xl:items-start'>
+                    <div className="flex flex-col gap-y-4 w-full min-w-0 xl:flex-1">
                         <CarePlanBlocksSection
                             carePlans={carePlans}
                             filterTab={activeFilterTab}
@@ -167,7 +156,7 @@ function Page() {
                         />
                         <CarePlanAiSuggestions patientNames={patientNames} orientation="horizontal" />
                     </div>
-                    <div className="w-full max-w-sm shrink-0">
+                    <div className="w-full xl:max-w-sm xl:shrink-0">
                         <CarePlanReviewQueue />
                     </div>
                 </motion.div>

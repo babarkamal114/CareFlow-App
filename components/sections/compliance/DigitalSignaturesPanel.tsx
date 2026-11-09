@@ -19,8 +19,8 @@ export function DigitalSignaturesPanel() {
     <>
       <Card className="h-full w-full rounded-2xl border-cf-border-light shadow-cf-sm">
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
               <div className="rounded-lg bg-brand-50 p-2"><PenLine className="h-4 w-4 text-brand-600" /></div>
               <div>
                 <CardTitle className="font-bold text-cf-ink">Digital Signatures</CardTitle>

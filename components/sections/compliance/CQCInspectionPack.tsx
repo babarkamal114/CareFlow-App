@@ -21,8 +21,8 @@ export function CQCInspectionPack() {
     <>
       <Card className="h-full w-full rounded-2xl border-cf-border-light shadow-cf-sm">
         <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
               <div className="rounded-lg bg-brand-50 p-2"><Shield className="h-5 w-5 text-brand-600" /></div>
               <div>
                 <CardTitle className="text-base font-semibold text-cf-ink">CQC Inspection Pack</CardTitle>
