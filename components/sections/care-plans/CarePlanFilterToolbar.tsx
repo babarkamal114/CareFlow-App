@@ -27,8 +27,8 @@ export function CarePlanFilterToolbar({
   return (
     <div className="border-b border-cf-border pb-4">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <Tabs value={activeTab} onValueChange={onTabChange}>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <Tabs value={activeTab} onValueChange={onTabChange} className="max-w-full overflow-x-auto">
             <TabsList className="bg-cf-surface-muted">
               {tabs.map((tab) => (
                 <TabsTrigger
@@ -41,14 +41,14 @@ export function CarePlanFilterToolbar({
               ))}
             </TabsList>
           </Tabs>
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative w-full sm:max-w-sm sm:flex-1">
             <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-cf-ink-40" />
             <Input
               type="text"
               placeholder="Search by patient or title..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="h-8 w-full border-cf-border bg-cf-surface-muted pl-8 text-sm text-cf-ink placeholder:text-cf-ink-40 focus:border-cf-brand-300"
+              className="h-9 w-full border-cf-border bg-cf-surface-muted pl-8 text-base text-cf-ink sm:h-8 sm:text-sm placeholder:text-cf-ink-40 focus:border-cf-brand-300"
             />
           </div>
         </div>

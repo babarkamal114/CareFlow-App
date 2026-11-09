@@ -116,7 +116,7 @@ export function CarePlanAiSuggestions({
 
         <CardContent className="px-4 pb-4">
           <AnimatePresence initial={false}>
-            <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
+            <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))]">
               {suggestions.map((s, i) => renderSuggestion(s, i))}
             </div>
           </AnimatePresence>

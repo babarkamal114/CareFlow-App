@@ -15,7 +15,6 @@ interface LiveMapPanelProps {
   markers: DashboardMapMarker[];
 }
 
-/** Stylised map (grid + roads) with one pin per visit. Real map integration comes with the backend. */
 export function LiveMapPanel({ markers }: LiveMapPanelProps) {
   return (
     <TooltipProvider>

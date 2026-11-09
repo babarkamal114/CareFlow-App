@@ -130,8 +130,9 @@ export function CarePlanCreationModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] h-[90vh] flex flex-col p-0 overflow-hidden">
-        <DialogHeader className="border-b border-cf-border p-6">
+      <DialogContent className="flex h-[100dvh] max-h-[100dvh] w-screen max-w-none flex-col overflow-hidden rounded-none p-0 sm:h-[90vh] sm:max-h-[90vh] sm:max-w-4xl sm:rounded-xl">
+        {/* RESPONSIVE: p-4 on phones, p-6 from `sm`. */}
+        <DialogHeader className="border-b border-cf-border p-4 sm:p-6">
           <div className="flex items-start justify-between">
             <div>
               <DialogTitle className="text-2xl font-bold">
@@ -150,8 +151,7 @@ export function CarePlanCreationModal({
             </div>
             <Progress value={progress} className="h-2" />
           </div>
-          
-          <div className="flex justify-between mt-2">
+          <div className="flex justify-between gap-2 mt-2">
             {steps.map((step, index) => (
               <div key={step.id} className="flex items-center gap-2">
                 <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium ${
@@ -168,7 +168,7 @@ export function CarePlanCreationModal({
                 <span className={`text-xs ${
                   index === currentStepIndex
                     ? 'text-cf-ink font-medium'
-                    : 'text-cf-ink-40'
+                    : 'hidden sm:inline text-cf-ink-40'
                 }`}>
                   {step.title}
                 </span>
@@ -176,8 +176,7 @@ export function CarePlanCreationModal({
             ))}
           </div>
         </DialogHeader>
-
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           {renderStep()}
         </div>
       </DialogContent>

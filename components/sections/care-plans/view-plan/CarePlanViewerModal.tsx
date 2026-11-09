@@ -86,14 +86,14 @@ export function CarePlanViewerModal({
           'p-0 flex flex-col overflow-hidden bg-white duration-200',
           isFullScreen
             ? 'w-screen h-screen max-w-none max-h-none rounded-none'
-            : 'max-w-7xl h-[90vh] max-h-[90vh] rounded-xl'
+            : 'h-[100dvh] max-h-[100dvh] w-screen max-w-none rounded-none sm:h-[90vh] sm:max-h-[90vh] sm:max-w-7xl sm:rounded-xl'
         )}
       >
-        <DialogHeader className="border-b border-cf-border pb-4 pt-6 px-6 bg-white shrink-0">
-          <div className="space-y-4 w-full">
-            <div className="flex items-start justify-between">
-              <div>
-                <DialogTitle className="text-2xl font-bold">
+        <DialogHeader className="border-b border-cf-border pb-3 pt-4 px-4 bg-white shrink-0 sm:pb-4 sm:pt-6 sm:px-6">
+          <div className="space-y-3 w-full sm:space-y-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
+                <DialogTitle className="text-xl font-bold sm:text-2xl">
                   Care Plan: {carePlan.patientName}
                 </DialogTitle>
                 <p className="text-sm text-cf-ink-60 mt-1">
@@ -108,7 +108,7 @@ export function CarePlanViewerModal({
                   className="gap-2"
                 >
                   <Edit2 className="h-4 w-4" />
-                  Edit
+                  <span className="hidden sm:inline">Edit</span>
                 </Button>
                 <Button
                   variant="outline"
@@ -116,7 +116,7 @@ export function CarePlanViewerModal({
                   className="gap-2"
                 >
                   <Download className="h-4 w-4" />
-                  Download
+                  <span className="hidden sm:inline">Download</span>
                 </Button>
                 <Button
                   variant="ghost"
@@ -142,8 +142,7 @@ export function CarePlanViewerModal({
                 </Button>
               </div>
             </div>
-
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
               <div className="text-sm">
                 <p className="text-cf-ink-60 font-medium">Date of Birth</p>
                 <p className="text-cf-ink">{carePlan.patientDOB}</p>
@@ -173,9 +172,8 @@ export function CarePlanViewerModal({
             )}
           </div>
         </DialogHeader>
-
-        <div className="flex-1 min-h-0 grid grid-cols-3 gap-0 overflow-hidden">
-          <div className="col-span-1 border-r border-cf-border h-full overflow-y-auto">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto md:grid md:grid-cols-3 md:gap-0 md:overflow-hidden">
+          <div className="max-h-44 shrink-0 overflow-y-auto border-b border-cf-border md:col-span-1 md:h-full md:max-h-none md:border-b-0 md:border-r">
             <div className="space-y-2 p-4">
               {carePlan.modules.map((module: CarePlanModule) => (
                 <button
@@ -213,9 +211,9 @@ export function CarePlanViewerModal({
             </div>
           </div>
 
-          <div className="col-span-2 h-full overflow-y-auto">
+          <div className="md:col-span-2 md:h-full md:overflow-y-auto">
             {selectedModule ? (
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-bold text-cf-ink">

@@ -5,11 +5,9 @@ import type { DashboardMapMarker } from "utils";
 
 interface DashboardLiveMapSectionProps {
   markers: DashboardMapMarker[];
-  /** Visits happening right now */
   activeCount: number;
 }
 
-/** Map of today's visits, coloured by status. */
 export function DashboardLiveMapSection({ markers, activeCount }: DashboardLiveMapSectionProps) {
   return (
     <Card variant="elevated" className="h-full w-full gap-0 py-0">

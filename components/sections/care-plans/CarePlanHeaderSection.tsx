@@ -10,23 +10,23 @@ interface CarePlanHeaderProps {
 
 export function CarePlanHeader({ onCreateNew, onExport }: CarePlanHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-4 pb-4 border-b border-cf-border-light">
+    <div className="flex flex-col gap-3 pb-4 border-b border-cf-border-light sm:flex-row sm:items-start sm:justify-between sm:gap-4">
       <div className='flex flex-col gap-y-1'>
-        <h1 className="font-heading text-3xl md:text-4xl font-semibold tracking-[-0.02em] text-cf-ink">
+        <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-semibold tracking-[-0.02em] text-cf-ink">
           Care Plans
         </h1>
         <p className="text-sm text-cf-ink-60">
           Create and manage patient care plans
         </p>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
         {onExport && (
-          <Button variant="outline" onClick={onExport} className="gap-1.5">
+          <Button variant="outline" onClick={onExport} className="flex-1 gap-1.5 sm:flex-none">
             <FileText className="h-4 w-4" />
             Export
           </Button>
         )}
-        <Button onClick={onCreateNew} className="gap-1.5">
+        <Button onClick={onCreateNew} className="flex-1 gap-1.5 sm:flex-none">
           <Plus className="h-4 w-4" />
           New Care Plan
         </Button>

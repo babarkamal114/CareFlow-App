@@ -80,7 +80,7 @@ function CarePlanReviewQueue() {
   const overdueItems = mockReviewItems.filter(item => (item.overdueDays || 0) > 0).length;
 
   return (
-    <Card className="w-full max-w-sm h-full border-cf-border ">
+    <Card className="w-full xl:max-w-sm h-full border-cf-border ">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center justify-between">

@@ -55,7 +55,8 @@ export function CarePlanBlocksSection({ carePlans = [] }: CarePlanBlocksSectionP
 
   return (
     <>
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="@container min-w-0 flex-1">
+      <div className="grid grid-cols-1 gap-4 @lg:grid-cols-2">
         {carePlans.map((plan) => {
           const daysUntil = getDaysUntil(plan.nextReviewDate);
           const isOverdue = daysUntil.includes('overdue');
@@ -67,9 +68,9 @@ export function CarePlanBlocksSection({ carePlans = [] }: CarePlanBlocksSectionP
               onClick={() => handlePlanClick(plan.id)}
             >
               <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h1 className='text-xl font-semibold text-cf-ink-60'>{plan.patientName}'s Care Plan Vault</h1>
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h1 className='min-w-0 text-lg sm:text-xl font-semibold text-cf-ink-60'>{plan.patientName}'s Care Plan Vault</h1>
+                  <div className="flex shrink-0 items-center gap-2">
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${statusColorMap[plan.overallStatus] || statusColorMap['draft']}`}>
                       {plan.overallStatus}
                     </span>
@@ -81,7 +82,7 @@ export function CarePlanBlocksSection({ carePlans = [] }: CarePlanBlocksSectionP
                   <span className="text-xs text-cf-ink-40">{plan.modules.length} Modules</span>
                 </div>
 
-                <div className="flex items-center gap-3 mt-2 text-xs text-cf-ink-60">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs text-cf-ink-60">
                   <span className="flex items-center gap-1">
                     <Users className="h-3 w-3" />
                     Key Worker: {plan.keyWorker}
@@ -109,6 +110,7 @@ export function CarePlanBlocksSection({ carePlans = [] }: CarePlanBlocksSectionP
             </Card>
           );
         })}
+      </div>
       </div>
 
       <CarePlanViewerModal
