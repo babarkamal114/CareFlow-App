@@ -34,6 +34,13 @@ export function getDashboardScoreTone(score: number): DashboardScoreTone {
   return "danger";
 }
 
+/** Plain-text status for a 0-100 score, so meaning isn't carried by colour alone. */
+export function getDashboardScoreStatus(score: number): string {
+  if (score >= 85) return "Good";
+  if (score >= 70) return "Needs improvement";
+  return "At risk";
+}
+
 export function getDashboardCqcOverall(domains: DashboardCqcDomain[]): number {
   if (domains.length === 0) return 0;
   return Math.round(domains.reduce((sum, d) => sum + d.score, 0) / domains.length);

@@ -16,7 +16,11 @@ export interface StatCardProps {
     hasValueBadge?: boolean;
     valueBadgeValue?: string;
     children?: React.ReactNode    
-    badgeVariant?: BadgeProps["variant"]; 
+    badgeVariant?: BadgeProps["variant"];
+    href?: string;
+    onSelect?: () => void;
+    isActive?: boolean;     
+    linkLabel?: string;
 }
 
 export type StatCardTrend = 'up' | 'down' | 'neutral'

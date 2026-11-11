@@ -12,18 +12,29 @@ interface DashboardAlertFeedSectionProps {
   highPriorityCount: number;
 }
 
-/** "Needs attention" feed: missed visits, late carers, overdue care plans, unsigned documents, expiring DBS checks. */
 export function DashboardAlertFeedSection({ items, countLabel, highPriorityCount }: DashboardAlertFeedSectionProps) {
   return (
-    <Card variant="elevated" className="flex-1 gap-0 py-0">
+    <Card
+      variant="elevated"
+      className="flex-1 gap-0 py-0"
+      id="needs-attention" 
+      role="region"
+      aria-labelledby="needs-attention-heading" 
+    >
       <div className="flex items-center justify-between border-b border-cf-border-light px-4 py-3">
-        <h2 className="flex items-center gap-2 font-heading text-base font-semibold text-cf-ink">
+        <h2
+          id="needs-attention-heading" // NEW
+          className="flex items-center gap-2 font-heading text-base font-semibold text-cf-ink"
+        >
           <AlertCircle className="size-4 text-cf-ink-60" aria-hidden />
           Needs Attention
         </h2>
-        <Badge variant={highPriorityCount > 0 ? "softDanger" : "softMuted"} shape="pill">
-          {countLabel}
-        </Badge>
+        <span role="status">
+          <Badge variant={highPriorityCount > 0 ? "softDanger" : "softMuted"} shape="pill">
+            {countLabel}
+          </Badge>
+          <span className="sr-only">, {highPriorityCount} high priority</span>
+        </span>
       </div>
 
       {items.length === 0 ? (
@@ -37,7 +48,7 @@ export function DashboardAlertFeedSection({ items, countLabel, highPriorityCount
         </div>
       ) : (
         <div className="min-h-0 flex-1 overflow-y-auto">
-          <ul className="divide-y divide-cf-border-light px-4">
+          <ul aria-labelledby="needs-attention-heading" className="divide-y divide-cf-border-light px-4">
             {items.map((alert) => (
               <AlertFeedItem key={alert.id} alert={alert} />
             ))}

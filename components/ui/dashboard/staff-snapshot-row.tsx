@@ -6,8 +6,9 @@ interface StaffSnapshotRowProps {
   segment: DashboardStaffSegment;
 }
 
-/** Label, headcount and a bar showing that group's share of all staff. */
 export function StaffSnapshotRow({ segment }: StaffSnapshotRowProps) {
+  const percent = Math.round(segment.percent);
+
   return (
     <li>
       <div className="mb-1 flex items-center justify-between text-sm">
@@ -15,17 +16,18 @@ export function StaffSnapshotRow({ segment }: StaffSnapshotRowProps) {
           <span className={cn("size-2 rounded-full", segment.barClass)} aria-hidden />
           {segment.label}
         </span>
-        <span className="font-semibold tabular-nums text-cf-ink">{segment.count}</span>
+        <span className="font-semibold tabular-nums text-cf-ink">
+          {segment.count}
+          <span className="sr-only"> staff, {percent}% of total</span>
+        </span>
       </div>
-      <Progress
-        value={segment.percent}
-        aria-label={`${segment.label}: ${Math.round(segment.percent)}% of staff`}
-        className="gap-0"
-      >
-        <ProgressTrack>
-          <ProgressIndicator className={segment.barClass} />
-        </ProgressTrack>
-      </Progress>
+      <div aria-hidden="true">
+        <Progress value={segment.percent} className="gap-0">
+          <ProgressTrack>
+            <ProgressIndicator className={segment.barClass} />
+          </ProgressTrack>
+        </Progress>
+      </div>
     </li>
   );
 }

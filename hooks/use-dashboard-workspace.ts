@@ -43,7 +43,6 @@ import {
   sortDashboardComplianceItems,
 } from "utils";
 
-// Stable empty values, so `?? []` doesn't create a new array on every render while loading.
 const NO_VISITS: DashboardVisit[] = [];
 const NO_PINS: DashboardMapPin[] = [];
 const NO_ALERTS: DashboardAlert[] = [];
@@ -53,6 +52,8 @@ const NO_COMPLIANCE: DashboardComplianceItem[] = [];
 export interface UseDashboardWorkspaceReturn {
   isLoading: boolean;
   visits: {
+    isLoading: boolean;
+    summaryLoading: boolean;
     rows: DashboardVisit[];
     filter: DashboardVisitFilter;
     setFilter: (filter: DashboardVisitFilter) => void;
@@ -119,7 +120,7 @@ export function useDashboardWorkspace(): UseDashboardWorkspaceReturn {
   );
   const cqc = useMemo(() => {
     if (!cqcData) return null;
-    const score = getDashboardCqcOverall(cqcData.domains);
+    const score = cqcData.overallScore; 
     return {
       score,
       trend: getDashboardCqcTrend(score, cqcData.previousOverallScore),
@@ -148,6 +149,8 @@ export function useDashboardWorkspace(): UseDashboardWorkspaceReturn {
       visitsQ.isLoading || summaryQ.isLoading || pinsQ.isLoading || alertsQ.isLoading || staffQ.isLoading ||
       cqcQ.isLoading || revenueQ.isLoading || activityQ.isLoading || complianceQ.isLoading,
     visits: {
+      summaryLoading: summaryQ.isPending,
+      isLoading: visitsQ.isLoading,
       rows: visitRows,
       filter: visitFilter,
       setFilter: setVisitFilter,

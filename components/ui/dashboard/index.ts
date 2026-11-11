@@ -8,3 +8,5 @@ export * from "./staff-snapshot-row";
 export * from "./visit-status-badge";
 export * from "./visits-table";
 export * from "./weekly-activity-chart";
+export * from './visit-patient-cell'
+export * from './staff-snapshot-row'

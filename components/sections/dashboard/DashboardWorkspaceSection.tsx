@@ -24,6 +24,9 @@ export function DashboardWorkspaceSection() {
         summary={visits.summary}
         completionRate={visits.completionRate}
         upcoming={visits.upcoming}
+        activeFilter={visits.filter}      
+        onFilterChange={visits.setFilter}  
+        isLoading={visits.summaryLoading}
       />
 
       <div className="grid gap-4 xl:grid-cols-3">

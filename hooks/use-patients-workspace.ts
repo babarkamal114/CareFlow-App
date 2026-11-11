@@ -20,7 +20,6 @@ type WorkspaceModal = "create" | "edit" | "medications" | null;
 const SIMULATED_LATENCY_MS = 500;
 const wait = () => new Promise((resolve) => setTimeout(resolve, SIMULATED_LATENCY_MS));
 
-/** Mock medications grouped by patient, so the drawer and the edit modal share one list. */
 function groupMedicationsByPatient(): Record<string, PatientMedication[]> {
   const grouped: Record<string, PatientMedication[]> = {};
   for (const { patientId, ...medication } of MOCK_PATIENT_MEDICATIONS) {

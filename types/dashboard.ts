@@ -11,6 +11,7 @@ export interface DashboardVisit {
   durationMins: number;
   status: DashboardVisitStatus;
   minutesLate?: number;
+  patientId: string;
 }
 
 export type TodaysVisitsResponse = {
@@ -27,6 +28,7 @@ export interface VisitDTO {
   startTime: string;
   endTime: string;
   status: DashboardVisitStatus;
+  patientId: string; 
 }
 
 /** Whole-day totals for the agency (the table below only lists a sample of visits). */
@@ -38,11 +40,10 @@ export interface DashboardVisitSummary {
   missed: number;
 }
 
-/** Position of a visit pin on the mock map, as a percentage of the map box. */
 export interface DashboardMapPin {
   visitId: string;
-  x: number;
-  y: number;
+  lat: number; 
+  lng: number; 
 }
 
 // ---- Alerts ----
@@ -64,6 +65,7 @@ export interface DashboardAlert {
   subject: string;
   detail: string;
   minutesAgo: number;
+  href?: string;
 }
 
 // ---- Staff ----
@@ -83,6 +85,7 @@ export interface DashboardCqcDomain {
 }
 
 export interface DashboardCqcOverview {
+  overallScore: number;
   previousOverallScore: number;
   domains: DashboardCqcDomain[];
 }
@@ -114,4 +117,5 @@ export interface DashboardComplianceItem {
   title: string;
   subject: string;
   dueInDays: number;
+  href?: string;
 }

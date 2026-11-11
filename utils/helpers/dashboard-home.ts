@@ -106,10 +106,10 @@ export function getUpcomingVisitCount(summary: DashboardVisitSummary): number {
 
 export interface DashboardMapMarker {
   visitId: string;
-  x: number;
-  y: number;
   label: string;
   status: DashboardVisitStatus;
+  lat: number; 
+  lng: number; 
 }
 
 export const DASHBOARD_MAP_PIN_CLASSES: Record<DashboardVisitStatus, string> = {
@@ -129,7 +129,7 @@ export function buildDashboardMapMarkers(
   return pins.flatMap((pin) => {
     const visit = byId.get(pin.visitId);
     if (!visit) return [];
-    return [{ visitId: pin.visitId, x: pin.x, y: pin.y, label: visit.patientName, status: visit.status }];
+    return [{ visitId: pin.visitId, lat: pin.lat, lng: pin.lng, label: visit.patientName, status: visit.status }];
   });
 }
 

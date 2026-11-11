@@ -7,9 +7,20 @@ interface DashboardVisitSectionProps {
   visits: DashboardVisit[];
   filter: DashboardVisitFilter;
   onFilterChange: (filter: DashboardVisitFilter) => void;
+  isLoading?: boolean;
 }
 
-/** Today's visits table with its status filter. */
-export function DashboardVisitSection({ visits, filter, onFilterChange }: DashboardVisitSectionProps) {
-  return <VisitsTable visits={visits} filter={filter} onFilterChange={onFilterChange} />;
+const getPatientProfileHref = (visit: DashboardVisit) =>
+  visit.patientId ? `/patients/${visit.patientId}` : undefined;
+
+export function DashboardVisitSection({ visits, filter, onFilterChange, isLoading }: DashboardVisitSectionProps) {
+  return (
+    <VisitsTable
+      visits={visits}
+      filter={filter}
+      onFilterChange={onFilterChange}
+      isLoading={isLoading}
+      getPatientHref={getPatientProfileHref}
+    />
+  );
 }
