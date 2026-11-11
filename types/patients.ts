@@ -8,11 +8,9 @@ export type PatientTab =
   | "review-date"
   | "new";
 
-/** Form errors. Matches what runSchema() returns. */
 export type PatientFormErrors = Partial<Record<string, string>>;
 
-export type WithId<T> = T & { id: string };
-
+export type WithId<T> = T & { id : string};
 /* --------------------------- Profile fragments --------------------------- */
 
 export interface PatientKeyPeople {
@@ -65,7 +63,6 @@ export interface PatientPreferencesInfo {
   dailyRoutine?: string;
 }
 
-/** "About Me" life story (blueprint §3.1.1). */
 export interface PatientLifeStory {
   personalHistory?: string;
   familyBackground?: string;
@@ -158,13 +155,9 @@ export interface Patient
   age: number;
   risk: PatientRisk;
   status: PatientStatus;
-  /** Primary carer's display name. */
   carer: string;
-  /** ISO datetime of the next scheduled visit, null when none. */
   nextVisit: string | null;
-  /** ISO date the care plan is next due for review (blueprint §3.1.2). */
   carePlanReviewDate: string | null;
-  /** ISO date the patient was admitted. */
   admissionDate: string;
   conditions?: PatientCondition[];
   allergies?: PatientAllergy[];

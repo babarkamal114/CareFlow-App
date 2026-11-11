@@ -5,7 +5,6 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Button,
   TableCell,
   TableRow,
 } from "@/components/ui";
@@ -20,8 +19,22 @@ interface PatientRowProps {
 }
 
 export function PatientRow({ patient, onView }: PatientRowProps) {
+  const handleView = () => onView?.(patient);
+
   return (
-    <TableRow className="border-b border-cf-border-light transition-colors hover:bg-cf-surface-muted/50">
+    <TableRow
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${patient.name}`}
+      onClick={handleView}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleView();
+        }
+      }}
+      className="cursor-pointer border-b border-cf-border-light transition-colors hover:bg-cf-surface-muted/50 focus-visible:bg-cf-surface-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cf-ink/20"
+    >
       <TableCell>
         <div className="flex min-w-0 items-center gap-3">
           <Avatar className="size-8 shrink-0 border border-cf-border-light">
@@ -58,14 +71,7 @@ export function PatientRow({ patient, onView }: PatientRowProps) {
       </TableCell>
 
       <TableCell className="text-right">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`View ${patient.name}`}
-          onClick={() => onView?.(patient)}
-        >
-          <ChevronRight />
-        </Button>
+        <ChevronRight className="ml-auto size-4 text-cf-ink-60" aria-hidden="true" />
       </TableCell>
     </TableRow>
   );

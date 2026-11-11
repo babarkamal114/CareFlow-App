@@ -11,6 +11,7 @@ import type { Patient } from "types";
 import { PatientRiskBadge } from "./patient-risk-badge";
 import { PatientStatusBadge } from "./patient-status-badge";
 
+
 interface PatientDrawerHeaderProps {
   patient: Pick<Patient, "id" | "name" | "initials" | "avatar" | "age" | "risk" | "status">;
 }
@@ -36,7 +37,7 @@ export function PatientDrawerHeader({ patient }: PatientDrawerHeaderProps) {
             ID: {patient.id}
           </DrawerDescription>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <Badge variant="pastel-info" shape="pill" badgeSize="md">
+            <Badge variant="pastel-info" shape="rounded" badgeSize="md">
               Age: {patient.age}
             </Badge>
             <PatientRiskBadge risk={patient.risk} suffix="Risk" />
@@ -45,6 +46,7 @@ export function PatientDrawerHeader({ patient }: PatientDrawerHeaderProps) {
             ) : null}
           </div>
         </div>
+
       </div>
     </DrawerHeader>
   );

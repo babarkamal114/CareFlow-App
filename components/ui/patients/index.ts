@@ -7,3 +7,4 @@ export * from "./patients-table";
 export * from "./patient-drawer-header";
 export * from "./patient-drawer-skeleton";
 export * from "./patient-drawer-tab-list";
+export * from './patient-drawer-footer'

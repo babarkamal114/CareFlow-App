@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui";
 
-/** Placeholder for a drawer tab body while its data loads. */
 export function PatientDrawerSkeleton() {
   return (
     <div className="space-y-4" aria-hidden>

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui";
 import type { PatientDrawerTabId } from "types";
 
+
 interface DrawerTab {
   value: PatientDrawerTabId;
   label: string;
@@ -24,14 +25,14 @@ interface PatientDrawerTabListProps {
   onSelectTab: (tab: PatientDrawerTabId) => void;
 }
 
-/** Main tabs inline, the rest under a "More" menu. */
 export function PatientDrawerTabList({
   mainTabs,
   moreTabs,
   activeTab,
   onSelectTab,
 }: PatientDrawerTabListProps) {
-  const moreActive = moreTabs.find((tab) => tab.value === activeTab);
+
+  const moreActive = moreTabs.find((tabs) => tabs.value === activeTab);
 
   return (
     <div className="flex items-center justify-between border-b border-cf-border px-6">
@@ -45,9 +46,9 @@ export function PatientDrawerTabList({
 
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="ghost" size="sm" className="gap-1 text-xs" />}
+          render={<Button variant="ghost" size="sm" className="gap-1 text-sm" />}
         >
-          {moreActive ? moreActive.label : "More"}
+          {moreActive ? moreActive.label : "View more"}
           <ChevronDown className="size-3.5" aria-hidden />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">

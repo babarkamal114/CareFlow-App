@@ -13,7 +13,7 @@ import {
   PATIENT_DRAWER_FOOTER_MENU_ACTIONS,
   PATIENT_DRAWER_FOOTER_DISCHARGE_ACTION,
   type PatientDrawerFooterHandlers,
-} from "app-utils/patients-page";
+} from "utils";
 
 type PatientDrawerFooterProps = PatientDrawerFooterHandlers;
 

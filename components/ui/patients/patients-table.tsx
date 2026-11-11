@@ -16,7 +16,6 @@ import { PatientTableSkeleton } from "./patient-table-skeleton";
 interface PatientsTableProps {
   patients: Patient[];
   isLoading?: boolean;
-  /** True when a tab or search is narrowing the list (changes the empty message). */
   hasFilters?: boolean;
   onView?: ((patient: Patient) => void) | undefined;
 }

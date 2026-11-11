@@ -2,7 +2,6 @@ import { Users } from "lucide-react";
 import { EmptyState } from "@/components/ui";
 
 interface PatientEmptyStateProps {
-  /** True when a tab or search is narrowing the list. */
   hasFilters?: boolean;
 }
 

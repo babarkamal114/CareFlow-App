@@ -1,6 +1,4 @@
-/**
- * Create-patient wizard form types (blueprint §5.3 admission wizard).
- */
+
 import type {
   PatientAllergy,
   PatientCommunicationInfo,

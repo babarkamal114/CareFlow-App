@@ -29,6 +29,8 @@ export * from "./file-format-size";
 export * from "./slug-generator";
 export * from "./progress-colors";
 export * from "./staff-profile";
+export * from './patients-page'
+export * from './patient-discharge'
 export {
   generateCarePlanSuggestions,
   mockVisitNotes,

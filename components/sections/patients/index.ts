@@ -3,7 +3,6 @@ export { PatientDetailWorkspace } from "./PatientDetailWorkspace";
 export { PatientsStatsSection } from "./PatientsStatsSection";
 export { PatientsFilterToolbarSection } from "./PatientsFilterToolbarSection";
 export { PatientsPageHeader } from "./PatientsPageHeader";
-export { PatientDrawerFooter } from "./PatientDrawerFooter";
 export { PatientDrawer } from "./patient-drawer/PatientDrawer";
 export { EditPatientModal } from "./patient-drawer/PatientEditModal";
 export { PatientActivityTab } from "./patient-drawer/PatientActivityTab";

@@ -19,7 +19,7 @@ import {
 } from "app-utils/patient-drawer";
 import type { DischargePayload, Patient, PatientDrawerTabId } from "types";
 import type { PatientMedication } from "types";
-import { PatientDrawerFooter } from '../PatientDrawerFooter';
+import { PatientDrawerFooter } from '@/components/ui/patients';
 import { PatientDischargeModal } from './PatientDischargeModal';
 import { PatientInfoTab } from './PatientInfoTab';
 import { PatientMedicalHistoryTab } from './PatientMedicalHistoryTab';

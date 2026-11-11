@@ -1,7 +1,3 @@
-/**
- * Patient record types shown in the drawer tabs:
- * medications (eMAR), activity, documents, daily notes, risk assessments.
- */
 import type { PatientRisk } from "./patients";
 
 export type MedicationType =
@@ -34,7 +30,6 @@ export interface PatientActivity {
   patientId: string;
   carer: string;
   activity: string;
-  /** ISO datetime. */
   time: string;
   type: ActivityType;
 }
@@ -44,7 +39,6 @@ export interface PatientDocument {
   patientId: string;
   name: string;
   docType: string;
-  /** ISO date. */
   uploadedDate: string;
   size: string;
 }

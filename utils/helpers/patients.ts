@@ -3,7 +3,6 @@ import { PATIENTS_MOCK_TODAY } from "../constants";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-/** Single place that says what "today" is for the Patients page. */
 export const getPatientsToday = (): string => PATIENTS_MOCK_TODAY;
 
 const toDayNumber = (iso: string): number => {
