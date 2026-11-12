@@ -17,3 +17,4 @@ export { ModuleDetailsForm as ModuleDetailForm } from "./create-plan/ModuleDetai
 export { ModuleReviewSubmit } from "./create-plan/ModuleReviewSubmit";
 export { PersonalCareForm } from "./create-plan/PersonalCareForm";
 export { CarePlanAiSuggestions } from "./CarePlanAiSuggestions";
+export * from './CarePlanDeepLink'

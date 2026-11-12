@@ -1,4 +1,5 @@
 import type { InteractionRule, AdministrationRecord, AuditReport, ControlledEntry, ControlledStock, HistoryDose, Medication, MedicationPatient, PrnRecord, ScheduledDose } from "types";
+import { MOCK_PATIENTS } from "./patients";
 
 export const mockInteractionRules: InteractionRule[] = [
   { a: "warfarin", b: "aspirin", severity: "major", message: "Increased bleeding risk — review with the GP or anticoagulant clinic" },
@@ -18,16 +19,17 @@ export const mockAllergyAliases: Record<string, string[]> = {
   sulfonamides: ["sulfamethoxazole", "co-trimoxazole", "sulfasalazine"],
   latex: [],
 };
-const patients: MedicationPatient[] = [
-  { id: "p-1", name: "Margaret Johnson", initials: "MJ", allergies: ["Penicillin"] },
-  { id: "p-2", name: "Robert Ahmed", initials: "RA", allergies: [] },
-  { id: "p-3", name: "Edna Morris", initials: "EM", allergies: ["Aspirin"] },
-  { id: "p-4", name: "Dorothy Chen", initials: "DC", allergies: ["Sulfonamides"] },
-  { id: "p-5", name: "Henry Smith", initials: "HS", allergies: [] },
-  { id: "p-6", name: "Arthur Wilson", initials: "AW", allergies: ["Latex"] },
-  { id: "p-7", name: "Barbara Williams", initials: "BW", allergies: [] },
-  { id: "p-8", name: "Patricia Smith", initials: "PS", allergies: ["Codeine"] },
-];
+const patients: MedicationPatient[] = MOCK_PATIENTS
+  .filter((p) => p.status !== "discharged")
+  .map((p) => ({ id: p.id, name: p.name, initials: p.initials, allergies: (p.allergies ?? []).map((a) => a.name) }));
+
+/** Old mock ids -> real patient ids. Temporary: delete this map and the old "p-n" ids once real data arrives. */
+const PATIENT_ID_MAP: Record<string, string> = {
+  "p-1": "5", "p-2": "4", "p-3": "3", "p-4": "1", "p-5": "2", "p-6": "6", "p-7": "7", "p-8": "7",
+};
+
+const remap = <T extends { patientId: string }>(rows: T[]): T[] =>
+  rows.map((r) => ({ ...r, patientId: PATIENT_ID_MAP[r.patientId] ?? r.patientId }));
 const start = new Date(2026, 0, 12);
 const medications: Medication[] = [
   { id: "med-1", patientId: "p-1", drugName: "Levothyroxine", strength: "75mcg", route: "oral", type: "regular", frequency: "once-daily", times: ["08:00"], prescriber: "Dr Patel", indication: "Underactive thyroid", instructions: "Give 30 minutes before breakfast", startDate: start, barcode: "5012340000001", active: true },
@@ -215,10 +217,10 @@ const reports: AuditReport[] = [
   { id: "rep-1", period: "July 2026", generatedAt: new Date(2026, 7, 1, 6, 0), administrationRate: 92.1, scheduled: 870, generatedBy: "auto" },
 ];
 export const mockMedicationPatients = patients;
-export const mockMedications = medications;
-export const mockDoses = doses;
-export const mockHistory = history;
-export const mockPrnRecords = prn;
+export const mockMedications = remap(medications);
+export const mockDoses = remap(doses);
+export const mockHistory = remap(history);
+export const mockPrnRecords = remap(prn);
 export const mockControlledStock = stock;
-export const mockControlledEntries = entries;
+export const mockControlledEntries = remap(entries);
 export const mockAuditReports = reports;

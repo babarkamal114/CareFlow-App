@@ -1,0 +1,52 @@
+import type { CarePlan } from "types";
+import { mockCarePlan, mockModules } from "./core";
+
+export const mockCarePlansList: CarePlan[] = [
+  {
+    ...mockCarePlan,
+    patientId: "1",
+    patientName: "Dorothy Chen",
+    patientDOB: "1946-03-15",
+    patientAddress: "123 Oak Street, Manchester, M1 2AB",
+    keyWorker: "Sarah Johnson",
+  },
+  {
+    ...mockCarePlan,
+    id: "cp-2024-002",
+    patientId: "2",
+    patientName: "James Okafor",
+    patientDOB: "1962-08-22",
+    patientAddress: "456 Elm Avenue, Birmingham, B1 2AB",
+    keyWorker: "Michael Chen",
+    modules: [mockModules.medication, mockModules.mobility],
+    overallStatus: "approved",
+    lastReviewDate: "2024-02-15",
+    nextReviewDate: "2024-03-14",
+  },
+  {
+    ...mockCarePlan,
+    id: "cp-2024-003",
+    patientId: "3",
+    patientName: "Edna Morris",
+    patientDOB: "1939-11-03",
+    patientAddress: "789 Pine Road, Leeds, LS1 2AB",
+    keyWorker: "Emma Williams",
+    modules: [mockModules.nutrition, mockModules.dementia, mockModules.personalCare],
+    overallStatus: "in-review",
+    lastReviewDate: "2024-03-01",
+    nextReviewDate: "2024-03-29",
+  },
+  {
+    ...mockCarePlan,
+    id: "cp-2024-004",
+    patientId: "4",
+    patientName: "Robert Hayes",
+    patientDOB: "1952-06-30",
+    patientAddress: "321 Birch Lane, Liverpool, L1 2AB",
+    keyWorker: "David Smith",
+    modules: [mockModules.mobility, mockModules.personalCare],
+    overallStatus: "draft",
+    lastReviewDate: "2024-03-12",
+    nextReviewDate: "2024-02-09",
+  },
+];

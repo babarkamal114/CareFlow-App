@@ -14,3 +14,4 @@ export { ScheduleRecurringVisitModal } from "./ScheduleRecurringVisitModal";
 export { ScheduleVisitTemplatesModal } from "./ScheduleVisitTemplatesModal";
 export { ScheduleOptimiseDialog } from "./ScheduleOptimiseDialog";
 export { ScheduleWorkspaceSection } from "./ScheduleWorkspaceSection";
+export * from './ScheduleDeepLink'

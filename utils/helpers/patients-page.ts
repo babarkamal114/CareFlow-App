@@ -76,7 +76,6 @@ export const PATIENT_DRAWER_FOOTER_ACTIONS: {
   { handler: 'onScheduleVisit', label: 'Schedule', Icon: Calendar, variant: 'default' },
   { handler: 'onEdit', label: 'Edit', Icon: Edit, variant: 'outline' },
   { handler: 'onCarePlan', label: 'Add Care Plan', Icon: FileText, variant: 'outline' },
-  { handler: 'onMedication', label: 'Update Medication', Icon: Pill, variant: 'outline' },
 ];
 
 export const PATIENT_DRAWER_FOOTER_MENU_ACTIONS: {

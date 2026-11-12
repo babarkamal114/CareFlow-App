@@ -5,21 +5,26 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { InteractionRule, Medication, ProfileGroup } from "types";
 import { findRegimeInteractions } from "app-utils/medication-audit";
 import { formatMedDate, isRecentlyChanged } from "app-utils/medication";
+import { getMedicationCardId } from "app-utils/medication-deep-link";
 import { FREQUENCY_LABEL, ROUTE_LABEL } from "app-utils/medication-display";
 import { InteractionWarnings } from "./interaction-warnings";
 import { MedicationTypeBadge } from "./medication-type-badge";
 
 interface MedicationProfileCardProps {
   group: ProfileGroup; now: Date; rules: InteractionRule[];
+  highlighted?: boolean;
   onAdd: (patientId: string) => void; onEdit: (m: Medication) => void; onDiscontinue: (m: Medication) => void;
 }
 
-export function MedicationProfileCard({ group, now, rules, onAdd, onEdit, onDiscontinue }: MedicationProfileCardProps) {
+export function MedicationProfileCard({ group, now, rules, highlighted = false, onAdd, onEdit, onDiscontinue }: MedicationProfileCardProps) {
   const { patient, medications } = group;
   const warnings = findRegimeInteractions(medications, rules).map((i) => ({ ...i.warning, with: `${i.a.drugName} + ${i.b.drugName}` }));
 
   return (
-    <Card className="rounded-2xl border-cf-border-light shadow-cf-sm">
+    <Card
+      id={getMedicationCardId(patient.id)}
+      className={`scroll-mt-24 rounded-2xl border-cf-border-light shadow-cf-sm transition-shadow duration-500 ${highlighted ? "ring-2 ring-brand-500 ring-offset-2" : ""}`}
+    >
       <CardHeader className="pb-2">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-3">

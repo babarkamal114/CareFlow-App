@@ -101,6 +101,19 @@ export function useScheduleWorkspace() {
     setActiveModal('add');
   }, [date]);
 
+    /** Opens Add Visit with the patient already chosen (used by the Patient Drawer's Schedule button). */
+  const openAddVisitForPatient = useCallback(
+    (patientId: string) => {
+      const known = scheduleMockPatients.some((p) => p.id === patientId);
+      if (!known) {
+        toast.info('This patient is not available for scheduling', { description: 'Choose a patient in the form.' });
+      }
+      setAddDefaults({ date: toIsoDate(date), ...(known ? { patientId } : {}) });
+      setActiveModal('add');
+    },
+    [date]
+  );
+
   const openWhatIf = useCallback(() => {
     setOptimiseMode({ kind: 'what-if' });
     setActiveModal('optimise');
@@ -184,7 +197,6 @@ export function useScheduleWorkspace() {
     issuesByVisitId,
     conflictCount,
     selectedVisit,
-    // View state
     date,
     setDate,
     view,
@@ -194,23 +206,21 @@ export function useScheduleWorkspace() {
     draggedVisitId,
     setDraggedVisitId,
     isAiScheduling,
-    // Modals
     activeModal,
     closeModal,
     addDefaults,
     optimiseMode,
     openAddVisit,
+    openAddVisitForPatient,
     openEdit,
     openRecurring,
     openTemplates,
     openWhatIf,
     openAssign,
     assignFromDetail,
-    // Calendar handlers
     selectEvent,
     selectSlot,
     runAiSchedule,
-    // Data actions
     ...actions,
   };
 }

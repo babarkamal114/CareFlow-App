@@ -8,3 +8,4 @@ export * from "./finance";
 export * from "./live-monitoring";
 export * from "./medication";
 export * from "./schedule";
+export * from './care-plans'

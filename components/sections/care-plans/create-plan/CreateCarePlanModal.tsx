@@ -18,7 +18,8 @@ import { ModuleReviewSubmit } from './ModuleReviewSubmit';
 interface CarePlanCreationModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  patientId?: string;
+  patientId?: string | undefined;
+  patientName?: string | undefined;
   onComplete?: (data: ModuleCreationData) => void;
 }
 
@@ -31,6 +32,7 @@ const steps: { id: CreationStep; title: string; description: string }[] = [
 export function CarePlanCreationModal({
   open,
   onOpenChange,
+  patientName,
   patientId,
   onComplete,
 }: CarePlanCreationModalProps) {
@@ -138,7 +140,7 @@ export function CarePlanCreationModal({
                 Create New Care Plan Module
               </DialogTitle>
               <DialogDescription className="text-cf-ink-60">
-                {steps[currentStepIndex].description}
+                {patientName ? `For ${patientName} · ` : ''}{steps[currentStepIndex].description}
               </DialogDescription>
             </div>
           </div>

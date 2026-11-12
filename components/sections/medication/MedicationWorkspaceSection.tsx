@@ -5,9 +5,10 @@ import { MedicationFormDialog } from "ui/medication/medication-form-dialog";
 import { useMedicationAlerts } from "hooks";
 import { useMedicationProfiles } from "hooks";
 import { useRoundRows } from "hooks";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import type { MedTab } from "types";
 import { summarizeRound } from "app-utils/medication";
+import { MedicationDeepLink } from "./MedicationDeepLink";
 import { MedicationHeaderSection } from "./MedicationHeaderSection";
 import { MedicationStatsSection } from "./MedicationStatsSection";
 import { MedicationTabsSection } from "./MedicationTabsSection";
@@ -19,8 +20,18 @@ export function MedicationWorkspaceSection() {
   const profiles = useMedicationProfiles();
   const summary = useMemo(() => summarizeRound(rows), [rows]);
 
+  const handleDeepLink = (patientId: string, wantsAdd: boolean) => {
+    setTab("profiles");
+    profiles.focusPatient(patientId);
+    if (wantsAdd) profiles.openAdd(patientId);
+  };
+
   return (
     <>
+      <Suspense fallback={null}>
+        <MedicationDeepLink onLink={handleDeepLink} />
+      </Suspense>
+
       <MedicationHeaderSection
         urgentCount={alerts.urgentCount}
         onAdd={() => { setTab("profiles"); profiles.openAdd(); }}

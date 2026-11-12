@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Suspense } from 'react';
+import { ScheduleDeepLink } from './ScheduleDeepLink';
 import { useScheduleWorkspace } from "hooks";
 import { ScheduleAddVisitModal } from './ScheduleAddVisitModal';
 import { ScheduleCalendarSection } from './ScheduleCalendarSection';
@@ -31,6 +33,10 @@ export function ScheduleWorkspaceSection() {
 
   return (
     <motion.div initial="hidden" animate="show" variants={container} className="space-y-4">
+
+       <Suspense fallback={null}>
+        <ScheduleDeepLink onAddVisit={ws.openAddVisitForPatient} />
+      </Suspense>
       <motion.div variants={item}>
         <ScheduleHeaderSection onAddVisit={ws.openAddVisit} />
       </motion.div>

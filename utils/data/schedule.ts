@@ -72,34 +72,35 @@ export const scheduleMockCarers: ScheduleCarer[] = [
     leaveDates: [],
   },
 ];
+// Patient ids match the Patients page ("1"–"8") so links from the patient drawer find the right person.
 export const scheduleMockPatients: SchedulePatient[] = [
   {
-    id: "p-1", name: "Dorothy Chen", address: "123 Oak Street, Manchester", area: "central",
+    id: "1", name: "Dorothy Chen", address: "123 Oak Street, Manchester", area: "central",
     preferences: { carerGender: "female", languages: [], prefersContinuity: true, preferredCarerId: "c-1" },
   },
   {
-    id: "p-2", name: "James Okafor", address: "456 Elm Avenue, Birmingham", area: "north",
+    id: "2", name: "James Okafor", address: "456 Elm Avenue, Birmingham", area: "north",
     preferences: { languages: [], prefersContinuity: false },
   },
   {
-    id: "p-3", name: "Edna Morris", address: "789 Pine Road, Leeds", area: "east",
+    id: "3", name: "Edna Morris", address: "789 Pine Road, Leeds", area: "east",
     preferences: { carerGender: "female", languages: [], prefersContinuity: true, preferredCarerId: "c-3" },
   },
   {
-    id: "p-4", name: "Robert Hayes", address: "321 Birch Lane, Liverpool", area: "south",
+    id: "4", name: "Robert Hayes", address: "321 Birch Lane, Liverpool", area: "south",
     preferences: { languages: [], prefersContinuity: false },
   },
   {
-    id: "p-5", name: "Sophie Martinez", address: "654 Cedar Court, Bristol", area: "west",
+    id: "5", name: "Sophie Martinez", address: "654 Cedar Court, Bristol", area: "west",
     preferences: { languages: ["Spanish"], prefersContinuity: false },
   },
   {
-    id: "p-6", name: "Margaret Johnson", address: "12 Maple Close, Manchester", area: "central",
-    preferences: { languages: [], prefersContinuity: false },
+    id: "6", name: "Tariq Hussain", address: "14 Mill Lane, Bradford", area: "north",
+    preferences: { languages: ["Urdu"], prefersContinuity: true },
   },
   {
-    id: "p-7", name: "Tariq Mahmood", address: "9 Rose Terrace, Manchester", area: "north",
-    preferences: { languages: ["Urdu"], prefersContinuity: true },
+    id: "7", name: "Arthur Bennett", address: "8 Station Road, Sheffield", area: "central",
+    preferences: { languages: [], prefersContinuity: false },
   },
 ];
 export const scheduleMockTemplates: VisitTemplate[] = [
@@ -126,12 +127,12 @@ export const scheduleMockTemplates: VisitTemplate[] = [
 ];
 export const scheduleMockRecurringRules: RecurringRule[] = [
   {
-    id: "r-1", patientId: "p-1", carerId: "c-1", templateId: "t-1", type: "care-visit",
+    id: "r-1", patientId: "1", carerId: "c-1", templateId: "t-1", type: "care-visit",
     startTime: "08:30", durationMinutes: 30, frequency: "weekly", days: WEEKDAYS,
     startDate: isoDay(0), endDate: isoDay(90),
   },
   {
-    id: "r-2", patientId: "p-2", carerId: "c-7", templateId: "t-2", type: "medication",
+    id: "r-2", patientId: "2", carerId: "c-7", templateId: "t-2", type: "medication",
     startTime: "18:00", durationMinutes: 60, frequency: "weekly", days: ["mon", "wed", "fri"],
     startDate: isoDay(0), endDate: isoDay(90),
   },
@@ -161,45 +162,45 @@ function visit(
 const PEG = { requiredSkills: ["Peg Feeding"] };
 export const scheduleMockVisits: ScheduleVisit[] = [
   // Previous week (completed)
-  visit("v-1", -3, "p-1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care", { status: "completed" }),
-  visit("v-2", -3, "p-2", "c-2", "09:00", "10:00", "medication", "Medication Round", { status: "completed" }),
+  visit("v-1", -3, "1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care", { status: "completed" }),
+  visit("v-2", -3, "2", "c-2", "09:00", "10:00", "medication", "Medication Round", { status: "completed" }),
   // Mon 18 (today)
-  visit("v-3", 0, "p-1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care", { status: "completed" }),
-  visit("v-4", 0, "p-2", "c-2", "09:00", "10:00", "medication", "Medication Round", { status: "completed" }),
-  visit("v-5", 0, "p-7", "c-8", "09:30", "10:30", "care-visit", "Morning Personal Care", { status: "missed", notes: "No check-in recorded" }),
-  visit("v-6", 0, "p-3", "c-3", "10:00", "11:30", "care-visit", "Personal Care and Feeding", { status: "in-progress", ...PEG }),
-  visit("v-7", 0, "p-6", "c-8", "11:00", "11:30", "care-visit", "Welfare Check"),
-  visit("v-8", 0, "p-4", "c-4", "13:00", "14:00", "follow-up", "Follow-up Visit"),
+  visit("v-3", 0, "1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care", { status: "completed" }),
+  visit("v-4", 0, "2", "c-2", "09:00", "10:00", "medication", "Medication Round", { status: "completed" }),
+  visit("v-5", 0, "6", "c-8", "09:30", "10:30", "care-visit", "Morning Personal Care", { status: "missed", notes: "No check-in recorded" }),
+  visit("v-6", 0, "3", "c-3", "10:00", "11:30", "care-visit", "Personal Care and Feeding", { status: "in-progress", ...PEG }),
+  visit("v-7", 0, "7", "c-8", "11:00", "11:30", "care-visit", "Welfare Check"),
+  visit("v-8", 0, "4", "c-4", "13:00", "14:00", "follow-up", "Follow-up Visit"),
   // Tue 19
-  visit("v-9", 1, "p-1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care"),
-  visit("v-10", 1, "p-5", "c-5", "10:00", "11:00", "care-visit", "Personal Care"),
-  visit("v-11", 1, "p-4", "c-4", "14:00", "15:00", "follow-up", "Follow-up Visit"), // c-4 not available Tuesdays
+  visit("v-9", 1, "1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care"),
+  visit("v-10", 1, "5", "c-5", "10:00", "11:00", "care-visit", "Personal Care"),
+  visit("v-11", 1, "4", "c-4", "14:00", "15:00", "follow-up", "Follow-up Visit"), // c-4 not available Tuesdays
   // Wed 20
-  visit("v-12", 2, "p-1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care"),
-  visit("v-13", 2, "p-2", "c-2", "09:00", "10:00", "medication", "Medication Round"),
-  visit("v-14", 2, "p-6", "c-2", "09:30", "10:30", "care-visit", "Personal Care"), // double-booked with v-13
-  visit("v-15", 2, "p-3", "c-3", "09:00", "10:00", "care-visit", "Personal Care and Feeding", PEG), // c-3 on leave
-  visit("v-16", 2, "p-5", "c-5", "13:30", "14:30", "review", "Care Plan Review"),
+  visit("v-12", 2, "1", "c-1", "08:30", "09:30", "care-visit", "Morning Personal Care"),
+  visit("v-13", 2, "2", "c-2", "09:00", "10:00", "medication", "Medication Round"),
+  visit("v-14", 2, "7", "c-2", "09:30", "10:30", "care-visit", "Personal Care"), // double-booked with v-13
+  visit("v-15", 2, "3", "c-3", "09:00", "10:00", "care-visit", "Personal Care and Feeding", PEG), // c-3 on leave
+  visit("v-16", 2, "5", "c-5", "13:30", "14:30", "review", "Care Plan Review"),
   // Thu 21
-  visit("v-17", 3, "p-1", "c-2", "08:30", "09:30", "care-visit", "Morning Personal Care"), // gender + continuity
-  visit("v-18", 3, "p-7", "c-1", "10:00", "11:00", "care-visit", "Personal Care"), // language
-  visit("v-19", 3, "p-4", "c-4", "11:00", "12:00", "follow-up", "Follow-up Visit"),
+  visit("v-17", 3, "1", "c-2", "08:30", "09:30", "care-visit", "Morning Personal Care"), // gender + continuity
+  visit("v-18", 3, "6", "c-1", "10:00", "11:00", "care-visit", "Personal Care"), // language
+  visit("v-19", 3, "4", "c-4", "11:00", "12:00", "follow-up", "Follow-up Visit"),
   // Fri 22
-  visit("v-20", 4, "p-1", "c-1", "10:00", "11:00", "care-visit", "Personal Care"),
-  visit("v-21", 4, "p-4", "c-1", "11:05", "12:00", "follow-up", "Follow-up Visit"), // not enough travel time
-  visit("v-22", 4, "p-3", "c-2", "14:00", "15:00", "care-visit", "Personal Care and Feeding", PEG), // missing skill
-  visit("v-23", 4, "p-6", "c-7", "14:30", "15:30", "care-visit", "Personal Care"),
+  visit("v-20", 4, "1", "c-1", "10:00", "11:00", "care-visit", "Personal Care"),
+  visit("v-21", 4, "4", "c-1", "11:05", "12:00", "follow-up", "Follow-up Visit"), // not enough travel time
+  visit("v-22", 4, "3", "c-2", "14:00", "15:00", "care-visit", "Personal Care and Feeding", PEG), // missing skill
+  visit("v-23", 4, "7", "c-7", "14:30", "15:30", "care-visit", "Personal Care"),
   // Sat 23
-  visit("v-24", 5, "p-5", "c-5", "10:00", "11:00", "care-visit", "Personal Care"),
+  visit("v-24", 5, "5", "c-5", "10:00", "11:00", "care-visit", "Personal Care"),
   // Next week (recurring)
-  visit("v-25", 7, "p-1", "c-1", "08:30", "09:00", "care-visit", "Morning Personal Care", { templateId: "t-1", recurringRuleId: "r-1" }),
-  visit("v-26", 7, "p-2", "c-7", "18:00", "19:00", "medication", "Evening Medication & Meal Prep", { templateId: "t-2", recurringRuleId: "r-2" }),
+  visit("v-25", 7, "1", "c-1", "08:30", "09:00", "care-visit", "Morning Personal Care", { templateId: "t-1", recurringRuleId: "r-1" }),
+  visit("v-26", 7, "2", "c-7", "18:00", "19:00", "medication", "Evening Medication & Meal Prep", { templateId: "t-2", recurringRuleId: "r-2" }),
   // Unassigned (carerId null). The reason lives in notes.
-  visit("u-1", -1, "p-1", null, "11:00", "12:00", "initial-assessment", "Initial Assessment", { notes: "New patient" }),
-  visit("u-2", 0, "p-2", null, "13:00", "14:00", "care-visit", "Care Visit", { notes: "Routine" }),
-  visit("u-3", 0, "p-3", null, "14:30", "15:30", "medication", "Medication Round", { notes: "Urgent", ...PEG }),
-  visit("u-4", 1, "p-4", null, "10:00", "11:00", "follow-up", "Follow-up Visit", { notes: "Follow-up" }),
-  visit("u-5", 4, "p-5", null, "09:00", "10:00", "review", "Care Plan Review", { notes: "Routine" }),
+  visit("u-1", -1, "1", null, "11:00", "12:00", "initial-assessment", "Initial Assessment", { notes: "New patient" }),
+  visit("u-2", 0, "2", null, "13:00", "14:00", "care-visit", "Care Visit", { notes: "Routine" }),
+  visit("u-3", 0, "3", null, "14:30", "15:30", "medication", "Medication Round", { notes: "Urgent", ...PEG }),
+  visit("u-4", 1, "4", null, "10:00", "11:00", "follow-up", "Follow-up Visit", { notes: "Follow-up" }),
+  visit("u-5", 4, "5", null, "09:00", "10:00", "review", "Care Plan Review", { notes: "Routine" }),
 ];
 export const scheduleMockSwaps: ShiftSwapRequest[] = [
   {

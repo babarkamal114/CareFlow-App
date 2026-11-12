@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { useRouter } from "next/navigation";
 import { Drawer, DrawerContent, DrawerFooter } from "ui/drawer";
 import { PatientDrawerHeader } from "ui/patients/patient-drawer-header";
 import { PatientDrawerSkeleton } from "ui/patients/patient-drawer-skeleton";
@@ -17,6 +18,7 @@ import {
   PATIENT_PREFERENCES_KEYS,
   pickPatientFields,
 } from "app-utils/patient-drawer";
+import { getScheduleAddVisitUrl } from "app-utils/schedule-deep-link";
 import type { DischargePayload, Patient, PatientDrawerTabId } from "types";
 import type { PatientMedication } from "types";
 import { PatientDrawerFooter } from '@/components/ui/patients';
@@ -33,8 +35,7 @@ import { PatientRiskAssessmentsTab } from './PatientAssessmentTab';
 
 interface PatientDrawerProps {
   patient: Patient | null;
-  /** Current medication list for the patient (owned by the page, shared with the edit modal). */
-  medications: PatientMedication[];
+  medications?: PatientMedication[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onEditPatient?: (() => void) | undefined;
@@ -44,10 +45,7 @@ interface PatientDrawerProps {
 }
 
 /** Which component each tab shows. JSX can't live in utils, so this map lives here. */
-const TAB_RENDERERS: Record<
-  PatientDrawerTabId,
-  (patient: Patient, medications: PatientMedication[]) => ReactNode
-> = {
+const TAB_RENDERERS: Record<PatientDrawerTabId, (patient: Patient) => ReactNode> = {
   info: (patient) => <PatientInfoTab patient={patient} />,
   medical: (patient) => (
     <PatientMedicalHistoryTab
@@ -63,7 +61,7 @@ const TAB_RENDERERS: Record<
     <PatientPreferencesTab {...pickPatientFields(patient, PATIENT_PREFERENCES_KEYS)} />
   ),
   activity: (patient) => <PatientActivityTab patientId={patient.id} />,
-  medications: (_patient, medications) => <PatientMedicationsTab medications={medications} />,
+  medications: (patient) => <PatientMedicationsTab patientId={patient.id} />,
   documents: (patient) => <PatientDocumentsTab patientId={patient.id} />,
   clinical: (patient) => <PatientClinicalNotesTab patientId={patient.id} />,
   risk: (patient) => <PatientRiskAssessmentsTab patientId={patient.id} />,
@@ -71,18 +69,23 @@ const TAB_RENDERERS: Record<
 
 export function PatientDrawer({
   patient,
-  medications,
   open,
   onOpenChange,
   onEditPatient,
-  onUpdateMeds,
   onDischarge,
   isLoading = false,
 }: PatientDrawerProps) {
+  const router = useRouter();
   const { activeTab, setActiveTab, dischargeModalOpen, setDischargeModalOpen } =
     usePatientDrawer(open, patient?.id);
 
   if (!patient) return null;
+
+  /** Footer "Schedule": go to the Scheduling page with Add Visit open for this patient. */
+  const openScheduleVisit = () => {
+    onOpenChange(false);
+    router.push(getScheduleAddVisitUrl(patient.id));
+  };
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} swipeDirection="right">
@@ -103,7 +106,7 @@ export function PatientDrawer({
                 {isLoading && PATIENT_DRAWER_SKELETON_TAB_IDS.has(tab.value) ? (
                   <PatientDrawerSkeleton />
                 ) : (
-                  TAB_RENDERERS[tab.value](patient, medications)
+                  TAB_RENDERERS[tab.value](patient)
                 )}
               </TabsContent>
             ))}
@@ -112,8 +115,8 @@ export function PatientDrawer({
 
         <DrawerFooter>
           <PatientDrawerFooter
+            onScheduleVisit={openScheduleVisit}
             onEdit={onEditPatient}
-            onMedication={onUpdateMeds}
             onDischarge={patient.status !== 'discharged' ? () => setDischargeModalOpen(true) : undefined}
           />
         </DrawerFooter>

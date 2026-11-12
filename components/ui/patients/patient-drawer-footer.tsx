@@ -23,7 +23,7 @@ export function PatientDrawerFooter(props: PatientDrawerFooterProps) {
     PATIENT_DRAWER_FOOTER_DISCHARGE_ACTION;
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-cf-border bg-cf-surface">
+    <div className="flex flex-wrap items-center gap-2 border-t border-cf-border bg-cf-surface px-4 py-3">
       {PATIENT_DRAWER_FOOTER_ACTIONS.map(({ handler, label, Icon, variant }) => (
         <Button key={handler} onClick={props[handler]} variant={variant} size="sm" className="gap-1.5">
           <Icon className="h-4 w-4" />
@@ -32,7 +32,7 @@ export function PatientDrawerFooter(props: PatientDrawerFooterProps) {
       ))}
 
       <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="gap-1.5" />}>
+        <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="ml-auto gap-1.5" />}>
           <MoreHorizontal className="h-4 w-4" />
           More
         </DropdownMenuTrigger>

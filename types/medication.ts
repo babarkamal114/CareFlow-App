@@ -27,10 +27,10 @@ export interface Medication {
   route: MedicationRoute;
   type: MedicationType;
   frequency: MedicationFrequency;
-  times: string[]; // "HH:mm"; empty for PRN
+  times: string[]; 
   prescriber: string;
   startDate: Date;
-  endDate?: Date; // short courses
+  endDate?: Date; 
   indication: string;
   instructions?: string;
   barcode: string;

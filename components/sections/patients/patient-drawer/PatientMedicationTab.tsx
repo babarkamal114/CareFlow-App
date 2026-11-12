@@ -1,82 +1,92 @@
 'use client';
 
-import { Card, CardContent, Badge } from "@/components/ui";
-import { Pill } from 'lucide-react';
-import type { PatientMedication } from "types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Pill, Plus } from "lucide-react";
+import { Badge, Button } from "@/components/ui";
+import { Skeleton } from "ui/skeleton";
+import { MedicationTypeBadge } from "ui/medication/medication-type-badge";
+import { usePatientDrawerMedications } from "hooks";
 import {
-  getMedicationDetailParts,
-  getMedicationPrescribedParts,
-  getMedicationTypeBadgeVariant,
-  getMedicationTypeLabel,
-} from "app-utils/patient-records";
+  getMedicationPrescriberParts,
+  getMedicationStatus,
+  getMedicationSummaryParts,
+} from "app-utils/patient-medication-summary";
+import { getMedicationsPageUrl } from "app-utils/medication-deep-link";
 import { DotSeparated } from '../DotSeparated';
 
 interface PatientMedicationsTabProps {
-  /** Current medication list for this patient (already sorted). */
-  medications: PatientMedication[];
+  patientId: string;
 }
 
-export function PatientMedicationsTab({ medications }: PatientMedicationsTabProps) {
-  if (medications.length === 0) {
+export function PatientMedicationsTab({ patientId }: PatientMedicationsTabProps) {
+  const router = useRouter();
+  const { preview, total, hiddenCount, now, isLoading, isError } = usePatientDrawerMedications(patientId);
+  const addMedication = () => router.push(getMedicationsPageUrl(patientId, "add"));
+
+  if (isLoading) {
+    return <div className="space-y-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-16 rounded-lg" />)}</div>;
+  }
+
+  if (isError) {
+    return <p className="py-8 text-center text-sm text-cf-ink-60">We could not load this patient&apos;s medications. Please try again.</p>;
+  }
+
+  if (total === 0) {
     return (
-      <div className="text-center py-8">
-        <Pill className="h-12 w-12 text-cf-ink-40 mx-auto mb-3" />
+      <div className="py-8 text-center">
+        <Pill className="mx-auto mb-3 h-12 w-12 text-cf-ink-40" />
         <p className="text-sm text-cf-ink-60">No medications recorded</p>
-        <p className="text-xs text-cf-ink-40 mt-1">
-          Use Update Medication to add this patient&apos;s prescriptions
-        </p>
+        <Button variant="outline" size="sm" className="mt-3" onClick={addMedication}><Plus />Add medication</Button>
       </div>
     );
   }
 
   return (
     <div className="space-y-3">
-      {medications.map((med) => {
-        const prescribedParts = getMedicationPrescribedParts(med);
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-xs text-cf-ink-60">
+          {hiddenCount > 0 ? `Showing ${preview.length} of ${total} medications` : `${total} medication${total === 1 ? "" : "s"}`}
+        </p>
+        <Button variant="outline" size="sm" onClick={addMedication}><Plus />Add medication</Button>
+      </div>
 
-        return (
-          <Card key={med.id} className="border-cf-border">
-            <CardContent className="pt-4">
-              <div className="space-y-2.5">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="font-medium text-sm text-cf-ink">{med.name}</p>
-                      <Badge
-                        variant={getMedicationTypeBadgeVariant(med.medicationType)}
-                        className="text-[10px]"
-                        shape="pill"
-                      >
-                        {getMedicationTypeLabel(med.medicationType, 'short')}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-cf-ink-60 mt-0.5">{med.indication}</p>
-                  </div>
-                  <Badge variant="pastel-info" className="text-xs shrink-0" shape="pill">
-                    {med.dosage}
-                  </Badge>
-                </div>
-
-                <div className="flex items-center gap-4 text-xs text-cf-ink-60 flex-wrap">
-                  <DotSeparated parts={getMedicationDetailParts(med)} />
-                </div>
-
-                {med.instructions && (
-                  <div className="text-xs text-cf-ink-60 bg-cf-surface-muted rounded p-2">
-                    {med.instructions}
-                  </div>
-                )}
-
-                {prescribedParts.length > 0 && (
-                  <div className="flex items-center gap-2 text-[10px] text-cf-ink-40">
-                    <DotSeparated parts={prescribedParts} />
-                  </div>
-                )}
+      <ul className="divide-y divide-cf-border-light rounded-lg border border-cf-border-light">
+        {preview.map((med) => {
+          const status = getMedicationStatus(med, now);
+          return (
+            <li key={med.id} className="space-y-1 p-3">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-sm font-medium text-cf-ink">{med.drugName} {med.strength}</span>
+                <MedicationTypeBadge medication={med} />
+                <Badge variant={status.variant} shape="pill" badgeSize="sm">{status.label}</Badge>
               </div>
-            </CardContent>
-          </Card>
-        );
-      })}
+              <div className="text-xs text-cf-ink-60">
+                <DotSeparated parts={getMedicationSummaryParts(med)} />
+              </div>
+              {med.instructions && (
+                <p className="rounded bg-cf-surface-muted p-2 text-xs text-cf-ink-60">{med.instructions}</p>
+              )}
+              <div className="text-[11px] text-cf-ink-40">
+                <DotSeparated parts={getMedicationPrescriberParts(med)} />
+              </div>
+              {med.changeNote && status.label === 'Changed' && (
+                <p className="text-xs font-medium text-warning">{med.changeNote}</p>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+
+      {hiddenCount > 0 && (
+        <Link
+          href={getMedicationsPageUrl(patientId)}
+          className="inline-flex items-center gap-1 text-sm font-medium text-brand-500 hover:underline"
+        >
+          View all medications ({total})
+          <ArrowRight className="size-4" />
+        </Link>
+      )}
     </div>
   );
 }

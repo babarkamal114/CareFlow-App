@@ -8,3 +8,4 @@ export * from "./MedicationRoundSection";
 export * from "./MedicationStatsSection";
 export * from "./MedicationTabsSection";
 export * from "./MedicationWorkspaceSection";
+export * from './MedicationDeepLink';
